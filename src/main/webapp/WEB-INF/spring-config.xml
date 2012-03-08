@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans default-autowire="autodetect"
+	xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<!-- Yes we do spring auto wiring. -->
+	<context:annotation-config />
+
+	<!-- =================================================== -->
+	<!-- =========== configuring persistence layer ======= -->
+	<!-- =================================================== -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName">
+			<value>${database.driver}</value>
+		</property>
+		<property name="url">
+			<value>${database.url}</value>
+		</property>
+		<property name="username">
+			<value>${database.user}</value>
+		</property>
+		<property name="password">
+			<value>${database.pass}</value>
+		</property>
+	</bean>
+
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.dialect">${database.dialect}</prop>
+				<prop key="hibernate.connection.pool_size">${database.poolSize}</prop>
+				<prop key="hibernate.current_session_context_class">thread</prop>
+				<prop key="hibernate.show_sql">${database.showSql}</prop>
+				<prop key="hibernate.bytecode.use_reflection_optimizer">true</prop>
+				<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>
+				<prop key="hibernate.hibernate.cache.use_query_cache">true</prop>
+			</props>
+		</property>
+		<property name="annotatedClasses">
+			<list>
+				<value>net.micwin.elysium.model.appliances.Utilization</value>
+				<value>net.micwin.elysium.model.characters.Avatar</value>
+				<value>net.micwin.elysium.model.characters.Organization</value>
+				<value>net.micwin.elysium.model.characters.User</value>
+				<value>net.micwin.elysium.model.ElysiumEntity</value>
+				<value>net.micwin.elysium.model.galaxy.Environment</value>
+				<value>net.micwin.elysium.model.galaxy.Planet</value>
+				<value>net.micwin.elysium.model.galaxy.Sector</value>
+				<value>net.micwin.elysium.model.galaxy.SolarSystem</value>
+				<value>net.micwin.elysium.model.replication.BluePrint</value>
+				<value>net.micwin.elysium.model.SysParam</value>
+				<value>net.micwin.elysium.model.replication.BuildPlan</value>
+				<value>net.micwin.elysium.model.replication.Component</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="openSessionInViewFilter"
+		class="org.springframework.orm.hibernate3.support.OpenSessionInViewFilter">
+		<property name="flushMode" value="AUTO" />
+		<property name="singleSession" value="true" />
+	</bean>
+
+	<bean id="daoManager" class="net.micwin.elysium.dao.DaoManager">
+
+		<property name="userDao">
+			<bean id="userDao__" class="net.micwin.elysium.dao.HibernateUserDao" />
+		</property>
+		<property name="avatarDao">
+			<bean id="avatarDao__" class="net.micwin.elysium.dao.HibernateAvatarDao" />
+		</property>
+		<property name="sysParamDao">
+			<bean id="sysParamDao__" class="net.micwin.elysium.dao.HibernateSysParamDao" />
+		</property>
+		<property name="nanitesDao">
+			<bean id="nanitesDao__" class="net.micwin.elysium.dao.HibernateNanitesDao" />
+		</property>
+		<property name="galaxyDao">
+			<bean id="galaxyDao__" class="net.micwin.elysium.dao.HibernateGalaxyDao" />
+		</property>
+		<property name="bluePrintDao">
+			<bean id="bluePrintDao__" class="net.micwin.elysium.dao.HibernateBluePrintDao" />
+		</property>
+		<property name="buildPlanDao">
+			<bean id="buildPlanDao__" class="net.micwin.elysium.dao.HibernateBuildPlanDao" />
+		</property>
+	</bean>
+
+	<!-- ========================================= -->
+	<!-- =========== configuring bpo layer ======= -->
+	<!-- ========================================= -->
+
+	<!-- dummy init to set static property in BaseBPO -->
+	<bean name="baseBpo" class="net.micwin.elysium.bpo.BaseBPO">
+		<property name="daoManager" ref="daoManager" />
+	</bean>
+
+
+	<!-- =================================================== -->
+	<!-- ================ configuring advancer ============= -->
+	<!-- =================================================== -->
+
+	<bean id="advancer" class="net.micwin.elysium.jobs.AdvancerTask" />
+
+	<bean id="advancerTask" class="org.springframework.scheduling.timer.ScheduledTimerTask">
+		<property name="delay" value="60000" />
+		<property name="period" value="60000" />
+		<property name="timerTask" ref="advancer" />
+	</bean>
+
+	<bean id="timerFactory" class="org.springframework.scheduling.timer.TimerFactoryBean">
+		<property name="scheduledTimerTasks">
+			<list>
+				<ref bean="advancerTask" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- =================================================== -->
+	<!-- =============== configuring application =========== -->
+	<!-- =================================================== -->
+
+
+	<bean id="wicketApplication" class="net.micwin.elysium.view.ElysiumApplication"
+		init-method="init">
+		<property name="daoManager" ref="daoManager" />
+
+	</bean>
+
+</beans>

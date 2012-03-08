@@ -1,0 +1,31 @@
+; redefining default tags
+
+body { font: 11px/20px Georgia, "Times New Roman", Times, serif; }
+
+#borderTable { width:95%; height:100%; }
+
+.pageLayoutTable { height:100%; width:100%; }
+
+#headlineRow { height:15%; vertical-align:center; }
+
+#headlineBox { vertical-align:middle; height:15%; }
+
+#centerRow { height:70%; text-align:left; vertical-align:top; }
+
+#centerBox { height:100%; width:100%; }
+
+#footerRow { height:15%; }
+
+#footerBox { text-align:center; }
+
+#rolesBox {Êtext-align: right; }
+
+#authBox {Êtext-align: justify; }
+
+.quickLinkBox6 {Êtext-align: center; width:16%; }
+
+.labelBox { text-align: right; width: 12%; }
+
+.valueBox { text-align: left; width: 13%; }
+
+#bluePrintTable { width: 50%; align: center;}

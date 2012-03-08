@@ -1,0 +1,32 @@
+<html
+	xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd">
+<title>Elysium</title>
+<body>
+<wicket:border>
+	<table id="borderTable" align="center">
+		<tr height="0%">
+			<td width="20%" />
+			<td width="50%" />
+			<td width="30%" />
+		</tr>
+
+		<tr id="headlineRow">
+			<td id="headlineBox" colspan="3"><img
+				src="branding/logo_small.jpg" /><wicket:message key="headline">Welcome!</wicket:message></td>
+
+		</tr>
+		<tr id="centerRow">
+			<td> <span wicket:id="navPanel" /><br /><span id="authBox" wicket:id="authPanel" /></td>
+			<td id="centerBox" colspan="2"><wicket:body /></td>
+		</tr>
+		<tr id="footerRow">
+			<td colspan="2" id="footerBox"><wicket:message key="footer">(c) 2011 by micwin.net</wicket:message></td>
+			<td id="rolesBox">
+			<div wicket:id="roles" />
+			</td>
+		</tr>
+	</table>
+</wicket:border>
+
+</body>
+</html>
