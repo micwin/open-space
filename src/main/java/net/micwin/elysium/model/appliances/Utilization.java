@@ -1,6 +1,9 @@
 package net.micwin.elysium.model.appliances;
 
-/* This file is part of open-space.
+/*
+ (c) 2012 micwin.net
+
+ This file is part of open-space.
 
  open-space is free software: you can redistribute it and/or modify
  it under the terms of the GNU Affero Public License as published by
@@ -17,21 +20,20 @@ package net.micwin.elysium.model.appliances;
 
  Diese Datei ist Teil von open-space.
 
- open-space ist Freie Software: Sie können es unter den Bedingungen
+ open-space ist Freie Software: Sie k√∂nnen es unter den Bedingungen
  der GNU Affero Public License, wie von der Free Software Foundation,
- Version 3 der Lizenz oder (nach Ihrer Option) jeder späteren
- veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+ Version 3 der Lizenz oder (nach Ihrer Option) jeder sp√§teren
+ ver√∂ffentlichten Version, weiterverbreiten und/oder modifizieren.
 
- open-space wird in der Hoffnung, dass es nützlich sein wird, aber
- OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
- Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
- Siehe die GNU Affero Public License für weitere Details.
+ open-space wird in der Hoffnung, dass es n√ºtzlich sein wird, aber
+ OHNE JEDE GEW√ÑHRLEISTUNG, bereitgestellt; sogar ohne die implizite
+ Gew√§hrleistung der MARKTF√ÑHIGKEIT oder EIGNUNG F√úR EINEN BESTIMMTEN ZWECK.
+ Siehe die GNU Affero Public License f√ºr weitere Details.
 
  Sie sollten eine Kopie der GNU Affero Public License zusammen mit diesem
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
