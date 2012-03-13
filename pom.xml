@@ -7,16 +7,16 @@
 	the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
 	See the GNU Affero Public License for more details. You should have received 
 	a copy of the GNU Affero Public License along with open-space. If not, see 
-	http://www.gnu.org/licenses. Diese Datei ist Teil von open-space. open-space 
-	ist Freie Software: Sie können es unter den Bedingungen der GNU Affero Public 
-	License, wie von der Free Software Foundation, Version 3 der Lizenz oder 
-	(nach Ihrer Option) jeder späteren veröffentlichten Version, weiterverbreiten 
-	und/oder modifizieren. open-space wird in der Hoffnung, dass es nützlich 
-	sein wird, aber OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die 
-	implizite Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN 
-	ZWECK. Siehe die GNU Affero Public License für weitere Details. Sie sollten 
-	eine Kopie der GNU Affero Public License zusammen mit diesem Programm erhalten 
-	haben. Wenn nicht, siehe http://www.gnu.org/licenses. -->
+	http://www.gnu.org/licenses. Diese Datei ist Teil von open-space. -->
+<!-- open-space ist Freie Software: Sie können es unter den Bedingungen der 
+	GNU Affero Public License, wie von der Free Software Foundation, Version 
+	3 der Lizenz oder (nach Ihrer Option) jeder späteren veröffentlichten Version, 
+	weiterverbreiten und/oder modifizieren. open-space wird in der Hoffnung, 
+	dass es nützlich sein wird, aber OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; 
+	sogar ohne die implizite Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR 
+	EINEN BESTIMMTEN ZWECK. Siehe die GNU Affero Public License für weitere Details. 
+	Sie sollten eine Kopie der GNU Affero Public License zusammen mit diesem 
+	Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -51,8 +51,6 @@
 			<url>http://download.java.net/maven/2/</url>
 			<layout>default</layout>
 		</repository>
-
-
 
 	</repositories>
 	<dependencies>
@@ -163,30 +161,36 @@
 	</dependencies>
 
 	<profiles>
-		<!-- profile for running the application via maven -->
+
+		<!-- profile for running the application locally with an in-memory-db in 
+			target dir -->
 		<profile>
 			<id>dev</id>
-
+			<activation>
+				<activeByDefault />
+			</activation>
 			<properties>
 				<profile>dev</profile>
+				<urlPath>/${profile}</urlPath>
+				<tomcatUser>admin</tomcatUser>
+				<tomcatPass></tomcatPass>
+				<tomcatPort>8585</tomcatPort>
 			</properties>
-
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.tomcat.maven</groupId>
-						<artifactId>tomcat6-maven-plugin</artifactId>
-						<version>2.0-beta-1</version>
-						<configuration>
-							<path>/${profile}</path>
-							<username>admin</username>
-							<password></password>
-							<port>8585</port>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
 		</profile>
+
+		<!-- profile for running the application locally with an in-memory-db in 
+			target dir -->
+		<profile>
+			<id>stage</id>
+			<properties>
+				<profile>stage</profile>
+				<urlPath>/${profile}</urlPath>
+				<tomcatUser>admin</tomcatUser>
+				<tomcatPass></tomcatPass>
+				<tomcatPort>8686</tomcatPort>
+			</properties>
+		</profile>
+
 	</profiles>
 
 	<build>
@@ -224,6 +228,20 @@
 					<downloadSources>true</downloadSources>
 				</configuration>
 			</plugin>
+
+			<!-- the tomcat6 plugin to run an embedded tomcat server -->
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat6-maven-plugin</artifactId>
+				<version>2.0-beta-1</version>
+				<configuration>
+					<path>${urlPath}</path>
+					<username>${tomcatUser}</username>
+					<password>${tomcatPass}</password>
+					<port>${tomcatPort}</port>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 
