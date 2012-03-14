@@ -242,13 +242,18 @@
 				</configuration>
 			</plugin>
 
+			<!-- plugin to create a sources jar. -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.1.2</version>
+				<configuration>
+					<finalName>${project.artifactId}-${project.version}-${profile}</finalName>
+					<includePom>true</includePom>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 
-	<scm>
-		<connection>scm:git:git@github.com:micwin/elysium.git/${project.artifactId}
-		</connection>
-		<developerConnection>scm:git:git@github.com:micwin/elysium.git/${project.artifactId}
-		</developerConnection>
-	</scm>
 </project>
