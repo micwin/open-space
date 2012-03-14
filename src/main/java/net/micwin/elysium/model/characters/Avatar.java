@@ -54,8 +54,6 @@ import org.hibernate.annotations.CollectionOfElements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sun.istack.internal.NotNull;
-
 /**
  * Interface for specifying an avatar PC.
  * 
@@ -95,14 +93,12 @@ public class Avatar extends ElysiumEntity {
 	}
 
 	@OneToOne
-	@NotNull
 	private User controller;
 
 	private Date creationDate;
 
 	private int level;
 
-	@NotNull
 	private String name;
 
 	@OneToOne
@@ -112,7 +108,6 @@ public class Avatar extends ElysiumEntity {
 	private Personality personality;
 
 	@Embedded
-	@NotNull
 	private Position position;
 
 	@Enumerated(EnumType.STRING)
