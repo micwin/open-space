@@ -40,7 +40,6 @@ import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.model.GalaxyTimer;
 import net.micwin.elysium.view.welcome.WelcomePage;
 
-import org.apache.wicket.IPageFactory;
 import org.apache.wicket.Page;
 import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
@@ -60,6 +59,7 @@ public class ElysiumApplication extends WebApplication {
 	public ElysiumApplication() {
 	}
 
+	@Override
 	public void init() {
 		AdminBPO adminBpo = new AdminBPO();
 		adminBpo.ensureInitialDbSetup();

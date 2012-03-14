@@ -70,6 +70,7 @@ public class CreateAvatarPage extends BasePage {
 	protected Form createForm() {
 		Form form = new Form("createAvatarForm") {
 
+			@Override
 			protected void onInitialize() {
 				super.onInitialize();
 				personalityChoice = new RadioChoice<Personality>("personality", new Model<Personality>(

@@ -41,9 +41,6 @@ import net.micwin.elysium.model.characters.User;
 import net.micwin.elysium.model.characters.User.Role;
 import net.micwin.elysium.model.characters.User.State;
 
-import org.hibernate.Session;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-
 public class HibernateUserDao extends ElysiumHibernateDaoSupport<User> implements IUserDao {
 
 	public HibernateUserDao() {
@@ -58,7 +55,7 @@ public class HibernateUserDao extends ElysiumHibernateDaoSupport<User> implement
 		if (result == null || result.size() < 1) {
 			return null;
 		} else {
-			return (User) result.get(0);
+			return result.get(0);
 		}
 
 	}

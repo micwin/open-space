@@ -95,6 +95,7 @@ public class AuthPanel extends BasePanel {
 			 */
 			private static final long serialVersionUID = -4334206218142646974L;
 
+			@Override
 			protected void onInitialize() {
 				super.onInitialize();
 

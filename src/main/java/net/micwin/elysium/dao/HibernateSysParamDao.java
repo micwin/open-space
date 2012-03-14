@@ -42,7 +42,6 @@ import net.micwin.elysium.model.SysParam;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 public class HibernateSysParamDao extends ElysiumHibernateDaoSupport<SysParam> implements ISysParamDao {
 

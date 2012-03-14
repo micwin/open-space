@@ -36,8 +36,6 @@ package net.micwin.elysium.model;
  */
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.UniqueConstraint;
 
 /**
  * A sysparam is a persistent value that musst get transported between shutdown

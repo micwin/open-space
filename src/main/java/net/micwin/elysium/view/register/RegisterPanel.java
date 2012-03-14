@@ -76,6 +76,7 @@ public class RegisterPanel extends BasePanel {
 	private Component getRegisterForm() {
 		Form form = new Form("registerForm") {
 
+			@Override
 			protected void onInitialize() {
 				super.onInitialize();
 

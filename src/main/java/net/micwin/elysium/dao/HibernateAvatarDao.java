@@ -74,7 +74,7 @@ public class HibernateAvatarDao extends ElysiumHibernateDaoSupport<Avatar> imple
 		if (result == null || result.size() != 1) {
 			return null;
 		} else {
-			return (Avatar) result.get(0);
+			return result.get(0);
 		}
 	}
 

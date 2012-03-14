@@ -70,6 +70,7 @@ public final class User extends ElysiumEntity implements Serializable {
 		 */
 		ACTOR;
 
+		@Override
 		public String toString() {
 			return name();
 		};

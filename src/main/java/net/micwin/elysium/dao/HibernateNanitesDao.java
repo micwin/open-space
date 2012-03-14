@@ -40,6 +40,7 @@ import net.micwin.elysium.model.NanoBotHive;
  */
 public class HibernateNanitesDao extends ElysiumHibernateDaoSupport<NanoBotHive> implements INanitesDao {
 
+	@Override
 	public Class<NanoBotHive> getEntityClass() {
 		return NanoBotHive.class;
 	}
