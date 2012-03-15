@@ -187,7 +187,6 @@
 				<urlPath>/${profile}</urlPath>
 				<tomcatUser>admin</tomcatUser>
 				<tomcatPass></tomcatPass>
-				<tomcatPort>8686</tomcatPort>
 			</properties>
 		</profile>
 
