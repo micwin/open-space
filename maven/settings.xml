@@ -1,0 +1,36 @@
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                      http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+	<profiles>
+		<profile>
+			<id>stage</id>
+			<properties>
+
+				<!-- database config for both embedded *and* app server launch -->
+				<database.url>jdbc:hsqldb:file:/openspace/stage;ifexists=false;shutdown=true</database.url>
+				<database.user>sa</database.user>
+				<database.pass></database.pass>
+				<database.showSql>false</database.showSql>
+				<database.poolSize>5</database.poolSize>
+				<database.driver>org.hsqldb.jdbcDriver</database.driver>
+				<database.dialect>org.hibernate.dialect.HSQLDialect</database.dialect>
+
+				<!-- -->
+				<!-- tomcat embedded config -->
+				<!-- -->
+				<urlPath>/stage</urlPath>
+				<tomcatUser>admin</tomcatUser>
+				<tomcatPass></tomcatPass>
+				<tomcatPort>8585</tomcatPort>
+
+				<!-- some custom information for this specific build - put onto the welcome 
+					page. -->
+				<version.notes><![CDATA[Dei dieser Installation handelt es sich um eine sogen. Stage-Version - das ist eine Testversion, die vermutlich noch
+				Fehler enth&auml;lt. Die Daten bleiben vermutlich erhalten, die Version ist aber
+				trotzdem noch weit eines stabilen Releases entfernt. Sie wurden gewarnt.]]></version.notes>
+			</properties>
+		</profile>
+	</profiles>
+</settings>
