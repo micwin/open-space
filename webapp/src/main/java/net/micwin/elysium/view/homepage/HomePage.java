@@ -72,12 +72,8 @@ public class HomePage extends BasePage {
 		super.onInitialize();
 
 		addToContentBody(new Label("name", "" + getAvatar().getName()));
-		addToContentBody(new Label("controller", getAvatar().getController().getLogin()));
 		addToContentBody(composeXpEntry(getAvatar()));
 		addToContentBody(new Label("level", NumberFormat.getIntegerInstance(getLocale()).format(getAvatar().getLevel())));
-		addToContentBody(new Label("creationDate", DateFormat.getDateInstance(DateFormat.MEDIUM, getLocale()).format(
-						getAvatar().getCreationDate())));
-		addToContentBody(new Label("position", "\"" + getAvatar().getPosition().toString() + "\""));
 		addToContentBody(getTalents());
 
 	}
