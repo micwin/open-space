@@ -36,6 +36,7 @@ package net.micwin.elysium.view.nav;
  */
 
 import net.micwin.elysium.view.BasePanel;
+import net.micwin.elysium.view.groups.GroupsPage;
 import net.micwin.elysium.view.homepage.HomePage;
 import net.micwin.elysium.view.replication.ConstructionPage;
 import net.micwin.elysium.view.storyline.StoryLinePage;
@@ -53,6 +54,8 @@ public class NavPanel extends BasePanel {
 		super.onInitialize();
 		add(createHomePageLink());
 		add(createStoryLineLink());
+		add(createGroupsLink());
+
 		add(createReplicationLink());
 
 	}
@@ -61,6 +64,12 @@ public class NavPanel extends BasePanel {
 		BookmarkablePageLink<StoryLinePage> link = new BookmarkablePageLink<StoryLinePage>("storyLineLink",
 						StoryLinePage.class);
 		link.setVisible(StoryLinePage.userCanShow(getUser()));
+		return link;
+	}
+
+	protected BookmarkablePageLink<GroupsPage> createGroupsLink() {
+		BookmarkablePageLink<GroupsPage> link = new BookmarkablePageLink<GroupsPage>("groupsLink", GroupsPage.class);
+		link.setVisible(GroupsPage.userCanShow(getUser()));
 		return link;
 	}
 

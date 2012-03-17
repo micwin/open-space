@@ -114,6 +114,6 @@ public class ConstructionPage extends BasePage {
 	}
 
 	public static boolean userCanShow(User user) {
-		return user != null;
+		return false;
 	}
 }

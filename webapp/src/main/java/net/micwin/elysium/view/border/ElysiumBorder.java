@@ -88,6 +88,8 @@ public class ElysiumBorder extends Border {
 	}
 
 	private Component getNavPanel() {
-		return new NavPanel("navPanel");
+		NavPanel navPanel = new NavPanel("navPanel");
+		navPanel.setEnabled(((ElysiumSession) Session.get()).getUser() != null);
+		return navPanel;
 	}
 }
