@@ -36,7 +36,7 @@ package net.micwin.elysium.view.avatar;
  */
 
 import net.micwin.elysium.bpo.AvatarBPO;
-import net.micwin.elysium.model.characters.Avatar.Personality;
+import net.micwin.elysium.model.characters.Avatar.Race;
 import net.micwin.elysium.view.BasePage;
 import net.micwin.elysium.view.homepage.HomePage;
 
@@ -57,7 +57,7 @@ public class CreateAvatarPage extends BasePage {
 		ensureLoggedIn();
 	}
 
-	RadioChoice<Personality> personalityChoice;
+	RadioChoice<Race> personalityChoice;
 	TextField<String> nameInput;
 
 	@Override
@@ -73,8 +73,8 @@ public class CreateAvatarPage extends BasePage {
 			@Override
 			protected void onInitialize() {
 				super.onInitialize();
-				personalityChoice = new RadioChoice<Personality>("personality", new Model<Personality>(
-								Personality.ENGINEER), new ListModel<Personality>(Personality.asList()));
+				personalityChoice = new RadioChoice<Race>("personality", new Model<Race>(Race.NANITE),
+								new ListModel<Race>(Race.asList()));
 				add(personalityChoice);
 
 				nameInput = new TextField<String>("name", new Model<String>(""));

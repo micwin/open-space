@@ -40,7 +40,7 @@ import java.util.Date;
 
 import net.micwin.elysium.model.appliances.Utilization;
 import net.micwin.elysium.model.characters.Avatar;
-import net.micwin.elysium.model.characters.Avatar.Personality;
+import net.micwin.elysium.model.characters.Avatar.Race;
 import net.micwin.elysium.model.characters.User;
 import net.micwin.elysium.model.galaxy.Position;
 
@@ -65,7 +65,7 @@ public interface IAvatarDao extends IElysiumEntityDao<Avatar> {
 	 * 
 	 * @param user
 	 * @param name
-	 * @param personality
+	 * @param race
 	 * @param talents
 	 * @param talentPoints
 	 * @param position
@@ -74,7 +74,7 @@ public interface IAvatarDao extends IElysiumEntityDao<Avatar> {
 	 * @param storyLineItem
 	 * @return
 	 */
-	Avatar create(User user, String name, Personality personality, Collection<Utilization> talents, int talentPoints,
+	Avatar create(User user, String name, Race race, Collection<Utilization> talents, int talentPoints,
 					Position position, Date birthDate);
 
 	/**

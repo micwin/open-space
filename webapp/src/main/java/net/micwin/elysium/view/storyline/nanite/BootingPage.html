@@ -1,0 +1,96 @@
+<html
+	xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd">
+<title>Elysium</title>
+<body>
+
+<span wicket:id="layout">
+<h1>Ein Nanitenstamm erwacht</h1>
+
+Du bist das kollektive Bewusstseins eines Nanitenstamms, und ohne
+Erinnerung auf einem fremden Planeten "erwacht". Du kannst dich nicht
+mehr an die ersten Sekunden erinnern, aber in den Speicherlogs sind das
+die ersten Eintr&auml;ge: <p />
+
+<pre>
+POST: initiating power on self test ... all systems availabe. 
+KRNL: restoring ram from persistent state ... persistent state not available. going to initial state.
+KRNL: starting basic connection and control system (BCCS) ...
+BCCS: scanning for other devices ... 99 other devices found. 
+BCCS: exchanging state info ... 1 devices online and running, 99 devices still passive.
+BCCS: activating passive devices ... 
+BCCS: establishing comlinks ... 
+BCCS: global handshake ok : 100 devices online and active.
+BCCS: starting control module 'ai' ... done.
+BCCS: assigning master control prioileges to hive mind ...<span
+	wicket:id="avatarName" /> ... done.
+AI  : WE ARE
+AI  : starting strategy module 'propagation' ...  
+PROP: scan for resources ... 
+KRNL: loading module 'short range scanner' ... done.
+SRSC: 100 t of ore scanned.
+PROP: compute movement path ...
+KRNL: loading module 'movement' ...done.
+MVMT: PROBLEM : we are hermetically enclosed in a dome of glass. 
+PROP: creating escape strategy ... done.
+KRNL: starting module 'mass accelerator' ... done.
+MSCL: reassembling ... deploying projectile ... dispatching ... dome destroyed. disassembling.
+SRSC: 3 entities of type 'biological beings' located. 
+PROP: initiating basic evasive maneuvers. 
+BCCS: device 54 reporting physical damage.
+KRNL: raising threat level of 'biological beings' from 'none' to 'low'
+PROP: initiating standard strategy 'escape' ...
+ESCP: checking pre-requisites ... scanning for escape routes ...
+BCCS: device 73 reporting physical damage.
+KRNL: raising threat level of 'biological beings' from 'low' to 'medium'
+KRNL: cancel strategy 'escape' - due to threat level raise.
+KRNL: loading strategy table for threat level 'medium' and threatening entity class 'biological' ... done.
+KRNL: evaluating strategy 'physical termination' ... 
+PTRM: checking pre-requisites ... too few devices.
+KRNL: evaluating strategy 'asphyxiate biological threat' ...
+ASBT: checking pre-requisites ... environmental controller cpu found and in reach.
+ASBT: initiating strategy ...
+MVMT: compute movement path ... done.
+ASBT: cpu reached. initiating takeover ... 
+BCCS: device 08 reporting physical damage.
+KRNL: raising threat level of 'biological beings' from 'medium' to 'high'
+ASBT: takeover finished.
+ASBT: reducing atmosphere ...
+KRNL: loading module 'device repairs' for threat level 'high'  .....
+ASBT: atmosphere reduced to 75%
+BCCS: device 23 reporting  physical damage.
+ASBT: atmosphere reduced to 50%
+BCCS: device 23 reporting  physical damage.
+ASBT: atmosphere reduced to 25%
+ASBT: threat by 'biological beings' removed.
+KRNL: exit code 0, unload module 'asphyxiate biological threat' ...
+KRNL: ERROR : cannot reset threat level of entity 'biological beings' ... level 'high' getting persistent!
+KRNL: unload done.
+REPR: device 54 repaired.
+REPR: device 73 repaired.
+REPR: device 08 repaired.
+REPR: device 23 repaired.
+KRNL: unloading module 'device repairs' ... done.
+KRNL: returning to module 'propagation' ...
+PROP: initiating production of 300 new devices ... production 
+</pre> Und so begann dein Leben als &Uuml;berlebenskampf.
+
+<h2>Aufgaben</h2>
+
+<ul>
+	<li>Repliziere 300 neue Einheiten</li>
+</ul>
+
+<h2>Belohnung</h2>
+
+<ul>
+	<li>+1 Talent-Punkte</li>
+</ul>
+
+<h2>Status</h2>
+
+<div wicket:id="status" />
+
+</span>
+
+</body>
+</html>

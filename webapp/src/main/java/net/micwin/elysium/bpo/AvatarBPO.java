@@ -47,7 +47,7 @@ import net.micwin.elysium.MessageKeys;
 import net.micwin.elysium.model.appliances.Appliance;
 import net.micwin.elysium.model.appliances.Utilization;
 import net.micwin.elysium.model.characters.Avatar;
-import net.micwin.elysium.model.characters.Avatar.Personality;
+import net.micwin.elysium.model.characters.Avatar.Race;
 import net.micwin.elysium.model.characters.User;
 import net.micwin.elysium.model.galaxy.Planet;
 import net.micwin.elysium.model.galaxy.Position;
@@ -65,16 +65,16 @@ public class AvatarBPO extends BaseBPO {
 	 * 
 	 * @param user
 	 * @param name
-	 * @param personality
+	 * @param race
 	 * @return
 	 */
-	public String create(User user, String name, Personality personality) {
-		String error = validate(user, name, personality);
+	public String create(User user, String name, Race race) {
+		String error = validate(user, name, race);
 		if (error != null) {
 			return error;
 		}
 
-		Collection<Utilization> talentsList = fillInTalents(personality);
+		Collection<Utilization> talentsList = fillInTalents(race);
 
 		Sector thinnestSector = getGalaxyDao().findThinnestSector();
 
@@ -92,7 +92,7 @@ public class AvatarBPO extends BaseBPO {
 
 		Date birthDate = cal.getTime();
 
-		Avatar avatar = getAvatarDao().create(user, name, personality, talentsList,
+		Avatar avatar = getAvatarDao().create(user, name, race, talentsList,
 						Constants.TALENT_POINTS_UPON_CREATION, position, birthDate);
 
 		BluePrint baseBase = getBluePrintDao().create(avatar, MessageKeys.PLANETARY_BASE_STRUCTURE,
@@ -110,10 +110,10 @@ public class AvatarBPO extends BaseBPO {
 		return position;
 	}
 
-	protected List<Utilization> fillInTalents(Personality personality) {
+	protected List<Utilization> fillInTalents(Race race) {
 		List<Utilization> talentsList = new LinkedList<Utilization>();
 
-		switch (personality) {
+		switch (race) {
 		// case MILITARY:
 		// talentsList.add(new Talent(Appliance.HUMAN_INTERACTION, 0, 0, 0,
 		// Talent.SCOPE_DISABLED));
@@ -123,7 +123,7 @@ public class AvatarBPO extends BaseBPO {
 		// talentsList.add(new Talent(Appliance.MARTIAL_ARTS, 2, 0, 0, 1));
 		//
 		// break;
-		case ENGINEER:
+		case NANITE:
 			talentsList.add(Utilization.Factory.create(Appliance.ARCHITECTURE, 1));
 			talentsList.add(Utilization.Factory.create(Appliance.HABITATS, 1));
 			break;
@@ -138,14 +138,14 @@ public class AvatarBPO extends BaseBPO {
 		//
 		// break;
 		default:
-			throw new IllegalStateException("case '" + personality.name() + "' not covered");
+			throw new IllegalStateException("case '" + race.name() + "' not covered");
 
 		}
 
 		return talentsList;
 	}
 
-	public String validate(User user, String name, Personality personality) {
+	public String validate(User user, String name, Race race) {
 		Avatar alreadyExisting = getAvatarDao().findByController(user);
 		if (alreadyExisting != null) {
 			return MessageKeys.EK_USER_ALREADY_HAS_AN_AVATAR;
@@ -158,7 +158,7 @@ public class AvatarBPO extends BaseBPO {
 			return MessageKeys.EK_NAME_TOO_LONG;
 		}
 
-		if (personality == null) {
+		if (race == null) {
 			return MessageKeys.EK_NO_PERSONALITY_SELECTED;
 		}
 		return null;

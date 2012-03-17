@@ -41,7 +41,7 @@ import java.util.List;
 
 import net.micwin.elysium.model.appliances.Utilization;
 import net.micwin.elysium.model.characters.Avatar;
-import net.micwin.elysium.model.characters.Avatar.Personality;
+import net.micwin.elysium.model.characters.Avatar.Race;
 import net.micwin.elysium.model.characters.Organization;
 import net.micwin.elysium.model.characters.User;
 import net.micwin.elysium.model.galaxy.Position;
@@ -79,18 +79,18 @@ public class HibernateAvatarDao extends ElysiumHibernateDaoSupport<Avatar> imple
 	}
 
 	@Override
-	public Avatar create(User user, String name, Personality personality, Collection<Utilization> talents,
+	public Avatar create(User user, String name, Race race, Collection<Utilization> talents,
 					int talentPoints, Position position, Date birthDate) {
 		Avatar avatar = new Avatar();
 		avatar.setController(user);
 		avatar.setName(name);
-		avatar.setPersonality(personality);
+		avatar.setPersonality(race);
 		avatar.setCreationDate(birthDate);
 		avatar.setLevel(0);
 		avatar.setXp(0l);
 		avatar.setTalentPoints(talentPoints);
 		avatar.setPosition(position);
-		avatar.setStoryLineItem(personality.getFirstStoryItem());
+		avatar.setStoryLineItem(race.getFirstStoryItem());
 
 		Organization organization = new Organization();
 		organization.setController(avatar);

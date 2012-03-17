@@ -34,7 +34,7 @@ package net.micwin.elysium.bpo;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
-import net.micwin.elysium.model.characters.Avatar.Personality;
+import net.micwin.elysium.model.characters.Avatar.Race;
 
 /**
  * The bpo that does xp related processes.
@@ -53,16 +53,16 @@ public class XpBPO extends BaseBPO {
 	 * @param level
 	 * @return
 	 */
-	public long computeXpForLevel(int level, Personality personality) {
-		switch (personality) {
+	public long computeXpForLevel(int level, Race race) {
+		switch (race) {
 		// case MILITARY:
 		// return (long) Math.pow(12, level);
 		// case PRESERVER:
 		// return (long) Math.pow(11, level);
-		case ENGINEER:
+		case NANITE:
 			return (long) Math.pow(10, level);
 		default:
-			throw new IllegalStateException("forgot to handle personality '" + personality.name() + "'");
+			throw new IllegalStateException("forgot to handle personality '" + race.name() + "'");
 		}
 	}
 }

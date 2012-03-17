@@ -37,6 +37,7 @@ Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses.
 
 import net.micwin.elysium.view.storyline.engineer.NotReproducablePage;
 import net.micwin.elysium.view.storyline.military.LoneWolfPage;
+import net.micwin.elysium.view.storyline.nanite.BootingPage;
 import net.micwin.elysium.view.storyline.preserver.NewHopePage;
 
 /**
@@ -61,7 +62,12 @@ public enum StoryLineItem {
 	/**
 	 * preserver story line
 	 */
-	NEW_HOPE(null, NewHopePage.class);
+	NEW_HOPE(null, NewHopePage.class), 
+	
+	/**
+	 * nanite story line - of course first booting ;)
+	 */
+	BOOTING (null, BootingPage.class);
 
 	public StoryLineItem getNextItem() {
 		return nextItem;

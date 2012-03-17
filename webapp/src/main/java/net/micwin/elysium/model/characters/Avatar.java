@@ -65,16 +65,16 @@ public class Avatar extends ElysiumEntity {
 
 	private static final Logger L = LoggerFactory.getLogger(Avatar.class);
 
-	public static enum Personality {
+	public static enum Race {
 		// MILITARY(StoryLineItem.LONE_WOLF),
 
-		ENGINEER(StoryLineItem.NOT_REPRODUCABLE);
+		NANITE(StoryLineItem.BOOTING);
 
 		// PRESERVER(StoryLineItem.NEW_HOPE);
 
-		public static List<Personality> asList() {
-			List<Personality> list = new LinkedList<Avatar.Personality>();
-			list.add(ENGINEER);
+		public static List<Race> asList() {
+			List<Race> list = new LinkedList<Avatar.Race>();
+			list.add(NANITE);
 			// list.add(MILITARY);
 			// list.add(PRESERVER);
 			return list;
@@ -82,7 +82,7 @@ public class Avatar extends ElysiumEntity {
 
 		private final StoryLineItem firstStoryItem;
 
-		private Personality(StoryLineItem firstStoryItem) {
+		private Race(StoryLineItem firstStoryItem) {
 			this.firstStoryItem = firstStoryItem;
 		}
 
@@ -105,7 +105,7 @@ public class Avatar extends ElysiumEntity {
 	private Organization organization;
 
 	@Enumerated(EnumType.STRING)
-	private Personality personality;
+	private Race race;
 
 	@Embedded
 	private Position position;
@@ -144,8 +144,8 @@ public class Avatar extends ElysiumEntity {
 		return organization;
 	}
 
-	public Personality getPersonality() {
-		return personality;
+	public Race getPersonality() {
+		return race;
 	}
 
 	public Position getPosition() {
@@ -188,8 +188,8 @@ public class Avatar extends ElysiumEntity {
 		this.organization = organization;
 	}
 
-	public void setPersonality(Personality personality) {
-		this.personality = personality;
+	public void setPersonality(Race race) {
+		this.race = race;
 	}
 
 	public void setPosition(Position position) {
