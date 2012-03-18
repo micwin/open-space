@@ -60,6 +60,7 @@
 				<value>net.micwin.elysium.model.SysParam</value>
 				<value>net.micwin.elysium.model.replication.BuildPlan</value>
 				<value>net.micwin.elysium.model.replication.Component</value>
+				<value>net.micwin.elysium.model.NaniteGroup</value>
 			</list>
 		</property>
 	</bean>

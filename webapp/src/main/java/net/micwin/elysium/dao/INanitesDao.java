@@ -35,8 +35,8 @@ package net.micwin.elysium.dao;
 
  */
 
-import net.micwin.elysium.model.NanoBotHive;
+import net.micwin.elysium.model.NaniteGroup;
 
-public interface INanitesDao extends IElysiumEntityDao<NanoBotHive> {
+public interface INanitesDao extends IElysiumEntityDao<NaniteGroup> {
 
 }

@@ -37,7 +37,7 @@ package net.micwin.elysium.dao;
 import java.util.HashMap;
 
 import net.micwin.elysium.model.ElysiumEntity;
-import net.micwin.elysium.model.NanoBotHive;
+import net.micwin.elysium.model.NaniteGroup;
 import net.micwin.elysium.model.SysParam;
 import net.micwin.elysium.model.characters.Avatar;
 import net.micwin.elysium.model.characters.User;
@@ -86,12 +86,12 @@ public class DaoManager {
 	}
 
 	public INanitesDao getNanitesDao() {
-		return (INanitesDao) getDao(NanoBotHive.class);
+		return (INanitesDao) getDao(NaniteGroup.class);
 	}
 
 	public void setNanitesDao(INanitesDao nanitesDao) {
-		checkDaoNotPresent(NanoBotHive.class);
-		daoInstances.put(NanoBotHive.class, nanitesDao);
+		checkDaoNotPresent(NaniteGroup.class);
+		daoInstances.put(NaniteGroup.class, nanitesDao);
 	}
 
 	public IBluePrintDao getBluePrintDao() {

@@ -2,7 +2,7 @@ package net.micwin.elysium.dao;
 
 import java.io.Serializable;
 
-import net.micwin.elysium.model.NanoBotHive;
+import net.micwin.elysium.model.NaniteGroup;
 
 /*
  (c) 2012 micwin.net
@@ -38,15 +38,15 @@ import net.micwin.elysium.model.NanoBotHive;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
-public class HibernateNanitesDao extends ElysiumHibernateDaoSupport<NanoBotHive> implements INanitesDao {
+public class HibernateNanitesDao extends ElysiumHibernateDaoSupport<NaniteGroup> implements INanitesDao {
 
 	@Override
-	public Class<NanoBotHive> getEntityClass() {
-		return NanoBotHive.class;
+	public Class<NaniteGroup> getEntityClass() {
+		return NaniteGroup.class;
 	}
 
 	@Override
-	public NanoBotHive loadById(Serializable id) {
+	public NaniteGroup loadById(Serializable id) {
 		return super.loadById((Long) id);
 	}
 }
