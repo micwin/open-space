@@ -36,7 +36,16 @@ package net.micwin.elysium.dao;
  */
 
 import net.micwin.elysium.model.NaniteGroup;
+import net.micwin.elysium.model.galaxy.Position;
 
 public interface INanitesDao extends IElysiumEntityDao<NaniteGroup> {
+
+	/**
+	 * Create a group of nanites.
+	 * 
+	 * @param nanitesCount
+	 * @return
+	 */
+	NaniteGroup create(int nanitesCount, Position position);
 
 }

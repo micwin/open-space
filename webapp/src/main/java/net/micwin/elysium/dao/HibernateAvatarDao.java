@@ -35,10 +35,12 @@ package net.micwin.elysium.dao;
 
  */
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import net.micwin.elysium.model.NaniteGroup;
 import net.micwin.elysium.model.appliances.Utilization;
 import net.micwin.elysium.model.characters.Avatar;
 import net.micwin.elysium.model.characters.Avatar.Race;
@@ -80,7 +82,7 @@ public class HibernateAvatarDao extends ElysiumHibernateDaoSupport<Avatar> imple
 
 	@Override
 	public Avatar create(User user, String name, Race race, Collection<Utilization> talents,
-					int talentPoints, Position position, Date birthDate) {
+					int talentPoints, Position position, Date birthDate, Collection<NaniteGroup> nanites) {
 		Avatar avatar = new Avatar();
 		avatar.setController(user);
 		avatar.setName(name);
@@ -100,6 +102,8 @@ public class HibernateAvatarDao extends ElysiumHibernateDaoSupport<Avatar> imple
 		getHibernateTemplate().saveOrUpdateAll(talents);
 		avatar.setTalents(talents);
 
+		avatar.setNanites(nanites) ;
+		
 		save(avatar);
 		getHibernateTemplate().flush();
 

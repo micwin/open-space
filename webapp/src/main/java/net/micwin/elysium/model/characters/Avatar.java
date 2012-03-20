@@ -46,6 +46,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.OneToOne;
 
 import net.micwin.elysium.model.ElysiumEntity;
+import net.micwin.elysium.model.NaniteGroup;
 import net.micwin.elysium.model.appliances.Utilization;
 import net.micwin.elysium.model.galaxy.Position;
 import net.micwin.elysium.view.storyline.StoryLineItem;
@@ -68,7 +69,7 @@ public class Avatar extends ElysiumEntity {
 	public static enum Race {
 		// MILITARY(StoryLineItem.LONE_WOLF),
 
-		NANITE(StoryLineItem.BOOTING);
+		NANITE(StoryLineItem.BOOTING, 300);
 
 		// PRESERVER(StoryLineItem.NEW_HOPE);
 
@@ -81,13 +82,19 @@ public class Avatar extends ElysiumEntity {
 		}
 
 		private final StoryLineItem firstStoryItem;
+		private final int initialNanites;
 
-		private Race(StoryLineItem firstStoryItem) {
+		private Race(StoryLineItem firstStoryItem, int initialNanites) {
 			this.firstStoryItem = firstStoryItem;
+			this.initialNanites = initialNanites;
 		}
 
 		public StoryLineItem getFirstStoryItem() {
 			return firstStoryItem;
+		}
+
+		public int getInitialNanites() {
+			return initialNanites;
 		}
 
 	}
@@ -117,6 +124,9 @@ public class Avatar extends ElysiumEntity {
 
 	@CollectionOfElements
 	private Collection<Utilization> talents;
+
+	@CollectionOfElements
+	private Collection<NaniteGroup> nanites;
 
 	private Long xp;
 
@@ -213,6 +223,14 @@ public class Avatar extends ElysiumEntity {
 
 	public void setXp(Long xp) {
 		this.xp = xp;
+	}
+
+	public void setNanites(Collection<NaniteGroup> nanites) {
+		this.nanites = nanites;
+	}
+
+	public Collection<NaniteGroup> getNanites() {
+		return nanites;
 	}
 
 }

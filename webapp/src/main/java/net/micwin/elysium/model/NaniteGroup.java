@@ -33,7 +33,8 @@ package net.micwin.elysium.model;
  Sie sollten eine Kopie der GNU Affero Public License zusammen mit diesem
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
- */import javax.persistence.Embedded;
+ */import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
@@ -49,12 +50,15 @@ import net.micwin.elysium.model.galaxy.Position;
 @Entity
 public class NaniteGroup extends ElysiumEntity {
 
-	protected NaniteGroup() {
+	public NaniteGroup() {
 		super(NaniteGroup.class);
 	}
 
 	@Embedded
 	private Position position;
+	
+	@Column
+	private int naniteCount;
 
 	public void setPosition(Position position) {
 		this.position = position;
@@ -62,6 +66,15 @@ public class NaniteGroup extends ElysiumEntity {
 
 	public Position getPosition() {
 		return position;
+	}
+
+	public void setNaniteCount(int count) {
+		this.naniteCount = count;
+
+	}
+
+	public int getNaniteCount() {
+		return naniteCount;
 	}
 
 }

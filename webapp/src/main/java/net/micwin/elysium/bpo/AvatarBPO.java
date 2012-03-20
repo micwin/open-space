@@ -44,6 +44,7 @@ import java.util.List;
 
 import net.micwin.elysium.Constants;
 import net.micwin.elysium.MessageKeys;
+import net.micwin.elysium.model.NaniteGroup;
 import net.micwin.elysium.model.appliances.Appliance;
 import net.micwin.elysium.model.appliances.Utilization;
 import net.micwin.elysium.model.characters.Avatar;
@@ -92,8 +93,10 @@ public class AvatarBPO extends BaseBPO {
 
 		Date birthDate = cal.getTime();
 
-		Avatar avatar = getAvatarDao().create(user, name, race, talentsList,
-						Constants.TALENT_POINTS_UPON_CREATION, position, birthDate);
+		Collection<NaniteGroup> nanites = new LinkedList<NaniteGroup>();
+		nanites.add(getNanitesDao().create(race.getInitialNanites(), position));
+		Avatar avatar = getAvatarDao().create(user, name, race, talentsList, Constants.TALENT_POINTS_UPON_CREATION,
+						position, birthDate, nanites);
 
 		BluePrint baseBase = getBluePrintDao().create(avatar, MessageKeys.PLANETARY_BASE_STRUCTURE,
 						Utilization.Factory.create(Appliance.ARCHITECTURE, 1),

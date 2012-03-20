@@ -7,7 +7,25 @@
 <span wicket:id="layout">
 
 <h1>Kollektiv</h1>
+
+<table cellspacing="0" class="groupList" border="1" width="75%">
+	<tr>
+		<th>id</th>
+		<th>Position</th>
+		<th>Count</th>
+	</tr>
+	<tr wicket:id="groupsTable">
+		<td><span wicket:id="groupId">[id]</span></td>
+		<td><span wicket:id="groupPosition">position</span></td>
+		<td><span wicket:id="groupCount">[count]</span></td>
+
+	</tr>
+</table>
+
+
 <span wicket:id="feedback" id="feedback" /> </span>
+
+
 
 </body>
 </html>

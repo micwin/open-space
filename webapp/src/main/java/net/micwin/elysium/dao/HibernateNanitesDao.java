@@ -1,8 +1,12 @@
 package net.micwin.elysium.dao;
 
 import java.io.Serializable;
+import java.util.List;
 
+import net.micwin.elysium.bpo.NaniteBPO;
 import net.micwin.elysium.model.NaniteGroup;
+import net.micwin.elysium.model.characters.Avatar;
+import net.micwin.elysium.model.galaxy.Position;
 
 /*
  (c) 2012 micwin.net
@@ -49,4 +53,15 @@ public class HibernateNanitesDao extends ElysiumHibernateDaoSupport<NaniteGroup>
 	public NaniteGroup loadById(Serializable id) {
 		return super.loadById((Long) id);
 	}
+
+	@Override
+	public NaniteGroup create(int nanitesCount, Position position) {
+		NaniteGroup group = new NaniteGroup();
+		group.setNaniteCount(nanitesCount);
+		
+		group.setPosition(position) ; 
+		getSession().save(group);
+		return group;
+	}
+
 }

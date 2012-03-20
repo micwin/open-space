@@ -38,6 +38,7 @@ package net.micwin.elysium.dao;
 import java.util.Collection;
 import java.util.Date;
 
+import net.micwin.elysium.model.NaniteGroup;
 import net.micwin.elysium.model.appliances.Utilization;
 import net.micwin.elysium.model.characters.Avatar;
 import net.micwin.elysium.model.characters.Avatar.Race;
@@ -75,7 +76,7 @@ public interface IAvatarDao extends IElysiumEntityDao<Avatar> {
 	 * @return
 	 */
 	Avatar create(User user, String name, Race race, Collection<Utilization> talents, int talentPoints,
-					Position position, Date birthDate);
+					Position position, Date birthDate, Collection<NaniteGroup> nanites);
 
 	/**
 	 * Checks wether or not the specified Avatar Name already exists.
