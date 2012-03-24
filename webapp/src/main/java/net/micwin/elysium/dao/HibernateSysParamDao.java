@@ -40,6 +40,9 @@ import java.util.List;
 
 import net.micwin.elysium.model.SysParam;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,17 +58,23 @@ public class HibernateSysParamDao extends ElysiumHibernateDaoSupport<SysParam> i
 
 		List<SysParam> result = getSession().createQuery(" from SysParam where key='" + key + "'").list();
 		if (result.size() < 1) {
-			return create(key, defaultValue);
+			return null;
 		} else
 			return result.get(0);
 	}
 
 	@Override
 	public SysParam create(String key, String value) {
-		SysParam sysParam = new SysParam();
-		sysParam.setKey(key);
+
+		SysParam sysParam = findByKey(key, null);
+		if (sysParam == null) {
+			sysParam = new SysParam();
+			sysParam.setKey(key);
+		}
+
 		sysParam.setValue(value);
 		getHibernateTemplate().saveOrUpdate(sysParam);
+		getHibernateTemplate().flush();
 		if (L.isDebugEnabled())
 			L.debug("created sysparam key='" + sysParam.getKey() + "' value='" + sysParam.getValue() + "'");
 		return sysParam;

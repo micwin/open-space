@@ -57,4 +57,6 @@ public interface ISysParamDao extends IElysiumEntityDao<SysParam> {
 	 * @return
 	 */
 	public SysParam create(String key, String value);
-}
+
+	
+	}
