@@ -43,11 +43,13 @@ import java.util.List;
 import net.micwin.elysium.bpo.NaniteBPO;
 import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.model.NaniteGroup;
+import net.micwin.elysium.model.NaniteGroup.State;
 import net.micwin.elysium.model.characters.User;
 import net.micwin.elysium.view.BasePage;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RefreshingView;
 import org.apache.wicket.model.IModel;
@@ -58,6 +60,8 @@ public class GroupsPage extends BasePage {
 
 	@SpringBean
 	DaoManager daoManager;
+	private Component groupsTable;
+	private NaniteBPO nanitesBPO;
 
 	public GroupsPage() {
 		super(true);
@@ -68,36 +72,58 @@ public class GroupsPage extends BasePage {
 	@Override
 	protected void onInitialize() {
 		super.onInitialize();
+		nanitesBPO = new NaniteBPO();
 
 		addToContentBody(getGroupsTable());
-	};
+	}
+
+	@Override
+	protected void onBeforeRender() {
+		super.onBeforeRender();
+	}
 
 	private Component getGroupsTable() {
 
-		final NaniteBPO nanitesBPO = new NaniteBPO();
+		if (groupsTable == null) {
 
-		final Iterator<NaniteGroup> nanites = getAvatar().getNanites().iterator();
+			final Iterator<NaniteGroup> nanites = getAvatar().getNanites().iterator();
 
-		RefreshingView view = new RefreshingView("groupsTable") {
-			protected Iterator getItemModels() {
-				List<IModel> models = new ArrayList<IModel>();
-				while (nanites.hasNext()) {
-					models.add(new Model<Long>((Long) nanites.next().getId()));
+			groupsTable = new RefreshingView<NaniteGroup>("groupsTable") {
+				protected Iterator getItemModels() {
+					List<IModel> models = new ArrayList<IModel>();
+					while (nanites.hasNext()) {
+						models.add(new Model<Long>((Long) nanites.next().getId()));
+					}
+					return models.iterator();
 				}
-				return models.iterator();
-			}
 
-			protected void populateItem(Item item) {
-				NaniteGroup nanitesGroup = nanitesBPO.getNanitesDao().loadById(
-								(Serializable) item.getModel().getObject());
-				item.add(new Label("groupId", new Model(nanitesGroup.getId())));
-				item.add(new Label("groupPosition", new Model(nanitesGroup.getPosition().toString())));
-				item.add(new Label("groupCount", new Model(nanitesGroup.getNaniteCount())));
-				
-			}
+				protected void populateItem(Item item) {
+					NaniteGroup nanitesGroup = nanitesBPO.getNanitesDao().loadById(
+									(Serializable) item.getModel().getObject());
+					item.add(new Label("groupPosition", new Model(nanitesGroup.getPosition().toString())));
+					Model countModel = new Model(nanitesGroup.getNaniteCount());
+					item.add(new Label("groupCount", countModel));
+					item.add(new Label("groupState", new Model(nanitesGroup.getState())));
+					item.add(getDoubleCountLink(nanitesGroup, countModel));
+				}
 
-		};
-		return view;
+				private Component getDoubleCountLink(final NaniteGroup nanitesGroup, final IModel<Integer> countModel) {
+					Link link = new Link("doubleCount") {
+
+						@Override
+						public void onClick() {
+							new NaniteBPO().changeCount(nanitesGroup, nanitesGroup.getNaniteCount() * 2);
+							setResponsePage(GroupsPage.class);
+						}
+					};
+					link.add(new Label("label", "*2"));
+					return link;
+				}
+
+			};
+
+		}
+		return groupsTable;
 	}
 
 	/**

@@ -105,7 +105,6 @@ public class HibernateAvatarDao extends ElysiumHibernateDaoSupport<Avatar> imple
 		avatar.setNanites(nanites) ;
 		
 		save(avatar);
-		getHibernateTemplate().flush();
 
 		return avatar;
 	}

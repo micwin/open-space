@@ -66,7 +66,8 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> extend
 			L.debug("saved entity '" + getEntityClass().getSimpleName() + "' (" + entity.getId() + ")");
 		}
 
-		getHibernateTemplate().save(entity);
+		getHibernateTemplate().saveOrUpdate(entity);
+		getHibernateTemplate().flush();
 		return;
 	}
 

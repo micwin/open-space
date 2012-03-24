@@ -2,6 +2,7 @@ package net.micwin.elysium.bpo;
 
 import java.util.LinkedList;
 
+import net.micwin.elysium.model.NaniteGroup;
 import net.micwin.elysium.model.characters.Avatar;
 import net.micwin.elysium.model.replication.BluePrint;
 import net.micwin.elysium.model.replication.BuildPlan;
@@ -69,5 +70,13 @@ public class NaniteBPO extends BaseBPO {
 			L.debug("created build plan for bluePrint '" + bluePrint.getName() + "'");
 		}
 
+	}
+
+	public void changeCount(NaniteGroup nanitesGroup, int newCount) {
+		newCount = Math.min(newCount, Integer.MAX_VALUE);
+		System.out.println("setzting count from nanites group " + nanitesGroup.getId() + " from "
+						+ nanitesGroup.getNaniteCount() + " to " + newCount);
+		nanitesGroup.setNaniteCount(newCount);
+		getNanitesDao().save(nanitesGroup);
 	}
 }

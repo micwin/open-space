@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.micwin.elysium.bpo.NaniteBPO;
 import net.micwin.elysium.model.NaniteGroup;
+import net.micwin.elysium.model.NaniteGroup.State;
 import net.micwin.elysium.model.characters.Avatar;
 import net.micwin.elysium.model.galaxy.Position;
 
@@ -58,8 +59,8 @@ public class HibernateNanitesDao extends ElysiumHibernateDaoSupport<NaniteGroup>
 	public NaniteGroup create(int nanitesCount, Position position) {
 		NaniteGroup group = new NaniteGroup();
 		group.setNaniteCount(nanitesCount);
-		
-		group.setPosition(position) ; 
+		group.setPosition(position);
+		group.setState(State.IDLE);
 		getSession().save(group);
 		return group;
 	}

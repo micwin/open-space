@@ -48,4 +48,11 @@ public interface INanitesDao extends IElysiumEntityDao<NaniteGroup> {
 	 */
 	NaniteGroup create(int nanitesCount, Position position);
 
+	/**
+	 * Saves or uopdates the data in this naniteGroup.
+	 * 
+	 * @param nanitesGroup
+	 */
+	void save(NaniteGroup nanitesGroup);
+
 }
