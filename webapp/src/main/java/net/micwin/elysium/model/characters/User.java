@@ -110,6 +110,8 @@ public final class User extends ElysiumEntity implements Serializable {
 
 	private Role role;
 
+	private String skin;
+
 	public void setRole(Role role) {
 		this.role = role;
 	}
@@ -160,5 +162,13 @@ public final class User extends ElysiumEntity implements Serializable {
 	@Enumerated(EnumType.STRING)
 	public State getState() {
 		return state;
+	}
+
+	public String getSkin() {
+		return skin;
+	}
+
+	public void setSkin(String skin) {
+		this.skin = skin;
 	}
 }

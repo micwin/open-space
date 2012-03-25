@@ -49,6 +49,7 @@ import net.micwin.elysium.view.BasePage;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RefreshingView;
@@ -100,7 +101,10 @@ public class NaniteGroupsListPage extends BasePage {
 				protected void populateItem(Item item) {
 					NaniteGroup nanitesGroup = nanitesBPO.getNanitesDao().loadById(
 									(Serializable) item.getModel().getObject());
-					item.add(new Label("groupPosition", new Model(nanitesGroup.getPosition().toString())));
+					Label label = new Label("label", new Model(nanitesGroup.getPosition().toString()));
+					BookmarkablePageLink link = new BookmarkablePageLink("groupPosition", ShowGroupPage.class);
+					link.add(label);
+					item.add(link);
 					Model countModel = new Model(nanitesGroup.getNaniteCount());
 					item.add(new Label("groupCount", countModel));
 					item.add(new Label("groupState", new Model(nanitesGroup.getState())));

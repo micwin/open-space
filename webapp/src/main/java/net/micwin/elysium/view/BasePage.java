@@ -80,7 +80,16 @@ public abstract class BasePage extends WebPage {
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
-		response.renderCSSReference("skins/default/style.css");
+		String skin = null;
+
+		if (getUser() != null) {
+			skin = getUser().getSkin();
+		}
+
+		if (skin == null) {
+			skin = "default";
+		}
+		response.renderCSSReference("skins/" + skin + "/style.css");
 
 	}
 
