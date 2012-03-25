@@ -1,4 +1,4 @@
-package net.micwin.elysium.view.groups;
+package net.micwin.elysium.view.collective;
 
 /*
  (c) 2012 micwin.net
@@ -56,14 +56,14 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-public class GroupsPage extends BasePage {
+public class NaniteGroupsListPage extends BasePage {
 
 	@SpringBean
 	DaoManager daoManager;
 	private Component groupsTable;
 	private NaniteBPO nanitesBPO;
 
-	public GroupsPage() {
+	public NaniteGroupsListPage() {
 		super(true);
 		ensureStoryShown();
 		ensureAvatarPresent();
@@ -113,7 +113,7 @@ public class GroupsPage extends BasePage {
 						@Override
 						public void onClick() {
 							new NaniteBPO().changeCount(nanitesGroup, nanitesGroup.getNaniteCount() * 2);
-							setResponsePage(GroupsPage.class);
+							setResponsePage(NaniteGroupsListPage.class);
 						}
 					};
 					link.add(new Label("label", "*2"));
