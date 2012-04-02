@@ -46,10 +46,12 @@ public class StoryLineBPO extends BaseBPO {
 	 * 
 	 * @param storyLineItem
 	 * @param avatar
-	 * @return
+	 * @return <code>true</code> if the story line item has been solved,
+	 *         <code>false</code> if not. If te story line item is not solvable,
+	 *         return <code>null</code>.
 	 */
-	public boolean checkSolved(StoryLineItem storyLineItem, Avatar avatar) {
-		return false;
+	public Boolean checkSolved(StoryLineItem storyLineItem, Avatar avatar) {
+		return null;
 	}
 
 }

@@ -56,7 +56,8 @@ public abstract class StoryLineItemPage extends BasePage {
 		super(addFeedbackPanel);
 		ensureAvatarPresent();
 
-		if (new StoryLineBPO().checkSolved(getStoryLineItem(), getAvatar()) && getStoryLineItem().getNextItem() != null) {
+		Boolean storyItemResolved = new StoryLineBPO().checkSolved(getStoryLineItem(), getAvatar());
+		if (storyItemResolved != null && storyItemResolved && getStoryLineItem().getNextItem() != null) {
 			throw new RestartResponseException(getStoryLineItem().getNextItem().getItemPage());
 		}
 	}
@@ -72,8 +73,16 @@ public abstract class StoryLineItemPage extends BasePage {
 
 	private Label getStoryStatus() {
 
-		boolean resolved = new StoryLineBPO().checkSolved(getStoryLineItem(), getAvatar());
-		return new Label("status", resolved ? State.RESOLVED.name() : State.OPEN.name());
+		Boolean resolved = new StoryLineBPO().checkSolved(getStoryLineItem(), getAvatar());
+
+		boolean visible = resolved != null;
+
+		if (visible) {
+			Label label = new Label("status", resolved ? State.RESOLVED.name() : State.OPEN.name());
+			return label;
+		} else {
+			return new Label("status", "");
+		}
 	}
 
 	@Override
