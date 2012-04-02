@@ -43,8 +43,8 @@ import java.util.List;
 import net.micwin.elysium.model.NaniteGroup;
 import net.micwin.elysium.model.appliances.Utilization;
 import net.micwin.elysium.model.characters.Avatar;
-import net.micwin.elysium.model.characters.Avatar.Race;
 import net.micwin.elysium.model.characters.Organization;
+import net.micwin.elysium.model.characters.Race;
 import net.micwin.elysium.model.characters.User;
 import net.micwin.elysium.model.galaxy.Position;
 
@@ -121,8 +121,4 @@ public class HibernateAvatarDao extends ElysiumHibernateDaoSupport<Avatar> imple
 		return Avatar.class;
 	}
 
-	@Override
-	public Avatar loadById(Serializable id) {
-		return super.loadById((Long) id);
-	}
 }

@@ -35,7 +35,6 @@ package net.micwin.elysium.dao;
 
  */
 
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
@@ -66,8 +65,4 @@ public class HibernateBluePrintDao extends ElysiumHibernateDaoSupport<BluePrint>
 		return BluePrint.class;
 	}
 
-	@Override
-	public BluePrint loadById(Serializable id) {
-		return super.loadById((Long) id);
-	}
 }

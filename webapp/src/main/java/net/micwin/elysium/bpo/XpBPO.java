@@ -34,7 +34,7 @@ package net.micwin.elysium.bpo;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
-import net.micwin.elysium.model.characters.Avatar.Race;
+import net.micwin.elysium.model.characters.Race;
 
 /**
  * The bpo that does xp related processes.

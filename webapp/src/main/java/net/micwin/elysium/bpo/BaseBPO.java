@@ -41,6 +41,7 @@ import net.micwin.elysium.dao.IBluePrintDao;
 import net.micwin.elysium.dao.IGalaxyDao;
 import net.micwin.elysium.dao.INanitesDao;
 import net.micwin.elysium.dao.ISysParamDao;
+import net.micwin.elysium.dao.ITalentsDao;
 import net.micwin.elysium.dao.IUserDao;
 import net.micwin.elysium.model.GalaxyTimer;
 import net.micwin.elysium.view.ElysiumApplication;
@@ -76,6 +77,11 @@ public class BaseBPO {
 	public IGalaxyDao getGalaxyDao() {
 		return getDaoManager().getGalaxyDao();
 	}
+	
+	public ITalentsDao getTalentsDao () {
+		return getDaoManager().getTalentsDao() ; 
+	}
+	
 
 	public INanitesDao getNanitesDao() {
 		return getDaoManager().getNanitesDao();

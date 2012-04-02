@@ -34,7 +34,6 @@ package net.micwin.elysium.dao;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
-import java.io.Serializable;
 import java.util.List;
 
 import net.micwin.elysium.model.characters.User;
@@ -75,11 +74,6 @@ public class HibernateUserDao extends ElysiumHibernateDaoSupport<User> implement
 
 		} else
 			return result.get(0);
-	}
-
-	@Override
-	public User loadById(Serializable id) {
-		return super.loadById((Long) id);
 	}
 
 	@Override

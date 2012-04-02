@@ -41,7 +41,7 @@ import java.util.Date;
 import net.micwin.elysium.model.NaniteGroup;
 import net.micwin.elysium.model.appliances.Utilization;
 import net.micwin.elysium.model.characters.Avatar;
-import net.micwin.elysium.model.characters.Avatar.Race;
+import net.micwin.elysium.model.characters.Race;
 import net.micwin.elysium.model.characters.User;
 import net.micwin.elysium.model.galaxy.Position;
 

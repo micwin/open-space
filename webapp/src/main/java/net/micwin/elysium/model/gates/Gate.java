@@ -8,7 +8,10 @@ import net.micwin.elysium.model.ElysiumEntity;
 public class Gate extends ElysiumEntity {
 
 	public Gate() {
-		super(Gate.class);
 	}
 
+	@Override
+	public Class getBaseClass() {
+		return Gate.class;
+	}
 }

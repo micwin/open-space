@@ -171,7 +171,7 @@
 			</activation>
 			<properties>
 				<profile>dev</profile>
-				<urlPath>/${profile}</urlPath>
+				<urlPath>/dev</urlPath>
 				<tomcatUser>admin</tomcatUser>
 				<tomcatPass></tomcatPass>
 				<tomcatPort>8585</tomcatPort>

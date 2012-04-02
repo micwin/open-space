@@ -43,6 +43,10 @@ import net.micwin.elysium.model.ElysiumEntity;
 public class Component extends ElysiumEntity {
 
 	protected Component() {
-		super(Component.class);
+	}
+
+	@Override
+	public Class getBaseClass() {
+		return Component.class;
 	}
 }

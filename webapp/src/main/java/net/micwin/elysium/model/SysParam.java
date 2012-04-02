@@ -48,7 +48,6 @@ import javax.persistence.Entity;
 public class SysParam extends ElysiumEntity {
 
 	public SysParam() {
-		super(SysParam.class);
 	}
 
 	@Column(unique = true)
@@ -69,6 +68,12 @@ public class SysParam extends ElysiumEntity {
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+
+	@Override
+	public Class getBaseClass() {
+
+		return SysParam.class;
 	}
 
 }

@@ -46,7 +46,6 @@ public final class Organization extends ElysiumEntity {
 	private Avatar controller;
 
 	public Organization() {
-		super(Organization.class);
 	}
 
 	public void setController(Avatar controller) {
@@ -57,4 +56,8 @@ public final class Organization extends ElysiumEntity {
 		return controller;
 	}
 
+	@Override
+	public Class getBaseClass() {
+		return Organization.class;
+	}
 }

@@ -46,6 +46,10 @@ import net.micwin.elysium.model.ElysiumEntity;
 public class Galaxy extends ElysiumEntity {
 
 	protected Galaxy() {
-		super(Galaxy.class);
+	}
+
+	@Override
+	public Class getBaseClass() {
+		return Galaxy.class;
 	}
 }

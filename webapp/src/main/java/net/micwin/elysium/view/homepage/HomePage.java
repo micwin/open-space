@@ -84,7 +84,8 @@ public class HomePage extends BasePage {
 		Collection<Utilization> talents = getAvatar().getTalents();
 
 		if (L.isDebugEnabled()) {
-			L.debug("avatar " + getAvatar().getName() + " has " + talents.size() + " talents:" + talents.toString());
+			L.debug("avatar " + getAvatar().getName() + " has  " + talents.size() + "talents");
+			L.debug("" + talents);
 		}
 		for (Utilization talent : talents) {
 			if (builder.length() > 1) {

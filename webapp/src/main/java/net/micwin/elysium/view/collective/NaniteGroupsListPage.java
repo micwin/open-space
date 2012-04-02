@@ -35,7 +35,6 @@ package net.micwin.elysium.view.collective;
 
  */
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -43,7 +42,6 @@ import java.util.List;
 import net.micwin.elysium.bpo.NaniteBPO;
 import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.model.NaniteGroup;
-import net.micwin.elysium.model.NaniteGroup.State;
 import net.micwin.elysium.model.characters.User;
 import net.micwin.elysium.view.BasePage;
 
@@ -99,8 +97,7 @@ public class NaniteGroupsListPage extends BasePage {
 				}
 
 				protected void populateItem(Item item) {
-					NaniteGroup nanitesGroup = nanitesBPO.getNanitesDao().loadById(
-									(Serializable) item.getModel().getObject());
+					NaniteGroup nanitesGroup = nanitesBPO.getNanitesDao().loadById((Long) item.getModel().getObject());
 					Label label = new Label("label", new Model(nanitesGroup.getPosition().toString()));
 					BookmarkablePageLink link = new BookmarkablePageLink("groupPosition", ShowGroupPage.class);
 					link.add(label);

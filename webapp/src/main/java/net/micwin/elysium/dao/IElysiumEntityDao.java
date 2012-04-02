@@ -34,8 +34,6 @@ package net.micwin.elysium.dao;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
-import java.io.Serializable;
-
 import net.micwin.elysium.model.ElysiumEntity;
 
 public interface IElysiumEntityDao<T extends ElysiumEntity> {
@@ -46,7 +44,7 @@ public interface IElysiumEntityDao<T extends ElysiumEntity> {
 	 * @param id
 	 * @return
 	 */
-	T loadById(Serializable id);
+	T loadById(Long id);
 
 	/**
 	 * Returns the entity class this dao works upon.

@@ -35,14 +35,10 @@ package net.micwin.elysium.dao;
 
  */
 
-import java.io.Serializable;
 import java.util.List;
 
 import net.micwin.elysium.model.SysParam;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,10 +79,5 @@ public class HibernateSysParamDao extends ElysiumHibernateDaoSupport<SysParam> i
 	@Override
 	public Class<SysParam> getEntityClass() {
 		return SysParam.class;
-	}
-
-	@Override
-	public SysParam loadById(Serializable id) {
-		return super.loadById((Long) id);
 	}
 }

@@ -39,6 +39,7 @@ import java.util.HashMap;
 import net.micwin.elysium.model.ElysiumEntity;
 import net.micwin.elysium.model.NaniteGroup;
 import net.micwin.elysium.model.SysParam;
+import net.micwin.elysium.model.appliances.Utilization;
 import net.micwin.elysium.model.characters.Avatar;
 import net.micwin.elysium.model.characters.User;
 import net.micwin.elysium.model.galaxy.Galaxy;
@@ -136,4 +137,16 @@ public class DaoManager {
 		daoInstances.put(Galaxy.class, galaxyDao);
 	}
 
+	public ITalentsDao getTalentsDao() {
+		return (ITalentsDao) getDao(Utilization.class);
+	}
+
+	public void setTalentsDao(ITalentsDao talentsDao) {
+		checkDaoNotPresent(Utilization.class);
+		daoInstances.put(Utilization.class, talentsDao);
+	}
+
+	
+	
+	
 }

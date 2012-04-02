@@ -40,7 +40,6 @@ import javax.persistence.Entity;
 public final class Planet extends Environment {
 
 	public Planet() {
-		super(Planet.class);
 	}
 
 	@Override
@@ -52,5 +51,10 @@ public final class Planet extends Environment {
 	public String getName() {
 		return "Planet " + getPosition().getX() + "/" + getPosition().getY() + " @ "
 						+ getPosition().getEnvironment().getName();
+	}
+
+	@Override
+	public Class getBaseClass() {
+		return Planet.class;
 	}
 }

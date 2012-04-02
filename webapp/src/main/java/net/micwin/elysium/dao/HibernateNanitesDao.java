@@ -1,12 +1,7 @@
 package net.micwin.elysium.dao;
 
-import java.io.Serializable;
-import java.util.List;
-
-import net.micwin.elysium.bpo.NaniteBPO;
 import net.micwin.elysium.model.NaniteGroup;
 import net.micwin.elysium.model.NaniteGroup.State;
-import net.micwin.elysium.model.characters.Avatar;
 import net.micwin.elysium.model.galaxy.Position;
 
 /*
@@ -48,11 +43,6 @@ public class HibernateNanitesDao extends ElysiumHibernateDaoSupport<NaniteGroup>
 	@Override
 	public Class<NaniteGroup> getEntityClass() {
 		return NaniteGroup.class;
-	}
-
-	@Override
-	public NaniteGroup loadById(Serializable id) {
-		return super.loadById((Long) id);
 	}
 
 	@Override

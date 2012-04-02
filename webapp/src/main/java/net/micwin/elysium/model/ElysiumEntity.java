@@ -34,13 +34,10 @@ package net.micwin.elysium.model;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
-import java.io.Serializable;
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
 
 @MappedSuperclass
 public abstract class ElysiumEntity {
@@ -49,9 +46,6 @@ public abstract class ElysiumEntity {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
-	@Transient
-	private final Class<? extends ElysiumEntity> baseClass;
-
 	/**
 	 * Call this in your default constructor.
 	 * 
@@ -59,15 +53,14 @@ public abstract class ElysiumEntity {
 	 *            the base class of this entity. Use explicit types, dont use
 	 *            getClass() since this may return any enhanced class code.
 	 */
-	protected ElysiumEntity(Class<? extends ElysiumEntity> baseClass) {
-		this.baseClass = baseClass;
+	protected ElysiumEntity() {
 	}
 
-	public void setId(Serializable id) {
-		this.id = (Long) id;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public Serializable getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -77,7 +70,5 @@ public abstract class ElysiumEntity {
 	 * 
 	 * @return
 	 */
-	public Class getBaseClass() {
-		return baseClass;
-	}
+	public abstract Class getBaseClass();
 }

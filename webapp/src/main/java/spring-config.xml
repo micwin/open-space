@@ -94,6 +94,11 @@
 		<property name="buildPlanDao">
 			<bean id="buildPlanDao__" class="net.micwin.elysium.dao.HibernateBuildPlanDao" />
 		</property>
+		<property name="talentsDao">
+			<bean id="talentsDao__" class="net.micwin.elysium.dao.HibernateTalentsDao" />
+		</property>
+		
+		
 	</bean>
 
 	<!-- ========================================= -->

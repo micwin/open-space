@@ -34,7 +34,6 @@ package net.micwin.elysium.dao;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
-import java.io.Serializable;
 import java.util.List;
 
 import net.micwin.elysium.model.galaxy.Galaxy;
@@ -72,7 +71,7 @@ public class HibernateGalaxyDao extends HibernateDaoSupport implements IGalaxyDa
 	}
 
 	@Override
-	public Galaxy loadById(Serializable id) {
+	public Galaxy loadById(Long id) {
 		throw new IllegalStateException("Galax yis a dummy entity. you cant load it.");
 	}
 

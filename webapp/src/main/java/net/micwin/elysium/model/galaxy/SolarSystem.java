@@ -1,6 +1,5 @@
 package net.micwin.elysium.model.galaxy;
 
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,7 +12,6 @@ import javax.persistence.OneToOne;
 public class SolarSystem extends Environment {
 
 	public SolarSystem() {
-		super(SolarSystem.class);
 	}
 
 	@OneToMany(cascade = CascadeType.ALL)
@@ -44,4 +42,8 @@ public class SolarSystem extends Environment {
 						+ getPosition().getEnvironment().getName();
 	}
 
+	@Override
+	public Class getBaseClass() {
+		return SolarSystem.class;
+	}
 }

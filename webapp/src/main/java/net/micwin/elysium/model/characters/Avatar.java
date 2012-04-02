@@ -36,13 +36,12 @@ package net.micwin.elysium.model.characters;
  */
 import java.util.Collection;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import net.micwin.elysium.model.ElysiumEntity;
@@ -51,7 +50,6 @@ import net.micwin.elysium.model.appliances.Utilization;
 import net.micwin.elysium.model.galaxy.Position;
 import net.micwin.elysium.view.storyline.StoryLineItem;
 
-import org.hibernate.annotations.CollectionOfElements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,39 +63,6 @@ import org.slf4j.LoggerFactory;
 public class Avatar extends ElysiumEntity {
 
 	private static final Logger L = LoggerFactory.getLogger(Avatar.class);
-
-	public static enum Race {
-		// MILITARY(StoryLineItem.LONE_WOLF),
-
-		NANITE(StoryLineItem.BOOTING, 300);
-
-		// PRESERVER(StoryLineItem.NEW_HOPE);
-
-		public static List<Race> asList() {
-			List<Race> list = new LinkedList<Avatar.Race>();
-			list.add(NANITE);
-			// list.add(MILITARY);
-			// list.add(PRESERVER);
-			return list;
-		}
-
-		private final StoryLineItem firstStoryItem;
-		private final int initialNanites;
-
-		private Race(StoryLineItem firstStoryItem, int initialNanites) {
-			this.firstStoryItem = firstStoryItem;
-			this.initialNanites = initialNanites;
-		}
-
-		public StoryLineItem getFirstStoryItem() {
-			return firstStoryItem;
-		}
-
-		public int getInitialNanites() {
-			return initialNanites;
-		}
-
-	}
 
 	@OneToOne
 	private User controller;
@@ -122,16 +87,15 @@ public class Avatar extends ElysiumEntity {
 
 	private int talentPoints;
 
-	@CollectionOfElements
+	@OneToMany
 	private Collection<Utilization> talents;
 
-	@CollectionOfElements
+	@OneToMany
 	private Collection<NaniteGroup> nanites;
 
 	private Long xp;
 
 	public Avatar() {
-		super(Avatar.class);
 	}
 
 	public User getController() {
@@ -231,6 +195,11 @@ public class Avatar extends ElysiumEntity {
 
 	public Collection<NaniteGroup> getNanites() {
 		return nanites;
+	}
+
+	@Override
+	public Class getBaseClass() {
+		return Avatar.class;
 	}
 
 }

@@ -45,10 +45,9 @@ import java.util.List;
 import net.micwin.elysium.Constants;
 import net.micwin.elysium.MessageKeys;
 import net.micwin.elysium.model.NaniteGroup;
-import net.micwin.elysium.model.appliances.Appliance;
 import net.micwin.elysium.model.appliances.Utilization;
 import net.micwin.elysium.model.characters.Avatar;
-import net.micwin.elysium.model.characters.Avatar.Race;
+import net.micwin.elysium.model.characters.Race;
 import net.micwin.elysium.model.characters.User;
 import net.micwin.elysium.model.galaxy.Planet;
 import net.micwin.elysium.model.galaxy.Position;
@@ -75,7 +74,9 @@ public class AvatarBPO extends BaseBPO {
 			return error;
 		}
 
-		Collection<Utilization> talentsList = fillInTalents(race);
+		Collection<Utilization> talentsList = getTalentsDao().createInitialTalents(race);
+		
+		getTalentsDao().saveAll (talentsList) ; 
 
 		Sector thinnestSector = getGalaxyDao().findThinnestSector();
 
@@ -97,11 +98,6 @@ public class AvatarBPO extends BaseBPO {
 		nanites.add(getNanitesDao().create(race.getInitialNanites(), position));
 		Avatar avatar = getAvatarDao().create(user, name, race, talentsList, Constants.TALENT_POINTS_UPON_CREATION,
 						position, birthDate, nanites);
-
-		BluePrint baseBase = getBluePrintDao().create(avatar, MessageKeys.PLANETARY_BASE_STRUCTURE,
-						Utilization.Factory.create(Appliance.ARCHITECTURE, 1),
-						Utilization.Factory.create(Appliance.HABITATS, 1));
-
 		return null;
 	}
 
@@ -113,40 +109,6 @@ public class AvatarBPO extends BaseBPO {
 		return position;
 	}
 
-	protected List<Utilization> fillInTalents(Race race) {
-		List<Utilization> talentsList = new LinkedList<Utilization>();
-
-		switch (race) {
-		// case MILITARY:
-		// talentsList.add(new Talent(Appliance.HUMAN_INTERACTION, 0, 0, 0,
-		// Talent.SCOPE_DISABLED));
-		// talentsList
-		// .add(new Talent(Appliance.OFFENSIVE_WARFARE, 5, 1, 1, 1));
-		// talentsList.add(new Talent(Appliance.NANITE_WARFARE, 0, 0, 0, 0));
-		// talentsList.add(new Talent(Appliance.MARTIAL_ARTS, 2, 0, 0, 1));
-		//
-		// break;
-		case NANITE:
-			talentsList.add(Utilization.Factory.create(Appliance.ARCHITECTURE, 1));
-			talentsList.add(Utilization.Factory.create(Appliance.HABITATS, 1));
-			break;
-
-		// case PRESERVER:
-		// talentsList
-		// .add(new Talent(Appliance.HUMAN_INTERACTION, 4, 3, 2, 1));
-		// talentsList.add(new Talent(Appliance.MARTIAL_ARTS, 0, 0, 0, 0));
-		// talentsList
-		// .add(new Talent(Appliance.DEFENSIVE_WARFARE, 5, 5, 5, 5));
-		// talentsList.add(new Talent(Appliance.RESEARCH, 0, 0, 0, 5));
-		//
-		// break;
-		default:
-			throw new IllegalStateException("case '" + race.name() + "' not covered");
-
-		}
-
-		return talentsList;
-	}
 
 	public String validate(User user, String name, Race race) {
 		Avatar alreadyExisting = getAvatarDao().findByController(user);

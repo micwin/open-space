@@ -55,9 +55,6 @@ public abstract class Environment extends ElysiumEntity {
 
 	private int height;
 
-	protected Environment(Class baseClass) {
-		super(baseClass);
-	}
 
 	public void setWidth(int width) {
 		this.width = width;

@@ -60,7 +60,6 @@ public class BuildPlan extends ElysiumEntity {
 	private List<Component> builtComponents;
 
 	public BuildPlan() {
-		super(BuildPlan.class);
 	}
 
 	public void setBlueprint(BluePrint blueprint) {
@@ -94,4 +93,10 @@ public class BuildPlan extends ElysiumEntity {
 	public void setBuiltComponents(List<Component> builtComponents) {
 		this.builtComponents = builtComponents;
 	}
+
+	@Override
+	public Class<BuildPlan> getBaseClass() {
+		return BuildPlan.class;
+	};
+
 }

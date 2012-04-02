@@ -42,7 +42,7 @@ import javax.persistence.Enumerated;
 import net.micwin.elysium.model.ElysiumEntity;
 
 /**
- * A utilization is a usage of a technology for specific appliances.
+ * A utilization is a knowledge of an appliance on a specific level.
  * 
  * @author MicWin
  * 
@@ -63,6 +63,7 @@ public final class Utilization extends ElysiumEntity {
 			Utilization u = new Utilization();
 			u.setAppliance(appliance);
 			u.setLevel(level);
+			u.setCount(0);
 			return u;
 		}
 	};
@@ -70,19 +71,24 @@ public final class Utilization extends ElysiumEntity {
 	@Enumerated(EnumType.STRING)
 	private Appliance appliance;
 
+	@Column
 	private int level;
 
-	@Column(name = "CUONT")
+	@Column(name = "USAGE_COUNT")
 	private int count;
 
 	public Utilization() {
-		super(Utilization.class);
 	}
 
 	public void setLevel(int level) {
 		this.level = level;
 	}
 
+	/**
+	 * THe leven on which this knowledge ist present.
+	 * 
+	 * @return
+	 */
 	public int getLevel() {
 		return level;
 	}
@@ -91,6 +97,11 @@ public final class Utilization extends ElysiumEntity {
 		this.appliance = appliance;
 	}
 
+	/**
+	 * The appliance to be known.
+	 * 
+	 * @return
+	 */
 	public Appliance getAppliance() {
 		return appliance;
 	}
@@ -99,7 +110,17 @@ public final class Utilization extends ElysiumEntity {
 		this.count = count;
 	}
 
+	/**
+	 * how often the knowledge has been applied.
+	 * 
+	 * @return
+	 */
 	public int getCount() {
 		return count;
+	}
+
+	@Override
+	public Class getBaseClass() {
+		return Utilization.class;
 	}
 }

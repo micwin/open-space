@@ -117,11 +117,9 @@ public final class User extends ElysiumEntity implements Serializable {
 	}
 
 	public User() {
-		super(User.class);
 	}
 
 	public User(String login, String pass, State state, Role role) {
-		super(User.class);
 		this.login = login;
 		this.pass = pass;
 		this.state = state;
@@ -170,5 +168,10 @@ public final class User extends ElysiumEntity implements Serializable {
 
 	public void setSkin(String skin) {
 		this.skin = skin;
+	}
+
+	@Override
+	public Class getBaseClass() {
+		return User.class;
 	}
 }

@@ -53,9 +53,19 @@ public enum Appliance {
 	/**
 	 * Building living rooms for Avatars, NPCs and PCs.
 	 */
-	HABITATS(1);
+	HABITATS (1),
+	
+	/**
+	 * Max number of nanite groups.
+	 */
+	NANITE_MANAGEMENT(1),
+	
+	/**
+	 * The ability to optimize nanite processes.
+	 */
+	NANITE_OPTIMIZATION (1) ;
 
-	private final int baseComplexity;
+	private int baseComplexity;
 
 	/**
 	 * The complexity that one unit / component of level 1 of this appliance

@@ -76,7 +76,6 @@ public final class BluePrint extends ElysiumEntity {
 	private int usageCounts;
 
 	public BluePrint() {
-		super(BluePrint.class);
 	}
 
 	public void setName(String name) {
@@ -119,5 +118,10 @@ public final class BluePrint extends ElysiumEntity {
 
 	public int getUsageCounts() {
 		return usageCounts;
+	}
+
+	@Override
+	public Class getBaseClass() {
+		return BluePrint.class;
 	}
 }

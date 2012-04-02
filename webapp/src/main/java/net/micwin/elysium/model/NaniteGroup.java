@@ -59,7 +59,6 @@ public class NaniteGroup extends ElysiumEntity {
 	}
 
 	public NaniteGroup() {
-		super(NaniteGroup.class);
 	}
 
 	@Embedded
@@ -96,4 +95,8 @@ public class NaniteGroup extends ElysiumEntity {
 		this.state = state;
 	}
 
+	@Override
+	public Class getBaseClass() {
+		return NaniteGroup.class;
+	}
 }

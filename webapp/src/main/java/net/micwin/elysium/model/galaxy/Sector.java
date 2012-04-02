@@ -58,7 +58,6 @@ public class Sector extends Environment {
 	private int systemCount;
 
 	public Sector() {
-		super(Sector.class);
 	}
 
 	public void setSolarSystems(List<SolarSystem> solarSystems) {
@@ -87,5 +86,10 @@ public class Sector extends Environment {
 	@Override
 	public String getName() {
 		return "Sector " + getPosition().getX() + "/" + getPosition().getY();
+	}
+	
+	@Override
+	public Class getBaseClass() {
+		return Sector.class;
 	}
 }

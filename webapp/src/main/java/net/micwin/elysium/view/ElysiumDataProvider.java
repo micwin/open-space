@@ -34,7 +34,6 @@ package net.micwin.elysium.view;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
-import java.io.Serializable;
 import java.util.Iterator;
 
 import net.micwin.elysium.ILoadEntityStrategy;
@@ -76,7 +75,7 @@ public class ElysiumDataProvider<E extends ElysiumEntity> implements IDataProvid
 	@Override
 	public IModel<E> model(E object) {
 		final Class eClass = object.getBaseClass();
-		final Serializable id = object.getId();
+		final Long id = object.getId();
 		return new LoadableDetachableModel<E>() {
 			@Override
 			protected E load() {
