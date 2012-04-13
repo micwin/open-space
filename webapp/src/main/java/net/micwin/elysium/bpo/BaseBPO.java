@@ -39,6 +39,7 @@ import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.dao.IAvatarDao;
 import net.micwin.elysium.dao.IBluePrintDao;
 import net.micwin.elysium.dao.IGalaxyDao;
+import net.micwin.elysium.dao.IGatesDao;
 import net.micwin.elysium.dao.INanitesDao;
 import net.micwin.elysium.dao.ISysParamDao;
 import net.micwin.elysium.dao.ITalentsDao;
@@ -105,5 +106,11 @@ public class BaseBPO {
 	protected DaoManager getDaoManager() {
 		return daoManager;
 	}
+	
+
+	protected IGatesDao getGatesDao() {
+		return getDaoManager().getGatesDao();
+	}
+
 
 }

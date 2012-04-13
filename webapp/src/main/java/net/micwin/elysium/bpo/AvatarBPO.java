@@ -87,6 +87,9 @@ public class AvatarBPO extends BaseBPO {
 		SolarSystem solarSystem = getGalaxyBPO().createSolarSystem(thinnestSector);
 
 		Position position = randomizeStartingPosition(solarSystem.getMainPlanet());
+		
+		getGalaxyBPO().createGates(solarSystem) ; 
+		
 
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTime(getGalaxyTimer().getGalaxyDate());
