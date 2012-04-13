@@ -61,6 +61,7 @@
 				<value>net.micwin.elysium.model.replication.BuildPlan</value>
 				<value>net.micwin.elysium.model.replication.Component</value>
 				<value>net.micwin.elysium.model.NaniteGroup</value>
+				<value>net.micwin.elysium.model.gates.Gate</value>
 			</list>
 		</property>
 	</bean>
@@ -96,6 +97,9 @@
 		</property>
 		<property name="talentsDao">
 			<bean id="talentsDao__" class="net.micwin.elysium.dao.HibernateTalentsDao" />
+		</property>
+		<property name="gatesDao">
+			<bean id="gatesDao__" class="net.micwin.elysium.dao.HibernateGatesDao" />
 		</property>
 		
 		

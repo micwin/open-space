@@ -43,6 +43,7 @@ import net.micwin.elysium.model.appliances.Utilization;
 import net.micwin.elysium.model.characters.Avatar;
 import net.micwin.elysium.model.characters.User;
 import net.micwin.elysium.model.galaxy.Galaxy;
+import net.micwin.elysium.model.gates.Gate;
 import net.micwin.elysium.model.replication.BluePrint;
 import net.micwin.elysium.model.replication.BuildPlan;
 
@@ -146,7 +147,13 @@ public class DaoManager {
 		daoInstances.put(Utilization.class, talentsDao);
 	}
 
-	
-	
-	
+	public IGatesDao getGatesDao() {
+		return (IGatesDao) getDao(Gate.class);
+	}
+
+	public void setGatesDao(IGatesDao gatesDao) {
+		checkDaoNotPresent(Gate.class);
+		daoInstances.put(Gate.class, gatesDao);
+	}
+
 }
