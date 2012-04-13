@@ -12,8 +12,6 @@ import org.apache.wicket.util.string.StringValue;
 
 public class ShowGroupPage extends BasePage {
 
-	private Long groupId;
-
 	public ShowGroupPage() {
 		super(true);
 	}
@@ -31,17 +29,13 @@ public class ShowGroupPage extends BasePage {
 			throw new RestartResponseException(NaniteGroupsListPage.class);
 		}
 
-		groupId = groupIdString.toLongObject();
-	}
-
-	@Override
-	protected void onRender() {
-		super.onRender();
+		Long groupId = groupIdString.toLongObject();
 		NaniteBPO naniteBPO = new NaniteBPO();
 		NaniteGroup group = naniteBPO.getNanitesDao().loadById(groupId);
+		addToContentBody(new Label("groupPosition", "" + group.getPosition()));
 		addToContentBody(new Label("groupCount", NumberFormat.getIntegerInstance().format(group.getNaniteCount())));
 		addToContentBody(new Label("groupState", "" + group.getState()));
-		addToContentBody(new Label("groupPosition", "" + group.getPosition()));
 
 	}
+
 }

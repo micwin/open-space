@@ -52,6 +52,7 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RefreshingView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class NaniteGroupsListPage extends BasePage {
@@ -103,8 +104,9 @@ public class NaniteGroupsListPage extends BasePage {
 
 						@Override
 						public void onClick() {
-							getPageParameters().set("groupId", nanitesGroup.getId());
-							setResponsePage(ShowGroupPage.class);
+							PageParameters params = new PageParameters(getPageParameters());
+							params.set("groupId", nanitesGroup.getId());
+							setResponsePage(ShowGroupPage.class, params);
 						}
 					};
 					link.add(label);
