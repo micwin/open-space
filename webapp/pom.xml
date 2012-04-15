@@ -169,33 +169,28 @@
 			<activation>
 				<activeByDefault />
 			</activation>
-			<properties>
-				<profile>dev</profile>
-				<urlPath>/dev</urlPath>
-				<tomcatUser>admin</tomcatUser>
-				<tomcatPass></tomcatPass>
-				<tomcatPort>8585</tomcatPort>
-			</properties>
+			<build>
+				<filters>
+					<filter>src/main/filters/dev.properties</filter>
+				</filters>
+			</build>
 		</profile>
 
 		<!-- profile for running the application locally with an in-memory-db in 
 			target dir -->
 		<profile>
 			<id>stage</id>
-			<properties>
-				<profile>stage</profile>
-				<urlPath>/${profile}</urlPath>
-				<tomcatUser>admin</tomcatUser>
-				<tomcatPass></tomcatPass>
-			</properties>
+			<build>
+				<filters>
+					<filter>src/main/filters/stage.properties</filter>
+				</filters>
+			</build>
+
 		</profile>
 
 	</profiles>
 
 	<build>
-		<filters>
-			<filter>src/main/filters/${profile}.properties</filter>
-		</filters>
 		<resources>
 			<resource>
 				<directory>src/main/java</directory>
@@ -234,7 +229,7 @@
 				<artifactId>tomcat6-maven-plugin</artifactId>
 				<version>2.0-beta-1</version>
 				<configuration>
-					<path>${urlPath}</path>
+					<path>/${project.profile.id}</path>
 					<username>${tomcatUser}</username>
 					<password>${tomcatPass}</password>
 					<port>${tomcatPort}</port>
