@@ -60,7 +60,7 @@ public class NaniteGroup extends ElysiumEntity {
 	private Position position;
 
 	@Column
-	private int naniteCount;
+	private long naniteCount;
 
 	@Column
 	private State state = State.IDLE;
@@ -73,12 +73,12 @@ public class NaniteGroup extends ElysiumEntity {
 		return position;
 	}
 
-	public void setNaniteCount(int count) {
+	public void setNaniteCount(long count) {
 		this.naniteCount = count;
 
 	}
 
-	public int getNaniteCount() {
+	public long getNaniteCount() {
 		return naniteCount;
 	}
 

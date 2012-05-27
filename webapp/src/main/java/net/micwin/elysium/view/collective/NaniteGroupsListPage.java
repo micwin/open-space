@@ -44,6 +44,7 @@ import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.model.NaniteGroup;
 import net.micwin.elysium.model.characters.User;
 import net.micwin.elysium.view.BasePage;
+import net.micwin.elysium.view.ElysiumLoadableDetachableModel;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
@@ -91,14 +92,14 @@ public class NaniteGroupsListPage extends BasePage {
 				protected Iterator getItemModels() {
 					List<IModel> models = new ArrayList<IModel>();
 					while (nanites.hasNext()) {
-						models.add(new Model<Long>((Long) nanites.next().getId()));
+						models.add(new ElysiumLoadableDetachableModel<NaniteGroup>(nanites.next()));
 					}
 					return models.iterator();
 				}
 
 				protected void populateItem(Item item) {
-					final NaniteGroup nanitesGroup = nanitesBPO.getNanitesDao().loadById(
-									(Long) item.getModel().getObject());
+					IModel naniteGroupModel = item.getModel();
+					final NaniteGroup nanitesGroup = (NaniteGroup) naniteGroupModel.getObject();
 					Label label = new Label("label", new Model(nanitesGroup.getPosition().toString()));
 					Link link = new Link("groupPosition") {
 
@@ -111,22 +112,24 @@ public class NaniteGroupsListPage extends BasePage {
 					};
 					link.add(label);
 					item.add(link);
-					Model countModel = new Model(nanitesGroup.getNaniteCount());
+					Model<Long> countModel = new Model<Long>(nanitesGroup.getNaniteCount());
 					item.add(new Label("groupCount", countModel));
 					item.add(new Label("groupState", new Model(nanitesGroup.getState())));
-					item.add(getDoubleCountLink(nanitesGroup, countModel));
+					item.add(getDoubleCountLink(naniteGroupModel, countModel));
 				}
 
-				private Component getDoubleCountLink(final NaniteGroup nanitesGroup, final IModel<Integer> countModel) {
+				private Component getDoubleCountLink(final IModel<NaniteGroup> nanitesGroupModel,
+								final IModel<Long> countModel) {
 					Link link = new Link("doubleCount") {
 
 						@Override
 						public void onClick() {
-							new NaniteBPO().doubleCount(nanitesGroup);
+							nanitesBPO.doubleCount(nanitesGroupModel.getObject());
 							setResponsePage(NaniteGroupsListPage.class);
 						}
 					};
 					link.add(new Label("label", "*2"));
+
 					return link;
 				}
 

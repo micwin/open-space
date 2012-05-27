@@ -45,6 +45,7 @@ import java.util.List;
 import net.micwin.elysium.Constants;
 import net.micwin.elysium.MessageKeys;
 import net.micwin.elysium.model.NaniteGroup;
+import net.micwin.elysium.model.appliances.Appliance;
 import net.micwin.elysium.model.appliances.Utilization;
 import net.micwin.elysium.model.characters.Avatar;
 import net.micwin.elysium.model.characters.Race;
@@ -151,5 +152,17 @@ public class AvatarBPO extends BaseBPO {
 
 	public List<BluePrint> getBluePrintsUsableBy(Avatar avatar) {
 		return getBluePrintDao().findByController(avatar);
+	}
+
+	public Utilization getTalent(Avatar person, Appliance appliance) {
+
+		for (Utilization talent : person.getTalents()) {
+			if (talent.getAppliance() == appliance) {
+				return talent;
+			}
+		}
+
+		return null;
+
 	}
 }

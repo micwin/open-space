@@ -5,6 +5,13 @@ import net.micwin.elysium.model.ElysiumEntity;
 
 import org.apache.wicket.model.LoadableDetachableModel;
 
+/**
+ * a loadable detachable model for elysiumEntities.
+ * 
+ * @author MicWin
+ * 
+ * @param <E>
+ */
 public class ElysiumLoadableDetachableModel<E extends ElysiumEntity> extends LoadableDetachableModel<Object> {
 
 	private Class<ElysiumEntity> baseClass;

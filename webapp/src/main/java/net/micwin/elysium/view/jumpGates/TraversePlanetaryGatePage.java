@@ -37,7 +37,6 @@ package net.micwin.elysium.view.jumpGates;
 
 import net.micwin.elysium.bpo.NaniteBPO;
 import net.micwin.elysium.dao.DaoManager;
-import net.micwin.elysium.model.NaniteGroup;
 import net.micwin.elysium.model.characters.User;
 import net.micwin.elysium.view.BasePage;
 
