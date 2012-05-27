@@ -1,0 +1,33 @@
+<html
+	xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd">
+<title>Elysium</title>
+<body>
+
+
+<span wicket:id="layout">
+
+<h1>Kollektiv</h1>
+
+<table cellspacing="0" class="groupList" border="1" width="75%">
+	<tr>
+		<th>Position</th>
+		<th>Anzahl</th>
+		<th>Status</th>
+		<th>Kommandos</th>
+	</tr>
+	<tr wicket:id="groupsTable">
+		<td><a wicket:id="groupPosition"><span wicket:id="label" /></a></td>
+		<td><span wicket:id="groupCount">[count]</span></td>
+		<td><span wicket:id="groupState">[state]</span></td>
+		<td><a wicket:id="doubleCount"><span wicket:id="label"></span></a></td>
+		
+	</tr>
+</table>
+
+
+<span wicket:id="feedback" id="feedback" /> </span>
+
+
+
+</body>
+</html>

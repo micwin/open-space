@@ -25,7 +25,7 @@
 	<groupId>open-space</groupId>
 	<artifactId>webapp</artifactId>
 	<packaging>war</packaging>
-	<version>0.2</version>
+	<version>0.3-SNAPSHOT</version>
 	<name>open space web app</name>
 
 	<url>http://www.micwin.net</url>

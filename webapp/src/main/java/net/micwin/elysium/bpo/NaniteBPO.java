@@ -1,12 +1,6 @@
 package net.micwin.elysium.bpo;
 
-import java.util.LinkedList;
-
 import net.micwin.elysium.model.NaniteGroup;
-import net.micwin.elysium.model.characters.Avatar;
-import net.micwin.elysium.model.replication.BluePrint;
-import net.micwin.elysium.model.replication.BuildPlan;
-import net.micwin.elysium.model.replication.Component;
 
 import org.slf4j.LoggerFactory;
 
@@ -53,29 +47,18 @@ import org.slf4j.LoggerFactory;
 public class NaniteBPO extends BaseBPO {
 
 	private static final org.slf4j.Logger L = LoggerFactory.getLogger(NaniteBPO.class);
+	private static final int MAXIMUM_NANITES_GROUP_SIZE = 65535;
 
-	/**
-	 * Starts building the given blue print.
-	 * 
-	 * @param bluePrint
-	 * @param avatar
-	 */
-	public void startBuilding(BluePrint bluePrint, Avatar avatar) {
-		BuildPlan buildPlan = new BuildPlan();
-		buildPlan.setBlueprint(bluePrint);
-		buildPlan.setController(avatar);
-		buildPlan.setBuiltComponents(new LinkedList<Component>());
-		getDaoManager().getBuildPlanDao().save(buildPlan);
+
+	public void doubleCount(NaniteGroup nanitesGroup) {
+
+		int newCount = nanitesGroup.getNaniteCount() * 2;
+		newCount = Math.min(newCount, MAXIMUM_NANITES_GROUP_SIZE);
+
 		if (L.isDebugEnabled()) {
-			L.debug("created build plan for bluePrint '" + bluePrint.getName() + "'");
+			L.debug("setting count from nanites group " + nanitesGroup.getId() + " from "
+							+ nanitesGroup.getNaniteCount() + " to " + newCount);
 		}
-
-	}
-
-	public void changeCount(NaniteGroup nanitesGroup, int newCount) {
-		newCount = Math.min(newCount, Integer.MAX_VALUE);
-		System.out.println("setzting count from nanites group " + nanitesGroup.getId() + " from "
-						+ nanitesGroup.getNaniteCount() + " to " + newCount);
 		nanitesGroup.setNaniteCount(newCount);
 		getNanitesDao().save(nanitesGroup);
 	}

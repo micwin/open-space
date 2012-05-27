@@ -1,4 +1,4 @@
-package net.micwin.elysium.model;
+package net.micwin.elysium.view.jumpGates;
 
 /*
  (c) 2012 micwin.net
@@ -33,65 +33,58 @@ package net.micwin.elysium.model;
  Sie sollten eine Kopie der GNU Affero Public License zusammen mit diesem
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
- */import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-
-import net.micwin.elysium.model.galaxy.Position;
-
-/**
- * A pile of nanites.
- * 
- * @author MicWin
- * 
  */
-@Entity
-public class NaniteGroup extends ElysiumEntity {
 
-	public enum State {
+import net.micwin.elysium.bpo.NaniteBPO;
+import net.micwin.elysium.dao.DaoManager;
+import net.micwin.elysium.model.NaniteGroup;
+import net.micwin.elysium.model.characters.User;
+import net.micwin.elysium.view.BasePage;
 
-		IDLE, REPLICATING;
-	}
+import org.apache.wicket.Component;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
-	public NaniteGroup() {
-	}
+public class TraversePlanetaryGatePage extends BasePage {
 
-	@Embedded
-	private Position position;
+	@SpringBean
+	DaoManager daoManager;
+	private Component groupsTable;
+	private NaniteBPO nanitesBPO;
+	private Form targetGateCodeForm;
 
-	@Column
-	private int naniteCount;
-
-	@Column
-	private State state = State.IDLE;
-
-	public void setPosition(Position position) {
-		this.position = position;
-	}
-
-	public Position getPosition() {
-		return position;
-	}
-
-	public void setNaniteCount(int count) {
-		this.naniteCount = count;
-
-	}
-
-	public int getNaniteCount() {
-		return naniteCount;
-	}
-
-	public State getState() {
-		return state;
-	}
-
-	public void setState(State state) {
-		this.state = state;
+	public TraversePlanetaryGatePage() {
+		super(true);
+		ensureStoryShown();
+		ensureAvatarPresent();
 	}
 
 	@Override
-	public Class getBaseClass() {
-		return NaniteGroup.class;
+	protected void onInitialize() {
+		super.onInitialize();
+		addToContentBody(getTargetGateCodeForm());
+	}
+
+	private Component getTargetGateCodeForm() {
+		if (targetGateCodeForm != null) {
+			return targetGateCodeForm;
+		}
+
+		targetGateCodeForm = new Form("gateTraversalTarget") {
+			protected void onSubmit() {
+
+			};
+		};
+
+		return targetGateCodeForm;
+	}
+
+	/**
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public static boolean userCanShow(User user) {
+		return user != null;
 	}
 }

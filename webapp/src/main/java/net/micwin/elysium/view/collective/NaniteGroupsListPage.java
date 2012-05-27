@@ -122,7 +122,7 @@ public class NaniteGroupsListPage extends BasePage {
 
 						@Override
 						public void onClick() {
-							new NaniteBPO().changeCount(nanitesGroup, nanitesGroup.getNaniteCount() * 2);
+							new NaniteBPO().doubleCount(nanitesGroup);
 							setResponsePage(NaniteGroupsListPage.class);
 						}
 					};

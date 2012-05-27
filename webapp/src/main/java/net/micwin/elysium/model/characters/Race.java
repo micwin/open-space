@@ -10,7 +10,7 @@ import net.micwin.elysium.view.storyline.StoryLineItem;
 public enum Race {
 	// MILITARY(StoryLineItem.LONE_WOLF),
 
-	NANITE(StoryLineItem.BOOTING, 300, Utilization.Factory.create(Appliance.NANITE_MANAGEMENT, 1), Utilization.Factory
+	NANITE(StoryLineItem.BOOTING, 1, Utilization.Factory.create(Appliance.NANITE_MANAGEMENT, 1), Utilization.Factory
 					.create(Appliance.NANITE_OPTIMIZATION, 1));
 
 	// PRESERVER(StoryLineItem.NEW_HOPE);
