@@ -45,6 +45,9 @@ import net.micwin.elysium.dao.ISysParamDao;
 import net.micwin.elysium.dao.ITalentsDao;
 import net.micwin.elysium.dao.IUserDao;
 import net.micwin.elysium.model.GalaxyTimer;
+import net.micwin.elysium.model.appliances.Appliance;
+import net.micwin.elysium.model.appliances.Utilization;
+import net.micwin.elysium.model.characters.Avatar;
 import net.micwin.elysium.view.ElysiumApplication;
 
 import org.apache.wicket.Application;
@@ -78,11 +81,10 @@ public class BaseBPO {
 	public IGalaxyDao getGalaxyDao() {
 		return getDaoManager().getGalaxyDao();
 	}
-	
-	public ITalentsDao getTalentsDao () {
-		return getDaoManager().getTalentsDao() ; 
+
+	public ITalentsDao getTalentsDao() {
+		return getDaoManager().getTalentsDao();
 	}
-	
 
 	public INanitesDao getNanitesDao() {
 		return getDaoManager().getNanitesDao();
@@ -106,11 +108,28 @@ public class BaseBPO {
 	protected DaoManager getDaoManager() {
 		return daoManager;
 	}
-	
 
 	protected IGatesDao getGatesDao() {
 		return getDaoManager().getGatesDao();
 	}
 
+	/**
+	 * Retrieve a specific talent from a person.
+	 * 
+	 * @param person
+	 * @param appliance
+	 * @return
+	 */
+	protected Utilization getTalent(Avatar person, Appliance appliance) {
+
+		for (Utilization talent : person.getTalents()) {
+			if (talent.getAppliance() == appliance) {
+				return talent;
+			}
+		}
+
+		return null;
+
+	}
 
 }

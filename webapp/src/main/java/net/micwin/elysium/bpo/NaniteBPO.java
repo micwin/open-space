@@ -4,6 +4,7 @@ import net.micwin.elysium.model.NaniteGroup;
 import net.micwin.elysium.model.appliances.Appliance;
 import net.micwin.elysium.model.appliances.Utilization;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /*
@@ -48,15 +49,14 @@ import org.slf4j.LoggerFactory;
  */
 public class NaniteBPO extends BaseBPO {
 
-	private static final org.slf4j.Logger L = LoggerFactory.getLogger(NaniteBPO.class);
+	private static final Logger L = LoggerFactory.getLogger(NaniteBPO.class);
 	private static final int BASE_MAX_NANITES_GROUP_SIZE = 256;
 
 	public void doubleCount(NaniteGroup nanitesGroup) {
 
-		Utilization nanitemanagement = new AvatarBPO().getTalent(nanitesGroup.getController(),
-						Appliance.NANITE_MANAGEMENT);
+		Utilization naniteManagement = getTalent(nanitesGroup.getController(), Appliance.NANITE_MANAGEMENT);
 
-		long maxCount = (long) (BASE_MAX_NANITES_GROUP_SIZE * Math.pow(2, nanitemanagement.getLevel() - 1));
+		long maxCount = (long) (BASE_MAX_NANITES_GROUP_SIZE * Math.pow(2, naniteManagement.getLevel() - 1));
 
 		long newCount = Math.min(nanitesGroup.getNaniteCount() * 2, maxCount);
 
