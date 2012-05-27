@@ -65,7 +65,7 @@ public class Avatar extends ElysiumEntity {
 	private static final Logger L = LoggerFactory.getLogger(Avatar.class);
 
 	@OneToOne
-	private User controller;
+	private User user;
 
 	private Date creationDate;
 
@@ -98,8 +98,8 @@ public class Avatar extends ElysiumEntity {
 	public Avatar() {
 	}
 
-	public User getController() {
-		return controller;
+	public User getUser() {
+		return user;
 	}
 
 	public Date getCreationDate() {
@@ -142,8 +142,8 @@ public class Avatar extends ElysiumEntity {
 		return xp;
 	}
 
-	public void setController(User controller) {
-		this.controller = controller;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public void setCreationDate(Date creationDate) {

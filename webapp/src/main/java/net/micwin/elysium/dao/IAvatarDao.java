@@ -54,12 +54,12 @@ import net.micwin.elysium.model.galaxy.Position;
 public interface IAvatarDao extends IElysiumEntityDao<Avatar> {
 
 	/**
-	 * Find avatar by its controller.
+	 * Find avatar by its user.
 	 * 
-	 * @param controller
+	 * @param user
 	 * @return
 	 */
-	Avatar findByController(User controller);
+	Avatar findByUser(User user);
 
 	/**
 	 * Creates a new avatar.

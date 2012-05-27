@@ -37,7 +37,10 @@ package net.micwin.elysium.model;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+
+import net.micwin.elysium.model.characters.Avatar;
 
 @MappedSuperclass
 public abstract class ElysiumEntity {
@@ -45,6 +48,9 @@ public abstract class ElysiumEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
+
+	@ManyToOne
+	private Avatar controller;
 
 	/**
 	 * Call this in your default constructor.
@@ -71,4 +77,12 @@ public abstract class ElysiumEntity {
 	 * @return
 	 */
 	public abstract Class getBaseClass();
+
+	public void setController(Avatar controller) {
+		this.controller = controller;
+	}
+
+	public Avatar getController() {
+		return controller;
+	}
 }

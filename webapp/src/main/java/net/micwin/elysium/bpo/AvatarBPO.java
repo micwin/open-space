@@ -75,8 +75,8 @@ public class AvatarBPO extends BaseBPO {
 		}
 
 		Collection<Utilization> talentsList = getTalentsDao().createInitialTalents(race);
-		
-		getTalentsDao().saveAll (talentsList) ; 
+
+		getTalentsDao().saveAll(talentsList);
 
 		Sector thinnestSector = getGalaxyDao().findThinnestSector();
 
@@ -87,9 +87,8 @@ public class AvatarBPO extends BaseBPO {
 		SolarSystem solarSystem = getGalaxyBPO().createSolarSystem(thinnestSector);
 
 		Position position = randomizeStartingPosition(solarSystem.getMainPlanet());
-		
-		getGalaxyBPO().createGates(solarSystem) ; 
-		
+
+		getGalaxyBPO().createGates(solarSystem);
 
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTime(getGalaxyTimer().getGalaxyDate());
@@ -98,9 +97,14 @@ public class AvatarBPO extends BaseBPO {
 		Date birthDate = cal.getTime();
 
 		Collection<NaniteGroup> nanites = new LinkedList<NaniteGroup>();
-		nanites.add(getNanitesDao().create(race.getInitialNanites(), position));
+		NaniteGroup initialNanitesGroup = getNanitesDao().create(race.getInitialNanites(), position);
+
+		nanites.add(initialNanitesGroup);
 		Avatar avatar = getAvatarDao().create(user, name, race, talentsList, Constants.TALENT_POINTS_UPON_CREATION,
 						position, birthDate, nanites);
+
+		initialNanitesGroup.setController(avatar);
+		getNanitesDao().save(initialNanitesGroup);
 		return null;
 	}
 
@@ -112,9 +116,8 @@ public class AvatarBPO extends BaseBPO {
 		return position;
 	}
 
-
 	public String validate(User user, String name, Race race) {
-		Avatar alreadyExisting = getAvatarDao().findByController(user);
+		Avatar alreadyExisting = getAvatarDao().findByUser(user);
 		if (alreadyExisting != null) {
 			return MessageKeys.EK_USER_ALREADY_HAS_AN_AVATAR;
 		}
@@ -134,12 +137,12 @@ public class AvatarBPO extends BaseBPO {
 
 	public boolean hasAvatar(User user) {
 
-		Avatar avatar = getAvatarDao().findByController(user);
+		Avatar avatar = getAvatarDao().findByUser(user);
 		return avatar != null;
 	}
 
-	public Avatar findByController(User user) {
-		return getAvatarDao().findByController(user);
+	public Avatar findByUser(User user) {
+		return getAvatarDao().findByUser(user);
 	}
 
 	protected GalaxyBPO getGalaxyBPO() {

@@ -57,7 +57,7 @@ public class HibernateAvatarDao extends ElysiumHibernateDaoSupport<Avatar> imple
 	}
 
 	@Override
-	public Avatar findByController(User user) {
+	public Avatar findByUser(User user) {
 		if (L.isDebugEnabled()) {
 			L.debug("looking for avatar of user " + user);
 		}
@@ -66,7 +66,7 @@ public class HibernateAvatarDao extends ElysiumHibernateDaoSupport<Avatar> imple
 			return null;
 		}
 
-		List<Avatar> result = lookupHql(" from Avatar where controller.id=" + user.getId());
+		List<Avatar> result = lookupHql(" from Avatar where user.id=" + user.getId());
 
 		if (L.isDebugEnabled()) {
 			L.debug("result: " + result);
@@ -79,10 +79,10 @@ public class HibernateAvatarDao extends ElysiumHibernateDaoSupport<Avatar> imple
 	}
 
 	@Override
-	public Avatar create(User user, String name, Race race, Collection<Utilization> talents,
-					int talentPoints, Position position, Date birthDate, Collection<NaniteGroup> nanites) {
+	public Avatar create(User user, String name, Race race, Collection<Utilization> talents, int talentPoints,
+					Position position, Date birthDate, Collection<NaniteGroup> nanites) {
 		Avatar avatar = new Avatar();
-		avatar.setController(user);
+		avatar.setUser(user);
 		avatar.setName(name);
 		avatar.setPersonality(race);
 		avatar.setCreationDate(birthDate);
@@ -100,8 +100,8 @@ public class HibernateAvatarDao extends ElysiumHibernateDaoSupport<Avatar> imple
 		getHibernateTemplate().saveOrUpdateAll(talents);
 		avatar.setTalents(talents);
 
-		avatar.setNanites(nanites) ;
-		
+		avatar.setNanites(nanites);
+
 		save(avatar);
 
 		return avatar;

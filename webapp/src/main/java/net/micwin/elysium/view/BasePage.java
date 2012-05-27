@@ -147,7 +147,7 @@ public abstract class BasePage extends WebPage {
 	}
 
 	protected Avatar getAvatar() {
-		return new AvatarBPO().findByController(getUser());
+		return new AvatarBPO().findByUser(getUser());
 	}
 
 	/**

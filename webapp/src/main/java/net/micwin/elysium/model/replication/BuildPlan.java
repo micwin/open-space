@@ -53,9 +53,6 @@ public class BuildPlan extends ElysiumEntity {
 	@OneToOne
 	private Component componentInBuild;
 
-	@OneToOne
-	private Avatar controller;
-
 	@OneToMany
 	private List<Component> builtComponents;
 
@@ -76,14 +73,6 @@ public class BuildPlan extends ElysiumEntity {
 
 	public Component getComponentInBuild() {
 		return componentInBuild;
-	}
-
-	public void setController(Avatar controller) {
-		this.controller = controller;
-	}
-
-	public Avatar getController() {
-		return controller;
 	}
 
 	public List<Component> getBuiltComponents() {
