@@ -12,6 +12,8 @@ public class Gate extends ElysiumEntity {
 	@Embedded
 	private Position position;
 
+	private String gateCode;
+
 	public Gate() {
 	}
 
@@ -26,5 +28,18 @@ public class Gate extends ElysiumEntity {
 
 	public Position getPosition() {
 		return position;
+	}
+
+	public void setGateCode(String gateCode) {
+		this.gateCode = gateCode;
+	}
+
+	public String getGateCode() {
+		return gateCode;
+	}
+
+	@Override
+	public String toString() {
+		return gateCode + " @ " + position;
 	}
 }
