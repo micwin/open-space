@@ -52,6 +52,8 @@ import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.border.Border;
+import org.apache.wicket.request.Request;
+import org.apache.wicket.request.cycle.RequestCycle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -175,8 +177,18 @@ public abstract class BasePage extends WebPage {
 		}
 	}
 
+	protected void ensureEntityInPageParametersPresent(String parameterName, Class redirectOnFailure) {
+
+		if (getPageParameters().get(parameterName) == null) {
+
+			throw new RestartResponseException(redirectOnFailure);
+
+		}
+
+	}
+
 	protected GalaxyTimer getGalaxyTimer() {
 		return ((ElysiumApplication) Application.get()).getGalaxyTimer();
 	}
-	
+
 }
