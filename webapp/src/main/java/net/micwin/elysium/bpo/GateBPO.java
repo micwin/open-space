@@ -13,15 +13,12 @@ import net.micwin.elysium.model.gates.Gate;
  */
 public class GateBPO extends BaseBPO {
 
-	/**
-	 * Get the gates an specified planet.
-	 * 
-	 * @param planet
-	 * @return
-	 */
-	public Collection<Gate> getGatesAt(Environment planet) {
-		return getGatesDao().findByEnvironment(planet);
-
+	public Gate getGateAt(Environment environment) {
+		Collection<Gate> gates = getGatesDao().findByEnvironment(environment);
+		if (gates.size() > 0)
+			return gates.iterator().next();
+		else
+			return null;
 	}
 
 }

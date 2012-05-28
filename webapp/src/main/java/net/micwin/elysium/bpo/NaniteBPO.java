@@ -50,6 +50,10 @@ import org.slf4j.LoggerFactory;
 public class NaniteBPO extends BaseBPO {
 
 	private static final Logger L = LoggerFactory.getLogger(NaniteBPO.class);
+
+	/**
+	 * The maximum nanites group size on level 1 of NANITE_MANAGEMENT.
+	 */
 	private static final int BASE_MAX_NANITES_GROUP_SIZE = 256;
 
 	public void doubleCount(NaniteGroup nanitesGroup) {
