@@ -2,6 +2,7 @@ package net.micwin.elysium.view.collective;
 
 import java.text.NumberFormat;
 
+import net.micwin.elysium.bpo.GateBPO;
 import net.micwin.elysium.bpo.NaniteBPO;
 import net.micwin.elysium.model.NaniteGroup;
 import net.micwin.elysium.view.BasePage;
@@ -11,6 +12,10 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.util.string.StringValue;
 
 public class ShowGroupPage extends BasePage {
+
+	GateBPO gateBPO = new GateBPO();
+
+	NaniteBPO naniteBPO = new NaniteBPO();
 
 	public ShowGroupPage() {
 		super(true);
@@ -30,9 +35,11 @@ public class ShowGroupPage extends BasePage {
 		}
 
 		Long groupId = groupIdString.toLongObject();
-		NaniteBPO naniteBPO = new NaniteBPO();
 		NaniteGroup group = naniteBPO.getNanitesDao().loadById(groupId);
-		addToContentBody(new Label("groupPosition", "" + group.getPosition()));
+
+		String gateCode = gateBPO.getGateAt(group.getPosition().getEnvironment()).getGateCode();
+
+		addToContentBody(new Label("groupPosition", "" + gateCode));
 		addToContentBody(new Label("groupCount", NumberFormat.getIntegerInstance().format(group.getNaniteCount())));
 		addToContentBody(new Label("groupState", "" + group.getState()));
 

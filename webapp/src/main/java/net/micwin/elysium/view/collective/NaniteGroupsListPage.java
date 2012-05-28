@@ -109,7 +109,12 @@ public class NaniteGroupsListPage extends BasePage {
 				protected void populateItem(Item item) {
 					IModel naniteGroupModel = item.getModel();
 					final NaniteGroup nanitesGroup = (NaniteGroup) naniteGroupModel.getObject();
-					Label label = new Label("label", new Model(nanitesGroup.getPosition().toString()));
+
+					Position position = nanitesGroup.getPosition();
+					Gate gate = gateBPO.getGateAt(position.getEnvironment());
+					String gateCode = gate.getGateCode();
+
+					Label label = new Label("label", new Model(gateCode));
 					Link link = new Link("groupPosition") {
 
 						@Override
