@@ -49,7 +49,7 @@ import net.micwin.elysium.model.galaxy.Position;
 import net.micwin.elysium.model.gates.Gate;
 import net.micwin.elysium.view.BasePage;
 import net.micwin.elysium.view.ElysiumLoadableDetachableModel;
-import net.micwin.elysium.view.jumpGates.TraversePlanetaryGatePage;
+import net.micwin.elysium.view.jumpGates.UsePlanetaryGatePage;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
@@ -136,7 +136,7 @@ public class NaniteGroupsListPage extends BasePage {
 					Gate gate = gateBPO.getGateAt(environment);
 
 					BookmarkablePageLink<Gate> gateLink = new BookmarkablePageLink<Gate>("jumpGate",
-									TraversePlanetaryGatePage.class);
+									UsePlanetaryGatePage.class);
 					gateLink.setVisible(gate != null);
 
 					return gateLink;

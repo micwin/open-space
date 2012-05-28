@@ -35,24 +35,18 @@ package net.micwin.elysium.view.jumpGates;
 
  */
 
-import net.micwin.elysium.bpo.NaniteBPO;
 import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.model.characters.User;
 import net.micwin.elysium.view.BasePage;
 
-import org.apache.wicket.Component;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-public class TraversePlanetaryGatePage extends BasePage {
+public class UsePlanetaryGatePage extends BasePage {
 
 	@SpringBean
 	DaoManager daoManager;
-	private Component groupsTable;
-	private NaniteBPO nanitesBPO;
-	private Form targetGateCodeForm;
 
-	public TraversePlanetaryGatePage() {
+	public UsePlanetaryGatePage() {
 		super(true);
 		ensureStoryShown();
 		ensureAvatarPresent();
@@ -61,21 +55,6 @@ public class TraversePlanetaryGatePage extends BasePage {
 	@Override
 	protected void onInitialize() {
 		super.onInitialize();
-		addToContentBody(getTargetGateCodeForm());
-	}
-
-	private Component getTargetGateCodeForm() {
-		if (targetGateCodeForm != null) {
-			return targetGateCodeForm;
-		}
-
-		targetGateCodeForm = new Form("gateTraversalTarget") {
-			protected void onSubmit() {
-
-			};
-		};
-
-		return targetGateCodeForm;
 	}
 
 	/**
