@@ -37,7 +37,7 @@ public class NaniteGroupShowPage extends BasePage {
 		Long groupId = groupIdString.toLongObject();
 		NaniteGroup group = naniteBPO.getNanitesDao().loadById(groupId);
 
-		String gateCode = gateBPO.getGateAt(group.getPosition().getEnvironment()).getGateCode();
+		String gateCode = gateBPO.getGateAt(group.getPosition().getEnvironment()).getGateAdress();
 
 		addToContentBody(new Label("groupPosition", "" + gateCode));
 		addToContentBody(new Label("groupCount", NumberFormat.getIntegerInstance().format(group.getNaniteCount())));

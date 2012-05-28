@@ -112,7 +112,7 @@ public class NaniteGroupListPage extends BasePage {
 
 					Position position = nanitesGroup.getPosition();
 					Gate gate = gateBPO.getGateAt(position.getEnvironment());
-					String gateCode = gate.getGateCode();
+					String gateCode = gate.getGateAdress();
 
 					Label label = new Label("label", new Model(gateCode));
 					Link link = new Link("groupPosition") {

@@ -12,7 +12,7 @@ public class Gate extends ElysiumEntity {
 	@Embedded
 	private Position position;
 
-	private String gateCode;
+	private String gateAdress;
 
 	public Gate() {
 	}
@@ -30,16 +30,16 @@ public class Gate extends ElysiumEntity {
 		return position;
 	}
 
-	public void setGateCode(String gateCode) {
-		this.gateCode = gateCode;
+	public void setGateAdress(String gateAdress) {
+		this.gateAdress = gateAdress;
 	}
 
-	public String getGateCode() {
-		return gateCode;
+	public String getGateAdress() {
+		return gateAdress;
 	}
 
 	@Override
 	public String toString() {
-		return gateCode + " @ " + position;
+		return gateAdress + " @ " + position;
 	}
 }
