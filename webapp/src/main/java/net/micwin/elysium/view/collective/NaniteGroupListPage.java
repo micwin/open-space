@@ -62,7 +62,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-public class NaniteGroupsListPage extends BasePage {
+public class NaniteGroupListPage extends BasePage {
 
 	@SpringBean
 	DaoManager daoManager;
@@ -72,7 +72,7 @@ public class NaniteGroupsListPage extends BasePage {
 
 	GateBPO gateBPO = new GateBPO();
 
-	public NaniteGroupsListPage() {
+	public NaniteGroupListPage() {
 		super(true);
 		ensureStoryShown();
 		ensureAvatarPresent();
@@ -121,7 +121,7 @@ public class NaniteGroupsListPage extends BasePage {
 						public void onClick() {
 							PageParameters params = new PageParameters(getPageParameters());
 							params.set("groupId", nanitesGroup.getId());
-							setResponsePage(ShowGroupPage.class, params);
+							setResponsePage(NaniteGroupShowPage.class, params);
 						}
 					};
 					link.add(label);
@@ -154,7 +154,7 @@ public class NaniteGroupsListPage extends BasePage {
 						@Override
 						public void onClick() {
 							nanitesBPO.doubleCount(nanitesGroupModel.getObject());
-							setResponsePage(NaniteGroupsListPage.class);
+							setResponsePage(NaniteGroupListPage.class);
 						}
 					};
 

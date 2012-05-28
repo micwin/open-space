@@ -11,13 +11,13 @@ import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.util.string.StringValue;
 
-public class ShowGroupPage extends BasePage {
+public class NaniteGroupShowPage extends BasePage {
 
 	GateBPO gateBPO = new GateBPO();
 
 	NaniteBPO naniteBPO = new NaniteBPO();
 
-	public ShowGroupPage() {
+	public NaniteGroupShowPage() {
 		super(true);
 	}
 
@@ -31,7 +31,7 @@ public class ShowGroupPage extends BasePage {
 		StringValue groupIdString = getPageParameters().get("groupId");
 		if (groupIdString.isEmpty() || groupIdString.isNull()) {
 
-			throw new RestartResponseException(NaniteGroupsListPage.class);
+			throw new RestartResponseException(NaniteGroupListPage.class);
 		}
 
 		Long groupId = groupIdString.toLongObject();
