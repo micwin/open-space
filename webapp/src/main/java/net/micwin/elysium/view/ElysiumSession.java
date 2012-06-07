@@ -36,7 +36,10 @@ package net.micwin.elysium.view;
  */
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
+import net.micwin.elysium.model.ElysiumEntity;
 import net.micwin.elysium.model.characters.User;
 
 import org.apache.wicket.protocol.http.WebSession;
@@ -53,6 +56,9 @@ public class ElysiumSession extends WebSession {
 	private Date creationDate = new Date();
 
 	private User user;
+
+	// a named session context to put in elysium entities wrapped by models.
+	private Map<String, ElysiumLoadableDetachableModel> ctx = new HashMap<String, ElysiumLoadableDetachableModel>();
 
 	private boolean storyShown = false;
 
@@ -99,5 +105,47 @@ public class ElysiumSession extends WebSession {
 
 	public void setStoryShown(boolean newState) {
 		storyShown = newState;
+	}
+
+	/**
+	 * Sets a named entity to be retrieved in a later request.
+	 * 
+	 * @param name
+	 *            the name with which it can get retrieved later.
+	 * @param entity
+	 *            the entity to wrap in a model and put to session context.
+	 */
+	public <T extends ElysiumEntity> void setNamedEntity(String name, T entity) {
+		if (entity == null)
+
+		{
+			ctx.remove(name);
+		} else {
+			ElysiumLoadableDetachableModel<T> entityModel = new ElysiumLoadableDetachableModel<T>(entity);
+			ctx.put(name, entityModel);
+		}
+	}
+
+	/**
+	 * Retrieves a previously set named entity.
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public <T extends ElysiumEntity> T getNamedEntity(String name) {
+		ElysiumLoadableDetachableModel<T> entityModel = ctx.get(name);
+		return entityModel != null ? entityModel.getEntity() : null;
+	}
+
+	@Override
+	public void detach() {
+		super.detach();
+
+		// detach models, but keep them for next request.
+
+		for (ElysiumLoadableDetachableModel model : ctx.values()) {
+			if (model.isAttached())
+				model.detach();
+		}
 	}
 }

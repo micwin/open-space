@@ -14,7 +14,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
  */
 public class ElysiumLoadableDetachableModel<E extends ElysiumEntity> extends LoadableDetachableModel<Object> {
 
-	private Class<ElysiumEntity> baseClass;
+	private Class<E> baseClass;
 	private Long id;
 
 	public ElysiumLoadableDetachableModel(E entity) {
@@ -25,6 +25,15 @@ public class ElysiumLoadableDetachableModel<E extends ElysiumEntity> extends Loa
 	@Override
 	protected E load() {
 		return (E) DaoManager.I.getDao(baseClass).loadById(id);
+	}
+
+	/**
+	 * Returns the model object as an elysium entity.
+	 * 
+	 * @return
+	 */
+	public E getEntity() {
+		return (E) getObject();
 	}
 
 }

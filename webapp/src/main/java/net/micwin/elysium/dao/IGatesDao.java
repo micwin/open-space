@@ -29,5 +29,5 @@ public interface IGatesDao extends IElysiumEntityDao<Gate> {
 	 * @param code
 	 * @return
 	 */
-	public Gate findByGateCode(String code);
+	public Gate findByGateAdress(String code);
 }

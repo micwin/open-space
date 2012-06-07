@@ -36,9 +36,19 @@ package net.micwin.elysium.view.jumpGates;
  */
 
 import net.micwin.elysium.dao.DaoManager;
+import net.micwin.elysium.model.ElysiumEntity;
+import net.micwin.elysium.model.NaniteGroup;
 import net.micwin.elysium.model.characters.User;
 import net.micwin.elysium.view.BasePage;
+import net.micwin.elysium.view.ElysiumLoadableDetachableModel;
+import net.micwin.elysium.view.collective.NaniteGroupListPage;
+import net.micwin.elysium.view.errors.EntityNotAccessiblePage;
+import net.micwin.elysium.view.homepage.HomePage;
 
+import org.apache.wicket.RestartResponseException;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class UsePlanetaryGatePage extends BasePage {
@@ -46,15 +56,57 @@ public class UsePlanetaryGatePage extends BasePage {
 	@SpringBean
 	DaoManager daoManager;
 
+	@SuppressWarnings("rawtypes")
+	Form targetAdressForm = null;
+	TextField<String> targetAdressField = null;
+
 	public UsePlanetaryGatePage() {
 		super(true);
 		ensureStoryShown();
 		ensureAvatarPresent();
+		ensureSessionEntityPresent(NaniteGroup.class, "naniteGroup");
 	}
 
 	@Override
 	protected void onInitialize() {
 		super.onInitialize();
+
+		NaniteGroup naniteGroup = getElysiumSession().getNamedEntity("naniteGroup");
+		addToContentBody(getTargetGateAdressForm());
+	}
+
+	private Form getTargetGateAdressForm() {
+		if (targetAdressForm == null) {
+
+			Form form = new Form("targetAdressForm") {
+				@Override
+				protected void onInitialize() {
+					super.onInitialize();
+					targetAdressField = new TextField("targetAdressField", Model.of(""));
+					add(targetAdressField);
+				}
+
+				@Override
+				protected void onSubmit() {
+					super.onSubmit();
+					NaniteGroup naniteGroup = getElysiumSession().getNamedEntity("naniteGroup");
+					String targetAdress = targetAdressField.getValue();
+
+					if (getNanitesBPO().gateTravel(naniteGroup, targetAdress)) {
+
+						getElysiumSession().setNamedEntity("nanitegroup", null);
+						setResponsePage(NaniteGroupListPage.class);
+						return;
+					}
+
+					error("cannot jump to adress '" + targetAdress + "'");
+				}
+			};
+
+			targetAdressForm = form;
+
+		}
+		return targetAdressForm;
 	}
 
 	/**

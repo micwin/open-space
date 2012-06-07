@@ -39,8 +39,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import net.micwin.elysium.bpo.GateBPO;
-import net.micwin.elysium.bpo.NaniteBPO;
 import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.model.NaniteGroup;
 import net.micwin.elysium.model.characters.User;
@@ -53,7 +51,6 @@ import net.micwin.elysium.view.jumpGates.UsePlanetaryGatePage;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RefreshingView;
@@ -66,11 +63,6 @@ public class NaniteGroupListPage extends BasePage {
 
 	@SpringBean
 	DaoManager daoManager;
-	private Component groupsTable;
-
-	private NaniteBPO nanitesBPO = new NaniteBPO();
-
-	GateBPO gateBPO = new GateBPO();
 
 	public NaniteGroupListPage() {
 		super(true);
@@ -81,7 +73,6 @@ public class NaniteGroupListPage extends BasePage {
 	@Override
 	protected void onInitialize() {
 		super.onInitialize();
-		nanitesBPO = new NaniteBPO();
 
 		addToContentBody(getGroupsTable());
 	}
@@ -93,77 +84,78 @@ public class NaniteGroupListPage extends BasePage {
 
 	private Component getGroupsTable() {
 
-		if (groupsTable == null) {
-
-			final Iterator<NaniteGroup> nanites = getAvatar().getNanites().iterator();
-
-			groupsTable = new RefreshingView<NaniteGroup>("groupsTable") {
-				protected Iterator getItemModels() {
-					List<IModel> models = new ArrayList<IModel>();
-					while (nanites.hasNext()) {
-						models.add(new ElysiumLoadableDetachableModel<NaniteGroup>(nanites.next()));
-					}
-					return models.iterator();
-				}
-
-				protected void populateItem(Item item) {
-					IModel naniteGroupModel = item.getModel();
-					final NaniteGroup nanitesGroup = (NaniteGroup) naniteGroupModel.getObject();
-
-					Position position = nanitesGroup.getPosition();
-					Gate gate = gateBPO.getGateAt(position.getEnvironment());
-					String gateCode = gate.getGateAdress();
-
-					Label label = new Label("label", new Model(gateCode));
-					Link link = new Link("groupPosition") {
-
-						@Override
-						public void onClick() {
-							PageParameters params = new PageParameters(getPageParameters());
-							params.set("groupId", nanitesGroup.getId());
-							setResponsePage(NaniteGroupShowPage.class, params);
-						}
-					};
-					link.add(label);
-					item.add(link);
-					Model<Long> countModel = new Model<Long>(nanitesGroup.getNaniteCount());
-					item.add(new Label("groupCount", countModel));
-					item.add(new Label("groupState", new Model(nanitesGroup.getState())));
-					item.add(getDoubleCountLink(naniteGroupModel, countModel));
-					item.add(getGateLink(naniteGroupModel));
-				}
-
-				private Component getGateLink(IModel<NaniteGroup> naniteGroupModel) {
-
-					NaniteGroup naniteGroup = naniteGroupModel.getObject();
-					Position position = naniteGroup.getPosition();
-					Environment environment = position.getEnvironment();
-					Gate gate = gateBPO.getGateAt(environment);
-
-					BookmarkablePageLink<Gate> gateLink = new BookmarkablePageLink<Gate>("jumpGate",
-									UsePlanetaryGatePage.class);
-					gateLink.setVisible(gate != null);
-
-					return gateLink;
-				}
-
-				private Component getDoubleCountLink(final IModel<NaniteGroup> nanitesGroupModel,
-								final IModel<Long> countModel) {
-					Link link = new Link("doubleCount") {
-
-						@Override
-						public void onClick() {
-							nanitesBPO.doubleCount(nanitesGroupModel.getObject());
-							setResponsePage(NaniteGroupListPage.class);
-						}
-					};
-
-					return link;
-				}
-
-			};
-
+		Iterator<NaniteGroup> nanites = getAvatar().getNanites().iterator();
+		final List<IModel> models = new ArrayList<IModel>();
+		while (nanites.hasNext()) {
+			models.add(new ElysiumLoadableDetachableModel<NaniteGroup>(nanites.next()));
 		}
+
+		Component groupsTable = new RefreshingView<NaniteGroup>("groupsTable") {
+			protected Iterator getItemModels() {
+
+				return models.iterator();
+			}
+
+			protected void populateItem(Item item) {
+				final IModel naniteGroupModel = item.getModel();
+				NaniteGroup nanitesGroup = (NaniteGroup) naniteGroupModel.getObject();
+
+				Position position = nanitesGroup.getPosition();
+				Gate gate = getGateBPO().getGateAt(position.getEnvironment());
+				String gateCode = gate.getGateAdress();
+
+				Label label = new Label("label", new Model(gateCode));
+				Link link = new Link("groupPosition") {
+
+					@Override
+					public void onClick() {
+						PageParameters params = new PageParameters(getPageParameters());
+						params.set("groupId", ((NaniteGroup) naniteGroupModel.getObject()).getId());
+						setResponsePage(NaniteGroupShowPage.class, params);
+					}
+				};
+				link.add(label);
+				item.add(link);
+				Model<Long> countModel = new Model<Long>(nanitesGroup.getNaniteCount());
+				item.add(new Label("groupCount", countModel));
+				item.add(new Label("groupState", new Model(nanitesGroup.getState())));
+				item.add(getDoubleCountLink(naniteGroupModel, countModel));
+				item.add(getGateLink(naniteGroupModel));
+			}
+
+			private Component getGateLink(final IModel<NaniteGroup> naniteGroupModel) {
+
+				final NaniteGroup naniteGroup = naniteGroupModel.getObject();
+				Position position = naniteGroup.getPosition();
+				Environment environment = position.getEnvironment();
+				Gate gate = getGateBPO().getGateAt(environment);
+
+				Link<Gate> gateLink = new Link<Gate>("jumpGate") {
+					public void onClick() {
+						getElysiumSession().setNamedEntity("naniteGroup", naniteGroupModel.getObject());
+						setResponsePage(UsePlanetaryGatePage.class);
+					};
+				};
+				gateLink.setVisible(gate != null);
+
+				return gateLink;
+			}
+
+			private Component getDoubleCountLink(final IModel<NaniteGroup> nanitesGroupModel,
+							final IModel<Long> countModel) {
+				Link link = new Link("doubleCount") {
+
+					@Override
+					public void onClick() {
+						getNanitesBPO().doubleCount(nanitesGroupModel.getObject());
+						setResponsePage(NaniteGroupListPage.class);
+					}
+				};
+
+				return link;
+			}
+		};
+
 		return groupsTable;
 	}
 

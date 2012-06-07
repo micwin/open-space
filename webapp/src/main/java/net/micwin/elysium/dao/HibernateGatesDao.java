@@ -34,13 +34,13 @@ public class HibernateGatesDao extends ElysiumHibernateDaoSupport<Gate> implemen
 	public void create(Position position) {
 		Gate newGate = new Gate();
 		newGate.setPosition(position);
-		newGate.setGateAdress(createUniqueGateCode());
+		newGate.setGateAdress(createUniqueGateAdress());
 		super.save(newGate);
 		L.debug("created gate " + newGate.toString());
 
 	}
 
-	private String createUniqueGateCode() {
+	private String createUniqueGateAdress() {
 
 		String code = null;
 
@@ -55,7 +55,7 @@ public class HibernateGatesDao extends ElysiumHibernateDaoSupport<Gate> implemen
 			code = sb.toString();
 
 			// check wether this code is already used
-			Gate gate = findByGateCode(code);
+			Gate gate = findByGateAdress(code);
 			if (gate != null)
 				code = null;
 
@@ -65,9 +65,9 @@ public class HibernateGatesDao extends ElysiumHibernateDaoSupport<Gate> implemen
 	}
 
 	@Override
-	public Gate findByGateCode(String code) {
+	public Gate findByGateAdress(String code) {
 
-		List<Gate> result = lookupHql(" from Gate where gateCode='" + code + "'");
+		List<Gate> result = lookupHql(" from Gate where gateAdress='" + code + "'");
 
 		if (result.size() < 1)
 			return null;

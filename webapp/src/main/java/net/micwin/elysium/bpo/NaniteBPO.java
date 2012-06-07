@@ -3,6 +3,7 @@ package net.micwin.elysium.bpo;
 import net.micwin.elysium.model.NaniteGroup;
 import net.micwin.elysium.model.appliances.Appliance;
 import net.micwin.elysium.model.appliances.Utilization;
+import net.micwin.elysium.model.gates.Gate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,6 +71,30 @@ public class NaniteBPO extends BaseBPO {
 		}
 		nanitesGroup.setNaniteCount(newCount);
 		getNanitesDao().save(nanitesGroup);
+	}
+
+	/**
+	 * starts a planetary gate travel fport a group of nanites.
+	 * 
+	 * @param naniteGroup
+	 * @param targetAdress
+	 * @return true if the travel has been started successfully, false
+	 *         otherwise.
+	 */
+	public boolean gateTravel(NaniteGroup naniteGroup, String targetAdress) {
+		Gate targetGate = getGatesDao().findByGateAdress(rectifyGateAdress(targetAdress));
+		if (targetGate == null) {
+			return false;
+		}
+
+		naniteGroup.setPosition(targetGate.getPosition());
+		getNanitesDao().save(naniteGroup);
+		return true;
+	}
+
+	public String rectifyGateAdress(String gateAdress) {
+		L.warn("gate adress '' not rectified - not yet implemented!");
+		return gateAdress;
 	}
 
 }

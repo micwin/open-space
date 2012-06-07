@@ -35,18 +35,28 @@ package net.micwin.elysium.view;
 
  */
 
+import java.util.Map;
+
 import net.micwin.elysium.bpo.AvatarBPO;
+import net.micwin.elysium.bpo.GateBPO;
+import net.micwin.elysium.bpo.NaniteBPO;
+import net.micwin.elysium.dao.DaoManager;
+import net.micwin.elysium.dao.IElysiumEntityDao;
+import net.micwin.elysium.model.ElysiumEntity;
 import net.micwin.elysium.model.GalaxyTimer;
+import net.micwin.elysium.model.NaniteGroup;
 import net.micwin.elysium.model.characters.Avatar;
 import net.micwin.elysium.model.characters.User;
 import net.micwin.elysium.view.avatar.CreateAvatarPage;
 import net.micwin.elysium.view.border.ElysiumBorder;
+import net.micwin.elysium.view.errors.EntityNotAccessiblePage;
 import net.micwin.elysium.view.storyline.StoryLinePage;
 import net.micwin.elysium.view.welcome.WelcomePage;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.Page;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.IHeaderResponse;
@@ -54,6 +64,7 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.util.string.StringValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -162,6 +173,10 @@ public abstract class BasePage extends WebPage {
 		}
 	}
 
+	/**
+	 * Ensures that the logged in user has an avatar. If not, switch to avatar
+	 * creation page.
+	 */
 	protected void ensureAvatarPresent() {
 
 		if (getAvatar() == null)
@@ -171,24 +186,59 @@ public abstract class BasePage extends WebPage {
 		}
 	}
 
+	/**
+	 * Ensures that the story page has been shown this session. If not, switch
+	 * to story page.
+	 */
 	protected void ensureStoryShown() {
 		if (!getElysiumSession().isStoryShown()) {
 			throw new RestartResponseException(StoryLinePage.class);
 		}
 	}
 
-	protected void ensureEntityInPageParametersPresent(String parameterName, Class redirectOnFailure) {
+	/**
+	 * Ensures that the specified named entity has already been put into the
+	 * session context. If not, switch to the {@link EntityNotAccessiblePage}.
+	 * 
+	 * @param <T>
+	 * @param cls
+	 *            the entities base class.
+	 * @param name
+	 *            the name (which normally is something human readable, not an
+	 *            id)..
+	 */
+	protected <T extends ElysiumEntity> void ensureSessionEntityPresent(Class<T> cls, String name) {
 
-		if (getPageParameters().get(parameterName) == null) {
+		T entity = getElysiumSession().getNamedEntity(name);
 
-			throw new RestartResponseException(redirectOnFailure);
+		if (entity == null) {
 
+			throw new RestartResponseException(EntityNotAccessiblePage.class);
 		}
 
 	}
 
 	protected GalaxyTimer getGalaxyTimer() {
 		return ((ElysiumApplication) Application.get()).getGalaxyTimer();
+	}
+
+	/**
+	 * Returns an instance of the stateless gateBPO.
+	 * 
+	 * @return
+	 */
+	protected GateBPO getGateBPO() {
+		return new GateBPO();
+	}
+
+	/**
+	 * Returns an instance of the stateless NaniteBPO.
+	 * 
+	 * @return
+	 */
+
+	protected NaniteBPO getNanitesBPO() {
+		return new NaniteBPO();
 	}
 
 }

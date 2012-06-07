@@ -49,7 +49,7 @@ import net.micwin.elysium.model.replication.BuildPlan;
 
 public class DaoManager {
 
-	private HashMap<Class<? extends ElysiumEntity>, IElysiumEntityDao<? extends ElysiumEntity>> daoInstances = new HashMap<Class<? extends ElysiumEntity>, IElysiumEntityDao<? extends ElysiumEntity>>();
+	private HashMap<Class, IElysiumEntityDao> daoInstances = new HashMap<Class, IElysiumEntityDao>();
 
 	public static DaoManager I;
 
@@ -125,7 +125,8 @@ public class DaoManager {
 		daoInstances.put(BuildPlan.class, buildPlanDao);
 	}
 
-	public IElysiumEntityDao<? extends ElysiumEntity> getDao(Class<? extends ElysiumEntity> entityClass) {
+	@SuppressWarnings("unchecked")
+	public <T extends ElysiumEntity> IElysiumEntityDao<T> getDao(Class<T> entityClass) {
 		return daoInstances.get(entityClass);
 	}
 
