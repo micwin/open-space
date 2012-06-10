@@ -46,7 +46,7 @@ import net.micwin.elysium.model.galaxy.Environment;
 import net.micwin.elysium.model.galaxy.Position;
 import net.micwin.elysium.model.gates.Gate;
 import net.micwin.elysium.view.BasePage;
-import net.micwin.elysium.view.ElysiumLoadableDetachableModel;
+import net.micwin.elysium.view.ElysiumWicketModel;
 import net.micwin.elysium.view.jumpGates.UsePlanetaryGatePage;
 
 import org.apache.wicket.Component;
@@ -87,7 +87,7 @@ public class NaniteGroupListPage extends BasePage {
 		Iterator<NaniteGroup> nanites = getAvatar().getNanites().iterator();
 		final List<IModel> models = new ArrayList<IModel>();
 		while (nanites.hasNext()) {
-			models.add(new ElysiumLoadableDetachableModel<NaniteGroup>(nanites.next()));
+			models.add(new ElysiumWicketModel<NaniteGroup>(nanites.next()));
 		}
 
 		Component groupsTable = new RefreshingView<NaniteGroup>("groupsTable") {

@@ -40,7 +40,7 @@ import net.micwin.elysium.model.ElysiumEntity;
 import net.micwin.elysium.model.NaniteGroup;
 import net.micwin.elysium.model.characters.User;
 import net.micwin.elysium.view.BasePage;
-import net.micwin.elysium.view.ElysiumLoadableDetachableModel;
+import net.micwin.elysium.view.ElysiumWicketModel;
 import net.micwin.elysium.view.collective.NaniteGroupListPage;
 import net.micwin.elysium.view.errors.EntityNotAccessiblePage;
 import net.micwin.elysium.view.homepage.HomePage;

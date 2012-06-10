@@ -58,7 +58,7 @@ public class ElysiumSession extends WebSession {
 	private User user;
 
 	// a named session context to put in elysium entities wrapped by models.
-	private Map<String, ElysiumLoadableDetachableModel> ctx = new HashMap<String, ElysiumLoadableDetachableModel>();
+	private Map<String, ElysiumWicketModel> ctx = new HashMap<String, ElysiumWicketModel>();
 
 	private boolean storyShown = false;
 
@@ -121,7 +121,7 @@ public class ElysiumSession extends WebSession {
 		{
 			ctx.remove(name);
 		} else {
-			ElysiumLoadableDetachableModel<T> entityModel = new ElysiumLoadableDetachableModel<T>(entity);
+			ElysiumWicketModel<T> entityModel = new ElysiumWicketModel<T>(entity);
 			ctx.put(name, entityModel);
 		}
 	}
@@ -133,7 +133,7 @@ public class ElysiumSession extends WebSession {
 	 * @return
 	 */
 	public <T extends ElysiumEntity> T getNamedEntity(String name) {
-		ElysiumLoadableDetachableModel<T> entityModel = ctx.get(name);
+		ElysiumWicketModel<T> entityModel = ctx.get(name);
 		return entityModel != null ? entityModel.getEntity() : null;
 	}
 
@@ -143,7 +143,7 @@ public class ElysiumSession extends WebSession {
 
 		// detach models, but keep them for next request.
 
-		for (ElysiumLoadableDetachableModel model : ctx.values()) {
+		for (ElysiumWicketModel model : ctx.values()) {
 			if (model.isAttached())
 				model.detach();
 		}

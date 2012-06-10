@@ -8,7 +8,7 @@ import java.util.List;
 import net.micwin.elysium.model.NaniteGroup;
 import net.micwin.elysium.model.gates.Gate;
 import net.micwin.elysium.view.BasePage;
-import net.micwin.elysium.view.ElysiumLoadableDetachableModel;
+import net.micwin.elysium.view.ElysiumWicketModel;
 import net.micwin.elysium.view.EmptyLink;
 
 import org.apache.wicket.Component;
@@ -56,7 +56,7 @@ public class NaniteGroupShowPage extends BasePage {
 		Collection<Component> result = new LinkedList<Component>();
 		List<Gate> scannedGates = getScannerBPO().scanForGates(group);
 
-		final ElysiumLoadableDetachableModel<NaniteGroup> groupModel = group != null ? new ElysiumLoadableDetachableModel<NaniteGroup>(
+		final ElysiumWicketModel<NaniteGroup> groupModel = group != null ? new ElysiumWicketModel<NaniteGroup>(
 						group) : null;
 
 		for (int index = 0; index < 3; index++) {
@@ -83,7 +83,7 @@ public class NaniteGroupShowPage extends BasePage {
 				continue;
 			}
 
-			final ElysiumLoadableDetachableModel<Gate> gateModel = new ElysiumLoadableDetachableModel<Gate>(gate);
+			final ElysiumWicketModel<Gate> gateModel = new ElysiumWicketModel<Gate>(gate);
 
 			Link<String> jumpLink = new Link<String>(linkWickedId, Model.of(gate.getGateAdress())) {
 

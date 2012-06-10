@@ -12,12 +12,12 @@ import org.apache.wicket.model.LoadableDetachableModel;
  * 
  * @param <E>
  */
-public class ElysiumLoadableDetachableModel<E extends ElysiumEntity> extends LoadableDetachableModel<Object> {
+public class ElysiumWicketModel<E extends ElysiumEntity> extends LoadableDetachableModel<Object> {
 
 	private Class<E> baseClass;
 	private Long id;
 
-	public ElysiumLoadableDetachableModel(E entity) {
+	public ElysiumWicketModel(E entity) {
 		baseClass = entity.getBaseClass();
 		id = entity.getId();
 	}
