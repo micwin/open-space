@@ -38,9 +38,11 @@ public class NaniteGroupShowPage extends BasePage {
 
 		NaniteGroup group = getElysiumSession().getNamedEntity("naniteGroup");
 
+		addToContentBody(new Label("groupPosition", "" + group.getPosition().getEnvironment()));
+
 		String gateCode = getGateBPO().getGateAt(group.getPosition().getEnvironment()).getGateAdress();
 
-		addToContentBody(new Label("groupPosition", "" + gateCode));
+		addToContentBody(new Label("groupGate", "" + gateCode));
 		addToContentBody(new Label("groupCount", NumberFormat.getIntegerInstance().format(group.getNaniteCount())));
 		addToContentBody(new Label("groupState", "" + group.getState()));
 
