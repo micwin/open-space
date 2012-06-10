@@ -1,8 +1,12 @@
 package net.micwin.elysium.dao;
 
+import java.util.List;
+
 import net.micwin.elysium.model.NaniteGroup;
 import net.micwin.elysium.model.NaniteGroup.State;
+import net.micwin.elysium.model.galaxy.Environment;
 import net.micwin.elysium.model.galaxy.Position;
+import net.micwin.elysium.model.gates.Gate;
 
 /*
  (c) 2012 micwin.net
@@ -55,4 +59,9 @@ public class HibernateNanitesDao extends ElysiumHibernateDaoSupport<NaniteGroup>
 		return group;
 	}
 
+	@Override
+	public List<NaniteGroup> findByEnvironment(Environment environment) {
+		List<NaniteGroup> result = lookupHql(" from NaniteGroup where position.environment.id=" + environment.getId());
+		return result;
+	}
 }

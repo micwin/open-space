@@ -9,6 +9,7 @@ import net.micwin.elysium.model.galaxy.Planet;
 import net.micwin.elysium.model.galaxy.SolarSystem;
 import net.micwin.elysium.model.gates.Gate;
 
+import org.apache.wicket.MarkupContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,5 +49,20 @@ public class ScannerBPO extends BaseBPO {
 
 		return result;
 
+	}
+
+	public List<NaniteGroup> scanForOtherNaniteGroups(NaniteGroup scanningGroup) {
+
+		List<NaniteGroup> found = getNanitesDao().findByEnvironment(scanningGroup.getPosition().getEnvironment());
+
+		List<NaniteGroup> result = new LinkedList<NaniteGroup>();
+
+		for (NaniteGroup naniteGroup : found) {
+			if (!naniteGroup.getId().equals(scanningGroup.getId())) {
+				result.add(naniteGroup);
+			}
+		}
+
+		return result;
 	}
 }

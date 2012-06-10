@@ -35,7 +35,10 @@ package net.micwin.elysium.dao;
 
  */
 
+import java.util.List;
+
 import net.micwin.elysium.model.NaniteGroup;
+import net.micwin.elysium.model.galaxy.Environment;
 import net.micwin.elysium.model.galaxy.Position;
 
 public interface INanitesDao extends IElysiumEntityDao<NaniteGroup> {
@@ -54,5 +57,13 @@ public interface INanitesDao extends IElysiumEntityDao<NaniteGroup> {
 	 * @param nanitesGroup
 	 */
 	void save(NaniteGroup nanitesGroup);
+
+	/**
+	 * Returns all NaniteGroups that are located in the specified environment.
+	 * 
+	 * @param environment
+	 * @return
+	 */
+	List<NaniteGroup> findByEnvironment(Environment environment);
 
 }

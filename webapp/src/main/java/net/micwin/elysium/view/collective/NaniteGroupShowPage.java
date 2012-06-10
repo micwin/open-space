@@ -1,20 +1,28 @@
 package net.micwin.elysium.view.collective;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import net.micwin.elysium.model.NaniteGroup;
+import net.micwin.elysium.model.galaxy.Environment;
+import net.micwin.elysium.model.galaxy.Position;
 import net.micwin.elysium.model.gates.Gate;
 import net.micwin.elysium.view.BasePage;
 import net.micwin.elysium.view.ElysiumWicketModel;
 import net.micwin.elysium.view.EmptyLink;
+import net.micwin.elysium.view.jumpGates.UsePlanetaryGatePage;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.RefreshingView;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.string.StringValue;
 
@@ -56,8 +64,8 @@ public class NaniteGroupShowPage extends BasePage {
 		Collection<Component> result = new LinkedList<Component>();
 		List<Gate> scannedGates = getScannerBPO().scanForGates(group);
 
-		final ElysiumWicketModel<NaniteGroup> groupModel = group != null ? new ElysiumWicketModel<NaniteGroup>(
-						group) : null;
+		final ElysiumWicketModel<NaniteGroup> groupModel = group != null ? new ElysiumWicketModel<NaniteGroup>(group)
+						: null;
 
 		for (int index = 0; index < 3; index++) {
 			String linkWickedId = "jumpToP" + index;
@@ -109,7 +117,36 @@ public class NaniteGroupShowPage extends BasePage {
 	}
 
 	private Component getOtherNanitesTable(NaniteGroup scanningGroup) {
-		return new Label("otherNanitesTable");
+
+		Iterator<NaniteGroup> nanites = getScannerBPO().scanForOtherNaniteGroups(scanningGroup).iterator();
+
+		final List<IModel> models = new ArrayList<IModel>();
+		while (nanites.hasNext()) {
+			models.add(new ElysiumWicketModel<NaniteGroup>(nanites.next()));
+		}
+
+		Component otherNanitesTable = new RefreshingView<NaniteGroup>("otherNanitesTable") {
+			protected Iterator getItemModels() {
+
+				return models.iterator();
+			}
+
+			protected void populateItem(Item item) {
+				final IModel naniteGroupModel = item.getModel();
+				final NaniteGroup nanitesGroup = (NaniteGroup) naniteGroupModel.getObject();
+
+				Position position = nanitesGroup.getPosition();
+				Gate gate = getGateBPO().getGateAt(position.getEnvironment());
+				String gateCode = gate.getGateAdress();
+
+				item.add(new Label("owner", new Model(nanitesGroup.getController().getName())));
+				item.add(new Label("strength", new Model(nanitesGroup.getNaniteCount())));
+				item.add(new Label("commands", ""));
+
+			}
+		};
+
+		return otherNanitesTable;
 	}
 
 }
