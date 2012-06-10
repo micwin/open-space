@@ -80,8 +80,9 @@ public class AuthPanel extends BasePanel {
 
 		BookmarkablePageLink<LogoutPage> link = new BookmarkablePageLink<LogoutPage>("logoutLink", LogoutPage.class);
 		link.setVisible(getUser() != null);
+		
 		if (link.isVisible()) {
-			link.add(new Label("label", Model.of("Hello, " + getUser())));
+			link.add(new Label("label", Model.of("Logout")));
 		}
 		return link;
 
