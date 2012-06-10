@@ -35,11 +35,14 @@ package net.micwin.elysium.view;
 
  */
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
 
 import net.micwin.elysium.bpo.AvatarBPO;
 import net.micwin.elysium.bpo.GateBPO;
 import net.micwin.elysium.bpo.NaniteBPO;
+import net.micwin.elysium.bpo.ScannerBPO;
 import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.dao.IElysiumEntityDao;
 import net.micwin.elysium.model.ElysiumEntity;
@@ -143,6 +146,18 @@ public abstract class BasePage extends WebPage {
 	}
 
 	/**
+	 * adds a list of components to the content body.
+	 * 
+	 * @param components
+	 */
+	protected void addToContentBody(Collection<Component> components) {
+		for (Iterator iterator = components.iterator(); iterator.hasNext();) {
+			Component component = (Component) iterator.next();
+			getBorder().getBodyContainer().add(component);
+		}
+	}
+
+	/**
 	 * Adds a component as a direct child of this page.
 	 * 
 	 * @param c
@@ -239,6 +254,16 @@ public abstract class BasePage extends WebPage {
 
 	protected NaniteBPO getNanitesBPO() {
 		return new NaniteBPO();
+	}
+
+	/**
+	 * Returns an instance of the stateless scanner bpo.
+	 * 
+	 * @return
+	 */
+	protected ScannerBPO getScannerBPO() {
+		return new ScannerBPO();
+
 	}
 
 }

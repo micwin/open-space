@@ -98,20 +98,19 @@ public class NaniteGroupListPage extends BasePage {
 
 			protected void populateItem(Item item) {
 				final IModel naniteGroupModel = item.getModel();
-				NaniteGroup nanitesGroup = (NaniteGroup) naniteGroupModel.getObject();
+				final NaniteGroup nanitesGroup = (NaniteGroup) naniteGroupModel.getObject();
 
 				Position position = nanitesGroup.getPosition();
 				Gate gate = getGateBPO().getGateAt(position.getEnvironment());
 				String gateCode = gate.getGateAdress();
 
 				Label label = new Label("label", new Model(gateCode));
-				Link link = new Link("groupPosition") {
+				Link<NaniteGroup> link = new Link<NaniteGroup>("groupPosition") {
 
 					@Override
 					public void onClick() {
-						PageParameters params = new PageParameters(getPageParameters());
-						params.set("groupId", ((NaniteGroup) naniteGroupModel.getObject()).getId());
-						setResponsePage(NaniteGroupShowPage.class, params);
+						getElysiumSession().setNamedEntity("naniteGroup", (NaniteGroup) naniteGroupModel.getObject());
+						setResponsePage(NaniteGroupShowPage.class);
 					}
 				};
 				link.add(label);

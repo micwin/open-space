@@ -51,6 +51,7 @@ import org.slf4j.LoggerFactory;
 public class GalaxyBPO extends BaseBPO {
 
 	private static final Logger L = LoggerFactory.getLogger(GalaxyBPO.class);
+	private static final int PLANETS_COUNT = 3;
 
 	/**
 	 * Creates a new solar system.
@@ -61,7 +62,6 @@ public class GalaxyBPO extends BaseBPO {
 	 */
 	public SolarSystem createSolarSystem(Sector sector) {
 
-		int planetsCount = (int) (Math.random() * 10 + 1);
 
 		SolarSystem solarSystem = new SolarSystem();
 		solarSystem.setHeight(100);
@@ -75,7 +75,7 @@ public class GalaxyBPO extends BaseBPO {
 
 		getGalaxyDao().save(solarSystem);
 
-		fillWithPlanets(solarSystem, planetsCount);
+		fillWithPlanets(solarSystem, PLANETS_COUNT);
 
 		getGalaxyDao().save(solarSystem);
 
