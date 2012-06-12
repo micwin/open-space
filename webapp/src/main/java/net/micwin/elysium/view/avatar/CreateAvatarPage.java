@@ -36,7 +36,7 @@ package net.micwin.elysium.view.avatar;
  */
 
 import net.micwin.elysium.bpo.AvatarBPO;
-import net.micwin.elysium.model.characters.Race;
+import net.micwin.elysium.entities.characters.Race;
 import net.micwin.elysium.view.BasePage;
 import net.micwin.elysium.view.homepage.HomePage;
 

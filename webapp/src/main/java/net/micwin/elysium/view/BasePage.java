@@ -37,19 +37,15 @@ package net.micwin.elysium.view;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Map;
 
 import net.micwin.elysium.bpo.AvatarBPO;
 import net.micwin.elysium.bpo.GateBPO;
 import net.micwin.elysium.bpo.NaniteBPO;
 import net.micwin.elysium.bpo.ScannerBPO;
-import net.micwin.elysium.dao.DaoManager;
-import net.micwin.elysium.dao.IElysiumEntityDao;
-import net.micwin.elysium.model.ElysiumEntity;
-import net.micwin.elysium.model.GalaxyTimer;
-import net.micwin.elysium.model.NaniteGroup;
-import net.micwin.elysium.model.characters.Avatar;
-import net.micwin.elysium.model.characters.User;
+import net.micwin.elysium.entities.ElysiumEntity;
+import net.micwin.elysium.entities.GalaxyTimer;
+import net.micwin.elysium.entities.characters.Avatar;
+import net.micwin.elysium.entities.characters.User;
 import net.micwin.elysium.view.avatar.CreateAvatarPage;
 import net.micwin.elysium.view.border.ElysiumBorder;
 import net.micwin.elysium.view.errors.EntityNotAccessiblePage;
@@ -59,15 +55,11 @@ import net.micwin.elysium.view.welcome.WelcomePage;
 import org.apache.wicket.Application;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.Page;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.border.Border;
-import org.apache.wicket.request.Request;
-import org.apache.wicket.request.cycle.RequestCycle;
-import org.apache.wicket.util.string.StringValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -141,8 +133,10 @@ public abstract class BasePage extends WebPage {
 	 * 
 	 * @param component
 	 */
-	protected void addToContentBody(Component component) {
-		getBorder().getBodyContainer().add(component);
+	protected void addToContentBody(Component... components) {
+		for (Component component : components) {
+			getBorder().getBodyContainer().add(component);
+		}
 	}
 
 	/**
@@ -151,10 +145,8 @@ public abstract class BasePage extends WebPage {
 	 * @param components
 	 */
 	protected void addToContentBody(Collection<Component> components) {
-		for (Iterator iterator = components.iterator(); iterator.hasNext();) {
-			Component component = (Component) iterator.next();
-			getBorder().getBodyContainer().add(component);
-		}
+		addToContentBody((Component[]) components.toArray());
+
 	}
 
 	/**

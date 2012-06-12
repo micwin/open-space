@@ -1,4 +1,4 @@
-package net.micwin.elysium.model.characters;
+package net.micwin.elysium.entities.characters;
 
 /*
  (c) 2012 micwin.net
@@ -42,7 +42,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
-import net.micwin.elysium.model.ElysiumEntity;
+import net.micwin.elysium.entities.ElysiumEntity;
 
 /**
  * An elysium user.

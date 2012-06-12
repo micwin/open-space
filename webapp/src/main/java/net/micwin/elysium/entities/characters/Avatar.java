@@ -1,4 +1,4 @@
-package net.micwin.elysium.model.characters;
+package net.micwin.elysium.entities.characters;
 
 /*
  (c) 2012 micwin.net
@@ -44,10 +44,10 @@ import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import net.micwin.elysium.model.ElysiumEntity;
-import net.micwin.elysium.model.NaniteGroup;
-import net.micwin.elysium.model.appliances.Utilization;
-import net.micwin.elysium.model.galaxy.Position;
+import net.micwin.elysium.entities.ElysiumEntity;
+import net.micwin.elysium.entities.NaniteGroup;
+import net.micwin.elysium.entities.appliances.Utilization;
+import net.micwin.elysium.entities.galaxy.Position;
 import net.micwin.elysium.view.storyline.StoryLineItem;
 
 import org.slf4j.Logger;

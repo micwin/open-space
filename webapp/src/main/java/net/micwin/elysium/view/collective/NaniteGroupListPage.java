@@ -40,11 +40,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.micwin.elysium.dao.DaoManager;
-import net.micwin.elysium.model.NaniteGroup;
-import net.micwin.elysium.model.characters.User;
-import net.micwin.elysium.model.galaxy.Environment;
-import net.micwin.elysium.model.galaxy.Position;
-import net.micwin.elysium.model.gates.Gate;
+import net.micwin.elysium.entities.NaniteGroup;
+import net.micwin.elysium.entities.characters.User;
+import net.micwin.elysium.entities.galaxy.Environment;
+import net.micwin.elysium.entities.galaxy.Position;
+import net.micwin.elysium.entities.gates.Gate;
 import net.micwin.elysium.view.BasePage;
 import net.micwin.elysium.view.ElysiumWicketModel;
 import net.micwin.elysium.view.jumpGates.UsePlanetaryGatePage;

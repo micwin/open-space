@@ -37,7 +37,7 @@ package net.micwin.elysium.view;
 
 import net.micwin.elysium.bpo.AdminBPO;
 import net.micwin.elysium.dao.DaoManager;
-import net.micwin.elysium.model.GalaxyTimer;
+import net.micwin.elysium.entities.GalaxyTimer;
 import net.micwin.elysium.view.welcome.WelcomePage;
 
 import org.apache.wicket.Page;

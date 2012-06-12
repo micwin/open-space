@@ -38,13 +38,13 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import net.micwin.elysium.model.NaniteGroup;
-import net.micwin.elysium.model.appliances.Utilization;
-import net.micwin.elysium.model.characters.Avatar;
-import net.micwin.elysium.model.characters.Organization;
-import net.micwin.elysium.model.characters.Race;
-import net.micwin.elysium.model.characters.User;
-import net.micwin.elysium.model.galaxy.Position;
+import net.micwin.elysium.entities.NaniteGroup;
+import net.micwin.elysium.entities.appliances.Utilization;
+import net.micwin.elysium.entities.characters.Avatar;
+import net.micwin.elysium.entities.characters.Organization;
+import net.micwin.elysium.entities.characters.Race;
+import net.micwin.elysium.entities.characters.User;
+import net.micwin.elysium.entities.galaxy.Position;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

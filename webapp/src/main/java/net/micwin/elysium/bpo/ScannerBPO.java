@@ -4,10 +4,10 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.micwin.elysium.model.NaniteGroup;
-import net.micwin.elysium.model.galaxy.Planet;
-import net.micwin.elysium.model.galaxy.SolarSystem;
-import net.micwin.elysium.model.gates.Gate;
+import net.micwin.elysium.entities.NaniteGroup;
+import net.micwin.elysium.entities.galaxy.Planet;
+import net.micwin.elysium.entities.galaxy.SolarSystem;
+import net.micwin.elysium.entities.gates.Gate;
 
 import org.apache.wicket.MarkupContainer;
 import org.slf4j.Logger;

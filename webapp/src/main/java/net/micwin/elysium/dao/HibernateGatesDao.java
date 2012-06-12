@@ -8,9 +8,9 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.micwin.elysium.model.galaxy.Environment;
-import net.micwin.elysium.model.galaxy.Position;
-import net.micwin.elysium.model.gates.Gate;
+import net.micwin.elysium.entities.galaxy.Environment;
+import net.micwin.elysium.entities.galaxy.Position;
+import net.micwin.elysium.entities.gates.Gate;
 
 public class HibernateGatesDao extends ElysiumHibernateDaoSupport<Gate> implements IGatesDao {
 

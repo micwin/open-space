@@ -1,4 +1,4 @@
-package net.micwin.elysium.model.galaxy;
+package net.micwin.elysium.entities.galaxy;
 
 /*
  (c) 2012 micwin.net

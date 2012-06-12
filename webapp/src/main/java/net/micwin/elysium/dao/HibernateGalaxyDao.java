@@ -36,10 +36,10 @@ package net.micwin.elysium.dao;
  */
 import java.util.List;
 
-import net.micwin.elysium.model.galaxy.Galaxy;
-import net.micwin.elysium.model.galaxy.Planet;
-import net.micwin.elysium.model.galaxy.Sector;
-import net.micwin.elysium.model.galaxy.SolarSystem;
+import net.micwin.elysium.entities.galaxy.Galaxy;
+import net.micwin.elysium.entities.galaxy.Planet;
+import net.micwin.elysium.entities.galaxy.Sector;
+import net.micwin.elysium.entities.galaxy.SolarSystem;
 
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 

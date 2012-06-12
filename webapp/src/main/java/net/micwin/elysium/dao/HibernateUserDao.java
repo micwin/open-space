@@ -36,9 +36,9 @@ package net.micwin.elysium.dao;
  */
 import java.util.List;
 
-import net.micwin.elysium.model.characters.User;
-import net.micwin.elysium.model.characters.User.Role;
-import net.micwin.elysium.model.characters.User.State;
+import net.micwin.elysium.entities.characters.User;
+import net.micwin.elysium.entities.characters.User.Role;
+import net.micwin.elysium.entities.characters.User.State;
 
 public class HibernateUserDao extends ElysiumHibernateDaoSupport<User> implements IUserDao {
 

@@ -38,12 +38,12 @@ package net.micwin.elysium.dao;
 import java.util.Collection;
 import java.util.Date;
 
-import net.micwin.elysium.model.NaniteGroup;
-import net.micwin.elysium.model.appliances.Utilization;
-import net.micwin.elysium.model.characters.Avatar;
-import net.micwin.elysium.model.characters.Race;
-import net.micwin.elysium.model.characters.User;
-import net.micwin.elysium.model.galaxy.Position;
+import net.micwin.elysium.entities.NaniteGroup;
+import net.micwin.elysium.entities.appliances.Utilization;
+import net.micwin.elysium.entities.characters.Avatar;
+import net.micwin.elysium.entities.characters.Race;
+import net.micwin.elysium.entities.characters.User;
+import net.micwin.elysium.entities.galaxy.Position;
 
 /**
  * A dao to locate and save avatars.

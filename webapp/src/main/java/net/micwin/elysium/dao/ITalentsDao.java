@@ -2,8 +2,8 @@ package net.micwin.elysium.dao;
 
 import java.util.Collection;
 
-import net.micwin.elysium.model.appliances.Utilization;
-import net.micwin.elysium.model.characters.Race;
+import net.micwin.elysium.entities.appliances.Utilization;
+import net.micwin.elysium.entities.characters.Race;
 
 public interface ITalentsDao extends IElysiumEntityDao<Utilization> {
 

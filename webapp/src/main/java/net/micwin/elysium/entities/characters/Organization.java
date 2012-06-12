@@ -1,4 +1,4 @@
-package net.micwin.elysium.model;
+package net.micwin.elysium.entities.characters;
 
 /*
  (c) 2012 micwin.net
@@ -34,46 +34,18 @@ package net.micwin.elysium.model;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
-import javax.persistence.Column;
 import javax.persistence.Entity;
 
-/**
- * A sysparam is a persistent value that musst get transported between shutdown
- * and startup.
- * 
- * @author MicWin
- * 
- */
+import net.micwin.elysium.entities.ElysiumEntity;
+
 @Entity
-public class SysParam extends ElysiumEntity {
+public final class Organization extends ElysiumEntity {
 
-	public SysParam() {
-	}
-
-	@Column(unique = true)
-	String key;
-	String value;
-
-	public String getKey() {
-		return key;
-	}
-
-	public void setKey(String key) {
-		this.key = key;
-	}
-
-	public String getValue() {
-		return value;
-	}
-
-	public void setValue(String value) {
-		this.value = value;
+	public Organization() {
 	}
 
 	@Override
 	public Class getBaseClass() {
-
-		return SysParam.class;
+		return Organization.class;
 	}
-
 }

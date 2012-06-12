@@ -1,4 +1,4 @@
-package net.micwin.elysium.model.galaxy;
+package net.micwin.elysium.entities.replication;
 
 /*
  (c) 2012 micwin.net
@@ -34,62 +34,36 @@ package net.micwin.elysium.model.galaxy;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
-
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import net.micwin.elysium.entities.appliances.Utilization;
 
 /**
- * A sector of space, spanning 100 x 100 lightyears.
+ * A complexity calculator to compute complexity upon the assumption that each
+ * element adds not only complexity to the whole. but raises complexity to add
+ * another element.
  * 
  * @author MicWin
  * 
  */
-@SuppressWarnings("rawtypes")
-@Entity
-public class Sector extends Environment {
+public class SimpleComplexityCalculator implements IComplexityCalculator {
 
-	@OneToMany(cascade = CascadeType.ALL)
-	private List<SolarSystem> solarSystems = new LinkedList<SolarSystem>();
+	private final long base;
 
-	private int systemCount;
-
-	public Sector() {
-	}
-
-	public void setSolarSystems(List<SolarSystem> solarSystems) {
-		this.solarSystems = solarSystems;
-		setSystemCount(solarSystems.size());
-	}
-
-	public List<SolarSystem> getSolarSystems() {
-		return solarSystems;
-	}
-
-	public void addSolarSystem(SolarSystem solarSystem) {
-		solarSystems.add(solarSystem);
-		setSystemCount(solarSystems.size());
-
-	}
-
-	public void setSystemCount(int systemCount) {
-		this.systemCount = systemCount;
-	}
-
-	public int getSystemCount() {
-		return systemCount;
+	public SimpleComplexityCalculator(long base) {
+		this.base = base;
 	}
 
 	@Override
-	public String getName() {
-		return "Sector " + getPosition().getX() + "/" + getPosition().getY();
+	public long calculateComplexity(BluePrint bluePrint) {
+
+		long componentCount = 0;
+		long complexitySum = 0;
+
+		for (Utilization utilization : bluePrint.getUtilizations()) {
+			componentCount += utilization.getCount();
+			complexitySum += utilization.getAppliance().getBaseComplexity() * utilization.getLevel();
+		}
+
+		return Math.round(complexitySum * Math.pow(1.01, componentCount));
 	}
-	
-	@Override
-	public Class getBaseClass() {
-		return Sector.class;
-	}
+
 }

@@ -1,4 +1,4 @@
-package net.micwin.elysium.model.galaxy;
+package net.micwin.elysium.entities.galaxy;
 
 /*
  (c) 2012 micwin.net
@@ -34,22 +34,27 @@ package net.micwin.elysium.model.galaxy;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
+import javax.persistence.Entity;
 
-import net.micwin.elysium.model.ElysiumEntity;
+@Entity
+public final class Planet extends Environment {
 
-/**
- * Dummy entity. Dont use that.
- * 
- * @author MicWin
- * 
- */
-public class Galaxy extends ElysiumEntity {
+	public Planet() {
+	}
 
-	protected Galaxy() {
+	@Override
+	public String toString() {
+		return "Planet " + getPosition().composePath(null).toString();
+	}
+
+	@Override
+	public String getName() {
+		return "Planet " + getPosition().getX() + "/" + getPosition().getY() + " @ "
+						+ getPosition().getEnvironment().getName();
 	}
 
 	@Override
 	public Class getBaseClass() {
-		return Galaxy.class;
+		return Planet.class;
 	}
 }

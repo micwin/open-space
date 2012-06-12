@@ -1,4 +1,4 @@
-package net.micwin.elysium.model.characters;
+package net.micwin.elysium.entities.galaxy;
 
 /*
  (c) 2012 micwin.net
@@ -34,18 +34,62 @@ package net.micwin.elysium.model.characters;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
+
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 
-import net.micwin.elysium.model.ElysiumEntity;
-
+/**
+ * A sector of space, spanning 100 x 100 lightyears.
+ * 
+ * @author MicWin
+ * 
+ */
+@SuppressWarnings("rawtypes")
 @Entity
-public final class Organization extends ElysiumEntity {
+public class Sector extends Environment {
 
-	public Organization() {
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<SolarSystem> solarSystems = new LinkedList<SolarSystem>();
+
+	private int systemCount;
+
+	public Sector() {
+	}
+
+	public void setSolarSystems(List<SolarSystem> solarSystems) {
+		this.solarSystems = solarSystems;
+		setSystemCount(solarSystems.size());
+	}
+
+	public List<SolarSystem> getSolarSystems() {
+		return solarSystems;
+	}
+
+	public void addSolarSystem(SolarSystem solarSystem) {
+		solarSystems.add(solarSystem);
+		setSystemCount(solarSystems.size());
+
+	}
+
+	public void setSystemCount(int systemCount) {
+		this.systemCount = systemCount;
+	}
+
+	public int getSystemCount() {
+		return systemCount;
 	}
 
 	@Override
+	public String getName() {
+		return "Sector " + getPosition().getX() + "/" + getPosition().getY();
+	}
+	
+	@Override
 	public Class getBaseClass() {
-		return Organization.class;
+		return Sector.class;
 	}
 }

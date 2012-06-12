@@ -2,8 +2,8 @@ package net.micwin.elysium.bpo;
 
 import java.util.Collection;
 
-import net.micwin.elysium.model.galaxy.Environment;
-import net.micwin.elysium.model.gates.Gate;
+import net.micwin.elysium.entities.galaxy.Environment;
+import net.micwin.elysium.entities.gates.Gate;
 
 /**
  * The bpo to handle gates.

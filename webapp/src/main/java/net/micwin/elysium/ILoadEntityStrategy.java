@@ -38,7 +38,7 @@ package net.micwin.elysium;
 import java.io.Serializable;
 import java.util.List;
 
-import net.micwin.elysium.model.ElysiumEntity;
+import net.micwin.elysium.entities.ElysiumEntity;
 
 /**
  * Strategy to load a bunch of entities. For use in conjunction with anonymous

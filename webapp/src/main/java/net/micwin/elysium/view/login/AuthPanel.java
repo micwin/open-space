@@ -36,7 +36,7 @@ package net.micwin.elysium.view.login;
  */
 
 import net.micwin.elysium.bpo.UserBPO;
-import net.micwin.elysium.model.characters.User;
+import net.micwin.elysium.entities.characters.User;
 import net.micwin.elysium.view.BasePanel;
 import net.micwin.elysium.view.homepage.HomePage;
 

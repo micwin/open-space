@@ -39,9 +39,9 @@ import java.text.NumberFormat;
 import java.util.Collection;
 
 import net.micwin.elysium.bpo.XpBPO;
-import net.micwin.elysium.model.appliances.Utilization;
-import net.micwin.elysium.model.characters.Avatar;
-import net.micwin.elysium.model.characters.User;
+import net.micwin.elysium.entities.appliances.Utilization;
+import net.micwin.elysium.entities.characters.Avatar;
+import net.micwin.elysium.entities.characters.User;
 import net.micwin.elysium.view.BasePage;
 
 import org.apache.wicket.Component;

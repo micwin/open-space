@@ -37,9 +37,9 @@ package net.micwin.elysium.dao;
 
 import java.util.List;
 
-import net.micwin.elysium.model.NaniteGroup;
-import net.micwin.elysium.model.galaxy.Environment;
-import net.micwin.elysium.model.galaxy.Position;
+import net.micwin.elysium.entities.NaniteGroup;
+import net.micwin.elysium.entities.galaxy.Environment;
+import net.micwin.elysium.entities.galaxy.Position;
 
 public interface INanitesDao extends IElysiumEntityDao<NaniteGroup> {
 

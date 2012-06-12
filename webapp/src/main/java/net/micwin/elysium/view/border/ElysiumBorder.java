@@ -35,7 +35,7 @@ package net.micwin.elysium.view.border;
 
  */
 
-import net.micwin.elysium.model.characters.User;
+import net.micwin.elysium.entities.characters.User;
 import net.micwin.elysium.view.ElysiumSession;
 import net.micwin.elysium.view.login.AuthPanel;
 import net.micwin.elysium.view.nav.NavPanel;

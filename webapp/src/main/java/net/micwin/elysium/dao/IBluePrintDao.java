@@ -36,9 +36,9 @@ package net.micwin.elysium.dao;
  */
 import java.util.List;
 
-import net.micwin.elysium.model.appliances.Utilization;
-import net.micwin.elysium.model.characters.Avatar;
-import net.micwin.elysium.model.replication.BluePrint;
+import net.micwin.elysium.entities.appliances.Utilization;
+import net.micwin.elysium.entities.characters.Avatar;
+import net.micwin.elysium.entities.replication.BluePrint;
 
 /**
  * The dao to insert, locate, update and delete blue prints.

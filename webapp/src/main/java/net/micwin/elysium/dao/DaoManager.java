@@ -36,16 +36,16 @@ package net.micwin.elysium.dao;
  */
 import java.util.HashMap;
 
-import net.micwin.elysium.model.ElysiumEntity;
-import net.micwin.elysium.model.NaniteGroup;
-import net.micwin.elysium.model.SysParam;
-import net.micwin.elysium.model.appliances.Utilization;
-import net.micwin.elysium.model.characters.Avatar;
-import net.micwin.elysium.model.characters.User;
-import net.micwin.elysium.model.galaxy.Galaxy;
-import net.micwin.elysium.model.gates.Gate;
-import net.micwin.elysium.model.replication.BluePrint;
-import net.micwin.elysium.model.replication.BuildPlan;
+import net.micwin.elysium.entities.ElysiumEntity;
+import net.micwin.elysium.entities.NaniteGroup;
+import net.micwin.elysium.entities.SysParam;
+import net.micwin.elysium.entities.appliances.Utilization;
+import net.micwin.elysium.entities.characters.Avatar;
+import net.micwin.elysium.entities.characters.User;
+import net.micwin.elysium.entities.galaxy.Galaxy;
+import net.micwin.elysium.entities.gates.Gate;
+import net.micwin.elysium.entities.replication.BluePrint;
+import net.micwin.elysium.entities.replication.BuildPlan;
 
 public class DaoManager {
 

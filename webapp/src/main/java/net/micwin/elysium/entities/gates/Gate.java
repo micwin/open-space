@@ -1,10 +1,10 @@
-package net.micwin.elysium.model.gates;
+package net.micwin.elysium.entities.gates;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 
-import net.micwin.elysium.model.ElysiumEntity;
-import net.micwin.elysium.model.galaxy.Position;
+import net.micwin.elysium.entities.ElysiumEntity;
+import net.micwin.elysium.entities.galaxy.Position;
 
 @Entity
 public class Gate extends ElysiumEntity {

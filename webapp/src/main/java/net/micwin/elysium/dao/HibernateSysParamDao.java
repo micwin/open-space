@@ -37,7 +37,7 @@ package net.micwin.elysium.dao;
 
 import java.util.List;
 
-import net.micwin.elysium.model.SysParam;
+import net.micwin.elysium.entities.SysParam;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

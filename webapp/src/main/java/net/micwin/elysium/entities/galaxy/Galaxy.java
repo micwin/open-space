@@ -1,4 +1,4 @@
-package net.micwin.elysium.model.galaxy;
+package net.micwin.elysium.entities.galaxy;
 
 /*
  (c) 2012 micwin.net
@@ -34,52 +34,22 @@ package net.micwin.elysium.model.galaxy;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
-import javax.persistence.Embedded;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
 
-import net.micwin.elysium.model.ElysiumEntity;
+import net.micwin.elysium.entities.ElysiumEntity;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+/**
+ * Dummy entity. Dont use that.
+ * 
+ * @author MicWin
+ * 
+ */
+public class Galaxy extends ElysiumEntity {
 
-@MappedSuperclass
-public abstract class Environment extends ElysiumEntity {
-
-	private static final Logger L = LoggerFactory.getLogger(Environment.class);
-
-	@Embedded
-	private Position position;
-
-	private int width;
-
-	private int height;
-
-
-	public void setWidth(int width) {
-		this.width = width;
+	protected Galaxy() {
 	}
 
-	public int getWidth() {
-		return width;
+	@Override
+	public Class getBaseClass() {
+		return Galaxy.class;
 	}
-
-	public void setHeight(int height) {
-		this.height = height;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public void setPosition(Position position) {
-		this.position = position;
-	}
-
-	public Position getPosition() {
-		return position;
-	}
-
-	@Transient
-	public abstract String getName();
 }

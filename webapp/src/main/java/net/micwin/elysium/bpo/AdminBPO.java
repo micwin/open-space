@@ -35,11 +35,11 @@ package net.micwin.elysium.bpo;
 
  */
 
-import net.micwin.elysium.model.GalaxyTimer;
-import net.micwin.elysium.model.SysParam;
-import net.micwin.elysium.model.characters.User;
-import net.micwin.elysium.model.characters.User.Role;
-import net.micwin.elysium.model.characters.User.State;
+import net.micwin.elysium.entities.GalaxyTimer;
+import net.micwin.elysium.entities.SysParam;
+import net.micwin.elysium.entities.characters.User;
+import net.micwin.elysium.entities.characters.User.Role;
+import net.micwin.elysium.entities.characters.User.State;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

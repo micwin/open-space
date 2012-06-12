@@ -37,8 +37,8 @@ package net.micwin.elysium.view.storyline;
 
 import org.apache.wicket.RestartResponseException;
 
-import net.micwin.elysium.model.characters.Avatar;
-import net.micwin.elysium.model.characters.User;
+import net.micwin.elysium.entities.characters.Avatar;
+import net.micwin.elysium.entities.characters.User;
 import net.micwin.elysium.view.BasePage;
 
 public class StoryLinePage extends BasePage {

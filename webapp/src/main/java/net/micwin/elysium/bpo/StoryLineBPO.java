@@ -1,6 +1,6 @@
 package net.micwin.elysium.bpo;
 
-import net.micwin.elysium.model.characters.Avatar;
+import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.view.storyline.StoryLineItem;
 
 /*

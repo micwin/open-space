@@ -1,4 +1,4 @@
-package net.micwin.elysium.model.replication;
+package net.micwin.elysium.entities;
 
 /*
  (c) 2012 micwin.net
@@ -33,59 +33,65 @@ package net.micwin.elysium.model.replication;
  Sie sollten eine Kopie der GNU Affero Public License zusammen mit diesem
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
- */
-
-import java.util.List;
-
+ */import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
-import net.micwin.elysium.model.ElysiumEntity;
-import net.micwin.elysium.model.characters.Avatar;
+import net.micwin.elysium.entities.galaxy.Position;
 
+/**
+ * A pile of nanites.
+ * 
+ * @author MicWin
+ * 
+ */
 @Entity
-public class BuildPlan extends ElysiumEntity {
+public class NaniteGroup extends ElysiumEntity {
 
-	@OneToOne
-	private BluePrint blueprint;
+	public enum State {
 
-	@OneToOne
-	private Component componentInBuild;
-
-	@OneToMany
-	private List<Component> builtComponents;
-
-	public BuildPlan() {
+		IDLE, REPLICATING;
 	}
 
-	public void setBlueprint(BluePrint blueprint) {
-		this.blueprint = blueprint;
+	public NaniteGroup() {
 	}
 
-	public BluePrint getBlueprint() {
-		return blueprint;
+	@Embedded
+	private Position position;
+
+	@Column
+	private long naniteCount;
+
+	@Column
+	private State state = State.IDLE;
+
+	public void setPosition(Position position) {
+		this.position = position;
 	}
 
-	public void setComponentInBuild(Component componentInBuild) {
-		this.componentInBuild = componentInBuild;
+	public Position getPosition() {
+		return position;
 	}
 
-	public Component getComponentInBuild() {
-		return componentInBuild;
+	public void setNaniteCount(long count) {
+		this.naniteCount = count;
+
 	}
 
-	public List<Component> getBuiltComponents() {
-		return builtComponents;
+	public long getNaniteCount() {
+		return naniteCount;
 	}
 
-	public void setBuiltComponents(List<Component> builtComponents) {
-		this.builtComponents = builtComponents;
+	public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
 	}
 
 	@Override
-	public Class<BuildPlan> getBaseClass() {
-		return BuildPlan.class;
-	};
-
+	public Class getBaseClass() {
+		return NaniteGroup.class;
+	}
 }

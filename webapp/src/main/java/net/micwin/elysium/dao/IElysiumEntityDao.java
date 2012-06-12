@@ -34,7 +34,7 @@ package net.micwin.elysium.dao;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
-import net.micwin.elysium.model.ElysiumEntity;
+import net.micwin.elysium.entities.ElysiumEntity;
 
 public interface IElysiumEntityDao<T extends ElysiumEntity> {
 

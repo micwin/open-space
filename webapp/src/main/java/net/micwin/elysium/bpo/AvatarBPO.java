@@ -44,16 +44,16 @@ import java.util.List;
 
 import net.micwin.elysium.Constants;
 import net.micwin.elysium.MessageKeys;
-import net.micwin.elysium.model.NaniteGroup;
-import net.micwin.elysium.model.appliances.Utilization;
-import net.micwin.elysium.model.characters.Avatar;
-import net.micwin.elysium.model.characters.Race;
-import net.micwin.elysium.model.characters.User;
-import net.micwin.elysium.model.galaxy.Planet;
-import net.micwin.elysium.model.galaxy.Position;
-import net.micwin.elysium.model.galaxy.Sector;
-import net.micwin.elysium.model.galaxy.SolarSystem;
-import net.micwin.elysium.model.replication.BluePrint;
+import net.micwin.elysium.entities.NaniteGroup;
+import net.micwin.elysium.entities.appliances.Utilization;
+import net.micwin.elysium.entities.characters.Avatar;
+import net.micwin.elysium.entities.characters.Race;
+import net.micwin.elysium.entities.characters.User;
+import net.micwin.elysium.entities.galaxy.Planet;
+import net.micwin.elysium.entities.galaxy.Position;
+import net.micwin.elysium.entities.galaxy.Sector;
+import net.micwin.elysium.entities.galaxy.SolarSystem;
+import net.micwin.elysium.entities.replication.BluePrint;
 
 public class AvatarBPO extends BaseBPO {
 

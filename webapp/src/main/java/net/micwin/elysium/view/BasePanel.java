@@ -34,7 +34,7 @@ package net.micwin.elysium.view;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
-import net.micwin.elysium.model.characters.User;
+import net.micwin.elysium.entities.characters.User;
 
 import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.panel.Panel;

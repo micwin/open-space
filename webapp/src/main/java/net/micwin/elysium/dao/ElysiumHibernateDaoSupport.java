@@ -37,7 +37,8 @@ package net.micwin.elysium.dao;
 
 import java.util.List;
 
-import net.micwin.elysium.model.ElysiumEntity;
+import net.micwin.elysium.entities.ElysiumEntity;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;

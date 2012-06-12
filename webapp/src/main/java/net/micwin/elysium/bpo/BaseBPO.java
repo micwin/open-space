@@ -44,10 +44,10 @@ import net.micwin.elysium.dao.INanitesDao;
 import net.micwin.elysium.dao.ISysParamDao;
 import net.micwin.elysium.dao.ITalentsDao;
 import net.micwin.elysium.dao.IUserDao;
-import net.micwin.elysium.model.GalaxyTimer;
-import net.micwin.elysium.model.appliances.Appliance;
-import net.micwin.elysium.model.appliances.Utilization;
-import net.micwin.elysium.model.characters.Avatar;
+import net.micwin.elysium.entities.GalaxyTimer;
+import net.micwin.elysium.entities.appliances.Appliance;
+import net.micwin.elysium.entities.appliances.Utilization;
+import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.view.ElysiumApplication;
 
 import org.apache.wicket.Application;

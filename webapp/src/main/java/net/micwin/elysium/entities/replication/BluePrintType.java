@@ -1,4 +1,4 @@
-package net.micwin.elysium.model.replication;
+package net.micwin.elysium.entities.replication;
 
 /*
  (c) 2012 micwin.net
@@ -35,8 +35,8 @@ package net.micwin.elysium.model.replication;
 
  */
 
-import net.micwin.elysium.model.appliances.Appliance;
-import net.micwin.elysium.model.galaxy.Planet;
+import net.micwin.elysium.entities.appliances.Appliance;
+import net.micwin.elysium.entities.galaxy.Planet;
 
 /**
  * Specifies the type of a blueprint, ie holds applications and technology this

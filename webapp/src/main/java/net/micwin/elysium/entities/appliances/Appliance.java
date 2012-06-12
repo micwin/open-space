@@ -1,4 +1,4 @@
-package net.micwin.elysium.model;
+package net.micwin.elysium.entities.appliances;
 
 /*
  (c) 2012 micwin.net
@@ -33,65 +33,54 @@ package net.micwin.elysium.model;
  Sie sollten eine Kopie der GNU Affero Public License zusammen mit diesem
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
- */import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-
-import net.micwin.elysium.model.galaxy.Position;
-
+ */
 /**
- * A pile of nanites.
+ * An application is a certain use or action or ability an Avatar / NPC or an
+ * object can do.
  * 
  * @author MicWin
  * 
  */
-@Entity
-public class NaniteGroup extends ElysiumEntity {
+public enum Appliance {
 
-	public enum State {
+	/**
+	 * Designing buildings. Architecture defines how complex buildings may be,
+	 * that is, how many modules (Utilizations of appliances) may be part of a
+	 * building.
+	 */
+	ARCHITECTURE(1),
 
-		IDLE, REPLICATING;
+	/**
+	 * Building living rooms for Avatars, NPCs and PCs.
+	 */
+	HABITATS (1),
+	
+	/**
+	 * Max number of nanite groups.
+	 */
+	NANITE_MANAGEMENT(1),
+	
+	/**
+	 * The ability to optimize nanite processes.
+	 */
+	NANITE_OPTIMIZATION (1) ;
+
+	private int baseComplexity;
+
+	/**
+	 * The complexity that one unit / component of level 1 of this appliance
+	 * has.
+	 * 
+	 * @return
+	 */
+
+	private Appliance(int baseComplexity) {
+		this.baseComplexity = baseComplexity;
+
 	}
 
-	public NaniteGroup() {
+	public int getBaseComplexity() {
+		return baseComplexity;
 	}
 
-	@Embedded
-	private Position position;
-
-	@Column
-	private long naniteCount;
-
-	@Column
-	private State state = State.IDLE;
-
-	public void setPosition(Position position) {
-		this.position = position;
-	}
-
-	public Position getPosition() {
-		return position;
-	}
-
-	public void setNaniteCount(long count) {
-		this.naniteCount = count;
-
-	}
-
-	public long getNaniteCount() {
-		return naniteCount;
-	}
-
-	public State getState() {
-		return state;
-	}
-
-	public void setState(State state) {
-		this.state = state;
-	}
-
-	@Override
-	public Class getBaseClass() {
-		return NaniteGroup.class;
-	}
 }

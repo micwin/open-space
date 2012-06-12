@@ -39,8 +39,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.micwin.elysium.model.ElysiumEntity;
-import net.micwin.elysium.model.characters.User;
+import net.micwin.elysium.entities.ElysiumEntity;
+import net.micwin.elysium.entities.characters.User;
 
 import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.request.Request;

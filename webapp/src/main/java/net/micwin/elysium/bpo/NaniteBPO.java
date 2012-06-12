@@ -1,9 +1,9 @@
 package net.micwin.elysium.bpo;
 
-import net.micwin.elysium.model.NaniteGroup;
-import net.micwin.elysium.model.appliances.Appliance;
-import net.micwin.elysium.model.appliances.Utilization;
-import net.micwin.elysium.model.gates.Gate;
+import net.micwin.elysium.entities.NaniteGroup;
+import net.micwin.elysium.entities.appliances.Appliance;
+import net.micwin.elysium.entities.appliances.Utilization;
+import net.micwin.elysium.entities.gates.Gate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

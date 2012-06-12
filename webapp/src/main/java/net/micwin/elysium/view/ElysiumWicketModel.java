@@ -1,7 +1,7 @@
 package net.micwin.elysium.view;
 
 import net.micwin.elysium.dao.DaoManager;
-import net.micwin.elysium.model.ElysiumEntity;
+import net.micwin.elysium.entities.ElysiumEntity;
 
 import org.apache.wicket.model.LoadableDetachableModel;
 

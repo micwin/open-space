@@ -1,9 +1,9 @@
 package net.micwin.elysium.bpo;
 
-import net.micwin.elysium.model.galaxy.Planet;
-import net.micwin.elysium.model.galaxy.Position;
-import net.micwin.elysium.model.galaxy.Sector;
-import net.micwin.elysium.model.galaxy.SolarSystem;
+import net.micwin.elysium.entities.galaxy.Planet;
+import net.micwin.elysium.entities.galaxy.Position;
+import net.micwin.elysium.entities.galaxy.Sector;
+import net.micwin.elysium.entities.galaxy.SolarSystem;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

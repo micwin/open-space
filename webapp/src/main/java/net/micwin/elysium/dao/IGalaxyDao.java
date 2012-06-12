@@ -35,10 +35,10 @@ package net.micwin.elysium.dao;
 
  */
 
-import net.micwin.elysium.model.galaxy.Galaxy;
-import net.micwin.elysium.model.galaxy.Planet;
-import net.micwin.elysium.model.galaxy.Sector;
-import net.micwin.elysium.model.galaxy.SolarSystem;
+import net.micwin.elysium.entities.galaxy.Galaxy;
+import net.micwin.elysium.entities.galaxy.Planet;
+import net.micwin.elysium.entities.galaxy.Sector;
+import net.micwin.elysium.entities.galaxy.SolarSystem;
 
 public interface IGalaxyDao extends IElysiumEntityDao<Galaxy> {
 

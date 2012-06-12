@@ -41,9 +41,9 @@ import java.util.List;
 
 import net.micwin.elysium.bpo.AvatarBPO;
 import net.micwin.elysium.dao.DaoManager;
-import net.micwin.elysium.model.characters.User;
-import net.micwin.elysium.model.replication.BluePrint;
-import net.micwin.elysium.model.replication.BuildPlan;
+import net.micwin.elysium.entities.characters.User;
+import net.micwin.elysium.entities.replication.BluePrint;
+import net.micwin.elysium.entities.replication.BuildPlan;
 import net.micwin.elysium.view.BasePage;
 
 import org.apache.commons.collections.ComparatorUtils;

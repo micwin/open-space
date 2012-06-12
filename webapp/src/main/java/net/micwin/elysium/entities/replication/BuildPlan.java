@@ -1,4 +1,4 @@
-package net.micwin.elysium.model.appliances;
+package net.micwin.elysium.entities.replication;
 
 /*
  (c) 2012 micwin.net
@@ -34,53 +34,58 @@ package net.micwin.elysium.model.appliances;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
-/**
- * An application is a certain use or action or ability an Avatar / NPC or an
- * object can do.
- * 
- * @author MicWin
- * 
- */
-public enum Appliance {
 
-	/**
-	 * Designing buildings. Architecture defines how complex buildings may be,
-	 * that is, how many modules (Utilizations of appliances) may be part of a
-	 * building.
-	 */
-	ARCHITECTURE(1),
+import java.util.List;
 
-	/**
-	 * Building living rooms for Avatars, NPCs and PCs.
-	 */
-	HABITATS (1),
-	
-	/**
-	 * Max number of nanite groups.
-	 */
-	NANITE_MANAGEMENT(1),
-	
-	/**
-	 * The ability to optimize nanite processes.
-	 */
-	NANITE_OPTIMIZATION (1) ;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
-	private int baseComplexity;
+import net.micwin.elysium.entities.ElysiumEntity;
+import net.micwin.elysium.entities.characters.Avatar;
 
-	/**
-	 * The complexity that one unit / component of level 1 of this appliance
-	 * has.
-	 * 
-	 * @return
-	 */
+@Entity
+public class BuildPlan extends ElysiumEntity {
 
-	private Appliance(int baseComplexity) {
-		this.baseComplexity = baseComplexity;
+	@OneToOne
+	private BluePrint blueprint;
 
+	@OneToOne
+	private Component componentInBuild;
+
+	@OneToMany
+	private List<Component> builtComponents;
+
+	public BuildPlan() {
 	}
 
-	public int getBaseComplexity() {
-		return baseComplexity;
+	public void setBlueprint(BluePrint blueprint) {
+		this.blueprint = blueprint;
 	}
+
+	public BluePrint getBlueprint() {
+		return blueprint;
+	}
+
+	public void setComponentInBuild(Component componentInBuild) {
+		this.componentInBuild = componentInBuild;
+	}
+
+	public Component getComponentInBuild() {
+		return componentInBuild;
+	}
+
+	public List<Component> getBuiltComponents() {
+		return builtComponents;
+	}
+
+	public void setBuiltComponents(List<Component> builtComponents) {
+		this.builtComponents = builtComponents;
+	}
+
+	@Override
+	public Class<BuildPlan> getBaseClass() {
+		return BuildPlan.class;
+	};
 
 }

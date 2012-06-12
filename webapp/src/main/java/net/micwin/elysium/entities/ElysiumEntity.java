@@ -1,4 +1,4 @@
-package net.micwin.elysium.model;
+package net.micwin.elysium.entities;
 
 /*
  (c) 2012 micwin.net
@@ -40,7 +40,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
-import net.micwin.elysium.model.characters.Avatar;
+import net.micwin.elysium.entities.characters.Avatar;
 
 @MappedSuperclass
 public abstract class ElysiumEntity {

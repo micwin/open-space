@@ -7,10 +7,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.micwin.elysium.model.NaniteGroup;
-import net.micwin.elysium.model.galaxy.Environment;
-import net.micwin.elysium.model.galaxy.Position;
-import net.micwin.elysium.model.gates.Gate;
+import net.micwin.elysium.entities.NaniteGroup;
+import net.micwin.elysium.entities.galaxy.Environment;
+import net.micwin.elysium.entities.galaxy.Position;
+import net.micwin.elysium.entities.gates.Gate;
 import net.micwin.elysium.view.BasePage;
 import net.micwin.elysium.view.ElysiumWicketModel;
 import net.micwin.elysium.view.EmptyLink;

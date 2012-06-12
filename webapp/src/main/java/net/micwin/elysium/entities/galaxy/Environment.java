@@ -1,4 +1,4 @@
-package net.micwin.elysium.model.replication;
+package net.micwin.elysium.entities.galaxy;
 
 /*
  (c) 2012 micwin.net
@@ -34,36 +34,52 @@ package net.micwin.elysium.model.replication;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
-import net.micwin.elysium.model.appliances.Utilization;
+import javax.persistence.Embedded;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
-/**
- * A complexity calculator to compute complexity upon the assumption that each
- * element adds not only complexity to the whole. but raises complexity to add
- * another element.
- * 
- * @author MicWin
- * 
- */
-public class SimpleComplexityCalculator implements IComplexityCalculator {
+import net.micwin.elysium.entities.ElysiumEntity;
 
-	private final long base;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-	public SimpleComplexityCalculator(long base) {
-		this.base = base;
+@MappedSuperclass
+public abstract class Environment extends ElysiumEntity {
+
+	private static final Logger L = LoggerFactory.getLogger(Environment.class);
+
+	@Embedded
+	private Position position;
+
+	private int width;
+
+	private int height;
+
+
+	public void setWidth(int width) {
+		this.width = width;
 	}
 
-	@Override
-	public long calculateComplexity(BluePrint bluePrint) {
-
-		long componentCount = 0;
-		long complexitySum = 0;
-
-		for (Utilization utilization : bluePrint.getUtilizations()) {
-			componentCount += utilization.getCount();
-			complexitySum += utilization.getAppliance().getBaseComplexity() * utilization.getLevel();
-		}
-
-		return Math.round(complexitySum * Math.pow(1.01, componentCount));
+	public int getWidth() {
+		return width;
 	}
 
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setPosition(Position position) {
+		this.position = position;
+	}
+
+	public Position getPosition() {
+		return position;
+	}
+
+	@Transient
+	public abstract String getName();
 }

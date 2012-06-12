@@ -2,9 +2,9 @@ package net.micwin.elysium.dao;
 
 import java.util.Collection;
 
-import net.micwin.elysium.model.galaxy.Environment;
-import net.micwin.elysium.model.galaxy.Position;
-import net.micwin.elysium.model.gates.Gate;
+import net.micwin.elysium.entities.galaxy.Environment;
+import net.micwin.elysium.entities.galaxy.Position;
+import net.micwin.elysium.entities.gates.Gate;
 
 public interface IGatesDao extends IElysiumEntityDao<Gate> {
 

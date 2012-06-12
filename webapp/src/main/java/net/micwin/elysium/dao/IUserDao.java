@@ -34,9 +34,9 @@ package net.micwin.elysium.dao;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
-import net.micwin.elysium.model.characters.User;
-import net.micwin.elysium.model.characters.User.Role;
-import net.micwin.elysium.model.characters.User.State;
+import net.micwin.elysium.entities.characters.User;
+import net.micwin.elysium.entities.characters.User.Role;
+import net.micwin.elysium.entities.characters.User.State;
 
 /**
  * A dao to access user entities.

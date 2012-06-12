@@ -1,10 +1,10 @@
-package net.micwin.elysium.model.characters;
+package net.micwin.elysium.entities.characters;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import net.micwin.elysium.model.appliances.Appliance;
-import net.micwin.elysium.model.appliances.Utilization;
+import net.micwin.elysium.entities.appliances.Appliance;
+import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.view.storyline.StoryLineItem;
 
 public enum Race {

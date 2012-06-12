@@ -38,7 +38,7 @@ import java.util.Iterator;
 
 import net.micwin.elysium.ILoadEntityStrategy;
 import net.micwin.elysium.dao.DaoManager;
-import net.micwin.elysium.model.ElysiumEntity;
+import net.micwin.elysium.entities.ElysiumEntity;
 
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;

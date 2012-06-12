@@ -34,7 +34,7 @@ package net.micwin.elysium.dao;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
-import net.micwin.elysium.model.SysParam;
+import net.micwin.elysium.entities.SysParam;
 
 public interface ISysParamDao extends IElysiumEntityDao<SysParam> {
 

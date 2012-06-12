@@ -1,4 +1,4 @@
-package net.micwin.elysium.model.replication;
+package net.micwin.elysium.entities;
 
 /*
  (c) 2012 micwin.net
@@ -35,18 +35,25 @@ package net.micwin.elysium.model.replication;
 
  */
 
-import javax.persistence.Entity;
+import java.util.Date;
 
-import net.micwin.elysium.model.ElysiumEntity;
+/**
+ * A timer that manages the time of the simulated galaxy.
+ * 
+ * @author MicWin
+ * 
+ */
+public class GalaxyTimer {
 
-@Entity
-public class Component extends ElysiumEntity {
+	private long realTimeStartMillis;
+	private long galaxyTimeStartMillis;
 
-	protected Component() {
+	public GalaxyTimer(long galaxyStartMillis) {
+		this.galaxyTimeStartMillis = galaxyStartMillis;
+		realTimeStartMillis = System.currentTimeMillis();
 	}
 
-	@Override
-	public Class getBaseClass() {
-		return Component.class;
+	public Date getGalaxyDate() {
+		return new Date(galaxyTimeStartMillis - realTimeStartMillis + System.currentTimeMillis());
 	}
 }
