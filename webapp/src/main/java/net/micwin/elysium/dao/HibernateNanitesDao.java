@@ -64,4 +64,5 @@ public class HibernateNanitesDao extends ElysiumHibernateDaoSupport<NaniteGroup>
 		List<NaniteGroup> result = lookupHql(" from NaniteGroup where position.environment.id=" + environment.getId());
 		return result;
 	}
+
 }

@@ -17,10 +17,6 @@ public class HibernateTalentsDao extends ElysiumHibernateDaoSupport<Utilization>
 		return Utilization.class;
 	}
 
-	@Override
-	public void saveAll(Iterable<Utilization> elements) {
-		super.saveAll(elements);
-	}
 
 	@Override
 	public Collection<Utilization> createInitialTalents(Race race) {

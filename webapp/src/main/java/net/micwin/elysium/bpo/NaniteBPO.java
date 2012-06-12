@@ -3,6 +3,7 @@ package net.micwin.elysium.bpo;
 import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.appliances.Appliance;
 import net.micwin.elysium.entities.appliances.Utilization;
+import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.gates.Gate;
 
 import org.slf4j.Logger;
@@ -57,6 +58,8 @@ public class NaniteBPO extends BaseBPO {
 	 */
 	private static final int BASE_MAX_NANITES_GROUP_SIZE = 256;
 
+	private static final int NOOB_PROTECTION_LEVEL = 5;
+
 	public void doubleCount(NaniteGroup nanitesGroup) {
 
 		Utilization naniteManagement = getTalent(nanitesGroup.getController(), Appliance.NANITE_MANAGEMENT);
@@ -70,7 +73,7 @@ public class NaniteBPO extends BaseBPO {
 							+ nanitesGroup.getNaniteCount() + " to " + newCount);
 		}
 		nanitesGroup.setNaniteCount(newCount);
-		getNanitesDao().save(nanitesGroup);
+		getNanitesDao().save(nanitesGroup, true);
 	}
 
 	/**
@@ -88,13 +91,122 @@ public class NaniteBPO extends BaseBPO {
 		}
 
 		naniteGroup.setPosition(targetGate.getPosition());
-		getNanitesDao().save(naniteGroup);
+		getNanitesDao().save(naniteGroup, true);
 		return true;
 	}
 
 	public String rectifyGateAdress(String gateAdress) {
 		L.warn("gate adress '' not rectified - not yet implemented!");
 		return gateAdress;
+	}
+
+	/**
+	 * Two nanite groups battling each other.
+	 * 
+	 * @param attacker
+	 * @param defender
+	 */
+	public void attack(NaniteGroup attacker, NaniteGroup defender) {
+
+		// first - can they attack?
+
+		if (!canAttack(attacker, defender)) {
+
+			return;
+		}
+
+		double attackerStrength = calculateAttackStrength(attacker);
+		double defenderStrength = calculateAttackStrength(defender);
+
+		doDamage(defender, attackerStrength);
+		doDamage(attacker, defenderStrength);
+		getNanitesDao().flush();
+
+	}
+
+	private void doDamage(NaniteGroup naniteGroup, double damage) {
+
+		long newCount = Math.round(naniteGroup.getNaniteCount() - damage / 4);
+
+		if (L.isDebugEnabled()) {
+
+			L.debug("dealing  " + damage + "damage to naniteGroup " + naniteGroup.getController().getName() + "@"
+							+ naniteGroup.getPosition().getEnvironment());
+		}
+
+		if ((naniteGroup.getController().getLevel() < NOOB_PROTECTION_LEVEL) && (newCount < 1)) {
+			// newbie protection
+			if (L.isDebugEnabled())
+				L.debug("engaging newbie protection  lvl < " + NOOB_PROTECTION_LEVEL);
+			newCount = 1;
+		}
+
+		if (newCount > 0) {
+			naniteGroup.setNaniteCount(newCount);
+
+			if (L.isDebugEnabled()) {
+				L.debug(" - resulting in a new size of " + newCount);
+			}
+
+			getNanitesDao().save(naniteGroup, false);
+		} else {
+
+			L.debug(" - resulting in killing group");
+			kill(naniteGroup);
+		}
+		getNanitesDao().flush();
+	}
+
+	protected void kill(NaniteGroup naniteGroup) {
+		Avatar controller = naniteGroup.getController();
+
+		controller.getNanites().remove(naniteGroup);
+		getAvatarDao().save(controller, false);
+		getNanitesDao().delete(naniteGroup, false);
+	}
+
+	/**
+	 * calculates the active attack strength of specified attacker.
+	 * 
+	 * @param attacker
+	 * @return
+	 */
+	public double calculateAttackStrength(NaniteGroup attacker) {
+
+		return attacker.getNaniteCount();
+	}
+
+	/**
+	 * Checks wether frist nanite group can attack latter.
+	 * 
+	 * @param attacker
+	 * @param defender
+	 * @return
+	 */
+	public boolean canAttack(NaniteGroup attacker, NaniteGroup defender) {
+
+		// same owner?
+		if (attacker.getController().equals(defender.getController())) {
+			L.debug("cannot attack - same controller");
+			return false;
+		}
+
+		// same environment?
+		if (!attacker.getPosition().getEnvironment().equals(defender.getPosition().getEnvironment())) {
+			L.debug("cannot attack - different environment");
+			return false;
+		}
+
+		// noob protection?
+
+		if (new AvatarBPO().isLevelBasedProtectionProtectionEngaged(attacker.getController(), defender.getController())) {
+			L.debug("cannot attack - avatar level based protection");
+			return false;
+		}
+
+		// well then, ok, anything ready.
+		L.debug("yes - can attack.");
+		return true;
 	}
 
 }

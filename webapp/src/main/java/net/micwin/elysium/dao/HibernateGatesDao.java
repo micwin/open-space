@@ -35,7 +35,7 @@ public class HibernateGatesDao extends ElysiumHibernateDaoSupport<Gate> implemen
 		Gate newGate = new Gate();
 		newGate.setPosition(position);
 		newGate.setGateAdress(createUniqueGateAdress());
-		super.save(newGate);
+		super.save(newGate, true);
 		L.debug("created gate " + newGate.toString());
 
 	}

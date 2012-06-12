@@ -57,4 +57,22 @@ public final class Planet extends Environment {
 	public Class getBaseClass() {
 		return Planet.class;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+
+		if (this == obj)
+			return true;
+	
+		try {
+
+			Planet other = (Planet) obj;
+
+			return other.getId().equals(this.getId());
+
+		} catch (ClassCastException e) {
+			return false;
+		}
+
+	}
 }

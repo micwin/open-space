@@ -76,7 +76,7 @@ public class AvatarBPO extends BaseBPO {
 
 		Collection<Utilization> talentsList = getTalentsDao().createInitialTalents(race);
 
-		getTalentsDao().saveAll(talentsList);
+		getTalentsDao().save(talentsList, true);
 
 		Sector thinnestSector = getGalaxyDao().findThinnestSector();
 
@@ -104,7 +104,7 @@ public class AvatarBPO extends BaseBPO {
 						position, birthDate, nanites);
 
 		initialNanitesGroup.setController(avatar);
-		getNanitesDao().save(initialNanitesGroup);
+		getNanitesDao().save(initialNanitesGroup, true);
 		return null;
 	}
 
@@ -145,11 +145,21 @@ public class AvatarBPO extends BaseBPO {
 		return getAvatarDao().findByUser(user);
 	}
 
-	protected GalaxyBPO getGalaxyBPO() {
-		return new GalaxyBPO();
-	}
-
 	public List<BluePrint> getBluePrintsUsableBy(Avatar avatar) {
 		return getBluePrintDao().findByController(avatar);
+	}
+
+	/**
+	 * Checks wether or not there is a noob protection activated between both
+	 * parties. This is the case if the level of one of both is double as high
+	 * as the other one.
+	 * 
+	 * @param first
+	 * @param second
+	 * @return
+	 */
+	public boolean isLevelBasedProtectionProtectionEngaged(Avatar first, Avatar second) {
+		double ratio = (1.0 * second.getLevel()) / first.getLevel();
+		return ratio <= 0.5 || ratio >= 2.0;
 	}
 }

@@ -56,7 +56,7 @@ public interface INanitesDao extends IElysiumEntityDao<NaniteGroup> {
 	 * 
 	 * @param nanitesGroup
 	 */
-	void save(NaniteGroup nanitesGroup);
+	void save(NaniteGroup nanitesGroup, boolean flush);
 
 	/**
 	 * Returns all NaniteGroups that are located in the specified environment.
@@ -65,5 +65,12 @@ public interface INanitesDao extends IElysiumEntityDao<NaniteGroup> {
 	 * @return
 	 */
 	List<NaniteGroup> findByEnvironment(Environment environment);
+
+	/**
+	 * Deletes a nanite group from the database.
+	 * 
+	 * @param naniteGroup
+	 */
+	void delete(NaniteGroup naniteGroup, boolean flush);
 
 }

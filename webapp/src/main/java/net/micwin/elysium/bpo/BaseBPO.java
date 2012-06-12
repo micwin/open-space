@@ -131,5 +131,11 @@ public class BaseBPO {
 		return null;
 
 	}
+	
+
+	protected GalaxyBPO getGalaxyBPO() {
+		return new GalaxyBPO();
+	}
+
 
 }

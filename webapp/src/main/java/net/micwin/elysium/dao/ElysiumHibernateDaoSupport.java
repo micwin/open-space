@@ -47,9 +47,13 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> extend
 
 	private static final Logger L = LoggerFactory.getLogger(ElysiumHibernateDaoSupport.class);
 
-	protected void saveAll(Iterable<T> elements) {
+	public void save(Iterable<T> elements, boolean flush) {
 		for (T element : elements) {
-			save(element);
+			save(element, false);
+		}
+
+		if (flush) {
+			getHibernateTemplate().flush();
 		}
 
 	}
@@ -62,14 +66,24 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> extend
 		return list;
 	}
 
-	public final void save(T entity) {
+	public final void save(T entity, boolean flush) {
 		if (L.isDebugEnabled()) {
 			L.debug("saved entity '" + getEntityClass().getSimpleName() + "' (" + entity.getId() + ")");
 		}
 
 		getHibernateTemplate().saveOrUpdate(entity);
-		getHibernateTemplate().flush();
+
+		if (flush) {
+			getHibernateTemplate().flush();
+		}
 		return;
+	}
+
+	public void delete(T entity, boolean flush) {
+		getHibernateTemplate().delete(entity);
+
+		if (flush)
+			getHibernateTemplate().flush();
 	}
 
 	public final T loadById(Long id) {
@@ -77,5 +91,12 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> extend
 	}
 
 	protected abstract Class<T> getEntityClass();
+
+	/**
+	 * Flushes changes in memory to the db.
+	 */
+	public void flush() {
+		getHibernateTemplate().flush();
+	}
 
 }

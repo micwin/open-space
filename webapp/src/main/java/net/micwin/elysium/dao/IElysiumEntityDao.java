@@ -52,4 +52,26 @@ public interface IElysiumEntityDao<T extends ElysiumEntity> {
 	 * @return
 	 */
 	Class<T> getEntityClass();
+
+	/**
+	 * Saves specified entity.
+	 * 
+	 * @param entity
+	 * @param flush
+	 */
+	void save(T entity, boolean flush);
+
+	/**
+	 * Saves all those entities and flushes at the end, if desired.
+	 * 
+	 * @param entities
+	 * @param flush
+	 */
+	public void save(Iterable<T> elements, boolean flush);
+
+	/**
+	 * Flushes changes in memory to the db.
+	 */
+	void flush();
+
 }

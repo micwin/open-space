@@ -50,7 +50,7 @@ public class HibernateBluePrintDao extends ElysiumHibernateDaoSupport<BluePrint>
 		bluePrint.setName(nameKey);
 		bluePrint.setOwner(owner);
 		bluePrint.setUtilizations(Arrays.asList(utilizations));
-		super.save(bluePrint);
+		super.save(bluePrint, true);
 		return bluePrint;
 	}
 

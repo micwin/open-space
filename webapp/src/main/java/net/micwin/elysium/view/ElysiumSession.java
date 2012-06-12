@@ -148,4 +148,11 @@ public class ElysiumSession extends WebSession {
 				model.detach();
 		}
 	}
+
+	@Override
+	public void invalidate() {
+		user = null;
+		ctx.clear();
+		super.invalidate();
+	}
 }

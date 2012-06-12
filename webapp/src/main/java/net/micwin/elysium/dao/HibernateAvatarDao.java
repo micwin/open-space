@@ -102,7 +102,7 @@ public class HibernateAvatarDao extends ElysiumHibernateDaoSupport<Avatar> imple
 
 		avatar.setNanites(nanites);
 
-		save(avatar);
+		save(avatar, true);
 
 		return avatar;
 	}

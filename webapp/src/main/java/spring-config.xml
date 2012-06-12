@@ -49,21 +49,21 @@
 		</property>
 		<property name="annotatedClasses">
 			<list>
-				<value>net.micwin.elysium.model.appliances.Utilization</value>
-				<value>net.micwin.elysium.model.characters.Avatar</value>
-				<value>net.micwin.elysium.model.characters.Organization</value>
-				<value>net.micwin.elysium.model.characters.User</value>
-				<value>net.micwin.elysium.model.ElysiumEntity</value>
-				<value>net.micwin.elysium.model.galaxy.Environment</value>
-				<value>net.micwin.elysium.model.galaxy.Planet</value>
-				<value>net.micwin.elysium.model.galaxy.Sector</value>
-				<value>net.micwin.elysium.model.galaxy.SolarSystem</value>
-				<value>net.micwin.elysium.model.replication.BluePrint</value>
-				<value>net.micwin.elysium.model.SysParam</value>
-				<value>net.micwin.elysium.model.replication.BuildPlan</value>
-				<value>net.micwin.elysium.model.replication.Component</value>
-				<value>net.micwin.elysium.model.NaniteGroup</value>
-				<value>net.micwin.elysium.model.gates.Gate</value>
+				<value>net.micwin.elysium.entities.appliances.Utilization</value>
+				<value>net.micwin.elysium.entities.characters.Avatar</value>
+				<value>net.micwin.elysium.entities.characters.Organization</value>
+				<value>net.micwin.elysium.entities.characters.User</value>
+				<value>net.micwin.elysium.entities.ElysiumEntity</value>
+				<value>net.micwin.elysium.entities.galaxy.Environment</value>
+				<value>net.micwin.elysium.entities.galaxy.Planet</value>
+				<value>net.micwin.elysium.entities.galaxy.Sector</value>
+				<value>net.micwin.elysium.entities.galaxy.SolarSystem</value>
+				<value>net.micwin.elysium.entities.replication.BluePrint</value>
+				<value>net.micwin.elysium.entities.SysParam</value>
+				<value>net.micwin.elysium.entities.replication.BuildPlan</value>
+				<value>net.micwin.elysium.entities.replication.Component</value>
+				<value>net.micwin.elysium.entities.NaniteGroup</value>
+				<value>net.micwin.elysium.entities.gates.Gate</value>
 			</list>
 		</property>
 	</bean>

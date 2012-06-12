@@ -72,12 +72,38 @@ public class HibernateGalaxyDao extends HibernateDaoSupport implements IGalaxyDa
 
 	@Override
 	public Galaxy loadById(Long id) {
-		throw new IllegalStateException("Galax yis a dummy entity. you cant load it.");
+		throw new IllegalStateException("Galaxy is a dummy entity. you cant load it.");
 	}
 
 	@Override
 	public Class<Galaxy> getEntityClass() {
 		return Galaxy.class;
+	}
+
+	@Override
+	public void save(Galaxy entity, boolean flush) {
+		super.getHibernateTemplate().saveOrUpdate(entity);
+		if (flush) {
+			flush();
+		}
+
+	}
+
+	@Override
+	public void save(Iterable<Galaxy> elements, boolean flush) {
+
+		for (Galaxy galaxy : elements) {
+			save(galaxy, false);
+		}
+
+		if (flush)
+			flush();
+
+	}
+
+	@Override
+	public void flush() {
+		getHibernateTemplate().flush();
 	}
 
 }

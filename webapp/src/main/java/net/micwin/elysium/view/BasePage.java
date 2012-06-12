@@ -145,7 +145,7 @@ public abstract class BasePage extends WebPage {
 	 * @param components
 	 */
 	protected void addToContentBody(Collection<Component> components) {
-		addToContentBody((Component[]) components.toArray());
+		addToContentBody(components.toArray(new Component[components.size()]));
 
 	}
 

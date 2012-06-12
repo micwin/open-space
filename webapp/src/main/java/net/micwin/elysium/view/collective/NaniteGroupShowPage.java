@@ -8,23 +8,19 @@ import java.util.LinkedList;
 import java.util.List;
 
 import net.micwin.elysium.entities.NaniteGroup;
-import net.micwin.elysium.entities.galaxy.Environment;
 import net.micwin.elysium.entities.galaxy.Position;
 import net.micwin.elysium.entities.gates.Gate;
 import net.micwin.elysium.view.BasePage;
 import net.micwin.elysium.view.ElysiumWicketModel;
 import net.micwin.elysium.view.EmptyLink;
-import net.micwin.elysium.view.jumpGates.UsePlanetaryGatePage;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RefreshingView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.util.string.StringValue;
 
 public class NaniteGroupShowPage extends BasePage {
 
@@ -119,6 +115,7 @@ public class NaniteGroupShowPage extends BasePage {
 	private Component getOtherNanitesTable(NaniteGroup scanningGroup) {
 
 		Iterator<NaniteGroup> nanites = getScannerBPO().scanForOtherNaniteGroups(scanningGroup).iterator();
+		final ElysiumWicketModel<NaniteGroup> scanningGroupModel = new ElysiumWicketModel<NaniteGroup>(scanningGroup);
 
 		final List<IModel> models = new ArrayList<IModel>();
 		while (nanites.hasNext()) {
@@ -132,17 +129,40 @@ public class NaniteGroupShowPage extends BasePage {
 			}
 
 			protected void populateItem(Item item) {
-				final IModel naniteGroupModel = item.getModel();
-				final NaniteGroup nanitesGroup = (NaniteGroup) naniteGroupModel.getObject();
+				final ElysiumWicketModel<NaniteGroup> naniteGroupModel = (ElysiumWicketModel<NaniteGroup>) item
+								.getModel();
+				NaniteGroup naniteGroup = (NaniteGroup) naniteGroupModel.getObject();
 
-				Position position = nanitesGroup.getPosition();
+				Position position = naniteGroup.getPosition();
 				Gate gate = getGateBPO().getGateAt(position.getEnvironment());
 				String gateCode = gate.getGateAdress();
 
-				item.add(new Label("owner", new Model(nanitesGroup.getController().getName())));
-				item.add(new Label("strength", new Model(nanitesGroup.getNaniteCount())));
-				item.add(new Label("commands", ""));
+				item.add(new Label("owner", new Model(naniteGroup.getController().getName())));
+				item.add(new Label("strength", new Model(naniteGroup.getNaniteCount())));
+				item.add(getAttackCommandLink(scanningGroupModel, naniteGroupModel));
 
+			}
+
+			private Component getAttackCommandLink(final ElysiumWicketModel<NaniteGroup> scanningGroupModel,
+							final ElysiumWicketModel<NaniteGroup> naniteGroupModel) {
+				Link link = new Link("attack") {
+
+					@Override
+					public void onClick() {
+
+						NaniteGroup attacker = scanningGroupModel.getEntity();
+						NaniteGroup defender = naniteGroupModel.getEntity();
+						if (getNanitesBPO().canAttack(attacker, defender)) {
+							getNanitesBPO().attack(attacker, defender);
+							setResponsePage(NaniteGroupShowPage.class);
+						} else {
+							error("cannot attack");
+						}
+					}
+				};
+
+				link.setVisible(getNanitesBPO().canAttack(scanningGroupModel.getEntity(), naniteGroupModel.getEntity()));
+				return link;
 			}
 		};
 

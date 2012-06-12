@@ -1,4 +1,5 @@
 package net.micwin.elysium.dao;
+
 /*
  (c) 2012 micwin.net
 
@@ -45,13 +46,6 @@ import net.micwin.elysium.entities.replication.BuildPlan;
  * 
  */
 public interface IBuildPlanDao extends IElysiumEntityDao<BuildPlan> {
-
-	/**
-	 * stores / saves / updates a (new) build plan entity.
-	 * 
-	 * @param buildPlan
-	 */
-	void save(BuildPlan buildPlan);
 
 	/**
 	 * Returns all build plans of one avatar.

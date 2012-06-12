@@ -52,4 +52,5 @@ public class HibernateBuildPlanDao extends ElysiumHibernateDaoSupport<BuildPlan>
 
 		return lookupHql("from BuildPlan where controller.id=" + avatar.getId());
 	}
+
 }
