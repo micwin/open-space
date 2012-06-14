@@ -58,7 +58,7 @@ public class NaniteBPO extends BaseBPO {
 	 */
 	private static final int BASE_MAX_NANITES_GROUP_SIZE = 256;
 
-	private static final int NOOB_PROTECTION_LEVEL = 5;
+	private static final int NOOB_PROTECTION_LEVEL = 15;
 
 	public void doubleCount(NaniteGroup nanitesGroup) {
 
@@ -109,28 +109,46 @@ public class NaniteBPO extends BaseBPO {
 	public void attack(NaniteGroup attacker, NaniteGroup defender) {
 
 		// first - can they attack?
-
 		if (!canAttack(attacker, defender)) {
 
 			return;
 		}
 
-		double attackerStrength = calculateAttackStrength(attacker);
-		double defenderStrength = calculateAttackStrength(defender);
+		long attackerStrength = calculateAttackStrength(attacker);
+		long defenderStrength = calculateAttackStrength(defender);
 
-		doDamage(defender, attackerStrength);
-		doDamage(attacker, defenderStrength);
-		getNanitesDao().flush();
+		long damageDoneToDefender = doDamage(defender, attackerStrength);
+		long damageDoneToAttacker = doDamage(attacker, defenderStrength);
+
+		if (L.isDebugEnabled()) {
+			L.debug("damage effective done to defender : " + damageDoneToDefender);
+			L.debug("damage effective done to attacker : " + damageDoneToAttacker);
+
+		}
+
+		// distribute xp
+
+		XpBPO xpBPO = new XpBPO();
+
+		long attackerXp = xpBPO.computeXpForDamage(attacker, defender, damageDoneToDefender);
+		long defenderXp = xpBPO.computeXpForDamage(defender, attacker, damageDoneToAttacker);
+
+		xpBPO.raiseXp(attacker.getController(), attackerXp);
+		xpBPO.raiseXp(defender.getController(), defenderXp);
+
+		flush();
 
 	}
 
-	private void doDamage(NaniteGroup naniteGroup, double damage) {
+	private long doDamage(NaniteGroup naniteGroup, long damage) {
 
-		long newCount = Math.round(naniteGroup.getNaniteCount() - damage / 4);
+		long newCount = Math.round(naniteGroup.getNaniteCount() - damage);
+
+		long damageDone = damage / 4;
 
 		if (L.isDebugEnabled()) {
 
-			L.debug("dealing  " + damage + "damage to naniteGroup " + naniteGroup.getController().getName() + "@"
+			L.debug("dealing  " + damage + " damage to naniteGroup " + naniteGroup.getController().getName() + "@"
 							+ naniteGroup.getPosition().getEnvironment());
 		}
 
@@ -142,6 +160,7 @@ public class NaniteBPO extends BaseBPO {
 		}
 
 		if (newCount > 0) {
+			damageDone = naniteGroup.getNaniteCount() - newCount;
 			naniteGroup.setNaniteCount(newCount);
 
 			if (L.isDebugEnabled()) {
@@ -152,9 +171,15 @@ public class NaniteBPO extends BaseBPO {
 		} else {
 
 			L.debug(" - resulting in killing group");
+
+			damageDone = naniteGroup.getNaniteCount();
 			kill(naniteGroup);
 		}
-		getNanitesDao().flush();
+
+		flush();
+
+		return damageDone;
+
 	}
 
 	protected void kill(NaniteGroup naniteGroup) {
@@ -171,9 +196,9 @@ public class NaniteBPO extends BaseBPO {
 	 * @param attacker
 	 * @return
 	 */
-	public double calculateAttackStrength(NaniteGroup attacker) {
+	public long calculateAttackStrength(NaniteGroup attacker) {
 
-		return attacker.getNaniteCount();
+		return attacker.getNaniteCount() / 4;
 	}
 
 	/**

@@ -131,11 +131,16 @@ public class BaseBPO {
 		return null;
 
 	}
-	
 
 	protected GalaxyBPO getGalaxyBPO() {
 		return new GalaxyBPO();
 	}
 
+	/**
+	 * Flushes all data changes being cached in memory to the database.
+	 */
+	protected void flush() {
+		getSysParamDao().flush();
+	}
 
 }

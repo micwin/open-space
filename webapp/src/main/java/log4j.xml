@@ -9,7 +9,7 @@
 		</layout>
 	</appender>
 
-	<logger name="net.micwin.elysium.bpo.NaniteBPO">
+	<logger name="net.micwin.elysium.bpo">
 		<level value="DEBUG" />
 	</logger>
 

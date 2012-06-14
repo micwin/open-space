@@ -42,6 +42,10 @@ import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import net.micwin.elysium.Constants;
 import net.micwin.elysium.MessageKeys;
 import net.micwin.elysium.entities.NaniteGroup;
@@ -56,6 +60,9 @@ import net.micwin.elysium.entities.galaxy.SolarSystem;
 import net.micwin.elysium.entities.replication.BluePrint;
 
 public class AvatarBPO extends BaseBPO {
+
+
+	private static final Logger L = LoggerFactory.getLogger(AvatarBPO.class);
 
 	public AvatarBPO() {
 	}

@@ -13,6 +13,7 @@ import net.micwin.elysium.entities.gates.Gate;
 import net.micwin.elysium.view.BasePage;
 import net.micwin.elysium.view.ElysiumWicketModel;
 import net.micwin.elysium.view.EmptyLink;
+import net.micwin.elysium.view.jumpGates.UsePlanetaryGatePage;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
@@ -24,6 +25,7 @@ import org.apache.wicket.model.Model;
 
 public class NaniteGroupShowPage extends BasePage {
 
+	static final String NE_NANITE_GROUP = "naniteGroup";
 	/**
 	 * 
 	 */
@@ -40,8 +42,9 @@ public class NaniteGroupShowPage extends BasePage {
 		ensureLoggedIn();
 		ensureStoryShown();
 
-		NaniteGroup group = getElysiumSession().getNamedEntity("naniteGroup");
+		NaniteGroup group = getElysiumSession().getNamedEntity(NE_NANITE_GROUP);
 
+		final ElysiumWicketModel<NaniteGroup> groupModel = new ElysiumWicketModel<NaniteGroup>(group);
 		addToContentBody(new Label("groupPosition", "" + group.getPosition().getEnvironment()));
 
 		String gateCode = getGateBPO().getGateAt(group.getPosition().getEnvironment()).getGateAdress();
@@ -49,6 +52,26 @@ public class NaniteGroupShowPage extends BasePage {
 		addToContentBody(new Label("groupGate", "" + gateCode));
 		addToContentBody(new Label("groupCount", NumberFormat.getIntegerInstance().format(group.getNaniteCount())));
 		addToContentBody(new Label("groupState", "" + group.getState()));
+		addToContentBody(new Link("doubleCount") {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -213962075156991317L;
+
+			@Override
+			public void onClick() {
+				getNanitesBPO().doubleCount(groupModel.getEntity());
+				setResponsePage(NaniteGroupShowPage.class);
+			}
+		});
+
+		addToContentBody(new Link<Gate>("jumpGate") {
+			public void onClick() {
+				getElysiumSession().setNamedEntity(NE_NANITE_GROUP, groupModel.getEntity());
+				setResponsePage(UsePlanetaryGatePage.class);
+			};
+		});
 
 		addToContentBody(composeLocalJumpItems(group));
 		addToContentBody(getOtherNanitesTable(group));

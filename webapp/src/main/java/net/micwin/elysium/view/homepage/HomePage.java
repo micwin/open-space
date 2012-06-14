@@ -98,7 +98,7 @@ public class HomePage extends BasePage {
 
 	protected Component composeXpEntry(Avatar avatar) {
 
-		long nextXp = new XpBPO().computeXpForLevel(avatar.getLevel() + 1, avatar.getPersonality());
+		long nextXp = new XpBPO().computeXpForLevel(avatar.getLevel() + 1);
 		NumberFormat nf = NumberFormat.getIntegerInstance(getLocale());
 		String labelString = nf.format(avatar.getXp()) + " / +" + nf.format(nextXp - avatar.getXp()) + " / "
 						+ avatar.getTalentPoints();

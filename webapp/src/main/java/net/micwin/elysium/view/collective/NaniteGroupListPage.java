@@ -56,7 +56,6 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RefreshingView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class NaniteGroupListPage extends BasePage {
@@ -73,6 +72,13 @@ public class NaniteGroupListPage extends BasePage {
 	@Override
 	protected void onInitialize() {
 		super.onInitialize();
+
+		if (getAvatar().getNanites().size() == 1) {
+
+			getElysiumSession().setNamedEntity(NaniteGroupShowPage.NE_NANITE_GROUP,
+							getAvatar().getNanites().iterator().next());
+			setResponsePage(NaniteGroupShowPage.class);
+		}
 
 		addToContentBody(getGroupsTable());
 	}
@@ -104,7 +110,9 @@ public class NaniteGroupListPage extends BasePage {
 				Gate gate = getGateBPO().getGateAt(position.getEnvironment());
 				String gateCode = gate.getGateAdress();
 
-				Label label = new Label("label", new Model(gateCode));
+				item.add(new Label("gateAdress", gateCode));
+
+				Label label = new Label("label", position.getEnvironment().toString());
 				Link<NaniteGroup> link = new Link<NaniteGroup>("groupPosition") {
 
 					@Override
