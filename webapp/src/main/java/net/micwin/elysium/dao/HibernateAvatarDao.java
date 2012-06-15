@@ -46,6 +46,7 @@ import net.micwin.elysium.entities.characters.Race;
 import net.micwin.elysium.entities.characters.User;
 import net.micwin.elysium.entities.galaxy.Position;
 
+import org.hibernate.LockMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

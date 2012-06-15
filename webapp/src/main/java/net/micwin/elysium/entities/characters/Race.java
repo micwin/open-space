@@ -11,7 +11,8 @@ public enum Race {
 	// MILITARY(StoryLineItem.LONE_WOLF),
 
 	NANITE(StoryLineItem.BOOTING, 1, Utilization.Factory.create(Appliance.NANITE_MANAGEMENT, 1), Utilization.Factory
-					.create(Appliance.NANITE_BATTLE, 1), Utilization.Factory.create(Appliance.NANITE_CLOAKING, 1));
+					.create(Appliance.NANITE_BATTLE, 1), Utilization.Factory.create(Appliance.NANITE_CLOAKING, 1),
+					Utilization.Factory.create(Appliance.NANITE_DAMAGE_CONTROL, 1));
 
 	// PRESERVER(StoryLineItem.NEW_HOPE);
 

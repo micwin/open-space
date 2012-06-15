@@ -142,15 +142,30 @@ public class NaniteBPO extends BaseBPO {
 
 	private long doDamage(NaniteGroup naniteGroup, long damage) {
 
-		long newCount = Math.round(naniteGroup.getNaniteCount() - damage);
+		double factor = 1;
 
-		long damageDone = damage / 4;
+		Utilization damageControl = new AvatarBPO().getTalent(naniteGroup.getController(),
+						Appliance.NANITE_DAMAGE_CONTROL);
 
 		if (L.isDebugEnabled()) {
 
 			L.debug("dealing  " + damage + " damage to naniteGroup " + naniteGroup.getController().getName() + "@"
-							+ naniteGroup.getPosition().getEnvironment());
+							+ naniteGroup.getPosition().getEnvironment() + " with damaage control="
+							+ (damageControl == null ? 0 : damageControl.getLevel()));
 		}
+
+		if (damageControl != null) {
+			factor *= Math.pow(0.9, damageControl.getLevel() - 1);
+		}
+
+		long damageDone = (long) (damage * factor);
+
+		if (L.isDebugEnabled()) {
+
+			L.debug("effective damage is " + damageDone);
+		}
+
+		long newCount = Math.round(naniteGroup.getNaniteCount() - damageDone);
 
 		if ((naniteGroup.getController().getLevel() < NOOB_PROTECTION_LEVEL) && (newCount < 1)) {
 			// newbie protection
@@ -198,7 +213,11 @@ public class NaniteBPO extends BaseBPO {
 	 */
 	public long calculateAttackStrength(NaniteGroup attacker) {
 
-		return attacker.getNaniteCount() / 4;
+		Utilization nanitesBattle = new AvatarBPO().getTalent(getAvatarDao().refresh(attacker.getController()),
+						Appliance.NANITE_BATTLE);
+
+		double factor = nanitesBattle == null ? 0.3 : Math.pow(1.1, nanitesBattle.getLevel() - 1);
+		return (long) (factor * attacker.getNaniteCount() / 4);
 	}
 
 	/**

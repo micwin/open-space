@@ -38,7 +38,9 @@ package net.micwin.elysium.dao;
 import java.util.List;
 
 import net.micwin.elysium.entities.ElysiumEntity;
+import net.micwin.elysium.entities.characters.Avatar;
 
+import org.hibernate.LockMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -97,6 +99,12 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> extend
 	 */
 	public void flush() {
 		getHibernateTemplate().flush();
+	}
+
+	public T refresh(T entity) {
+
+		getHibernateTemplate().refresh(entity, LockMode.OPTIMISTIC_FORCE_INCREMENT);
+		return entity;
 	}
 
 }

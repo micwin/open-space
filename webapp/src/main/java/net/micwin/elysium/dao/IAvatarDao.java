@@ -85,4 +85,13 @@ public interface IAvatarDao extends IElysiumEntityDao<Avatar> {
 	 * @return
 	 */
 	boolean nameExists(String name);
+
+	/**
+	 * Refetches (ie reloads) the specified avatar and insures on that way that
+	 * all references are present (preload problem).
+	 * 
+	 * @param controller
+	 * @return
+	 */
+	Avatar refresh(Avatar controller);
 }

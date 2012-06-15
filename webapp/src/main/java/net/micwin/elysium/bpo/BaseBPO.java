@@ -121,7 +121,6 @@ public class BaseBPO {
 	 * @return
 	 */
 	protected Utilization getTalent(Avatar person, Appliance appliance) {
-
 		for (Utilization talent : person.getTalents()) {
 			if (talent.getAppliance() == appliance) {
 				return talent;
