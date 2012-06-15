@@ -48,24 +48,29 @@ public enum Appliance {
 	 * that is, how many modules (Utilizations of appliances) may be part of a
 	 * building.
 	 */
-	ARCHITECTURE(1),
+	ARCHITECTURE(1, "Architektur", "Sollte man beherrschen wenn man Gebäude bauen will"),
 
 	/**
 	 * Building living rooms for Avatars, NPCs and PCs.
 	 */
-	HABITATS (1),
-	
-	/**
-	 * Max number of nanite groups.
-	 */
-	NANITE_MANAGEMENT(1),
-	
-	/**
-	 * The ability to optimize nanite processes.
-	 */
-	NANITE_OPTIMIZATION (1) ;
+	HABITATS(1, "Habitate",
+					"Wohnviertel in denen biologische Lebensformen eine kontrollierte Umwelt und Lebenserhaltung vorfinden."),
+
+	NANITE_MANAGEMENT(
+					1,
+					"Naniten-Management",
+					"Die Fähigkeit, Naniten zu kontrollieren. Je höher, desto mehr Nanitengruppen können gebildet werden und desto mehr Naniten kann eine einzelne Nanitengruppe enthalten."),
+
+	NANITE_BATTLE(1, "Naniten-Kampf", "Die Fähigkeit, mit anderen Naniten zu kämpfen"),
+
+	NANITE_CLOAKING(1, "Naniten-Tarnung",
+					"Die Fähigkeit, sich selbst vor anderen Naniten zu verstecken und versteckte Naniten aufzuspüren");
 
 	private int baseComplexity;
+
+	private String label;
+
+	private String description;
 
 	/**
 	 * The complexity that one unit / component of level 1 of this appliance
@@ -74,13 +79,23 @@ public enum Appliance {
 	 * @return
 	 */
 
-	private Appliance(int baseComplexity) {
+	private Appliance(int baseComplexity, String label, String description) {
 		this.baseComplexity = baseComplexity;
+		this.label = label;
+		this.description = description;
 
 	}
 
 	public int getBaseComplexity() {
 		return baseComplexity;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+
+	public String getDescription() {
+		return description;
 	}
 
 }

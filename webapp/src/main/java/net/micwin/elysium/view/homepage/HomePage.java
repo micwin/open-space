@@ -36,16 +36,30 @@ package net.micwin.elysium.view.homepage;
  */
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
+import net.micwin.elysium.bpo.AvatarBPO;
 import net.micwin.elysium.bpo.XpBPO;
+import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.User;
+import net.micwin.elysium.entities.galaxy.Position;
+import net.micwin.elysium.entities.gates.Gate;
 import net.micwin.elysium.view.BasePage;
+import net.micwin.elysium.view.ElysiumWicketModel;
+import net.micwin.elysium.view.collective.NaniteGroupShowPage;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.RefreshingView;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -79,21 +93,50 @@ public class HomePage extends BasePage {
 
 	private Component getTalents() {
 
-		StringBuilder builder = new StringBuilder();
-
 		Collection<Utilization> talents = getAvatar().getTalents();
 
 		if (L.isDebugEnabled()) {
 			L.debug("avatar " + getAvatar().getName() + " has  " + talents.size() + "talents");
 			L.debug("" + talents);
 		}
+
+		final List<IModel> models = new ArrayList<IModel>();
+
 		for (Utilization talent : talents) {
-			if (builder.length() > 1) {
-				builder.append(", ");
-			}
-			builder.append(talent.getAppliance().name()).append(" (").append(talent.getLevel()).append(")");
+			models.add(new ElysiumWicketModel<Utilization>(talent));
 		}
-		return new Label("talents", builder.toString());
+
+		Component talentsComponent = new RefreshingView<Utilization>("talents") {
+			protected Iterator getItemModels() {
+				return models.iterator();
+			}
+
+			protected void populateItem(Item<Utilization> item) {
+				final IModel<Utilization> utilizationModel = item.getModel();
+				final Utilization utilization = (Utilization) utilizationModel.getObject();
+				item.add(new Label("label", utilization.getAppliance().getLabel()));
+				item.add(new Label("description", utilization.getAppliance().getDescription()));
+				item.add(new Label("level", NumberFormat.getIntegerInstance().format(utilization.getLevel())));
+				item.add(getRaiseLink(utilizationModel));
+			}
+
+			private Component getRaiseLink(final IModel<Utilization> utilizationModel) {
+				Link link = new Link("raise") {
+
+					@Override
+					public void onClick() {
+						new AvatarBPO().raiseTalent(getAvatar(), utilizationModel.getObject().getAppliance());
+						setResponsePage(HomePage.class);
+					}
+
+				};
+
+				link.setVisible(getAvatar().getTalentPoints() > 0);
+
+				return link;
+			}
+		};
+		return talentsComponent;
 	}
 
 	protected Component composeXpEntry(Avatar avatar) {

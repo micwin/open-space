@@ -49,6 +49,7 @@ import org.slf4j.LoggerFactory;
 import net.micwin.elysium.Constants;
 import net.micwin.elysium.MessageKeys;
 import net.micwin.elysium.entities.NaniteGroup;
+import net.micwin.elysium.entities.appliances.Appliance;
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.Race;
@@ -60,7 +61,6 @@ import net.micwin.elysium.entities.galaxy.SolarSystem;
 import net.micwin.elysium.entities.replication.BluePrint;
 
 public class AvatarBPO extends BaseBPO {
-
 
 	private static final Logger L = LoggerFactory.getLogger(AvatarBPO.class);
 
@@ -168,5 +168,17 @@ public class AvatarBPO extends BaseBPO {
 	public boolean isLevelBasedProtectionProtectionEngaged(Avatar first, Avatar second) {
 		double ratio = (1.0 * second.getLevel()) / first.getLevel();
 		return ratio <= 0.5 || ratio >= 2.0;
+	}
+
+	public void raiseTalent(Avatar avatar, Appliance appliance) {
+		if (avatar.getTalentPoints() < 1) {
+			return;
+		}
+
+		Utilization talent = getTalent(avatar, appliance);
+		talent.setLevel(talent.getLevel() + 1);
+		avatar.setTalentPoints(avatar.getTalentPoints() - 1);
+
+		getAvatarDao().save(avatar, true);
 	}
 }
