@@ -38,7 +38,6 @@ package net.micwin.elysium.dao;
 import java.util.List;
 
 import net.micwin.elysium.entities.ElysiumEntity;
-import net.micwin.elysium.entities.characters.Avatar;
 
 import org.hibernate.LockMode;
 import org.slf4j.Logger;
@@ -49,9 +48,15 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> extend
 
 	private static final Logger L = LoggerFactory.getLogger(ElysiumHibernateDaoSupport.class);
 
-	public void save(Iterable<T> elements, boolean flush) {
+	/**
+	 * Updates already existing entities.
+	 * 
+	 * @param elements
+	 * @param flush
+	 */
+	public void update(Iterable<T> elements, boolean flush) {
 		for (T element : elements) {
-			save(element, false);
+			update(element, false);
 		}
 
 		if (flush) {
@@ -68,12 +73,37 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> extend
 		return list;
 	}
 
-	public final void save(T entity, boolean flush) {
+	/**
+	 * Updates an already existing entities.
+	 * 
+	 * @param elements
+	 * @param flush
+	 */
+	public final void update(T entity, boolean flush) {
 		if (L.isDebugEnabled()) {
 			L.debug("saved entity '" + getEntityClass().getSimpleName() + "' (" + entity.getId() + ")");
 		}
+		getHibernateTemplate().merge(entity);
 
+		if (flush) {
+			getHibernateTemplate().flush();
+		}
+		return;
+	}
+
+	/**
+	 * inserts a new entity into database.
+	 * 
+	 * @param entity
+	 *            the entity to be inserted.
+	 * @param flush
+	 */
+	public final void insert(T entity, boolean flush) {
 		getHibernateTemplate().saveOrUpdate(entity);
+
+		if (L.isDebugEnabled()) {
+			L.debug("inserted entity '" + getEntityClass().getSimpleName() + "' (" + entity.getId() + ")");
+		}
 
 		if (flush) {
 			getHibernateTemplate().flush();
@@ -83,7 +113,6 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> extend
 
 	public void delete(T entity, boolean flush) {
 		getHibernateTemplate().delete(entity);
-
 		if (flush)
 			getHibernateTemplate().flush();
 	}

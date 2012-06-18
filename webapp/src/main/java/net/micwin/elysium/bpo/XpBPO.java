@@ -104,7 +104,7 @@ public class XpBPO extends BaseBPO {
 			L.debug("avatar changed level from " + oldLevel + " to " + avatar.getLevel() + " and gained "
 							+ (avatar.getLevel() - oldLevel) + " talent points");
 		}
-		getAvatarDao().save(avatar, false);
+		getAvatarDao().update(avatar, false);
 	}
 
 	/**

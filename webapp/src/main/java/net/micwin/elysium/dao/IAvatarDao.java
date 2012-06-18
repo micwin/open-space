@@ -94,4 +94,11 @@ public interface IAvatarDao extends IElysiumEntityDao<Avatar> {
 	 * @return
 	 */
 	Avatar refresh(Avatar controller);
+
+	/**
+	 * Removes an avatar from the database.
+	 * 
+	 * @param avatar
+	 */
+	void delete(Avatar avatar, boolean flush);
 }

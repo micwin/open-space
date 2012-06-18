@@ -49,14 +49,21 @@ public interface INanitesDao extends IElysiumEntityDao<NaniteGroup> {
 	 * @param nanitesCount
 	 * @return
 	 */
-	NaniteGroup create(int nanitesCount, Position position);
+	NaniteGroup create(long nanitesCount, Position position);
 
 	/**
-	 * Saves or uopdates the data in this naniteGroup.
+	 * uopdates the data in this naniteGroup.
 	 * 
 	 * @param nanitesGroup
 	 */
-	void save(NaniteGroup nanitesGroup, boolean flush);
+	void update(NaniteGroup nanitesGroup, boolean flush);
+
+	/**
+	 * inserts this naniteGroup.
+	 * 
+	 * @param nanitesGroup
+	 */
+	void insert(NaniteGroup nanitesGroup, boolean flush);
 
 	/**
 	 * Returns all NaniteGroups that are located in the specified environment.
@@ -72,5 +79,13 @@ public interface INanitesDao extends IElysiumEntityDao<NaniteGroup> {
 	 * @param naniteGroup
 	 */
 	void delete(NaniteGroup naniteGroup, boolean flush);
+
+	/**
+	 * Refreshes the data stored in this instance (especially if this instance
+	 * is lazily loaded).
+	 * 
+	 * @param naniteGroup
+	 */
+	NaniteGroup refresh(NaniteGroup naniteGroup);
 
 }

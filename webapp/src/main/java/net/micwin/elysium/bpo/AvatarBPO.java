@@ -83,7 +83,11 @@ public class AvatarBPO extends BaseBPO {
 
 		Collection<Utilization> talentsList = getTalentsDao().createInitialTalents(race);
 
-		getTalentsDao().save(talentsList, true);
+		for (Utilization utilization : talentsList) {
+
+			getTalentsDao().insert(utilization, true);
+
+		}
 
 		Sector thinnestSector = getGalaxyDao().findThinnestSector();
 
@@ -111,7 +115,7 @@ public class AvatarBPO extends BaseBPO {
 						position, birthDate, nanites);
 
 		initialNanitesGroup.setController(avatar);
-		getNanitesDao().save(initialNanitesGroup, true);
+		getNanitesDao().insert(initialNanitesGroup, true);
 		return null;
 	}
 
@@ -179,6 +183,7 @@ public class AvatarBPO extends BaseBPO {
 		talent.setLevel(talent.getLevel() + 1);
 		avatar.setTalentPoints(avatar.getTalentPoints() - 1);
 
-		getAvatarDao().save(avatar, true);
+		getAvatarDao().update(avatar, true);
 	}
+
 }

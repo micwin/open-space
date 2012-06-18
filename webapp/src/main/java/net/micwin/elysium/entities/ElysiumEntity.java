@@ -85,4 +85,27 @@ public abstract class ElysiumEntity {
 	public Avatar getController() {
 		return controller;
 	}
+
+	@Override
+	public int hashCode() {
+		return (int) (NaniteGroup.class.hashCode() + getId());
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+
+		if (obj == this)
+			return true;
+		if (obj == null)
+			return false;
+
+		try {
+
+			ElysiumEntity other = (ElysiumEntity) obj;
+			return other.id == id && other.getBaseClass().equals(getBaseClass());
+		} catch (ClassCastException cce) {
+
+			return false;
+		}
+	}
 }

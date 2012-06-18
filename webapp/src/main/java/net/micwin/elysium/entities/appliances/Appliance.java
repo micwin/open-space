@@ -59,7 +59,7 @@ public enum Appliance {
 	NANITE_MANAGEMENT(
 					1,
 					"Naniten-Management",
-					"Die Fähigkeit, Naniten zu kontrollieren. Pro Stufe verdoppelt sich sowohl die Menge der möglichen Nanitengruppen als auch die Menge der Naniten pro Gruppe."),
+					"Die Fähigkeit, Naniten zu kontrollieren. Pro Stufe verdoppelt sich die Gesamtmenge der beherrschbaren Naniten; die Anzahl der maximalen Gruppen erhöht sich um 1 je Stufe."),
 
 	NANITE_BATTLE(1, "Naniten-Kampf",
 					"Die Fähigkeit, andere Naniten anzugreifen. Pro Stufe wächst der Schaden jedes angreifenden Nanits um 10%."),
@@ -68,7 +68,7 @@ public enum Appliance {
 					"Die Fähigkeit, erlittenen Schaden zu verhindern. Pro Stufe mindert sich der erlittene Schaden um 10%."),
 
 	NANITE_CLOAKING(1, "Naniten-Tarnung",
-					"Die Fähigkeit, sich selbst vor anderen Naniten zu verstecken und versteckte Naniten aufzuspüren");
+					"Die Fähigkeit, sich selbst vor anderen Naniten zu verstecken und versteckte Naniten aufzuspüren (nyi)");
 
 	private int baseComplexity;
 

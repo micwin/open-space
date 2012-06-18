@@ -94,4 +94,5 @@ public class NaniteGroup extends ElysiumEntity {
 	public Class getBaseClass() {
 		return NaniteGroup.class;
 	}
+
 }

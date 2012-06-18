@@ -40,6 +40,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.micwin.elysium.dao.DaoManager;
+import net.micwin.elysium.entities.ElysiumEntity;
 import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.characters.User;
 import net.micwin.elysium.entities.galaxy.Environment;
@@ -128,6 +129,29 @@ public class NaniteGroupListPage extends BasePage {
 				item.add(new Label("groupState", new Model(nanitesGroup.getState())));
 				item.add(getDoubleCountLink(naniteGroupModel, countModel));
 				item.add(getGateLink(naniteGroupModel));
+
+				item.add(getSplitLink(naniteGroupModel));
+
+			}
+
+			protected Link getSplitLink(final IModel<NaniteGroup> naniteGroupModel) {
+				Link link = new Link("split") {
+
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = -213962075156991317L;
+
+					@Override
+					public void onClick() {
+						getNanitesBPO().split(naniteGroupModel.getObject());
+						setResponsePage(NaniteGroupShowPage.class);
+					}
+				};
+
+				link.setVisible((naniteGroupModel.getObject().getNaniteCount() > 1)
+								&& getNanitesBPO().canRaiseGroupCount(naniteGroupModel.getObject().getController()));
+				return link;
 			}
 
 			private Component getGateLink(final IModel<NaniteGroup> naniteGroupModel) {

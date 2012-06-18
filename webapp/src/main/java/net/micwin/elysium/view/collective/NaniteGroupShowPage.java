@@ -52,7 +52,23 @@ public class NaniteGroupShowPage extends BasePage {
 		addToContentBody(new Label("groupGate", "" + gateCode));
 		addToContentBody(new Label("groupCount", NumberFormat.getIntegerInstance().format(group.getNaniteCount())));
 		addToContentBody(new Label("groupState", "" + group.getState()));
-		addToContentBody(new Link("doubleCount") {
+		addToContentBody(getDoubleCountLink(groupModel));
+
+		addToContentBody(new Link<Gate>("jumpGate") {
+			public void onClick() {
+				getElysiumSession().setNamedEntity(NE_NANITE_GROUP, groupModel.getEntity());
+				setResponsePage(UsePlanetaryGatePage.class);
+			};
+		});
+
+		addToContentBody(composeLocalJumpItems(group));
+		addToContentBody(getOtherNanitesTable(group));
+		addToContentBody(getSplitLink(groupModel));
+
+	}
+
+	protected Link getDoubleCountLink(final ElysiumWicketModel<NaniteGroup> groupModel) {
+		Link link = new Link("doubleCount") {
 
 			/**
 			 * 
@@ -64,18 +80,29 @@ public class NaniteGroupShowPage extends BasePage {
 				getNanitesBPO().doubleCount(groupModel.getEntity());
 				setResponsePage(NaniteGroupShowPage.class);
 			}
-		});
+		};
 
-		addToContentBody(new Link<Gate>("jumpGate") {
+		return link;
+	}
+
+	protected Link getSplitLink(final ElysiumWicketModel<NaniteGroup> groupModel) {
+		Link link = new Link("split") {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -213962075156991317L;
+
+			@Override
 			public void onClick() {
-				getElysiumSession().setNamedEntity(NE_NANITE_GROUP, groupModel.getEntity());
-				setResponsePage(UsePlanetaryGatePage.class);
-			};
-		});
+				getNanitesBPO().split(groupModel.getEntity());
+				setResponsePage(NaniteGroupShowPage.class);
+			}
+		};
 
-		addToContentBody(composeLocalJumpItems(group));
-		addToContentBody(getOtherNanitesTable(group));
-
+		link.setVisible((groupModel.getEntity().getNaniteCount() > 1)
+						&& getNanitesBPO().canRaiseGroupCount(groupModel.getEntity().getController()));
+		return link;
 	}
 
 	private Collection<Component> composeLocalJumpItems(NaniteGroup group) {
@@ -177,7 +204,12 @@ public class NaniteGroupShowPage extends BasePage {
 						NaniteGroup defender = naniteGroupModel.getEntity();
 						if (getNanitesBPO().canAttack(attacker, defender)) {
 							getNanitesBPO().attack(attacker, defender);
-							setResponsePage(NaniteGroupShowPage.class);
+							if (attacker.getNaniteCount() > 0) {
+								setResponsePage(NaniteGroupShowPage.class);
+							} else {
+								getElysiumSession().setNamedEntity(NE_NANITE_GROUP, null);
+								setResponsePage(NaniteGroupListPage.class);
+							}
 						} else {
 							error("cannot attack");
 						}

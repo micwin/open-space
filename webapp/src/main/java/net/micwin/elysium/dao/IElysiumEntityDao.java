@@ -54,12 +54,20 @@ public interface IElysiumEntityDao<T extends ElysiumEntity> {
 	Class<T> getEntityClass();
 
 	/**
-	 * Saves specified entity.
+	 * Inserts a new Entity.
 	 * 
 	 * @param entity
 	 * @param flush
 	 */
-	void save(T entity, boolean flush);
+	void insert(T entity, boolean flush);
+
+	/**
+	 * Saves existing entity.
+	 * 
+	 * @param entity
+	 * @param flush
+	 */
+	void update(T entity, boolean flush);
 
 	/**
 	 * Saves all those entities and flushes at the end, if desired.
@@ -67,7 +75,7 @@ public interface IElysiumEntityDao<T extends ElysiumEntity> {
 	 * @param entities
 	 * @param flush
 	 */
-	public void save(Iterable<T> elements, boolean flush);
+	public void update(Iterable<T> elements, boolean flush);
 
 	/**
 	 * Flushes changes in memory to the db.

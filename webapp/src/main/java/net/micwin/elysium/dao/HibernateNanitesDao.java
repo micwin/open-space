@@ -50,7 +50,7 @@ public class HibernateNanitesDao extends ElysiumHibernateDaoSupport<NaniteGroup>
 	}
 
 	@Override
-	public NaniteGroup create(int nanitesCount, Position position) {
+	public NaniteGroup create(long nanitesCount, Position position) {
 		NaniteGroup group = new NaniteGroup();
 		group.setNaniteCount(nanitesCount);
 		group.setPosition(position);

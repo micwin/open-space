@@ -81,7 +81,7 @@ public class HibernateGalaxyDao extends HibernateDaoSupport implements IGalaxyDa
 	}
 
 	@Override
-	public void save(Galaxy entity, boolean flush) {
+	public void insert(Galaxy entity, boolean flush) {
 		super.getHibernateTemplate().saveOrUpdate(entity);
 		if (flush) {
 			flush();
@@ -90,20 +90,18 @@ public class HibernateGalaxyDao extends HibernateDaoSupport implements IGalaxyDa
 	}
 
 	@Override
-	public void save(Iterable<Galaxy> elements, boolean flush) {
-
-		for (Galaxy galaxy : elements) {
-			save(galaxy, false);
-		}
-
-		if (flush)
-			flush();
-
+	public void flush() {
+		getHibernateTemplate().flush();
 	}
 
 	@Override
-	public void flush() {
-		getHibernateTemplate().flush();
+	public void update(Galaxy entity, boolean flush) {
+		throw new IllegalStateException("Galaxy is a dummy entity. you cant load it.");
+	}
+
+	@Override
+	public void update(Iterable<Galaxy> elements, boolean flush) {
+		throw new IllegalStateException("Galaxy is a dummy entity. you cant load it.");
 	}
 
 }
