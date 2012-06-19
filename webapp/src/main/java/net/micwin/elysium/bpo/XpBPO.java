@@ -67,7 +67,7 @@ public class XpBPO extends BaseBPO {
 	public long computeXpForLevel(int level) {
 		if (level == 0)
 			return 0;
-		return (long) (XP_FOR_LEVEL_1 * computeLevelBasedFactor(level - 1));
+		return (long) (XP_FOR_LEVEL_1 * Math.pow(1.5, level - 1));
 	}
 
 	/**
