@@ -35,11 +35,16 @@ package net.micwin.elysium.bpo;
 
  */
 
+import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.entities.GalaxyTimer;
 import net.micwin.elysium.entities.SysParam;
 import net.micwin.elysium.entities.characters.User;
 import net.micwin.elysium.entities.characters.User.Role;
 import net.micwin.elysium.entities.characters.User.State;
+import net.micwin.elysium.entities.galaxy.Position;
+import net.micwin.elysium.entities.galaxy.Sector;
+import net.micwin.elysium.entities.galaxy.SolarSystem;
+import net.micwin.elysium.entities.gates.Gate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,14 +70,36 @@ public class AdminBPO extends BaseBPO {
 	 */
 	public synchronized void ensureInitialDbSetup() {
 
-		User admin = getUserDao().findByLogin("admin");
-		if (admin != null) {
-			return;
-		}
+		ensureAdminPresent();
+		ensureArenaPresent();
 
-		getUserDao().create("admin", "admin", State.ACTIVE, Role.ADMIN);
 		getSysParamDao().create("galaxyTime", "" + (System.currentTimeMillis() + HUNDRET_YEARS_MILLIS));
 
+		getSysParamDao().closeSession(true);
+		L.info("database sanity ensured");
+	}
+
+	private void ensureArenaPresent() {
+		Gate arenaGate = getGatesDao().findByGateAdress("arena");
+		if (arenaGate == null) {
+			L.warn("creating arena planet");
+			Sector lostSector = getGalaxyBPO().createSector();
+			SolarSystem lostSystem = getGalaxyBPO().createSolarSystem(lostSector);
+			getGalaxyDao().save(lostSector);
+			arenaGate = getGatesDao().create(new Position(lostSystem.getPlanets().get(0), 0, 0));
+			arenaGate.setGateAdress("arena");
+			getGatesDao().update(arenaGate, true);
+		}
+		L.info("arena present");
+
+	}
+
+	protected void ensureAdminPresent() {
+		User admin = getUserDao().findByLogin("admin");
+		if (admin == null) {
+			getUserDao().create("admin", "admin", State.ACTIVE, Role.ADMIN);
+			return;
+		}
 	}
 
 	public GalaxyTimer restoreGalaxyTimer() {

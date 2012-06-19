@@ -21,7 +21,7 @@ public interface IGatesDao extends IElysiumEntityDao<Gate> {
 	 * 
 	 * @param position
 	 */
-	public void create(Position position);
+	public Gate create(Position position);
 
 	/**
 	 * Looks up a gate by its gate code.

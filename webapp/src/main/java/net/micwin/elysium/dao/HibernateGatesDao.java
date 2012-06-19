@@ -31,12 +31,16 @@ public class HibernateGatesDao extends ElysiumHibernateDaoSupport<Gate> implemen
 	}
 
 	@Override
-	public void create(Position position) {
+	public Gate create(Position position) {
 		Gate newGate = new Gate();
 		newGate.setPosition(position);
 		newGate.setGateAdress(createUniqueGateAdress());
 		super.insert(newGate, true);
-		L.debug("created gate " + newGate.toString());
+		if (L.isDebugEnabled()) {
+			L.debug("created gate " + newGate.toString());
+		}
+
+		return newGate;
 
 	}
 

@@ -80,4 +80,12 @@ public class HibernateSysParamDao extends ElysiumHibernateDaoSupport<SysParam> i
 	public Class<SysParam> getEntityClass() {
 		return SysParam.class;
 	}
+
+	@Override
+	public void closeSession(boolean flush) {
+		if (flush) {
+			getHibernateTemplate().flush();
+		}
+		getHibernateTemplate().getSessionFactory().getCurrentSession().close();
+	}
 }

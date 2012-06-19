@@ -45,6 +45,7 @@ import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,9 +62,9 @@ public class ElysiumApplication extends WebApplication {
 
 	@Override
 	public void init() {
-		AdminBPO adminBpo = new AdminBPO();
-		adminBpo.ensureInitialDbSetup();
-		galaxyTimer = adminBpo.restoreGalaxyTimer();
+		// adminBpo.ensureInitialDbSetup();
+		galaxyTimer = new AdminBPO().restoreGalaxyTimer();
+		L.info("ElysiumApplication initialized");
 	}
 
 	public GalaxyTimer getGalaxyTimer() {

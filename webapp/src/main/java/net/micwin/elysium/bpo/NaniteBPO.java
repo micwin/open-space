@@ -59,7 +59,7 @@ public class NaniteBPO extends BaseBPO {
 	/**
 	 * The maximum nanites group size on level 1 of NANITE_MANAGEMENT.
 	 */
-	private static final int BASE_MAX_NANITES_GROUP_SIZE = 256;
+	public static final int BASE_MAX_NANITES_GROUP_SIZE = 256;
 
 	private static final int MAX_NOOB_LEVEL = 100;
 
