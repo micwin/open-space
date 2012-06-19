@@ -74,30 +74,31 @@ public class XpBPO extends BaseBPO {
 	 * Raises the avatars xp.
 	 * 
 	 * @param avatar
-	 * @param xp
+	 * @param newXp
 	 */
-	public void raiseXp(Avatar avatar, long xp) {
+	public void raiseXp(Avatar avatar, long newXp) {
 
 		if (L.isDebugEnabled()) {
-			L.debug("raising xp of avatar " + avatar.getName() + " by " + xp);
+			L.debug("raising xp of avatar " + avatar.getName() + " by " + newXp);
 			L.debug("avatar has stored level=" + avatar.getLevel() + ", xp=" + avatar.getXp());
 		}
 
-		if (xp < 1)
+		if (newXp < 1)
 			return;
 
-		avatar.setXp(avatar.getXp() + xp);
+		avatar.setXp(avatar.getXp() + newXp);
 
 		long nextLevelXP = computeXpForLevel(avatar.getLevel() + 1);
 
 		int oldLevel = avatar.getLevel();
-		while (nextLevelXP <= avatar.getXp()) {
 
+		// only raise by 1 level and throw away overhung xp
+		if (nextLevelXP <= avatar.getXp()) {
+
+			// raise by 1 level
 			avatar.setTalentPoints(avatar.getTalentPoints() + 1);
-			long newXp = avatar.getXp() - nextLevelXP;
-			avatar.setXp(newXp);
 			avatar.setLevel(avatar.getLevel() + 1);
-			nextLevelXP = computeXpForLevel(avatar.getLevel() + 1);
+			avatar.setXp(0l);
 		}
 
 		if (avatar.getLevel() != oldLevel && L.isDebugEnabled()) {
