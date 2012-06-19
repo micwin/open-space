@@ -65,14 +65,6 @@ public class NaniteBPO extends BaseBPO {
 
 	private static final double BASE_DAMAGE_PER_NANITE = 0.01;
 
-	private static final int MAX_RESURRECTION_LEVEL = 1000;
-
-	/**
-	 * The percentage of level and skill points that survives death if
-	 * resurrected.
-	 */
-	private static final double REVOCATION_FACTOR = 0.3;
-
 	public void doubleCount(NaniteGroup nanitesGroup) {
 
 		long maxCount = computeMaxTotalCount(nanitesGroup.getController());
@@ -294,71 +286,10 @@ public class NaniteBPO extends BaseBPO {
 	}
 
 	protected void kill(NaniteGroup naniteGroup) {
-
-		if (naniteGroup.getController().getNanites().size() == 1) {
-			// oopsie, will kill avatar too.
-			kill(naniteGroup.getController());
-			return;
-		}
-
 		Avatar controller = naniteGroup.getController();
-
 		controller.getNanites().remove(naniteGroup);
 		getAvatarDao().update(controller, false);
 		getNanitesDao().delete(naniteGroup, false);
-	}
-
-	/**
-	 * Kills avatar and all its nanite groups. If level &lt;=
-	 * MAX_RESURRECTION_LEVEL, resurects the avatar.
-	 * 
-	 * @param avatar
-	 */
-	public void kill(Avatar avatar) {
-
-		flush();
-		if (avatar.getLevel() <= MAX_RESURRECTION_LEVEL) {
-			revoke(avatar);
-			flush();
-			return;
-		} else {
-
-			// remove nanite groups
-			for (NaniteGroup naniteGroup : avatar.getNanites()) {
-				kill(naniteGroup);
-			}
-			getAvatarDao().update(avatar, true);
-			getAvatarDao().delete(avatar, true);
-		}
-	}
-
-	/**
-	 * Revokes the avatar by a bunch of levels.
-	 * 
-	 * @param avatar
-	 */
-	private void revoke(Avatar avatar) {
-		L.debug("revoking avatar " + avatar);
-		int newLevel = (int) (avatar.getLevel() * REVOCATION_FACTOR);
-
-		// clearing out talents
-		for (Utilization utilization : avatar.getTalents()) {
-			utilization.setLevel(0);
-		}
-
-		// delete nearly every nanite group (except one)
-		while (avatar.getNanites().size() > 1) {
-			NaniteGroup naniteGroup = avatar.getNanites().iterator().next();
-			kill(naniteGroup);
-		}
-
-		// set last group to base count
-		avatar.getNanites().iterator().next().setNaniteCount(BASE_MAX_NANITES_GROUP_SIZE);
-
-		// set level and talent points to new values
-		avatar.setLevel(newLevel);
-		avatar.setTalentPoints(newLevel);
-
 	}
 
 	/**
