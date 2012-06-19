@@ -136,13 +136,7 @@ public class XpBPO extends BaseBPO {
 	 * @return
 	 */
 	public long computeXpForDamage(NaniteGroup attacker, NaniteGroup defender, long damageDoneToDefender) {
-		double levelBasedFactor = computeLevelBasedFactor(defender.getController().getLevel()
-						- attacker.getController().getLevel());
-		if (L.isDebugEnabled()) {
-			L.debug("level based factor for att lvl=" + attacker.getController().getLevel() + " and def lvl="
-							+ defender.getController().getLevel() + " is " + levelBasedFactor);
-		}
-		double xp = damageDoneToDefender * levelBasedFactor;
+		double xp = damageDoneToDefender;
 		return (long) xp;
 	}
 }
