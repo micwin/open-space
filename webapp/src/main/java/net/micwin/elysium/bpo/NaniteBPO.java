@@ -93,7 +93,8 @@ public class NaniteBPO extends BaseBPO {
 	public long computeMaxTotalCount(Avatar avatar) {
 		Utilization naniteManagement = getTalent(avatar, Appliance.NANITE_MANAGEMENT);
 
-		long maxCount = (long) (BASE_MAX_NANITES_GROUP_SIZE * Math.pow(2, naniteManagement.getLevel() - 1));
+		long maxCount = (long) Math.min(Integer.MAX_VALUE,
+						BASE_MAX_NANITES_GROUP_SIZE * Math.pow(2, naniteManagement.getLevel() - 1));
 		return maxCount;
 	}
 
