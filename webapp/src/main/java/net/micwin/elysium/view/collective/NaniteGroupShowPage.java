@@ -82,6 +82,8 @@ public class NaniteGroupShowPage extends BasePage {
 			}
 		};
 
+		link.setVisible(getNanitesBPO().canRaiseNanitesCount(groupModel.getEntity()));
+
 		return link;
 	}
 
@@ -188,7 +190,8 @@ public class NaniteGroupShowPage extends BasePage {
 				String gateCode = gate.getGateAdress();
 
 				item.add(new Label("owner", new Model(naniteGroup.getController().getName())));
-				item.add(new Label("strength", new Model(naniteGroup.getNaniteCount())));
+				item.add(new Label("strength", new Model(NumberFormat.getIntegerInstance().format(
+								naniteGroup.getNaniteCount()))));
 				item.add(getAttackCommandLink(scanningGroupModel, naniteGroupModel));
 
 			}

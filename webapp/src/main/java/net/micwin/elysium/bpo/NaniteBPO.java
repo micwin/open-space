@@ -355,4 +355,18 @@ public class NaniteBPO extends BaseBPO {
 		return true;
 	}
 
+	/**
+	 * Checks wether or not a specific nanite group can get raised.
+	 * 
+	 * @param naniteGroup
+	 * @return
+	 */
+	public boolean canRaiseNanitesCount(NaniteGroup naniteGroup) {
+		if (naniteGroup.getNaniteCount() >= Integer.MAX_VALUE)
+			return false;
+
+		return computeMaxTotalCount(naniteGroup.getController()) - countNanites(naniteGroup.getController()) > 0;
+	}
+
+
 }

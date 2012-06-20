@@ -35,6 +35,7 @@ package net.micwin.elysium.view.collective;
 
  */
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -42,6 +43,7 @@ import java.util.List;
 import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.entities.ElysiumEntity;
 import net.micwin.elysium.entities.NaniteGroup;
+import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.User;
 import net.micwin.elysium.entities.galaxy.Environment;
 import net.micwin.elysium.entities.galaxy.Position;
@@ -124,7 +126,8 @@ public class NaniteGroupListPage extends BasePage {
 				};
 				link.add(label);
 				item.add(link);
-				Model<Long> countModel = new Model<Long>(nanitesGroup.getNaniteCount());
+				Model<String> countModel = new Model<String>(NumberFormat.getIntegerInstance().format(
+								nanitesGroup.getNaniteCount()));
 				item.add(new Label("groupCount", countModel));
 				item.add(new Label("groupState", new Model(nanitesGroup.getState())));
 				item.add(getDoubleCountLink(naniteGroupModel, countModel));
@@ -173,7 +176,7 @@ public class NaniteGroupListPage extends BasePage {
 			}
 
 			private Component getDoubleCountLink(final IModel<NaniteGroup> nanitesGroupModel,
-							final IModel<Long> countModel) {
+							final IModel<String> labelModel) {
 				Link link = new Link("doubleCount") {
 
 					@Override
@@ -182,7 +185,9 @@ public class NaniteGroupListPage extends BasePage {
 						setResponsePage(NaniteGroupListPage.class);
 					}
 				};
+				Avatar controller = nanitesGroupModel.getObject().getController();
 
+				link.setVisible(getNanitesBPO().canRaiseNanitesCount(nanitesGroupModel.getObject()));
 				return link;
 			}
 		};
