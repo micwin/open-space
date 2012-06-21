@@ -42,6 +42,6 @@ package net.micwin.elysium;
  */
 public interface Constants {
 
-	public static final int TALENT_POINTS_UPON_CREATION = 1;
+	public static final int TALENT_POINTS_UPON_CREATION = 5;
 
 }

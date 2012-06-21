@@ -57,18 +57,15 @@ public enum Appliance {
 					"Wohnviertel in denen biologische Lebensformen eine kontrollierte Umwelt und Lebenserhaltung vorfinden."),
 
 	NANITE_MANAGEMENT(
-					1,
+					0,
 					"Naniten-Management",
 					"Die Fähigkeit, Naniten zu kontrollieren. Pro Stufe verdoppelt sich die Gesamtmenge der beherrschbaren Naniten; die Anzahl der maximalen Gruppen erhöht sich um 1 je Stufe."),
 
-	NANITE_BATTLE(1, "Naniten-Kampf",
-					"Die Fähigkeit, andere Naniten anzugreifen. Pro Stufe wächst der Schaden jedes angreifenden Nanits um 10%."),
+	NANITE_ATTACK(0, "Naniten-Angriff",
+					"Die Fähigkeit, mit Naniten anzugreifen. Pro Stufe wächst der Schaden jedes angreifenden Nanits um 10%."),
 
 	NANITE_DAMAGE_CONTROL(1, "Naniten-Schadenskontrolle",
-					"Die Fähigkeit, erlittenen Schaden zu verhindern. Pro Stufe mindert sich der erlittene Schaden um 10%."),
-
-	NANITE_CLOAKING(1, "Naniten-Tarnung",
-					"Die Fähigkeit, sich selbst vor anderen Naniten zu verstecken und versteckte Naniten aufzuspüren (nyi)");
+					"Die Fähigkeit, erlittenen Schaden abzuwehren und umzuleiten. Pro Stufe mindert sich der erlittene Schaden um 10%.");
 
 	private int baseComplexity;
 

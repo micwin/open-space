@@ -1,7 +1,5 @@
 package net.micwin.elysium.bpo;
 
-import java.util.Iterator;
-
 import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.NaniteGroup.State;
 import net.micwin.elysium.entities.appliances.Appliance;
@@ -56,29 +54,34 @@ public class NaniteBPO extends BaseBPO {
 
 	private static final Logger L = LoggerFactory.getLogger(NaniteBPO.class);
 
-	/**
-	 * The maximum nanites group size on level 1 of NANITE_MANAGEMENT.
-	 */
-	public static final int BASE_MAX_NANITES_GROUP_SIZE = 256;
-
 	private static final int MAX_NOOB_LEVEL = 100;
 
 	private static final double BASE_DAMAGE_PER_NANITE = 0.01;
 
 	public void doubleCount(NaniteGroup nanitesGroup) {
 
-		long maxCount = computeMaxTotalCount(nanitesGroup.getController());
+		// compute teh maximum overall number of nanites this avatar can control
+		long maxTotalCount = computeMaxTotalCount(nanitesGroup.getController());
 
+		// sum up all nanites the controller actually controls
 		long currentTotalCount = countNanites(nanitesGroup.getController());
 
-		long raiseCount = Math.min(nanitesGroup.getNaniteCount(), maxCount - currentTotalCount);
+		// compute how much this group can grow at max
+		long maxGroupRaise = Math.min(Integer.MAX_VALUE - nanitesGroup.getNaniteCount(), maxTotalCount
+						- currentTotalCount);
 
+		// compute how much the group effectively grows
+		long raiseCount = Math.min(nanitesGroup.getNaniteCount() * 2, maxGroupRaise);
+
+		// compute the new size of group
 		long newCount = nanitesGroup.getNaniteCount() + raiseCount;
 
 		if (L.isDebugEnabled()) {
 			L.debug("setting count from nanites group " + nanitesGroup.getId() + " from "
 							+ nanitesGroup.getNaniteCount() + " to " + newCount);
 		}
+
+		// setting and updating
 		nanitesGroup.setNaniteCount(newCount);
 		getNanitesDao().update(nanitesGroup, true);
 	}
@@ -93,8 +96,7 @@ public class NaniteBPO extends BaseBPO {
 	public long computeMaxTotalCount(Avatar avatar) {
 		Utilization naniteManagement = getTalent(avatar, Appliance.NANITE_MANAGEMENT);
 
-		long maxCount = (long) Math.min(Integer.MAX_VALUE,
-						BASE_MAX_NANITES_GROUP_SIZE * Math.pow(2, naniteManagement.getLevel() - 1));
+		long maxCount = (long) Math.pow(2, naniteManagement.getLevel());
 		return maxCount;
 	}
 
@@ -146,7 +148,7 @@ public class NaniteBPO extends BaseBPO {
 		if (talent == null) {
 			return false;
 		}
-		return talent.getLevel() > avatar.getNanites().size();
+		return talent.getLevel() >= avatar.getNanites().size();
 	}
 
 	/**
@@ -302,7 +304,7 @@ public class NaniteBPO extends BaseBPO {
 	public long calculateAttackDamage(NaniteGroup attacker) {
 
 		Utilization nanitesBattle = new AvatarBPO().getTalent(getAvatarDao().refresh(attacker.getController()),
-						Appliance.NANITE_BATTLE);
+						Appliance.NANITE_ATTACK);
 
 		double factor = nanitesBattle == null ? 0.3 : Math.pow(1.1, nanitesBattle.getLevel() - 1);
 		long totalAttackDamage = (long) (factor * attacker.getNaniteCount() * BASE_DAMAGE_PER_NANITE);
@@ -367,6 +369,5 @@ public class NaniteBPO extends BaseBPO {
 
 		return computeMaxTotalCount(naniteGroup.getController()) - countNanites(naniteGroup.getController()) > 0;
 	}
-
 
 }

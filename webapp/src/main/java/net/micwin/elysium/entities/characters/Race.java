@@ -3,7 +3,6 @@ package net.micwin.elysium.entities.characters;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.micwin.elysium.bpo.NaniteBPO;
 import net.micwin.elysium.entities.appliances.Appliance;
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.view.storyline.StoryLineItem;
@@ -11,9 +10,8 @@ import net.micwin.elysium.view.storyline.StoryLineItem;
 public enum Race {
 	// MILITARY(StoryLineItem.LONE_WOLF),
 
-	NANITE(StoryLineItem.BOOTING, NaniteBPO.BASE_MAX_NANITES_GROUP_SIZE, Utilization.Factory.create(Appliance.NANITE_MANAGEMENT, 1), Utilization.Factory
-					.create(Appliance.NANITE_BATTLE, 1), Utilization.Factory.create(Appliance.NANITE_CLOAKING, 1),
-					Utilization.Factory.create(Appliance.NANITE_DAMAGE_CONTROL, 1));
+	NANITE(StoryLineItem.BOOTING, 1, Utilization.Factory.create(Appliance.NANITE_MANAGEMENT, 0), Utilization.Factory
+					.create(Appliance.NANITE_ATTACK, 0), Utilization.Factory.create(Appliance.NANITE_DAMAGE_CONTROL, 0));
 
 	// PRESERVER(StoryLineItem.NEW_HOPE);
 
