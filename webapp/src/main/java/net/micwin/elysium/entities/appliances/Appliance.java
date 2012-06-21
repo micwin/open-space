@@ -43,7 +43,11 @@ package net.micwin.elysium.entities.appliances;
  */
 public enum Appliance {
 
+	NANITE_CLOAKING(1, "Naniten-Tarnung",
+					"Die Fähigkeit, sich selbst vor anderen Naniten zu verstecken und versteckte Naniten aufzuspüren (nyi)"),
+
 	/**
+	 * 
 	 * Designing buildings. Architecture defines how complex buildings may be,
 	 * that is, how many modules (Utilizations of appliances) may be part of a
 	 * building.
