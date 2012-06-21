@@ -42,10 +42,6 @@ import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import net.micwin.elysium.Constants;
 import net.micwin.elysium.MessageKeys;
 import net.micwin.elysium.entities.NaniteGroup;
@@ -54,11 +50,15 @@ import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.Race;
 import net.micwin.elysium.entities.characters.User;
+import net.micwin.elysium.entities.characters.User.Role;
 import net.micwin.elysium.entities.galaxy.Planet;
 import net.micwin.elysium.entities.galaxy.Position;
 import net.micwin.elysium.entities.galaxy.Sector;
 import net.micwin.elysium.entities.galaxy.SolarSystem;
 import net.micwin.elysium.entities.replication.BluePrint;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AvatarBPO extends BaseBPO {
 
@@ -116,6 +116,12 @@ public class AvatarBPO extends BaseBPO {
 
 		initialNanitesGroup.setController(avatar);
 		getNanitesDao().insert(initialNanitesGroup, true);
+
+		if (user.getRole() == Role.ADMIN) {
+			L.debug("setting talent points of existing admin avatar to 65535");
+			avatar.setTalentPoints(65535);
+			getAvatarDao().update(avatar, true);
+		}
 		return null;
 	}
 

@@ -38,6 +38,8 @@ package net.micwin.elysium.bpo;
 import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.entities.GalaxyTimer;
 import net.micwin.elysium.entities.SysParam;
+import net.micwin.elysium.entities.characters.Avatar;
+import net.micwin.elysium.entities.characters.Race;
 import net.micwin.elysium.entities.characters.User;
 import net.micwin.elysium.entities.characters.User.Role;
 import net.micwin.elysium.entities.characters.User.State;
@@ -97,9 +99,22 @@ public class AdminBPO extends BaseBPO {
 	protected void ensureAdminPresent() {
 		User admin = getUserDao().findByLogin("admin");
 		if (admin == null) {
-			getUserDao().create("admin", "admin", State.ACTIVE, Role.ADMIN);
-			return;
+			admin = getUserDao().create("admin", "admin", State.ACTIVE, Role.ADMIN);
 		}
+
+		Avatar adminAvatar = getAvatarDao().findByUser(admin);
+
+		if (adminAvatar != null)
+
+		{
+			// make sure the admin has enough points to conquer any thread
+			L.debug("setting talent points of existing admin avatar to 65535");
+			adminAvatar.setTalentPoints(65535);
+			getAvatarDao().update(adminAvatar, true);
+		}
+
+		getUserDao().update(admin, true);
+
 	}
 
 	public GalaxyTimer restoreGalaxyTimer() {
