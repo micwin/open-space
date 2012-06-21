@@ -3,6 +3,7 @@ package net.micwin.elysium.entities.characters;
 import java.util.LinkedList;
 import java.util.List;
 
+import net.micwin.elysium.bpo.NaniteBPO;
 import net.micwin.elysium.entities.appliances.Appliance;
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.view.storyline.StoryLineItem;
