@@ -61,7 +61,7 @@ public enum Appliance {
 					"Naniten-Management",
 					"Die Fähigkeit, Naniten zu kontrollieren. Pro Stufe verdoppelt sich die Gesamtmenge der beherrschbaren Naniten; die Anzahl der maximalen Gruppen erhöht sich um 1 je Stufe."),
 
-	NANITE_ATTACK(0, "Naniten-Angriff",
+	NANITE_BATTLE(0, "Naniten-Angriff",
 					"Die Fähigkeit, mit Naniten anzugreifen. Pro Stufe wächst der Schaden jedes angreifenden Nanits um 10%."),
 
 	NANITE_DAMAGE_CONTROL(1, "Naniten-Schadenskontrolle",

@@ -310,7 +310,7 @@ public class NaniteBPO extends BaseBPO {
 	public long calculateAttackDamage(NaniteGroup attacker) {
 
 		Utilization nanitesBattle = new AvatarBPO().getTalent(getAvatarDao().refresh(attacker.getController()),
-						Appliance.NANITE_ATTACK);
+						Appliance.NANITE_BATTLE);
 
 		double factor = nanitesBattle == null ? 0.3 : Math.pow(1.1, nanitesBattle.getLevel() - 1);
 		long totalAttackDamage = (long) (factor * attacker.getNaniteCount() * BASE_DAMAGE_PER_NANITE);
