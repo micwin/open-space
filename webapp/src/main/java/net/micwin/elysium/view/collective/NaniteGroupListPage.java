@@ -41,7 +41,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.micwin.elysium.dao.DaoManager;
-import net.micwin.elysium.entities.ElysiumEntity;
 import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.User;
@@ -134,6 +133,7 @@ public class NaniteGroupListPage extends BasePage {
 				item.add(getGateLink(naniteGroupModel));
 
 				item.add(getSplitLink(naniteGroupModel));
+				item.add(getKillLink(naniteGroupModel));
 
 			}
 
@@ -154,6 +154,25 @@ public class NaniteGroupListPage extends BasePage {
 
 				link.setVisible((naniteGroupModel.getObject().getNaniteCount() > 1)
 								&& getNanitesBPO().canRaiseGroupCount(naniteGroupModel.getObject().getController()));
+				return link;
+			}
+
+			protected Link getKillLink(final IModel<NaniteGroup> naniteGroupModel) {
+				Link link = new Link("kill") {
+
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = -213962075156991317L;
+
+					@Override
+					public void onClick() {
+						getNanitesBPO().kill(naniteGroupModel.getObject());
+						setResponsePage(NaniteGroupListPage.class);
+					}
+				};
+
+				link.setVisible(naniteGroupModel.getObject().getController().getNanites().size() > 1);
 				return link;
 			}
 

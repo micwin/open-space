@@ -36,17 +36,19 @@ package net.micwin.elysium.entities.characters;
  */
 import java.util.Collection;
 import java.util.Date;
+import java.util.LinkedList;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import net.micwin.elysium.entities.ElysiumEntity;
 import net.micwin.elysium.entities.NaniteGroup;
-import net.micwin.elysium.entities.appliances.Appliance;
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.galaxy.Position;
 import net.micwin.elysium.view.storyline.StoryLineItem;
@@ -91,7 +93,7 @@ public class Avatar extends ElysiumEntity {
 	@OneToMany
 	private Collection<Utilization> talents;
 
-	@OneToMany
+	@OneToMany(orphanRemoval = true)
 	private Collection<NaniteGroup> nanites;
 
 	private Long xp;

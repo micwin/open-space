@@ -34,6 +34,7 @@ package net.micwin.elysium.entities;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
+import javax.persistence.CascadeType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -102,10 +103,16 @@ public abstract class ElysiumEntity {
 		try {
 
 			ElysiumEntity other = (ElysiumEntity) obj;
-			return other.id == id && other.getBaseClass().equals(getBaseClass());
+			return (other.id == id) && other.getBaseClass().equals(getBaseClass());
 		} catch (ClassCastException cce) {
 
 			return false;
 		}
 	}
+
+	@Override
+	public String toString() {
+		return getBaseClass().getSimpleName() + " id=" + id + " hashCode=" + hashCode();
+	}
+
 }

@@ -36,6 +36,7 @@ package net.micwin.elysium.dao;
  */
 import java.util.Collection;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import net.micwin.elysium.entities.NaniteGroup;
@@ -99,7 +100,7 @@ public class HibernateAvatarDao extends ElysiumHibernateDaoSupport<Avatar> imple
 		getHibernateTemplate().save(organization);
 
 		getHibernateTemplate().saveOrUpdateAll(talents);
-		avatar.setTalents(talents);
+		avatar.setTalents(new LinkedList<Utilization>(talents));
 
 		avatar.setNanites(nanites);
 
@@ -119,6 +120,5 @@ public class HibernateAvatarDao extends ElysiumHibernateDaoSupport<Avatar> imple
 	public Class<Avatar> getEntityClass() {
 		return Avatar.class;
 	}
-
 
 }

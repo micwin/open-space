@@ -1,5 +1,7 @@
 package net.micwin.elysium.bpo;
 
+import java.util.Iterator;
+
 import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.NaniteGroup.State;
 import net.micwin.elysium.entities.appliances.Appliance;
@@ -294,11 +296,28 @@ public class NaniteBPO extends BaseBPO {
 
 	}
 
-	protected void kill(NaniteGroup naniteGroup) {
+	public void kill(NaniteGroup naniteGroup) {
 		Avatar controller = naniteGroup.getController();
-		controller.getNanites().remove(naniteGroup);
-		getAvatarDao().update(controller, false);
-		getNanitesDao().delete(naniteGroup, false);
+		if (L.isDebugEnabled()) {
+			L.debug("killing nanite group " + naniteGroup);
+			L.debug("controller nanites before removal" + controller.getNanites());
+		}
+
+		for (Iterator<NaniteGroup> it = naniteGroup.getController().getNanites().iterator(); it.hasNext();) {
+
+			NaniteGroup candidate = it.next();
+			if (candidate.getId().equals(naniteGroup.getId())) {
+				if (L.isDebugEnabled()) {
+					L.debug("found a persistent match.");
+				}
+				getNanitesDao().delete(candidate, true);
+
+				break;
+			}
+		}
+		if (L.isDebugEnabled()) {
+			L.debug("...nanites after removal = " + getAvatarDao().refresh(controller).getNanites());
+		}
 	}
 
 	/**

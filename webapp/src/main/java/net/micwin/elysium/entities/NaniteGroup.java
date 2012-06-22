@@ -36,7 +36,10 @@ package net.micwin.elysium.entities;
  */import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 
+import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.galaxy.Position;
 
 /**
@@ -94,5 +97,4 @@ public class NaniteGroup extends ElysiumEntity {
 	public Class getBaseClass() {
 		return NaniteGroup.class;
 	}
-
 }
