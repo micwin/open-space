@@ -238,6 +238,16 @@ public class NaniteBPO extends BaseBPO {
 		xpBPO.raiseXp(attacker.getController(), attackerXp);
 		xpBPO.raiseXp(defender.getController(), defenderXp);
 
+		if (attacker.getNaniteCount() < 1
+						&& (attacker.getController().getNanites().size() > 1 || attacker.getController().getLevel() > MAX_NOOB_LEVEL)) {
+			kill(attacker);
+		}
+
+		if (defender.getNaniteCount() < 1
+						&& (defender.getController().getNanites().size() > 1 || defender.getController().getLevel() > MAX_NOOB_LEVEL)) {
+			kill(defender);
+		}
+
 		flush();
 
 	}
