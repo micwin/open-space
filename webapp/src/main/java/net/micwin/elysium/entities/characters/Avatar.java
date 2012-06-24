@@ -53,6 +53,7 @@ import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.galaxy.Position;
 import net.micwin.elysium.view.storyline.StoryLineItem;
 
+import org.hibernate.annotations.CollectionOfElements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -93,7 +94,7 @@ public class Avatar extends ElysiumEntity {
 	@OneToMany
 	private Collection<Utilization> talents;
 
-	@OneToMany(orphanRemoval = true)
+	@OneToMany(mappedBy = "controller", orphanRemoval = true, cascade = CascadeType.ALL)
 	private Collection<NaniteGroup> nanites;
 
 	private Long xp;

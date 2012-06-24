@@ -303,18 +303,8 @@ public class NaniteBPO extends BaseBPO {
 			L.debug("controller nanites before removal" + controller.getNanites());
 		}
 
-		for (Iterator<NaniteGroup> it = naniteGroup.getController().getNanites().iterator(); it.hasNext();) {
+		controller.getNanites().remove(naniteGroup);
 
-			NaniteGroup candidate = it.next();
-			if (candidate.getId().equals(naniteGroup.getId())) {
-				if (L.isDebugEnabled()) {
-					L.debug("found a persistent match.");
-				}
-				getNanitesDao().delete(candidate, true);
-
-				break;
-			}
-		}
 		if (L.isDebugEnabled()) {
 			L.debug("...nanites after removal = " + getAvatarDao().refresh(controller).getNanites());
 		}
