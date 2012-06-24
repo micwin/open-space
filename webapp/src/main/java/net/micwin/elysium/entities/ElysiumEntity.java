@@ -34,7 +34,6 @@ package net.micwin.elysium.entities;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
-import javax.persistence.CascadeType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -50,7 +49,7 @@ public abstract class ElysiumEntity {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
-	@ManyToOne
+	@ManyToOne(optional = true)
 	private Avatar controller;
 
 	/**

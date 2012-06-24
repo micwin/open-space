@@ -298,12 +298,17 @@ public class NaniteBPO extends BaseBPO {
 
 	public void kill(NaniteGroup naniteGroup) {
 		Avatar controller = naniteGroup.getController();
+		getAvatarDao().refresh(controller);
 		if (L.isDebugEnabled()) {
 			L.debug("killing nanite group " + naniteGroup);
 			L.debug("controller nanites before removal" + controller.getNanites());
 		}
 
+		// since this is removeOrphaned=true, this also removes the naniteGroup
+		// from the database
 		controller.getNanites().remove(naniteGroup);
+
+		getAvatarDao().update(controller, false);
 
 		if (L.isDebugEnabled()) {
 			L.debug("...nanites after removal = " + getAvatarDao().refresh(controller).getNanites());
