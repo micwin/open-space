@@ -64,6 +64,8 @@ public class NaniteBPO extends BaseBPO {
 
 	public void doubleCount(NaniteGroup nanitesGroup) {
 
+		getNanitesDao().refresh(nanitesGroup);
+
 		// compute teh maximum overall number of nanites this avatar can control
 		long maxTotalCount = computeMaxTotalCount(nanitesGroup.getController());
 
@@ -139,13 +141,12 @@ public class NaniteBPO extends BaseBPO {
 			L.debug("created new nanite group " + newGroup);
 		}
 
-		newGroup.setController(naniteGroup.getController());
 		naniteGroup.getController().getNanites().add(newGroup);
+		newGroup.setController(naniteGroup.getController());
 
 		getNanitesDao().update(naniteGroup, true);
 		getNanitesDao().update(newGroup, true);
 		getAvatarDao().update(naniteGroup.getController(), true);
-
 	}
 
 	public boolean canRaiseGroupCount(Avatar avatar) {
@@ -306,9 +307,11 @@ public class NaniteBPO extends BaseBPO {
 
 		// since this is removeOrphaned=true, this also removes the naniteGroup
 		// from the database
+		naniteGroup.setController(null);
 		controller.getNanites().remove(naniteGroup);
 
-		getAvatarDao().update(controller, false);
+		getNanitesDao().delete(naniteGroup, true);
+		getAvatarDao().update(controller, true);
 
 		if (L.isDebugEnabled()) {
 			L.debug("...nanites after removal = " + getAvatarDao().refresh(controller).getNanites());

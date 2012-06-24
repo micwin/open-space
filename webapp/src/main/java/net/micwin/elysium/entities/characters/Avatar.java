@@ -94,7 +94,7 @@ public class Avatar extends ElysiumEntity {
 	@OneToMany
 	private Collection<Utilization> talents;
 
-	@OneToMany(mappedBy = "controller", orphanRemoval = true, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "controller")
 	private Collection<NaniteGroup> nanites;
 
 	private Long xp;
