@@ -36,14 +36,11 @@ package net.micwin.elysium.entities.characters;
  */
 import java.util.Collection;
 import java.util.Date;
-import java.util.LinkedList;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -53,7 +50,6 @@ import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.galaxy.Position;
 import net.micwin.elysium.view.storyline.StoryLineItem;
 
-import org.hibernate.annotations.CollectionOfElements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,8 +69,6 @@ public class Avatar extends ElysiumEntity {
 
 	private Date creationDate;
 
-	private int level;
-
 	private String name;
 
 	@OneToOne
@@ -89,15 +83,11 @@ public class Avatar extends ElysiumEntity {
 	@Enumerated(EnumType.STRING)
 	private StoryLineItem storyLineItem;
 
-	private int talentPoints;
-
 	@OneToMany
 	private Collection<Utilization> talents;
 
 	@OneToMany(mappedBy = "controller")
 	private Collection<NaniteGroup> nanites;
-
-	private Long xp;
 
 	public Avatar() {
 	}
@@ -111,7 +101,13 @@ public class Avatar extends ElysiumEntity {
 	}
 
 	public int getLevel() {
-		return level;
+
+		int sum = 0;
+
+		for (Utilization utilization : talents) {
+			sum += utilization.getLevel();
+		}
+		return sum;
 	}
 
 	public String getName() {
@@ -134,16 +130,8 @@ public class Avatar extends ElysiumEntity {
 		return storyLineItem;
 	}
 
-	public int getTalentPoints() {
-		return talentPoints;
-	}
-
 	public Collection<Utilization> getTalents() {
 		return talents;
-	}
-
-	public Long getXp() {
-		return xp;
 	}
 
 	public void setUser(User user) {
@@ -152,10 +140,6 @@ public class Avatar extends ElysiumEntity {
 
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
-	}
-
-	public void setLevel(int level) {
-		this.level = level;
 	}
 
 	public void setName(String name) {
@@ -178,19 +162,11 @@ public class Avatar extends ElysiumEntity {
 		this.storyLineItem = storyLineItem;
 	}
 
-	public void setTalentPoints(int talentPoints) {
-		this.talentPoints = talentPoints;
-	}
-
 	public void setTalents(Collection<Utilization> talents) {
 		if (L.isDebugEnabled()) {
 			L.debug("setting talents " + talents + " to avatar " + getName());
 		}
 		this.talents = talents;
-	}
-
-	public void setXp(Long xp) {
-		this.xp = xp;
 	}
 
 	public void setNanites(Collection<NaniteGroup> nanites) {

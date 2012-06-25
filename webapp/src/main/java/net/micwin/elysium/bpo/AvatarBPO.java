@@ -117,11 +117,6 @@ public class AvatarBPO extends BaseBPO {
 		initialNanitesGroup.setController(avatar);
 		getNanitesDao().insert(initialNanitesGroup, true);
 
-		if (user.getRole() == Role.ADMIN) {
-			L.debug("setting talent points of existing admin avatar to 65535");
-			avatar.setTalentPoints(65535);
-			getAvatarDao().update(avatar, true);
-		}
 		return null;
 	}
 
@@ -178,18 +173,6 @@ public class AvatarBPO extends BaseBPO {
 	public boolean isLevelBasedProtectionProtectionEngaged(Avatar first, Avatar second) {
 		double ratio = (1.0 * second.getLevel()) / first.getLevel();
 		return ratio <= 0.5 || ratio >= 2.0;
-	}
-
-	public void raiseTalent(Avatar avatar, Appliance appliance) {
-		if (avatar.getTalentPoints() < 1) {
-			return;
-		}
-
-		Utilization talent = getTalent(avatar, appliance);
-		talent.setLevel(talent.getLevel() + 1);
-		avatar.setTalentPoints(avatar.getTalentPoints() - 1);
-
-		getAvatarDao().update(avatar, true);
 	}
 
 }

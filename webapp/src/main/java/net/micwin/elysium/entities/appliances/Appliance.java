@@ -43,9 +43,6 @@ package net.micwin.elysium.entities.appliances;
  */
 public enum Appliance {
 
-	NANITE_CLOAKING(1, "Naniten-Tarnung",
-					"Die Fähigkeit, sich selbst vor anderen Naniten zu verstecken und versteckte Naniten aufzuspüren (nyi)"),
-
 	/**
 	 * 
 	 * Designing buildings. Architecture defines how complex buildings may be,
@@ -63,13 +60,22 @@ public enum Appliance {
 	NANITE_MANAGEMENT(
 					0,
 					"Naniten-Management",
-					"Die Fähigkeit, Naniten zu kontrollieren. Pro Stufe verdoppelt sich die Gesamtmenge der beherrschbaren Naniten; die Anzahl der maximalen Gruppen erhöht sich um 1 je Stufe."),
+					"Die Fähigkeit, Naniten zu kontrollieren. Pro Stufe verdoppelt sich die Gesamtmenge der beherrschbaren Naniten; die Anzahl der maximalen Gruppen erhöht sich um 1 je Stufe. Steigt durch Verwendung der Funktionen 'Teilen', 'Verdoppeln', 'Gate-Reise' und 'Gruppe löschen''"),
 
-	NANITE_BATTLE(0, "Naniten-Angriff",
-					"Die Fähigkeit, mit Naniten anzugreifen. Pro Stufe wächst der Schaden jedes angreifenden Nanits um 10%."),
+	NANITE_BATTLE(
+					0,
+					"Naniten-Angriff",
+					"Die Fähigkeit, mit Naniten anzugreifen. Pro Stufe wächst der Schaden jedes angreifenden Nanits um 10%. Steigt durch Verwendung der Funktion 'Angreifen'"),
 
-	NANITE_DAMAGE_CONTROL(1, "Naniten-Schadenskontrolle",
-					"Die Fähigkeit, erlittenen Schaden abzuwehren und umzuleiten. Pro Stufe mindert sich der erlittene Schaden um 10%.");
+	NANITE_DAMAGE_CONTROL(
+					1,
+					"Naniten-Schadenskontrolle",
+					"Die Fähigkeit, erlittenen Schaden abzuwehren und umzuleiten. Pro Stufe mindert sich der erlittene Schaden um 10%. Steigt sobald eine Gruppe angegriffen wird."),
+
+	NANITE_CRITICAL_HIT(
+					0,
+					"Naniten-Piercing",
+					"Die Fähigkeit, beim Nanitenkampf kritischen Schaden anzubringen. Jede Stufe erhöht bei jedem Kampf die Chance, den dreifachen Schaden zu verursachen, um 1%. Steigt wenn eine gegnerische Gruppe vollständig zerstört wird.");
 
 	private int baseComplexity;
 

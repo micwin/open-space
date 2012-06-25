@@ -38,6 +38,7 @@ package net.micwin.elysium.bpo;
 import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.entities.GalaxyTimer;
 import net.micwin.elysium.entities.SysParam;
+import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.Race;
 import net.micwin.elysium.entities.characters.User;
@@ -58,6 +59,11 @@ import org.slf4j.LoggerFactory;
  * 
  */
 public class AdminBPO extends BaseBPO {
+
+	/**
+	 * The level each admin talent gets from the start.
+	 */
+	private static final int ADMIN_TALENTS_LEVEL = 65535;
 
 	private static final Logger L = LoggerFactory.getLogger(AdminBPO.class);
 
@@ -108,8 +114,10 @@ public class AdminBPO extends BaseBPO {
 
 		{
 			// make sure the admin has enough points to conquer any thread
-			L.debug("setting talent points of existing admin avatar to 65535");
-			adminAvatar.setTalentPoints(65535);
+			for (Utilization talent : adminAvatar.getTalents()) {
+				talent.setLevel(ADMIN_TALENTS_LEVEL);
+			}
+
 			getAvatarDao().update(adminAvatar, true);
 		}
 

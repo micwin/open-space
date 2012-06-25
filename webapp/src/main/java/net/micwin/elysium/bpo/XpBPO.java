@@ -34,7 +34,8 @@ package net.micwin.elysium.bpo;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
-import net.micwin.elysium.entities.NaniteGroup;
+import net.micwin.elysium.entities.appliances.Appliance;
+import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
 
 import org.slf4j.Logger;
@@ -50,62 +51,7 @@ public class XpBPO extends BaseBPO {
 
 	private static final Logger L = LoggerFactory.getLogger(XpBPO.class);
 
-	/**
-	 * The xp needed to reach level 1.
-	 */
-	private static final long XP_FOR_LEVEL_1 = 100;
-
 	public XpBPO() {
-	}
-
-	/**
-	 * The xp needed to got to the specified level.
-	 * 
-	 * @param level
-	 * @return
-	 */
-	public long computeXpForLevel(int level) {
-		if (level == 0)
-			return 0;
-		return (long) (XP_FOR_LEVEL_1 * Math.pow(1.5, level - 1));
-	}
-
-	/**
-	 * Raises the avatars xp.
-	 * 
-	 * @param avatar
-	 * @param newXp
-	 */
-	public void raiseXp(Avatar avatar, long newXp) {
-
-		if (L.isDebugEnabled()) {
-			L.debug("raising xp of avatar " + avatar.getName() + " by " + newXp);
-			L.debug("avatar has stored level=" + avatar.getLevel() + ", xp=" + avatar.getXp());
-		}
-
-		if (newXp < 1)
-			return;
-
-		avatar.setXp(avatar.getXp() + newXp);
-
-		long nextLevelXP = computeXpForLevel(avatar.getLevel() + 1);
-
-		int oldLevel = avatar.getLevel();
-
-		// only raise by 1 level and throw away overhung xp
-		if (nextLevelXP <= avatar.getXp()) {
-
-			// raise by 1 level
-			avatar.setTalentPoints(avatar.getTalentPoints() + 1);
-			avatar.setLevel(avatar.getLevel() + 1);
-			avatar.setXp(0l);
-		}
-
-		if (avatar.getLevel() != oldLevel && L.isDebugEnabled()) {
-			L.debug("avatar changed level from " + oldLevel + " to " + avatar.getLevel() + " and gained "
-							+ (avatar.getLevel() - oldLevel) + " talent points");
-		}
-		getAvatarDao().update(avatar, false);
 	}
 
 	/**
@@ -128,15 +74,57 @@ public class XpBPO extends BaseBPO {
 	}
 
 	/**
-	 * Computes the amount of xp the attacker gets for this damage dealt.
+	 * Raises the usage of specified appliance by one. Checks for label
+	 * overflow, max level etc.
 	 * 
-	 * @param attacker
-	 * @param defender
-	 * @param damageDoneToDefender
+	 * @param avatar
+	 * @param appliance
+	 */
+	public void raiseUsage(Avatar avatar, Appliance appliance) {
+
+		Utilization talent = getTalent(avatar, appliance);
+		int newCount = talent.getCount() + 1;
+
+		if (L.isDebugEnabled()) {
+			L.debug("trying to raise usage of utilization/appliance " + talent.getAppliance() + " of avatar '"
+							+ avatar.getName() + "' from level/usages " + talent.getLevel() + "/" + talent.getCount());
+			L.debug("new count is " + newCount);
+		}
+
+		talent.setCount(newCount);
+
+		long nextLevelUsages = computeNextLevelUsages(talent);
+
+		long usagesToGo = nextLevelUsages - talent.getCount();
+		if (L.isDebugEnabled()) {
+			L.debug("usages to go : " + usagesToGo);
+		}
+
+		if (talent.getLevel() < talent.getMaxLevel() && usagesToGo < 1) {
+			int newLevel = talent.getLevel() + 1;
+			if (L.isDebugEnabled()) {
+				L.debug("raising level");
+			}
+			talent.setLevel(newLevel);
+			talent.setCount(0);
+		}
+
+		if (L.isDebugEnabled()) {
+			L.debug("new level / usages is " + talent.getLevel() + " / " + talent.getCount());
+		}
+
+		getTalentsDao().update(talent, true);
+
+	}
+
+	/**
+	 * The number of usages of this level needed to reach next level of usage.
+	 * 
+	 * @param talent
 	 * @return
 	 */
-	public long computeXpForDamage(NaniteGroup attacker, NaniteGroup defender, long damageDoneToDefender) {
-		double xp = damageDoneToDefender;
-		return (long) xp;
+	public long computeNextLevelUsages(Utilization talent) {
+
+		return (long) (10 * Math.pow(2, talent.getLevel()));
 	}
 }

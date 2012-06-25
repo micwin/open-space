@@ -88,9 +88,6 @@ public class HibernateAvatarDao extends ElysiumHibernateDaoSupport<Avatar> imple
 		avatar.setName(name);
 		avatar.setPersonality(race);
 		avatar.setCreationDate(birthDate);
-		avatar.setLevel(0);
-		avatar.setXp(0l);
-		avatar.setTalentPoints(talentPoints);
 		avatar.setPosition(position);
 		avatar.setStoryLineItem(race.getFirstStoryItem());
 

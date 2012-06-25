@@ -10,15 +10,8 @@
 <table width="75%" border="1">
 	<tr>
 		<td class="labelBox">Kollektiv-Name:</td>
-		<td class="valueBox">
-		<div wicket:id="name" />
-		</td>
-		<td class="labelBox">Stufe:</td>
-		<td class="valueBox">
-		<div wicket:id="level" />
-		</td>
-		<td class="labelBox">XP / TP:</td>
-		<td class="valueBox" wicket:id="xp" />
+		<td class="valueBox"> <div wicket:id="name" /> </td>
+		<td class="labelBox">Stufe:</td><td class="valueBox"><div wicket:id="level" /></td>
 	</tr>
 
 </table>
@@ -30,11 +23,13 @@
 	<tr>
 		<th>Name</th>
 		<th>Stufe</th>
+		<th>N&auml;chste</th>
 		<th>Beschreibung</th>
 	</tr>
 	<tr wicket:id="talents">
 		<td wicket:id="label" />
-		<td><span wicket:id="level" /> <a wicket:id="raise">+</a></td>
+		<td><span wicket:id="level" /></td>
+		<td><span wicket:id="togo" /></td>
 		<td wicket:id="description" />
 	</tr>
 </table>

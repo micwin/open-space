@@ -56,7 +56,7 @@ public class NaniteBPO extends BaseBPO {
 
 	private static final Logger L = LoggerFactory.getLogger(NaniteBPO.class);
 
-	private static final int MAX_NOOB_LEVEL = 100;
+	private static final int MAX_NOOB_LEVEL = 25;
 
 	private static final double BASE_DAMAGE_PER_NANITE = 0.01;
 
@@ -93,6 +93,10 @@ public class NaniteBPO extends BaseBPO {
 
 		// setting and updating
 		nanitesGroup.setNaniteCount(newCount);
+
+		if (raiseCount > 0) {
+			new XpBPO().raiseUsage(nanitesGroup.getController(), Appliance.NANITE_MANAGEMENT);
+		}
 		getNanitesDao().update(nanitesGroup, true);
 	}
 
@@ -144,6 +148,8 @@ public class NaniteBPO extends BaseBPO {
 		naniteGroup.getController().getNanites().add(newGroup);
 		newGroup.setController(naniteGroup.getController());
 
+		new XpBPO().raiseUsage(naniteGroup.getController(), Appliance.NANITE_MANAGEMENT);
+
 		getNanitesDao().update(naniteGroup, true);
 		getNanitesDao().update(newGroup, true);
 		getAvatarDao().update(naniteGroup.getController(), true);
@@ -190,6 +196,8 @@ public class NaniteBPO extends BaseBPO {
 		}
 
 		naniteGroup.setPosition(targetGate.getPosition());
+		new XpBPO().raiseUsage(naniteGroup.getController(), Appliance.NANITE_MANAGEMENT);
+
 		getNanitesDao().update(naniteGroup, true);
 		return true;
 	}
@@ -208,14 +216,17 @@ public class NaniteBPO extends BaseBPO {
 	public void attack(NaniteGroup attacker, NaniteGroup defender) {
 
 		flush();
+
+		XpBPO xpBPO = new XpBPO();
+
 		// first - can they attack?
 		if (!canAttack(attacker, defender)) {
 
 			return;
 		}
 
-		long attackerStrength = calculateAttackDamage(attacker);
-		long defenderStrength = calculateAttackDamage(defender);
+		long attackerStrength = calculateAttackDamage(attacker, true);
+		long defenderStrength = calculateAttackDamage(defender, false);
 
 		long damageDoneToDefender = doDamage(defender, attackerStrength);
 		long damageDoneToAttacker = doDamage(attacker, defenderStrength);
@@ -230,22 +241,21 @@ public class NaniteBPO extends BaseBPO {
 
 		// distribute xp
 
-		XpBPO xpBPO = new XpBPO();
+		xpBPO.raiseUsage(attacker.getController(), Appliance.NANITE_BATTLE);
+		xpBPO.raiseUsage(defender.getController(), Appliance.NANITE_DAMAGE_CONTROL);
 
-		long attackerXp = xpBPO.computeXpForDamage(attacker, defender, damageDoneToDefender);
-		long defenderXp = xpBPO.computeXpForDamage(defender, attacker, damageDoneToAttacker);
+		if (attacker.getNaniteCount() < 1) {
 
-		xpBPO.raiseXp(attacker.getController(), attackerXp);
-		xpBPO.raiseXp(defender.getController(), defenderXp);
-
-		if (attacker.getNaniteCount() < 1
-						&& (attacker.getController().getNanites().size() > 1 || attacker.getController().getLevel() > MAX_NOOB_LEVEL)) {
+			L.debug("killing attacker group");
 			kill(attacker);
+			xpBPO.raiseUsage(defender.getController(), Appliance.NANITE_CRITICAL_HIT);
 		}
 
-		if (defender.getNaniteCount() < 1
-						&& (defender.getController().getNanites().size() > 1 || defender.getController().getLevel() > MAX_NOOB_LEVEL)) {
+		if (defender.getNaniteCount() < 1) {
+
+			L.debug("killing defender group");
 			kill(defender);
+			xpBPO.raiseUsage(attacker.getController(), Appliance.NANITE_CRITICAL_HIT);
 		}
 
 		flush();
@@ -279,7 +289,8 @@ public class NaniteBPO extends BaseBPO {
 
 		long newCount = Math.round(naniteGroup.getNaniteCount() - damageDone);
 
-		if ((naniteGroup.getController().getLevel() < MAX_NOOB_LEVEL) && (newCount < 1)) {
+		if ((naniteGroup.getController().getLevel() < MAX_NOOB_LEVEL) && (newCount < 1)
+						&& naniteGroup.getController().getNanites().size() == 1) {
 			// newbie protection
 			if (L.isDebugEnabled())
 				L.debug("engaging newbie protection  lvl < " + MAX_NOOB_LEVEL + " - last nanite group not killed");
@@ -294,14 +305,14 @@ public class NaniteBPO extends BaseBPO {
 				L.debug(" - resulting in a new size of " + newCount);
 			}
 
-			getNanitesDao().update(naniteGroup, true);
 		} else {
 
-			L.debug(" - resulting in killing group");
-
+			L.debug(" - resulting in putting group near death");
 			damageDone = naniteGroup.getNaniteCount();
-			kill(naniteGroup);
+			naniteGroup.setNaniteCount(0);
 		}
+
+		getNanitesDao().update(naniteGroup, true);
 
 		return damageDone;
 
@@ -332,14 +343,27 @@ public class NaniteBPO extends BaseBPO {
 	 * calculates the active attack strength of specified attacker.
 	 * 
 	 * @param attacker
+	 * @param attacker
 	 * @return
 	 */
-	public long calculateAttackDamage(NaniteGroup attacker) {
+	public long calculateAttackDamage(NaniteGroup attacker, boolean offensive) {
 
 		Utilization nanitesBattle = new AvatarBPO().getTalent(getAvatarDao().refresh(attacker.getController()),
 						Appliance.NANITE_BATTLE);
 
 		double factor = nanitesBattle == null ? 0.3 : Math.pow(1.1, nanitesBattle.getLevel() - 1);
+		// evaluate and add critical hit
+
+		Utilization critical = new AvatarBPO().getTalent(getAvatarDao().refresh(attacker.getController()),
+						Appliance.NANITE_CRITICAL_HIT);
+		if (critical != null && critical.getLevel() > 0) {
+			boolean doesCritical = Math.random() * 100 <= critical.getLevel();
+			if (doesCritical) {
+				L.debug("critical hit!");
+				factor *= 3;
+			}
+		}
+
 		long totalAttackDamage = (long) (factor * attacker.getNaniteCount() * BASE_DAMAGE_PER_NANITE);
 		L.debug("nanite group " + attacker + " attacks with count " + attacker.getNaniteCount()
 						+ " and nanites battle factor = " + factor + ", resulting in a total attack damage of "

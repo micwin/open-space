@@ -59,11 +59,11 @@ public final class Utilization extends ElysiumEntity {
 		 * @param level
 		 * @return
 		 */
-		public static Utilization create(Appliance appliance, int level) {
+		public static Utilization create(Appliance appliance, int level, int maxLevel) {
 			Utilization u = new Utilization();
 			u.setAppliance(appliance);
 			u.setLevel(level);
-			u.setCount(0);
+			u.setMaxLevel(maxLevel);
 			return u;
 		}
 	};
@@ -77,6 +77,9 @@ public final class Utilization extends ElysiumEntity {
 	@Column(name = "USAGE_COUNT")
 	private int count;
 
+	@Column(name = "MAX_LEVEL")
+	private int maxLevel;
+
 	public Utilization() {
 	}
 
@@ -85,7 +88,7 @@ public final class Utilization extends ElysiumEntity {
 	}
 
 	/**
-	 * THe leven on which this knowledge ist present.
+	 * The level on which appliance is present.
 	 * 
 	 * @return
 	 */
@@ -117,6 +120,23 @@ public final class Utilization extends ElysiumEntity {
 	 */
 	public int getCount() {
 		return count;
+	}
+
+	public int raiseCount() {
+		return ++count;
+	}
+
+	public void setMaxLevel(int maxLevel) {
+		this.maxLevel = maxLevel;
+	}
+
+	/**
+	 * The maximum level this utilization can have.
+	 * 
+	 * @return
+	 */
+	public int getMaxLevel() {
+		return maxLevel;
 	}
 
 	@Override

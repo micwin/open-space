@@ -41,25 +41,17 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import net.micwin.elysium.bpo.AvatarBPO;
 import net.micwin.elysium.bpo.XpBPO;
-import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.appliances.Utilization;
-import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.User;
-import net.micwin.elysium.entities.galaxy.Position;
-import net.micwin.elysium.entities.gates.Gate;
 import net.micwin.elysium.view.BasePage;
 import net.micwin.elysium.view.ElysiumWicketModel;
-import net.micwin.elysium.view.collective.NaniteGroupShowPage;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RefreshingView;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,7 +77,6 @@ public class HomePage extends BasePage {
 		super.onInitialize();
 
 		addToContentBody(new Label("name", "" + getAvatar().getName()));
-		addToContentBody(composeXpEntry(getAvatar()));
 		addToContentBody(new Label("level", NumberFormat.getIntegerInstance(getLocale()).format(getAvatar().getLevel())));
 		addToContentBody(getTalents());
 
@@ -115,39 +106,19 @@ public class HomePage extends BasePage {
 				final IModel<Utilization> utilizationModel = item.getModel();
 				final Utilization utilization = (Utilization) utilizationModel.getObject();
 				item.add(new Label("label", utilization.getAppliance().getLabel()));
+				item.add(composeToGoLabel(utilization));
 				item.add(new Label("description", utilization.getAppliance().getDescription()));
 				item.add(new Label("level", NumberFormat.getIntegerInstance().format(utilization.getLevel())));
-				item.add(getRaiseLink(utilizationModel));
 			}
 
-			private Component getRaiseLink(final IModel<Utilization> utilizationModel) {
-				Link link = new Link("raise") {
-
-					@Override
-					public void onClick() {
-						new AvatarBPO().raiseTalent(getAvatar(), utilizationModel.getObject().getAppliance());
-						setResponsePage(HomePage.class);
-					}
-
-				};
-
-				link.setVisible(getAvatar().getTalentPoints() > 0);
-
-				return link;
+			protected Label composeToGoLabel(final Utilization utilization) {
+				double percentage = 1.0 * utilization.getCount() / new XpBPO().computeNextLevelUsages(utilization);
+				String text = NumberFormat.getPercentInstance().format(percentage);
+				return new Label("togo", text);
 			}
+
 		};
 		return talentsComponent;
-	}
-
-	protected Component composeXpEntry(Avatar avatar) {
-
-		long nextXp = new XpBPO().computeXpForLevel(avatar.getLevel() + 1);
-		NumberFormat nf = NumberFormat.getIntegerInstance(getLocale());
-		String labelString = nf.format(avatar.getXp()) + " / +" + nf.format(nextXp - avatar.getXp()) + " / "
-						+ avatar.getTalentPoints();
-		Label xpLabel = new Label("xp", labelString);
-		return xpLabel;
-
 	}
 
 	/**

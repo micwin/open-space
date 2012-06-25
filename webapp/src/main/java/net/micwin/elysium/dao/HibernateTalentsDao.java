@@ -17,7 +17,6 @@ public class HibernateTalentsDao extends ElysiumHibernateDaoSupport<Utilization>
 		return Utilization.class;
 	}
 
-
 	@Override
 	public Collection<Utilization> createInitialTalents(Race race) {
 
@@ -26,10 +25,10 @@ public class HibernateTalentsDao extends ElysiumHibernateDaoSupport<Utilization>
 
 		for (int i = 0; i < initialTalents.length; i++) {
 			Utilization initialTalent = initialTalents[i];
-			newTalents.add(Utilization.Factory.create(initialTalent.getAppliance(), initialTalent.getLevel()));
+			newTalents.add(Utilization.Factory.create(initialTalent.getAppliance(), initialTalent.getLevel(),
+							initialTalent.getMaxLevel()));
 		}
 
-		
 		getHibernateTemplate().saveOrUpdateAll(newTalents);
 
 		getHibernateTemplate().flush();
