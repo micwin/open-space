@@ -1,16 +1,18 @@
 <html>
 <head>
-
+<title>${title}</title>
 </head>
 <body>
 <wicket:panel>
 
-	<form wicket:id="registerForm" id="registerBox">	
-		<wicket:message key="register.login" /><input type="text" wicket:id="regLogin" maxlength="12" /><br />
-		<wicket:message key="register.password" /><input type="password" wicket:id="regPass" maxlength="12" /><br />
-		<wicket:message key="register.password2" /><input type="password" wicket:id="regPass2" maxlength="12" /><br />
-	    <input type="submit" value="Register" />
-    </form>
+	<form wicket:id="registerForm" id="registerBox"><wicket:message
+		key="register.login" /><input type="text" wicket:id="regLogin"
+		maxlength="12" /><br />
+	<wicket:message key="register.password" /><input type="password"
+		wicket:id="regPass" maxlength="12" /><br />
+	<wicket:message key="register.password2" /><input type="password"
+		wicket:id="regPass2" maxlength="12" /><br />
+	<input type="submit" value="Register" /></form>
 </wicket:panel>
 
 </body>

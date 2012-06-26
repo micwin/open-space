@@ -1,5 +1,10 @@
 <html
 	xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd">
+
+<head>
+<title>${title}</title>
+</head>
+
 <body>
 
 
@@ -10,8 +15,13 @@
 <table width="75%" border="1">
 	<tr>
 		<td class="labelBox">Kollektiv-Name:</td>
-		<td class="valueBox"> <div wicket:id="name" /> </td>
-		<td class="labelBox">Stufe:</td><td class="valueBox"><div wicket:id="level" /></td>
+		<td class="valueBox">
+		<div wicket:id="name" />
+		</td>
+		<td class="labelBox">Stufe:</td>
+		<td class="valueBox">
+		<div wicket:id="level" />
+		</td>
 	</tr>
 
 </table>
