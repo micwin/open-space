@@ -102,7 +102,8 @@ public class NaniteGroupShowPage extends BasePage {
 			}
 		};
 
-		link.setVisible((groupModel.getEntity().getNaniteCount() > 1)
+		link.setVisible(groupModel.getEntity().getController().getNanites().size() < 2
+						&& (groupModel.getEntity().getNaniteCount() > 1)
 						&& getNanitesBPO().canRaiseGroupCount(groupModel.getEntity().getController()));
 		return link;
 	}
