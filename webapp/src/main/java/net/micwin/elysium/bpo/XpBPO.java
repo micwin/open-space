@@ -125,6 +125,6 @@ public class XpBPO extends BaseBPO {
 	 */
 	public long computeNextLevelUsages(Utilization talent) {
 
-		return (long) (10 * Math.pow(2, talent.getLevel()));
+		return (long) (10 * Math.pow(1.3, talent.getLevel()));
 	}
 }
