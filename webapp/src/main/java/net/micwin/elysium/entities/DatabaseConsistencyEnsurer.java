@@ -1,16 +1,21 @@
 package net.micwin.elysium.entities;
 
 import java.sql.SQLException;
+import java.util.Date;
 
+import net.micwin.elysium.bpo.AvatarBPO;
 import net.micwin.elysium.bpo.GalaxyBPO;
 import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.dao.IAvatarDao;
 import net.micwin.elysium.dao.IGalaxyDao;
 import net.micwin.elysium.dao.IGatesDao;
+import net.micwin.elysium.dao.IOrganizationDao;
 import net.micwin.elysium.dao.ISysParamDao;
 import net.micwin.elysium.dao.IUserDao;
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
+import net.micwin.elysium.entities.characters.Organization;
+import net.micwin.elysium.entities.characters.Race;
 import net.micwin.elysium.entities.characters.User;
 import net.micwin.elysium.entities.characters.User.Role;
 import net.micwin.elysium.entities.characters.User.State;
@@ -45,22 +50,53 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 
 	private static final Logger L = org.slf4j.LoggerFactory.getLogger(DatabaseConsistencyEnsurer.class);
 
-	private GalaxyTimer galaxyTimer;
+	/**
+	 * Ensures database consistency. If missing, creates admin, first sector,
+	 * lost sector, first solar system etc pp.
+	 */
+	public void ensureDatabaseConsistency() {
 
-	protected void ensureGalaxyTimePresent() {
-		L.info("ensuring galaxy timer is present");
-		SysParam galaxyTimeParam = getSysParamDao().findByKey("galaxyTime", null);
-		if (galaxyTimeParam == null)
-			galaxyTimeParam = getSysParamDao().create("galaxyTime",
-							"" + (System.currentTimeMillis() + HUNDRET_YEARS_MILLIS));
+		GalaxyTimer.set(loadGalaxyTimer());
 
-		galaxyTimer = new GalaxyTimer(Long.valueOf(galaxyTimeParam.getValue()));
-		L.info("galaxy time is " + galaxyTimer.getGalaxyDate());
+		/**
+		 * Do all in a session managed by hibernate.
+		 */
+		getHibernateTemplate().execute(new HibernateCallback() {
+
+			@Override
+			public Object doInHibernate(org.hibernate.Session session) throws HibernateException, SQLException {
+
+				ensureLostSystemPresent();
+				L.info("lost systems ensured.");
+				ensureAdminPresent();
+				L.info("admin ensured.");
+				session.flush();
+				ensureAcademyPresent();
+				L.info("academy ensured.");
+				session.flush();
+				L.info("closing session after data consistency check");
+
+				return null;
+			}
+		});
+
+		L.info("database sanity ensured");
 
 	}
 
-	private ISysParamDao getSysParamDao() {
-		return DaoManager.I.getSysParamDao();
+	private void ensureAcademyPresent() {
+		User adminUser = getUserDao().findByStringProperty("login", "admin").iterator().next();
+		Avatar admin = getAvatarDao().findByUser(adminUser);
+
+		if (admin.getOrganization() == null) {
+			L.info("admin does not have a organization assigned - create OSA");
+			Organization orga = Organization.create("Open Space Academy", "OSA");
+			orga.setController(admin);
+			DaoManager.I.getOrganizationDao().insert(orga, false);
+			admin.setOrganization(orga);
+			DaoManager.I.getAvatarDao().update(admin, false);
+			L.info("Open Space Academy created and admin made controller");
+		}
 	}
 
 	private void ensureLostSystemPresent() {
@@ -115,30 +151,34 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 		if (admin == null) {
 			L.info("admin missing - creating one ...");
 			admin = getUserDao().create("admin", "admin", State.ACTIVE, Role.ADMIN);
+			getUserDao().flush();
 		} else {
 			L.info("admin already present");
 		}
 
-//		L.info("checking for admins avatar ...");
-//
-//		Avatar adminAvatar = getAvatarDao().findByUser(admin);
-//
-//		if (adminAvatar != null)
-//
-//		{
-//
-//			L.info("adminAvatar present. Checking skills");
-//
-//			// make sure the admin has enough points to conquer any thread
-//			for (Utilization talent : adminAvatar.getTalents()) {
-//				talent.setLevel(ADMIN_TALENTS_LEVEL);
-//			}
-//
-//			DaoManager.I.getAvatarDao().update(adminAvatar, false);
-//			L.info("admin avatar rectified") ; 
-//		}
+		L.info("checking for admins avatar ...");
 
-		DaoManager.I.getUserDao().update(admin, false);
+		Avatar adminAvatar = getAvatarDao().findByUser(admin);
+
+		if (adminAvatar == null) {
+			L.info("create admin avatar...");
+			adminAvatar = new AvatarBPO().create(admin, "admin", Race.NANITE, false);
+		}
+
+		if (adminAvatar == null) {
+			throw new IllegalStateException("adminAvatar still not present!");
+		}
+		L.info("Checking skills");
+
+		// make sure the admin has enough points to conquer any thread
+		for (Utilization talent : adminAvatar.getTalents()) {
+			talent.setLevel(ADMIN_TALENTS_LEVEL);
+		}
+
+		DaoManager.I.getAvatarDao().update(adminAvatar, true);
+		L.info("admin avatar rectified");
+
+		DaoManager.I.getUserDao().update(admin, true);
 
 		L.info("admin user rectified");
 	}
@@ -149,30 +189,6 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 
 	private IUserDao getUserDao() {
 		return DaoManager.I.getUserDao();
-	}
-
-	public void ensureDatabaseConsistency() {
-
-		getHibernateTemplate().execute(new HibernateCallback() {
-
-			@Override
-			public Object doInHibernate(org.hibernate.Session session) throws HibernateException, SQLException {
-				ensureGalaxyTimePresent();
-				ensureLostSystemPresent();
-				session.flush();
-
-				ensureAdminPresent();
-				session.flush();
-				session.close();
-				return null;
-			}
-		});
-		L.info("database sanity ensured");
-
-	}
-
-	public GalaxyTimer getGalaxyTimer() {
-		return galaxyTimer;
 	}
 
 	public void update(final GalaxyTimer galaxyTimer) {
@@ -194,5 +210,29 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 			}
 		});
 
+	}
+
+	private ISysParamDao getSysParamDao() {
+		return DaoManager.I.getSysParamDao();
+	}
+
+	public GalaxyTimer loadGalaxyTimer() {
+
+		GalaxyTimer galaxyTimer = (GalaxyTimer) getHibernateTemplate().execute(new HibernateCallback() {
+
+			@Override
+			public GalaxyTimer doInHibernate(Session session) throws HibernateException, SQLException {
+				SysParam galaxyTimeParam = getSysParamDao().findByKey("galaxyTime", null);
+				if (galaxyTimeParam == null)
+					galaxyTimeParam = getSysParamDao().create("galaxyTime",
+									"" + (System.currentTimeMillis() + HUNDRET_YEARS_MILLIS));
+
+				return new GalaxyTimer(Long.valueOf(galaxyTimeParam.getValue()));
+
+			}
+
+		});
+
+		return galaxyTimer;
 	}
 }

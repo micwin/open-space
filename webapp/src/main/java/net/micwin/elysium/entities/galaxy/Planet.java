@@ -38,18 +38,13 @@ import javax.persistence.Entity;
 
 @Entity
 public final class Planet extends Environment {
+
 	public Planet() {
 	}
 
 	@Override
 	public String toString() {
 		return "Planet " + getPosition().composePath(null).toString();
-	}
-
-	@Override
-	public String getName() {
-		return "Planet " + getPosition().getX() + "/" + getPosition().getY() + " @ "
-						+ getPosition().getEnvironment().getName();
 	}
 
 	@Override
@@ -74,4 +69,5 @@ public final class Planet extends Environment {
 		}
 
 	}
+
 }

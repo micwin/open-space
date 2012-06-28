@@ -39,6 +39,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.UniqueConstraint;
 
 import net.micwin.elysium.entities.characters.Avatar;
 
@@ -48,6 +49,8 @@ public abstract class ElysiumEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
+
+	private String name;
 
 	@ManyToOne(optional = true)
 	private Avatar controller;
@@ -112,6 +115,14 @@ public abstract class ElysiumEntity {
 	@Override
 	public String toString() {
 		return getBaseClass().getSimpleName() + " id=" + id + " hashCode=" + hashCode();
+	}
+
+	public final void setName(String name) {
+		this.name = name;
+	}
+
+	public final String getName() {
+		return name;
 	}
 
 }

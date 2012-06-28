@@ -1,16 +1,16 @@
 package net.micwin.elysium.dao;
 
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.micwin.elysium.entities.galaxy.Environment;
 import net.micwin.elysium.entities.galaxy.Position;
 import net.micwin.elysium.entities.gates.Gate;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class HibernateGatesDao extends ElysiumHibernateDaoSupport<Gate> implements IGatesDao {
 
@@ -21,7 +21,9 @@ public class HibernateGatesDao extends ElysiumHibernateDaoSupport<Gate> implemen
 
 	@Override
 	public Collection<Gate> findByEnvironment(Environment environment) {
-		List<Gate> result = lookupHql(" from Gate where position.environment.id=" + environment.getId());
+		List<Gate> resultSet = lookupHql(" from Gate where position.environment.id=" + environment.getId());
+
+		LinkedList<Gate> result = new LinkedList<Gate>(resultSet);
 		return result;
 	}
 

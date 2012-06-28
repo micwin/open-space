@@ -34,6 +34,7 @@ package net.micwin.elysium.entities.characters;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import net.micwin.elysium.entities.ElysiumEntity;
@@ -41,11 +42,55 @@ import net.micwin.elysium.entities.ElysiumEntity;
 @Entity
 public final class Organization extends ElysiumEntity {
 
-	public Organization() {
+	/**
+	 * Creates a new Organization. Dont forget to set Controller before
+	 * persisting.
+	 * 
+	 * @param longName
+	 * @param abbreviation
+	 * @return
+	 */
+	public static Organization create(String longName, String abbreviation) {
+
+		// check lengths
+		if (abbreviation.length() < 2) {
+			throw new IllegalArgumentException("abbreviation '" + abbreviation + "' too short");
+		} else if (abbreviation.length() > 3) {
+			throw new IllegalArgumentException("abbreviation '" + abbreviation + "' too long");
+		}
+		Organization organization = new Organization();
+		organization.longName = longName;
+		organization.abbreviation = abbreviation;
+		return organization;
 	}
+
+	@Column(unique = true)
+	private String longName;
+
+	@Column(unique = true)
+	private String abbreviation;
 
 	@Override
 	public Class getBaseClass() {
 		return Organization.class;
 	}
+
+	public void setLongName(String longName) {
+		this.longName = longName;
+	}
+
+	public String getLongName() {
+		return longName;
+	}
+
+	public void setAbbreviation(String abbreviation) {
+		this.abbreviation = abbreviation;
+	}
+
+	public String getAbbreviation() {
+		return abbreviation;
+	}
+
+	// --------------------------
+
 }

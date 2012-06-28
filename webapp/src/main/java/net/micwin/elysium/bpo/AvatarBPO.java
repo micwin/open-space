@@ -42,10 +42,8 @@ import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.micwin.elysium.Constants;
 import net.micwin.elysium.MessageKeys;
 import net.micwin.elysium.entities.NaniteGroup;
-import net.micwin.elysium.entities.appliances.Appliance;
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.Race;
@@ -74,13 +72,12 @@ public class AvatarBPO extends BaseBPO {
 	 * @param user
 	 * @param name
 	 * @param race
+	 * @param createSystem
+	 *            wether or not to create a system for this character. If not,
+	 *            simply place it on the elysium planet.
 	 * @return
 	 */
-	public String create(User user, String name, Race race) {
-		String error = validate(user, name, race);
-		if (error != null) {
-			return error;
-		}
+	public Avatar create(User user, String name, Race race, boolean createSystem) {
 
 		Collection<Utilization> talentsList = getTalentsDao().createInitialTalents(race);
 
@@ -90,15 +87,29 @@ public class AvatarBPO extends BaseBPO {
 
 		}
 
-		Sector thinnestSector = getGalaxyDao().findThinnestSector();
+		Position position;
 
-		if (thinnestSector == null) {
-			thinnestSector = getGalaxyBPO().createSector(0, 0);
+		if (createSystem) {
 
+			Sector thinnestSector = getGalaxyDao().findThinnestSector();
+
+			if (thinnestSector == null) {
+				thinnestSector = getGalaxyBPO().createSector(0, 0);
+
+			}
+
+			SolarSystem solarSystem = getGalaxyBPO().createSolarSystem(thinnestSector);
+
+			position = randomizeStartingPosition(solarSystem.getMainPlanet());
+
+		} else {
+
+			// do not create solar system - so we place it in the elysium
+			Gate elysiumGate = getGatesDao().findByGateAdress("elysium");
+
+			Planet planet = (Planet) elysiumGate.getPosition().getEnvironment();
+			position = elysiumGate.getPosition();
 		}
-		SolarSystem solarSystem = getGalaxyBPO().createSolarSystem(thinnestSector);
-
-		Position position = randomizeStartingPosition(solarSystem.getMainPlanet());
 
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTime(getGalaxyTimer().getGalaxyDate());
@@ -110,21 +121,32 @@ public class AvatarBPO extends BaseBPO {
 		NaniteGroup initialNanitesGroup = getNanitesDao().create(race.getInitialNanites(), position);
 
 		nanites.add(initialNanitesGroup);
+
 		Avatar avatar = getAvatarDao().create(user, name, race, talentsList, position, birthDate, nanites);
+		avatar.setUser(user);
 
 		initialNanitesGroup.setController(avatar);
 		getNanitesDao().insert(initialNanitesGroup, true);
 
-		Collection<Gate> gates = getGatesDao().findByEnvironment(avatar.getPosition().getEnvironment());
+		if (createSystem) {
 
-		if (gates.size() > 0) {
+			Collection<Gate> gates = getGatesDao().findByEnvironment(avatar.getPosition().getEnvironment());
 
-			avatar.setHomeGateAdress(gates.iterator().next().getGateAdress());
+			if (gates.size() > 0) {
+
+				avatar.setHomeGateAdress(gates.iterator().next().getGateAdress());
+			}
+		} else {
+			avatar.setHomeGateAdress("elysium");
+		}
+
+		if (L.isDebugEnabled()) {
+			L.debug("home gate adress of avatar " + avatar.getName() + " set to " + avatar.getHomeGateAdress());
 		}
 
 		getAvatarDao().update(avatar, true);
 
-		return null;
+		return avatar;
 	}
 
 	private Position randomizeStartingPosition(Planet mainPlanet) {
@@ -135,7 +157,7 @@ public class AvatarBPO extends BaseBPO {
 		return position;
 	}
 
-	public String validate(User user, String name, Race race) {
+	public String validateCreate(User user, String name, Race race) {
 		Avatar alreadyExisting = getAvatarDao().findByUser(user);
 		if (alreadyExisting != null) {
 			return MessageKeys.EK_USER_ALREADY_HAS_AN_AVATAR;

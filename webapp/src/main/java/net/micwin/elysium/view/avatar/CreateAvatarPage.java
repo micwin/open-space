@@ -84,12 +84,15 @@ public class CreateAvatarPage extends BasePage {
 			@Override
 			protected void onSubmit() {
 
-				String result = new AvatarBPO().create(getUser(), nameInput.getModel().getObject(),
+				AvatarBPO avatarBpo = new AvatarBPO();
+				String validationResult = avatarBpo.validateCreate(getUser(), nameInput.getModel().getObject(),
 								personalityChoice.getModelObject());
-				if (result == null) {
+
+				if (validationResult == null) {
+					avatarBpo.create(getUser(), nameInput.getModel().getObject(), personalityChoice.getModelObject(), true);
 					setResponsePage(HomePage.class);
 				} else {
-					error(result);
+					error(validationResult);
 				}
 			}
 		};

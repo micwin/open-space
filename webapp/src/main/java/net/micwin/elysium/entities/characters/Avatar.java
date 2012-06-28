@@ -69,8 +69,6 @@ public class Avatar extends ElysiumEntity {
 
 	private Date creationDate;
 
-	private String name;
-
 	@OneToOne
 	private Organization organization;
 
@@ -112,10 +110,6 @@ public class Avatar extends ElysiumEntity {
 		return sum;
 	}
 
-	public String getName() {
-		return name;
-	}
-
 	public Organization getOrganization() {
 		return organization;
 	}
@@ -142,10 +136,6 @@ public class Avatar extends ElysiumEntity {
 
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public void setOrganization(Organization organization) {

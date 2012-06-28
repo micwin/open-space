@@ -64,6 +64,7 @@
 				<value>net.micwin.elysium.entities.replication.Component</value>
 				<value>net.micwin.elysium.entities.NaniteGroup</value>
 				<value>net.micwin.elysium.entities.gates.Gate</value>
+				<value>net.micwin.elysium.entities.characters.Organization</value>
 			</list>
 		</property>
 	</bean>
@@ -101,6 +102,9 @@
 		</property>
 		<property name="gatesDao">
 			<bean id="gatesDao__" class="net.micwin.elysium.dao.HibernateGatesDao" />
+		</property>
+		<property name="organizationDao">
+			<bean id="organizationDao__" class="net.micwin.elysium.dao.HibernateOrganizationDao" />
 		</property>
 
 

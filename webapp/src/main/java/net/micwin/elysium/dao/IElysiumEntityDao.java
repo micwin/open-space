@@ -34,7 +34,10 @@ package net.micwin.elysium.dao;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
+import java.util.Collection;
+
 import net.micwin.elysium.entities.ElysiumEntity;
+import net.micwin.elysium.entities.characters.Avatar;
 
 public interface IElysiumEntityDao<T extends ElysiumEntity> {
 
@@ -45,6 +48,14 @@ public interface IElysiumEntityDao<T extends ElysiumEntity> {
 	 * @return
 	 */
 	T loadById(Long id);
+
+	/**
+	 * Finds the entity by specified controller.
+	 * 
+	 * @param controller
+	 * @return
+	 */
+	Collection<T> findByController(Avatar controller);
 
 	/**
 	 * Returns the entity class this dao works upon.
@@ -81,5 +92,14 @@ public interface IElysiumEntityDao<T extends ElysiumEntity> {
 	 * Flushes changes in memory to the db.
 	 */
 	void flush();
+
+	/**
+	 * Query hits by a single string property value.
+	 * 
+	 * @param property
+	 * @param value
+	 * @return
+	 */
+	Collection<T> findByStringProperty(String property, String value);
 
 }

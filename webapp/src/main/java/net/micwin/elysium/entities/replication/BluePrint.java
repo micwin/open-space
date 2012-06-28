@@ -62,8 +62,6 @@ public final class BluePrint extends ElysiumEntity {
 
 	private static final Logger L = LoggerFactory.getLogger(BluePrint.class);
 
-	private String name;
-
 	@Enumerated(EnumType.STRING)
 	private BluePrintType type;
 
@@ -76,17 +74,6 @@ public final class BluePrint extends ElysiumEntity {
 	private int usageCounts;
 
 	public BluePrint() {
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getName() {
-		if (name == null) {
-			name = "unnamedBlueprint";
-		}
-		return name;
 	}
 
 	public void setUtilizations(List<Utilization> utilizations) {

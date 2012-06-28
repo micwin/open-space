@@ -36,11 +36,6 @@ public class SolarSystem extends Environment {
 		this.mainPlanet = planet;
 	}
 
-	@Override
-	public String getName() {
-		return "SolarSystem " + getPosition().getX() + "/" + getPosition().getY() + " @ "
-						+ getPosition().getEnvironment().getName();
-	}
 
 	@Override
 	public Class getBaseClass() {

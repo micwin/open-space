@@ -37,6 +37,9 @@ package net.micwin.elysium.entities;
 
 import java.util.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * A timer that manages the time of the simulated galaxy.
  * 
@@ -44,6 +47,26 @@ import java.util.Date;
  * 
  */
 public class GalaxyTimer {
+
+	private static final Logger L = LoggerFactory.getLogger(GalaxyTimer.class);
+
+	private static GalaxyTimer instance;
+
+	public static GalaxyTimer get() {
+
+		return instance;
+	}
+
+	public static void set(GalaxyTimer newTimer) {
+
+		if (newTimer != null && instance != null) {
+			throw new IllegalStateException("may not re-set galaxy timer singleton");
+		}
+
+		instance = newTimer;
+		L.info("new galaxy Time " + instance.getGalaxyDate());
+
+	}
 
 	public static final long DEFAULT_OFFSET = 100 * 365 * 24 * 60 * 60 * 1000;
 

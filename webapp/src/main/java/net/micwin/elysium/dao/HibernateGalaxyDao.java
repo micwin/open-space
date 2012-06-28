@@ -34,16 +34,22 @@ package net.micwin.elysium.dao;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
+import java.util.Collection;
 import java.util.List;
 
+import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.galaxy.Galaxy;
 import net.micwin.elysium.entities.galaxy.Planet;
 import net.micwin.elysium.entities.galaxy.Sector;
 import net.micwin.elysium.entities.galaxy.SolarSystem;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 public class HibernateGalaxyDao extends HibernateDaoSupport implements IGalaxyDao {
+
+	private static final Logger L = LoggerFactory.getLogger(HibernateGalaxyDao.class);
 
 	@Override
 	public void save(SolarSystem solarSystem) {
@@ -60,9 +66,17 @@ public class HibernateGalaxyDao extends HibernateDaoSupport implements IGalaxyDa
 	@Override
 	public Sector findThinnestSector() {
 
-		List results = getSession().createQuery(" from Sector as sector order by sector.systemCount asc limit 1")
-						.list();
-		return (Sector) (results.size() < 1 ? null : results.get(0));
+		if (L.isDebugEnabled()) {
+			L.debug("looking for thinnest sector");
+		}
+		List<Sector> results = getHibernateTemplate().find(
+						" from Sector as sector order by sector.solarSystems.size asc limit 1");
+
+		if (L.isDebugEnabled() && results.size() < 1) {
+			L.debug("no thinnest sector present.");
+
+		}
+		return results.size() < 1 ? null : results.get(0);
 	}
 
 	@Override
@@ -104,4 +118,13 @@ public class HibernateGalaxyDao extends HibernateDaoSupport implements IGalaxyDa
 		throw new IllegalStateException("Galaxy is a dummy entity. you cant load it.");
 	}
 
+	@Override
+	public Collection<Galaxy> findByController(Avatar controller) {
+		throw new UnsupportedOperationException("no avatar controls galaxy");
+	}
+
+	@Override
+	public Collection<Galaxy> findByStringProperty(String property, String value) {
+		throw new IllegalStateException("Galaxy is a dummy entity. you cant load it.");
+	}
 }

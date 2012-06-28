@@ -41,6 +41,7 @@ import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.SysParam;
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
+import net.micwin.elysium.entities.characters.Organization;
 import net.micwin.elysium.entities.characters.User;
 import net.micwin.elysium.entities.galaxy.Galaxy;
 import net.micwin.elysium.entities.gates.Gate;
@@ -155,6 +156,15 @@ public class DaoManager {
 	public void setGatesDao(IGatesDao gatesDao) {
 		checkDaoNotPresent(Gate.class);
 		daoInstances.put(Gate.class, gatesDao);
+	}
+
+	public IOrganizationDao getOrganizationDao() {
+		return (IOrganizationDao) getDao(Organization.class);
+	}
+
+	public void setOrganizationDao(IOrganizationDao orgaDao) {
+		checkDaoNotPresent(Organization.class);
+		daoInstances.put(Organization.class, orgaDao);
 	}
 
 }

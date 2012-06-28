@@ -1,5 +1,7 @@
 package net.micwin.elysium.bpo;
 
+import java.util.LinkedList;
+
 import net.micwin.elysium.entities.galaxy.Planet;
 import net.micwin.elysium.entities.galaxy.Position;
 import net.micwin.elysium.entities.galaxy.Sector;
@@ -52,6 +54,7 @@ public class GalaxyBPO extends BaseBPO {
 
 	private static final Logger L = LoggerFactory.getLogger(GalaxyBPO.class);
 	private static final int MAX_PLANETS_COUNT = 11;
+	private static final int MIN_PLANETS_COUNT = 3;
 
 	/**
 	 * Creates a new solar system.
@@ -59,7 +62,8 @@ public class GalaxyBPO extends BaseBPO {
 	 * @param forceHabitable
 	 *            If true, then the main planet is habitable.-
 	 * @return
-	 */
+	 **/
+
 	public SolarSystem createSolarSystem(Sector sector) {
 
 		if (L.isDebugEnabled()) {
@@ -76,9 +80,12 @@ public class GalaxyBPO extends BaseBPO {
 
 		solarSystem.setPosition(position);
 
+		solarSystem.setName(sector.getName() + "/" + position.getX() + "," + position.getY());
+
 		getGalaxyDao().save(solarSystem);
 
-		fillWithPlanets(solarSystem, (int) (Math.random() * (MAX_PLANETS_COUNT - 1)) + 1);
+		fillWithPlanets(solarSystem, (int) (Math.random() * (MAX_PLANETS_COUNT - MIN_PLANETS_COUNT))
+						+ MIN_PLANETS_COUNT);
 
 		Planet main = solarSystem.getMainPlanet();
 		getGatesDao().create(
@@ -87,7 +94,7 @@ public class GalaxyBPO extends BaseBPO {
 
 		getGalaxyDao().save(solarSystem);
 
-		sector.addSolarSystem(solarSystem);
+		sector.getSolarSystems().add(solarSystem);
 
 		getGalaxyDao().save(sector);
 
@@ -107,6 +114,7 @@ public class GalaxyBPO extends BaseBPO {
 			if (i == mainPlanetIndex) {
 				solarSystem.setMainPlanet(planet);
 			}
+
 		}
 
 		getGalaxyDao().save(solarSystem);
@@ -127,6 +135,8 @@ public class GalaxyBPO extends BaseBPO {
 		planet.setPosition(position);
 		getGalaxyDao().save(planet);
 		solarSystem.getPlanets().add(planet);
+		planet.setName(solarSystem.getName() + " " + (solarSystem.getPlanets().size() + 1));
+
 		if (L.isDebugEnabled()) {
 			L.debug("created planet " + planet);
 		}
@@ -146,6 +156,8 @@ public class GalaxyBPO extends BaseBPO {
 		sector.setPosition(position);
 		sector.setHeight(100);
 		sector.setWidth(100);
+
+		sector.setSolarSystems(new LinkedList<SolarSystem>());
 
 		getGalaxyDao().save(sector);
 		return sector;

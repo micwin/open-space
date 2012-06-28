@@ -91,6 +91,8 @@ public class HibernateAvatarDao extends ElysiumHibernateDaoSupport<Avatar> imple
 		avatar.setPosition(position);
 		avatar.setStoryLineItem(race.getFirstStoryItem());
 
+		insert(avatar, true);
+
 		Organization organization = new Organization();
 		organization.setController(avatar);
 		avatar.setOrganization(organization);
@@ -101,7 +103,7 @@ public class HibernateAvatarDao extends ElysiumHibernateDaoSupport<Avatar> imple
 
 		avatar.setNanites(nanites);
 
-		insert(avatar, true);
+		update(avatar, true);
 
 		return avatar;
 	}

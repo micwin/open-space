@@ -75,7 +75,7 @@ public class BaseBPO {
 	}
 
 	public GalaxyTimer getGalaxyTimer() {
-		return ((ElysiumApplication) Application.get()).getGalaxyTimer();
+		return GalaxyTimer.get();
 	}
 
 	public IGalaxyDao getGalaxyDao() {

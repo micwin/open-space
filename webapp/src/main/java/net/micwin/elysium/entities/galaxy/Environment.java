@@ -50,7 +50,7 @@ public abstract class Environment extends ElysiumEntity {
 
 	@Embedded
 	private Position position;
-
+	
 	private int width;
 
 	private int height;
@@ -89,7 +89,4 @@ public abstract class Environment extends ElysiumEntity {
 		elysium = newIsElysium;
 
 	}
-
-	@Transient
-	public abstract String getName();
 }

@@ -35,17 +35,16 @@ package net.micwin.elysium.dao;
 
  */
 
-import java.sql.SQLException;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 import net.micwin.elysium.entities.ElysiumEntity;
+import net.micwin.elysium.entities.characters.Avatar;
 
-import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
-import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> extends HibernateDaoSupport {
@@ -60,17 +59,9 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> extend
 	 */
 	public void update(final Iterable<T> elements, boolean flush) {
 
-		getHibernateTemplate().execute(new HibernateCallback() {
-
-			@Override
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
-				for (T element : elements) {
-					update(element, false);
-				}
-				return null;
-
-			}
-		});
+		for (T element : elements) {
+			update(element, false);
+		}
 
 		if (flush) {
 			getHibernateTemplate().flush();
@@ -80,18 +71,13 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> extend
 
 	protected List<T> lookupHql(final String hqlString) {
 
-		List<T> result = (List<T>) getHibernateTemplate().execute(new HibernateCallback() {
+		List<T> result = getHibernateTemplate().find(hqlString);
 
-			@Override
-			public List<T> doInHibernate(Session session) throws HibernateException, SQLException {
-				List<T> list = getSession().createQuery(hqlString).list();
-				if (L.isDebugEnabled()) {
-					L.debug("query " + hqlString + " returns " + list.getClass() + " (" + list + ")");
-				}
-				return list;
-			}
-		});
-		return result;
+		if (L.isDebugEnabled()) {
+			L.debug("query " + hqlString + " returns " + result.getClass() + " (" + result + ")");
+		}
+		
+		return new LinkedList<T>(result);
 	}
 
 	/**
@@ -145,7 +131,7 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> extend
 		return (T) getHibernateTemplate().load(getEntityClass(), id);
 	}
 
-	protected abstract Class<T> getEntityClass();
+	public abstract Class<T> getEntityClass();
 
 	/**
 	 * Flushes changes in memory to the db.
@@ -154,10 +140,19 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> extend
 		getHibernateTemplate().flush();
 	}
 
+	public Collection<T> findByController(Avatar controller) {
+		return lookupHql("from " + getEntityClass().getSimpleName() + " where controller.id=" + controller.getId());
+	}
+
 	public T refresh(T entity) {
 
 		getHibernateTemplate().refresh(entity, LockMode.OPTIMISTIC_FORCE_INCREMENT);
 		return entity;
 	}
+
+	public Collection<T> findByStringProperty(String property, String value) {
+		return lookupHql("from " + getEntityClass().getSimpleName() + " where " + property + "='" + value + "'");
+
+	};
 
 }

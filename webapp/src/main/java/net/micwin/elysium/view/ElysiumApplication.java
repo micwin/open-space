@@ -65,7 +65,7 @@ public class ElysiumApplication extends WebApplication {
 	@Override
 	public void init() {
 
-		galaxyTimer = ensurer.getGalaxyTimer();
+		galaxyTimer = ensurer.loadGalaxyTimer ();
 
 		L.info("ElysiumApplication initialized");
 
