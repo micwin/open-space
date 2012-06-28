@@ -55,6 +55,7 @@ import net.micwin.elysium.entities.galaxy.Planet;
 import net.micwin.elysium.entities.galaxy.Position;
 import net.micwin.elysium.entities.galaxy.Sector;
 import net.micwin.elysium.entities.galaxy.SolarSystem;
+import net.micwin.elysium.entities.gates.Gate;
 import net.micwin.elysium.entities.replication.BluePrint;
 
 import org.slf4j.Logger;
@@ -92,14 +93,12 @@ public class AvatarBPO extends BaseBPO {
 		Sector thinnestSector = getGalaxyDao().findThinnestSector();
 
 		if (thinnestSector == null) {
-			thinnestSector = getGalaxyBPO().createSector();
+			thinnestSector = getGalaxyBPO().createSector(0, 0);
 
 		}
 		SolarSystem solarSystem = getGalaxyBPO().createSolarSystem(thinnestSector);
 
 		Position position = randomizeStartingPosition(solarSystem.getMainPlanet());
-
-		getGalaxyBPO().createGates(solarSystem);
 
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTime(getGalaxyTimer().getGalaxyDate());
@@ -111,11 +110,19 @@ public class AvatarBPO extends BaseBPO {
 		NaniteGroup initialNanitesGroup = getNanitesDao().create(race.getInitialNanites(), position);
 
 		nanites.add(initialNanitesGroup);
-		Avatar avatar = getAvatarDao().create(user, name, race, talentsList, Constants.TALENT_POINTS_UPON_CREATION,
-						position, birthDate, nanites);
+		Avatar avatar = getAvatarDao().create(user, name, race, talentsList, position, birthDate, nanites);
 
 		initialNanitesGroup.setController(avatar);
 		getNanitesDao().insert(initialNanitesGroup, true);
+
+		Collection<Gate> gates = getGatesDao().findByEnvironment(avatar.getPosition().getEnvironment());
+
+		if (gates.size() > 0) {
+
+			avatar.setHomeGateAdress(gates.iterator().next().getGateAdress());
+		}
+
+		getAvatarDao().update(avatar, true);
 
 		return null;
 	}

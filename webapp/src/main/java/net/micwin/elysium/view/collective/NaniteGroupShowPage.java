@@ -61,7 +61,7 @@ public class NaniteGroupShowPage extends BasePage {
 			};
 		});
 
-		addToContentBody(composeLocalJumpItems(group));
+		addToContentBody(composeQuickJumpItems(group));
 		addToContentBody(getOtherNanitesTable(group));
 		addToContentBody(getSplitLink(groupModel));
 
@@ -108,61 +108,43 @@ public class NaniteGroupShowPage extends BasePage {
 		return link;
 	}
 
-	private Collection<Component> composeLocalJumpItems(NaniteGroup group) {
+	private Collection<Component> composeQuickJumpItems(NaniteGroup group) {
 
 		Collection<Component> result = new LinkedList<Component>();
-		List<Gate> scannedGates = getScannerBPO().scanForGates(group);
 
-		final ElysiumWicketModel<NaniteGroup> groupModel = group != null ? new ElysiumWicketModel<NaniteGroup>(group)
-						: null;
+		final ElysiumWicketModel<NaniteGroup> groupModel = new ElysiumWicketModel<NaniteGroup>(group);
 
-		for (int index = 0; index < 3; index++) {
-			String linkWickedId = "jumpToP" + index;
+		final String homeGateAdress = getAvatar().getHomeGateAdress();
 
-			Gate gate = scannedGates.size() > index ? scannedGates.get(index) : null;
+		result.add(new Link<String>("jumpHome") {
 
-			if (gate == null) {
-
-				Link link = new EmptyLink(linkWickedId);
-
-				link.add(new Label("label", "---"));
-
-				result.add(link);
-				continue;
+			@Override
+			public void onClick() {
+				getNanitesBPO().gateTravel(groupModel.getEntity(), homeGateAdress);
+				setResponsePage(NaniteGroupShowPage.class);
 			}
+		});
 
-			if (gate.getPosition().getEnvironment().equals(group.getPosition().getEnvironment())) {
+		result.add(new Link<String>("jumpArena") {
 
-				Link link = new EmptyLink(linkWickedId);
-
-				link.add(new Label("label", gate.getGateAdress()));
-				result.add(link);
-				continue;
+			@Override
+			public void onClick() {
+				getNanitesBPO().gateTravel(groupModel.getEntity(), "arena");
+				setResponsePage(NaniteGroupShowPage.class);
 			}
+		});
 
-			final ElysiumWicketModel<Gate> gateModel = new ElysiumWicketModel<Gate>(gate);
+		result.add(new Link<String>("jumpElysium") {
 
-			Link<String> jumpLink = new Link<String>(linkWickedId, Model.of(gate.getGateAdress())) {
+			@Override
+			public void onClick() {
+				getNanitesBPO().gateTravel(groupModel.getEntity(), "elysium");
+				setResponsePage(NaniteGroupShowPage.class);
+			}
+		});
 
-				/**
-				 * 
-				 */
-				private static final long serialVersionUID = -2578829572024287457L;
-
-				@Override
-				public void onClick() {
-					getNanitesBPO().gateTravel(groupModel.getEntity(), gateModel.getEntity().getGateAdress());
-					setResponsePage(NaniteGroupShowPage.class);
-				}
-			};
-
-			jumpLink.add(new Label("label", gate.getGateAdress()));
-
-			result.add(jumpLink);
-		}
-
+		
 		return result;
-
 	}
 
 	private Component getOtherNanitesTable(NaniteGroup scanningGroup) {

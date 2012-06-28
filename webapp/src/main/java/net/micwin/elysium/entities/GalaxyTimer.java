@@ -45,6 +45,8 @@ import java.util.Date;
  */
 public class GalaxyTimer {
 
+	public static final long DEFAULT_OFFSET = 100 * 365 * 24 * 60 * 60 * 1000;
+
 	private long realTimeStartMillis;
 	private long galaxyTimeStartMillis;
 

@@ -116,8 +116,6 @@
 		<property name="daoManager" ref="daoManager" />
 	</bean>
 
-	<bean name="adminBPO" class="net.micwin.elysium.bpo.AdminBPO"
-		init-method="ensureInitialDbSetup" />
 
 	<!-- =================================================== -->
 	<!-- =========== configuring jee persistence =========== -->
@@ -160,7 +158,13 @@
 	<bean id="wicketApplication" class="net.micwin.elysium.view.ElysiumApplication"
 		init-method="init">
 		<property name="daoManager" ref="daoManager" />
-
+		<property name="ensurer" ref="dbConsistencyEnsurer" />
 	</bean>
+
+	<bean id="dbConsistencyEnsurer" class="net.micwin.elysium.entities.DatabaseConsistencyEnsurer"
+		init-method="ensureDatabaseConsistency">
+	</bean>
+
+
 
 </beans>

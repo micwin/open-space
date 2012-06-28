@@ -35,9 +35,10 @@ package net.micwin.elysium.view;
 
  */
 
-import net.micwin.elysium.bpo.AdminBPO;
 import net.micwin.elysium.dao.DaoManager;
+import net.micwin.elysium.entities.DatabaseConsistencyEnsurer;
 import net.micwin.elysium.entities.GalaxyTimer;
+import net.micwin.elysium.entities.SysParam;
 import net.micwin.elysium.view.welcome.WelcomePage;
 
 import org.apache.wicket.Page;
@@ -45,7 +46,6 @@ import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,18 +57,23 @@ public class ElysiumApplication extends WebApplication {
 
 	private GalaxyTimer galaxyTimer;
 
+	private DatabaseConsistencyEnsurer ensurer;
+
 	public ElysiumApplication() {
 	}
 
 	@Override
 	public void init() {
-		// adminBpo.ensureInitialDbSetup();
-		galaxyTimer = new AdminBPO().restoreGalaxyTimer();
+
+		galaxyTimer = ensurer.getGalaxyTimer();
+
 		L.info("ElysiumApplication initialized");
+
 	}
 
 	public GalaxyTimer getGalaxyTimer() {
 		return galaxyTimer;
+
 	}
 
 	@Override
@@ -84,7 +89,8 @@ public class ElysiumApplication extends WebApplication {
 
 	@Override
 	protected void onDestroy() {
-		new AdminBPO().saveGalaxyTimer(galaxyTimer);
+		ensurer.update(galaxyTimer);
+
 	}
 
 	public void setDaoManager(DaoManager daoManager) {
@@ -93,6 +99,14 @@ public class ElysiumApplication extends WebApplication {
 
 	public DaoManager getDaoManager() {
 		return daoManager;
+	}
+
+	public void setEnsurer(DatabaseConsistencyEnsurer ensurer) {
+		this.ensurer = ensurer;
+	}
+
+	public DatabaseConsistencyEnsurer getEnsurer() {
+		return ensurer;
 	}
 
 }

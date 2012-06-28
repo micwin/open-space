@@ -39,6 +39,8 @@ import java.util.List;
 
 import net.micwin.elysium.entities.SysParam;
 
+import org.hibernate.Session;
+import org.hibernate.StatelessSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -88,4 +90,18 @@ public class HibernateSysParamDao extends ElysiumHibernateDaoSupport<SysParam> i
 		}
 		getHibernateTemplate().getSessionFactory().getCurrentSession().close();
 	}
+
+	@Override
+	public Object createSession() {
+
+		return getHibernateTemplate().getSessionFactory().openStatelessSession();
+
+	}
+
+	@Override
+	public void closeSession(Object session) {
+		StatelessSession hibernateSesion = (StatelessSession) session;
+		hibernateSesion.close();
+	}
+
 }

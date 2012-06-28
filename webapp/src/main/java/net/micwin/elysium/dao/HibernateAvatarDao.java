@@ -81,8 +81,8 @@ public class HibernateAvatarDao extends ElysiumHibernateDaoSupport<Avatar> imple
 	}
 
 	@Override
-	public Avatar create(User user, String name, Race race, Collection<Utilization> talents, int talentPoints,
-					Position position, Date birthDate, Collection<NaniteGroup> nanites) {
+	public Avatar create(User user, String name, Race race, Collection<Utilization> talents, Position position,
+					Date birthDate, Collection<NaniteGroup> nanites) {
 		Avatar avatar = new Avatar();
 		avatar.setUser(user);
 		avatar.setName(name);

@@ -80,6 +80,8 @@ public class Avatar extends ElysiumEntity {
 	@Embedded
 	private Position position;
 
+	private String homeGateAdress;
+
 	@Enumerated(EnumType.STRING)
 	private StoryLineItem storyLineItem;
 
@@ -180,6 +182,14 @@ public class Avatar extends ElysiumEntity {
 	@Override
 	public Class getBaseClass() {
 		return Avatar.class;
+	}
+
+	public void setHomeGateAdress(String homeGateAdress) {
+		this.homeGateAdress = homeGateAdress;
+	}
+
+	public String getHomeGateAdress() {
+		return homeGateAdress;
 	}
 
 }

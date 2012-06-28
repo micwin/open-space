@@ -72,11 +72,8 @@ public class UserBPO extends BaseBPO implements Serializable {
 
 	public String register(String login, String pass, String pass2) {
 
-		if (L.isDebugEnabled()) {
-			L.debug("trying to register user '" + login + "' with pass1='" + pass + "' and pass2='" + pass2 + "'");
-		} else {
-			L.info("trying to register user '" + login + "' ...");
-		}
+		L.info("trying to register user '" + login + "' ...");
+
 		String validationResult = validate(login, pass, pass2);
 		if (validationResult != null) {
 			return validationResult;
@@ -129,7 +126,17 @@ public class UserBPO extends BaseBPO implements Serializable {
 	}
 
 	public User login(String login, String pass) {
+		if (L.isDebugEnabled()) {
+			L.debug("logging in user '" + login + "'");
+		}
 		User user = getUserDao().getUser(login, pass);
+		if (user == null) {
+			L.error("user '" + login + "' not logged in");
+			return null;
+		} else if (L.isDebugEnabled()) {
+			L.debug("logged in user '" + user.getLogin() + "'");
+		}
+
 		return user;
 	}
 

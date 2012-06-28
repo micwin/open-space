@@ -35,20 +35,6 @@ package net.micwin.elysium.bpo;
 
  */
 
-import net.micwin.elysium.dao.DaoManager;
-import net.micwin.elysium.entities.GalaxyTimer;
-import net.micwin.elysium.entities.SysParam;
-import net.micwin.elysium.entities.appliances.Utilization;
-import net.micwin.elysium.entities.characters.Avatar;
-import net.micwin.elysium.entities.characters.Race;
-import net.micwin.elysium.entities.characters.User;
-import net.micwin.elysium.entities.characters.User.Role;
-import net.micwin.elysium.entities.characters.User.State;
-import net.micwin.elysium.entities.galaxy.Position;
-import net.micwin.elysium.entities.galaxy.Sector;
-import net.micwin.elysium.entities.galaxy.SolarSystem;
-import net.micwin.elysium.entities.gates.Gate;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,79 +46,8 @@ import org.slf4j.LoggerFactory;
  */
 public class AdminBPO extends BaseBPO {
 
-	/**
-	 * The level each admin talent gets from the start.
-	 */
-	private static final int ADMIN_TALENTS_LEVEL = 65535;
 
 	private static final Logger L = LoggerFactory.getLogger(AdminBPO.class);
 
-	private static final long HUNDRET_YEARS_MILLIS = (long) (1000 * 60 * 60 * 24 * 365.25 * 100);
 
-	/**
-	 * Ensures that the initial db setup has been run. The check is done by
-	 * looking up the admin user: if present, then the setup already has been
-	 * done.
-	 * 
-	 * @return
-	 */
-	public synchronized void ensureInitialDbSetup() {
-
-		ensureAdminPresent();
-		ensureArenaPresent();
-
-		getSysParamDao().create("galaxyTime", "" + (System.currentTimeMillis() + HUNDRET_YEARS_MILLIS));
-
-		getSysParamDao().closeSession(true);
-		L.info("database sanity ensured");
-	}
-
-	private void ensureArenaPresent() {
-		Gate arenaGate = getGatesDao().findByGateAdress("arena");
-		if (arenaGate == null) {
-			L.warn("creating arena planet");
-			Sector lostSector = getGalaxyBPO().createSector();
-			SolarSystem lostSystem = getGalaxyBPO().createSolarSystem(lostSector);
-			getGalaxyDao().save(lostSector);
-			arenaGate = getGatesDao().create(new Position(lostSystem.getPlanets().get(0), 0, 0));
-			arenaGate.setGateAdress("arena");
-			getGatesDao().update(arenaGate, true);
-		}
-		L.info("arena present");
-
-	}
-
-	protected void ensureAdminPresent() {
-		User admin = getUserDao().findByLogin("admin");
-		if (admin == null) {
-			admin = getUserDao().create("admin", "admin", State.ACTIVE, Role.ADMIN);
-		}
-
-		Avatar adminAvatar = getAvatarDao().findByUser(admin);
-
-		if (adminAvatar != null)
-
-		{
-			// make sure the admin has enough points to conquer any thread
-			for (Utilization talent : adminAvatar.getTalents()) {
-				talent.setLevel(ADMIN_TALENTS_LEVEL);
-			}
-
-			getAvatarDao().update(adminAvatar, true);
-		}
-
-		getUserDao().update(admin, true);
-
-	}
-
-	public GalaxyTimer restoreGalaxyTimer() {
-		SysParam galaxyParam = getSysParamDao().findByKey("galaxyTime", "0");
-		Long galaxyTime = Long.valueOf(galaxyParam.getValue());
-		return new GalaxyTimer(galaxyTime);
-	}
-
-	public void saveGalaxyTimer(GalaxyTimer galaxyTimer) {
-		getSysParamDao().create("galaxyTime", "" + galaxyTimer.getGalaxyDate().getTime());
-		L.debug("galaxy timer saved.");
-	}
 }

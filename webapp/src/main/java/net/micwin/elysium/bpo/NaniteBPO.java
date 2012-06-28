@@ -397,6 +397,11 @@ public class NaniteBPO extends BaseBPO {
 			return false;
 		}
 
+		// in an elysium environment?
+		if (attacker.getPosition().getEnvironment().isElysium()) {
+			return false;
+		}
+
 		// both noobs?
 		if (attacker.getController().getLevel() <= MAX_NOOB_LEVEL
 						&& defender.getController().getLevel() <= MAX_NOOB_LEVEL) {

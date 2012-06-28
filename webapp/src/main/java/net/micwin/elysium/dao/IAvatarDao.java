@@ -68,15 +68,13 @@ public interface IAvatarDao extends IElysiumEntityDao<Avatar> {
 	 * @param name
 	 * @param race
 	 * @param talents
-	 * @param talentPoints
 	 * @param position
 	 *            The actual position the avatar should be in.
 	 * @param birthDate
 	 * @param storyLineItem
 	 * @return
 	 */
-	Avatar create(User user, String name, Race race, Collection<Utilization> talents, int talentPoints,
-					Position position, Date birthDate, Collection<NaniteGroup> nanites);
+	Avatar create(User user, String name, Race race, Collection<Utilization> talents, Position position, Date birthDate, Collection<NaniteGroup> nanites);
 
 	/**
 	 * Checks wether or not the specified Avatar Name already exists.

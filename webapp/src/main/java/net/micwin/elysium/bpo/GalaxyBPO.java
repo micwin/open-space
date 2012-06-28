@@ -51,7 +51,7 @@ import org.slf4j.LoggerFactory;
 public class GalaxyBPO extends BaseBPO {
 
 	private static final Logger L = LoggerFactory.getLogger(GalaxyBPO.class);
-	private static final int PLANETS_COUNT = 3;
+	private static final int MAX_PLANETS_COUNT = 11;
 
 	/**
 	 * Creates a new solar system.
@@ -62,6 +62,9 @@ public class GalaxyBPO extends BaseBPO {
 	 */
 	public SolarSystem createSolarSystem(Sector sector) {
 
+		if (L.isDebugEnabled()) {
+			L.debug("creating solar system in sector " + sector);
+		}
 
 		SolarSystem solarSystem = new SolarSystem();
 		solarSystem.setHeight(100);
@@ -75,7 +78,12 @@ public class GalaxyBPO extends BaseBPO {
 
 		getGalaxyDao().save(solarSystem);
 
-		fillWithPlanets(solarSystem, PLANETS_COUNT);
+		fillWithPlanets(solarSystem, (int) (Math.random() * (MAX_PLANETS_COUNT - 1)) + 1);
+
+		Planet main = solarSystem.getMainPlanet();
+		getGatesDao().create(
+						new Position(main, (int) (Math.random() * main.getWidth()), (int) (Math.random() * main
+										.getHeight())));
 
 		getGalaxyDao().save(solarSystem);
 
@@ -89,6 +97,10 @@ public class GalaxyBPO extends BaseBPO {
 	private void fillWithPlanets(SolarSystem solarSystem, int planetsCount) {
 
 		int mainPlanetIndex = (int) (Math.random() * planetsCount);
+		if (L.isDebugEnabled()) {
+			L.debug("filling solar system with " + planetsCount + " planets ...");
+		}
+
 		for (int i = 0; i < planetsCount; i++) {
 			Planet planet = createPlanet(solarSystem);
 
@@ -122,24 +134,21 @@ public class GalaxyBPO extends BaseBPO {
 		return planet;
 	}
 
-	public Sector createSector() {
+	public Sector createSector(int x, int y) {
+
+		if (L.isDebugEnabled()) {
+			L.debug("creating sector " + x + "/" + y);
+		}
 		Sector sector = new Sector();
 		Position position = new Position();
-		position.setX(0);
-		position.setY(0);
+		position.setX(x);
+		position.setY(y);
 		sector.setPosition(position);
 		sector.setHeight(100);
 		sector.setWidth(100);
 
 		getGalaxyDao().save(sector);
 		return sector;
-	}
-
-	public void createGates(SolarSystem solarSystem) {
-		for (Planet planet : solarSystem.getPlanets()) {
-
-			getGatesDao().create(new Position(planet, -1, -1));
-		}
 	}
 
 }

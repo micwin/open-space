@@ -55,6 +55,7 @@ public abstract class Environment extends ElysiumEntity {
 
 	private int height;
 
+	private boolean elysium;
 
 	public void setWidth(int width) {
 		this.width = width;
@@ -78,6 +79,15 @@ public abstract class Environment extends ElysiumEntity {
 
 	public Position getPosition() {
 		return position;
+	}
+
+	public boolean isElysium() {
+		return elysium;
+	}
+
+	public void setElysium(boolean newIsElysium) {
+		elysium = newIsElysium;
+
 	}
 
 	@Transient

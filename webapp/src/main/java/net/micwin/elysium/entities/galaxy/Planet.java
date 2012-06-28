@@ -38,7 +38,6 @@ import javax.persistence.Entity;
 
 @Entity
 public final class Planet extends Environment {
-
 	public Planet() {
 	}
 
@@ -63,7 +62,7 @@ public final class Planet extends Environment {
 
 		if (this == obj)
 			return true;
-	
+
 		try {
 
 			Planet other = (Planet) obj;

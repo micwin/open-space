@@ -35,13 +35,17 @@ package net.micwin.elysium.dao;
 
  */
 
+import java.sql.SQLException;
 import java.util.List;
 
 import net.micwin.elysium.entities.ElysiumEntity;
 
+import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
+import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> extends HibernateDaoSupport {
@@ -54,10 +58,19 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> extend
 	 * @param elements
 	 * @param flush
 	 */
-	public void update(Iterable<T> elements, boolean flush) {
-		for (T element : elements) {
-			update(element, false);
-		}
+	public void update(final Iterable<T> elements, boolean flush) {
+
+		getHibernateTemplate().execute(new HibernateCallback() {
+
+			@Override
+			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				for (T element : elements) {
+					update(element, false);
+				}
+				return null;
+
+			}
+		});
 
 		if (flush) {
 			getHibernateTemplate().flush();
@@ -65,12 +78,20 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> extend
 
 	}
 
-	protected List<T> lookupHql(String hqlString) {
-		List list = getSession().createQuery(hqlString).list();
-		if (L.isDebugEnabled()) {
-			L.debug("query " + hqlString + " returns " + list.getClass() + " (" + list + ")");
-		}
-		return list;
+	protected List<T> lookupHql(final String hqlString) {
+
+		List<T> result = (List<T>) getHibernateTemplate().execute(new HibernateCallback() {
+
+			@Override
+			public List<T> doInHibernate(Session session) throws HibernateException, SQLException {
+				List <T> list = getSession().createQuery(hqlString).list();
+				if (L.isDebugEnabled()) {
+					L.debug("query " + hqlString + " returns " + list.getClass() + " (" + list + ")");
+				}
+				return list;
+			}
+		});
+		return result;
 	}
 
 	/**
@@ -99,6 +120,7 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> extend
 	 * @param flush
 	 */
 	public final void insert(T entity, boolean flush) {
+		
 		getHibernateTemplate().saveOrUpdate(entity);
 
 		if (L.isDebugEnabled()) {
