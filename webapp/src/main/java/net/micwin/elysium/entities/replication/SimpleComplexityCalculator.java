@@ -60,7 +60,7 @@ public class SimpleComplexityCalculator implements IComplexityCalculator {
 
 		for (Utilization utilization : bluePrint.getUtilizations()) {
 			componentCount += utilization.getCount();
-			complexitySum += utilization.getAppliance().getBaseComplexity() * utilization.getLevel();
+			complexitySum += utilization.getLevel();
 		}
 
 		return Math.round(complexitySum * Math.pow(1.01, componentCount));
