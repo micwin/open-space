@@ -75,7 +75,7 @@ public enum Appliance {
 	NANITE_CRITICAL_HIT(
 					0,
 					"Naniten-Piercing",
-					"Die Fähigkeit, beim Nanitenkampf kritischen Schaden anzubringen. Jede Stufe erhöht bei jedem Kampf die Chance, den dreifachen Schaden zu verursachen, um 1%. Steigt wenn eine gegnerische Gruppe vollständig zerstört wird.");
+					"Die Fähigkeit, beim Nanitenkampf kritischen Schaden anzubringen. Jede Stufe erhöht bei jedem Kampf die Chance, den dreifachen Schaden zu verursachen, um 5%. Steigt wenn eine gegnerische Gruppe vollständig zerstört wird.");
 
 	private int baseComplexity;
 

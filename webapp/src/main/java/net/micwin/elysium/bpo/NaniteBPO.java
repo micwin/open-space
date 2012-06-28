@@ -333,7 +333,7 @@ public class NaniteBPO extends BaseBPO {
 
 		getNanitesDao().delete(naniteGroup, true);
 		getAvatarDao().update(controller, true);
-		
+
 		if (L.isDebugEnabled()) {
 			L.debug("...nanites after removal = " + getAvatarDao().refresh(controller).getNanites());
 		}
@@ -357,7 +357,7 @@ public class NaniteBPO extends BaseBPO {
 		Utilization critical = new AvatarBPO().getTalent(getAvatarDao().refresh(attacker.getController()),
 						Appliance.NANITE_CRITICAL_HIT);
 		if (critical != null && critical.getLevel() > 0) {
-			boolean doesCritical = Math.random() * 100 <= critical.getLevel();
+			boolean doesCritical = Math.random() * 100 <= critical.getLevel() * 5;
 			if (doesCritical) {
 				L.debug("critical hit!");
 				factor *= 3;
