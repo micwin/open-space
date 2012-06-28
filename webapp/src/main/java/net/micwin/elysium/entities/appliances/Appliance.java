@@ -49,35 +49,29 @@ public enum Appliance {
 	 * that is, how many modules (Utilizations of appliances) may be part of a
 	 * building.
 	 */
-	ARCHITECTURE(1, "Architektur", "Sollte man beherrschen wenn man Gebäude bauen will"),
+	ARCHITECTURE("Architektur", "Sollte man beherrschen wenn man Gebäude bauen will"),
 
 	/**
 	 * Building living rooms for Avatars, NPCs and PCs.
 	 */
-	HABITATS(1, "Habitate",
+	HABITATS("Habitate",
 					"Wohnviertel in denen biologische Lebensformen eine kontrollierte Umwelt und Lebenserhaltung vorfinden."),
 
 	NANITE_MANAGEMENT(
-					0,
 					"Naniten-Management",
-					"Die Fähigkeit, Naniten zu kontrollieren. Pro Stufe verdoppelt sich die Gesamtmenge der beherrschbaren Naniten; die Anzahl der maximalen Gruppen erhöht sich um 1 je Stufe. Steigt durch Verwendung der Funktionen 'Teilen', 'Verdoppeln', 'Gate-Reise' und 'Gruppe löschen''"),
+					"Unterprogramme um  Naniten zu kontrollieren. Pro Stufe verdoppelt sich die Gesamtmenge der beherrschbaren Naniten; die Anzahl der maximalen Gruppen erhöht sich um 1 je Stufe. Steigt durch Verwendung der Funktionen 'Teilen', 'Verdoppeln', 'Gate-Reise' und 'Gruppe löschen''"),
 
 	NANITE_BATTLE(
-					0,
 					"Naniten-Angriff",
-					"Die Fähigkeit, mit Naniten anzugreifen. Pro Stufe wächst der Schaden jedes angreifenden Nanits um 10%. Steigt durch Verwendung der Funktion 'Angreifen'"),
+					"Unterprogramme um Naniten anzugreifen. Pro Stufe wächst der Schaden jedes angreifenden Nanits um 10%. Steigt durch Verwendung der Funktion 'Angreifen'"),
 
 	NANITE_DAMAGE_CONTROL(
-					1,
 					"Naniten-Schadenskontrolle",
-					"Die Fähigkeit, erlittenen Schaden abzuwehren und umzuleiten. Pro Stufe mindert sich der erlittene Schaden um 10%. Steigt sobald eine Gruppe angegriffen wird."),
+					"Unterprogramm um erlittenen Schaden abzuwehren und umzuleiten. Pro Stufe mindert sich der erlittene Schaden um 10%. Steigt sobald eine Gruppe angegriffen wird."),
 
 	NANITE_CRITICAL_HIT(
-					0,
 					"Naniten-Piercing",
-					"Die Fähigkeit, beim Nanitenkampf kritischen Schaden anzubringen. Jede Stufe erhöht bei jedem Kampf die Chance, den dreifachen Schaden zu verursachen, um 5%. Steigt wenn eine gegnerische Gruppe vollständig zerstört wird.");
-
-	private int baseComplexity;
+					"Upgradedes programms 'Naniten-Angriff' um beim Nanitenkampf kritischen Schaden anzubringen. Jede Stufe erhöht bei jedem Kampf die Chance, den dreifachen Schaden zu verursachen, um 5%. Steigt wenn eine gegnerische Gruppe vollständig zerstört wird.");
 
 	private String label;
 
@@ -90,15 +84,10 @@ public enum Appliance {
 	 * @return
 	 */
 
-	private Appliance(int baseComplexity, String label, String description) {
-		this.baseComplexity = baseComplexity;
+	private Appliance(String label, String description) {
 		this.label = label;
 		this.description = description;
 
-	}
-
-	public int getBaseComplexity() {
-		return baseComplexity;
 	}
 
 	public String getLabel() {

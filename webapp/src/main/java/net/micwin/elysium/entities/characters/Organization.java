@@ -91,6 +91,4 @@ public final class Organization extends ElysiumEntity {
 		return abbreviation;
 	}
 
-	// --------------------------
-
 }

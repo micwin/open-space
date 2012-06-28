@@ -13,7 +13,7 @@ public enum Race {
 	NANITE(StoryLineItem.BOOTING, 1, Utilization.Factory.create(Appliance.NANITE_MANAGEMENT, 1, 30),
 					Utilization.Factory.create(Appliance.NANITE_BATTLE, 0, 50), Utilization.Factory.create(
 									Appliance.NANITE_DAMAGE_CONTROL, 0, 25), Utilization.Factory.create(
-									Appliance.NANITE_CRITICAL_HIT, 0, 30));
+									Appliance.NANITE_CRITICAL_HIT, 0, 20));
 
 	// PRESERVER(StoryLineItem.NEW_HOPE);
 
