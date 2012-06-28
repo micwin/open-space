@@ -333,7 +333,7 @@ public class NaniteBPO extends BaseBPO {
 
 		getNanitesDao().delete(naniteGroup, true);
 		getAvatarDao().update(controller, true);
-
+		
 		if (L.isDebugEnabled()) {
 			L.debug("...nanites after removal = " + getAvatarDao().refresh(controller).getNanites());
 		}

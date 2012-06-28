@@ -143,7 +143,6 @@ public class NaniteGroupShowPage extends BasePage {
 			}
 		});
 
-		
 		return result;
 	}
 
@@ -179,22 +178,22 @@ public class NaniteGroupShowPage extends BasePage {
 
 			}
 
-			private Component getAttackCommandLink(final ElysiumWicketModel<NaniteGroup> scanningGroupModel,
-							final ElysiumWicketModel<NaniteGroup> naniteGroupModel) {
+			private Component getAttackCommandLink(final ElysiumWicketModel<NaniteGroup> attackerModel,
+							final ElysiumWicketModel<NaniteGroup> defenderModel) {
 				Link link = new Link("attack") {
 
 					@Override
 					public void onClick() {
 
-						NaniteGroup attacker = scanningGroupModel.getEntity();
-						NaniteGroup defender = naniteGroupModel.getEntity();
+						NaniteGroup attacker = attackerModel.getEntity();
+						NaniteGroup defender = defenderModel.getEntity();
 						if (getNanitesBPO().canAttack(attacker, defender)) {
 							getNanitesBPO().attack(attacker, defender);
 							if (attacker.getNaniteCount() > 0) {
-								setResponsePage(NaniteGroupShowPage.class);
+								getPage().setResponsePage(NaniteGroupShowPage.class);
 							} else {
 								getElysiumSession().setNamedEntity(NE_NANITE_GROUP, null);
-								setResponsePage(NaniteGroupListPage.class);
+								getPage().setResponsePage(NaniteGroupListPage.class);
 							}
 						} else {
 							error("cannot attack");
@@ -202,7 +201,7 @@ public class NaniteGroupShowPage extends BasePage {
 					}
 				};
 
-				link.setVisible(getNanitesBPO().canAttack(scanningGroupModel.getEntity(), naniteGroupModel.getEntity()));
+				link.setVisible(getNanitesBPO().canAttack(attackerModel.getEntity(), defenderModel.getEntity()));
 				return link;
 			}
 		};

@@ -36,4 +36,13 @@ public class ElysiumWicketModel<E extends ElysiumEntity> extends LoadableDetacha
 		return (E) getObject();
 	}
 
+	@Override
+	public Object getObject() {
+		return load();
+	}
+
+	@Override
+	public void setObject(Object object) {
+		super.setObject(null);
+	}
 }

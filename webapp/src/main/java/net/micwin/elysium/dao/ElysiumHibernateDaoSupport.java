@@ -84,7 +84,7 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> extend
 
 			@Override
 			public List<T> doInHibernate(Session session) throws HibernateException, SQLException {
-				List <T> list = getSession().createQuery(hqlString).list();
+				List<T> list = getSession().createQuery(hqlString).list();
 				if (L.isDebugEnabled()) {
 					L.debug("query " + hqlString + " returns " + list.getClass() + " (" + list + ")");
 				}
@@ -120,7 +120,7 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> extend
 	 * @param flush
 	 */
 	public final void insert(T entity, boolean flush) {
-		
+
 		getHibernateTemplate().saveOrUpdate(entity);
 
 		if (L.isDebugEnabled()) {
@@ -137,6 +137,8 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> extend
 		getHibernateTemplate().delete(entity);
 		if (flush)
 			getHibernateTemplate().flush();
+
+		getHibernateTemplate().evict(entity);
 	}
 
 	public final T loadById(Long id) {
