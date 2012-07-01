@@ -2,6 +2,7 @@ package net.micwin.elysium.bpo;
 
 import java.util.Collection;
 
+import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.galaxy.Environment;
 import net.micwin.elysium.entities.gates.Gate;
 
@@ -19,6 +20,12 @@ public class GateBPO extends BaseBPO {
 			return gates.iterator().next();
 		else
 			return null;
+	}
+
+	public Gate getGateAt(NaniteGroup naniteGroup) {
+
+		return getGateAt(naniteGroup.getPosition().getEnvironment());
+
 	}
 
 }

@@ -116,34 +116,65 @@ public class NaniteGroupShowPage extends BasePage {
 
 		final String homeGateAdress = getAvatar().getHomeGateAdress();
 
-		result.add(new Link<String>("jumpHome") {
+		result.add(getJumpHomeLink(groupModel, homeGateAdress));
+
+		result.add(getJumpArenaLink(groupModel));
+
+		result.add(getJumpElysiumLink(groupModel));
+
+		return result;
+	}
+
+	protected Link<String> getJumpHomeLink(final ElysiumWicketModel<NaniteGroup> groupModel, final String homeGateAdress) {
+
+		String currentGateAdress = getGateBPO().getGateAt(groupModel.getEntity().getPosition().getEnvironment())
+						.getGateAdress();
+
+		Link<String> link = new Link<String>("jumpHome") {
 
 			@Override
 			public void onClick() {
 				getNanitesBPO().gateTravel(groupModel.getEntity(), homeGateAdress);
 				setResponsePage(NaniteGroupShowPage.class);
 			}
-		});
+		};
 
-		result.add(new Link<String>("jumpArena") {
+		link.setEnabled(!homeGateAdress.equals(currentGateAdress));
+
+		return link;
+	}
+
+	protected Link<String> getJumpArenaLink(final ElysiumWicketModel<NaniteGroup> groupModel) {
+		Link<String> link = new Link<String>("jumpArena") {
 
 			@Override
 			public void onClick() {
 				getNanitesBPO().gateTravel(groupModel.getEntity(), "arena");
 				setResponsePage(NaniteGroupShowPage.class);
-			}
-		});
 
-		result.add(new Link<String>("jumpElysium") {
+			}
+		};
+
+		String currentGateAdress = getGateBPO().getGateAt(groupModel.getEntity()).getGateAdress();
+
+		link.setEnabled(!"arena".equals(currentGateAdress));
+
+		return link;
+	}
+
+	protected Link<String> getJumpElysiumLink(final ElysiumWicketModel<NaniteGroup> groupModel) {
+		Link<String> link = new Link<String>("jumpElysium") {
 
 			@Override
 			public void onClick() {
 				getNanitesBPO().gateTravel(groupModel.getEntity(), "elysium");
 				setResponsePage(NaniteGroupShowPage.class);
 			}
-		});
+		};
 
-		return result;
+		link.setEnabled(!"elysium".equals(getGateBPO().getGateAt(groupModel.getEntity()).getGateAdress()));
+
+		return link;
 	}
 
 	private Component getOtherNanitesTable(NaniteGroup scanningGroup) {
