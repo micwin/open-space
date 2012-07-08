@@ -36,9 +36,12 @@ package net.micwin.elysium.entities;
  */import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 
+import net.micwin.elysium.entities.appliances.Appliance;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.galaxy.Position;
 
@@ -64,6 +67,9 @@ public class NaniteGroup extends ElysiumEntity {
 
 	@Column
 	private long naniteCount;
+
+	@Enumerated(EnumType.STRING)
+	private SupportMode supportMode = SupportMode.NONE;
 
 	@Column
 	private State state = State.IDLE;
@@ -96,5 +102,13 @@ public class NaniteGroup extends ElysiumEntity {
 	@Override
 	public Class getBaseClass() {
 		return NaniteGroup.class;
+	}
+
+	public void setSupportMode(SupportMode supportMode) {
+		this.supportMode = supportMode;
+	}
+
+	public SupportMode getSupportMode() {
+		return supportMode;
 	}
 }
