@@ -102,4 +102,13 @@ public interface IElysiumEntityDao<T extends ElysiumEntity> {
 	 */
 	Collection<T> findByStringProperty(String property, String value);
 
+	/**
+	 * Loads all instances of this dao entities.
+	 * 
+	 * @param target
+	 *            A target to put hits into. If null, create one.
+	 * @return <code>target</code> or a created list with results.
+	 */
+	Collection<T> loadAll(Collection<T> target);
+
 }

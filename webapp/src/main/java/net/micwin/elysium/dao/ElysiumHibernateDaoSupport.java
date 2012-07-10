@@ -40,6 +40,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import net.micwin.elysium.entities.ElysiumEntity;
+import net.micwin.elysium.entities.appliances.Appliance;
+import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
 
 import org.hibernate.LockMode;
@@ -76,7 +78,7 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> extend
 		if (L.isDebugEnabled()) {
 			L.debug("query " + hqlString + " returns " + result.getClass() + " (" + result + ")");
 		}
-		
+
 		return new LinkedList<T>(result);
 	}
 
@@ -152,7 +154,14 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> extend
 
 	public Collection<T> findByStringProperty(String property, String value) {
 		return lookupHql("from " + getEntityClass().getSimpleName() + " where " + property + "='" + value + "'");
-
 	};
+
+	public Collection<T> loadAll(Collection<T> target) {
+		if (target == null)
+			target = new LinkedList<T>();
+
+		target.addAll(getHibernateTemplate().loadAll(getEntityClass()));
+		return target;
+	}
 
 }

@@ -120,4 +120,5 @@ public class HibernateAvatarDao extends ElysiumHibernateDaoSupport<Avatar> imple
 		return Avatar.class;
 	}
 
+
 }

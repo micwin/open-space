@@ -99,4 +99,5 @@ public interface IAvatarDao extends IElysiumEntityDao<Avatar> {
 	 * @param avatar
 	 */
 	void delete(Avatar avatar, boolean flush);
+	
 }

@@ -127,4 +127,9 @@ public class HibernateGalaxyDao extends HibernateDaoSupport implements IGalaxyDa
 	public Collection<Galaxy> findByStringProperty(String property, String value) {
 		throw new IllegalStateException("Galaxy is a dummy entity. you cant load it.");
 	}
+
+	@Override
+	public Collection<Galaxy> loadAll(Collection<Galaxy> target) {
+		throw new IllegalStateException("Galaxy is a dummy entity. you cant load any of them.");
+	}
 }
