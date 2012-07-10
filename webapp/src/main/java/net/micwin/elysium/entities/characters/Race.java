@@ -14,7 +14,7 @@ public enum Race {
 					Appliance.NANITE_BATTLE, 0, 50),
 					Utilization.Factory.create(Appliance.NANITE_DAMAGE_CONTROL, 0, 25), Utilization.Factory.create(
 									Appliance.NANITE_CRITICAL_HIT, 0, 20), Utilization.Factory.create(
-									Appliance.SCANNING, 0, 99));
+									Appliance.SHORT_RANGE_SCANS, 0, 99));
 
 	// PRESERVER(StoryLineItem.NEW_HOPE);
 

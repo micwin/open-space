@@ -36,6 +36,7 @@ package net.micwin.elysium.dao;
  */
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -98,6 +99,11 @@ public class HibernateAvatarDao extends ElysiumHibernateDaoSupport<Avatar> imple
 		avatar.setOrganization(organization);
 		getHibernateTemplate().save(organization);
 
+		for (Iterator talentsIter = talents.iterator(); talentsIter.hasNext();) {
+			Utilization utilization = (Utilization) talentsIter.next();
+			utilization.setController(avatar);
+		}
+
 		getHibernateTemplate().saveOrUpdateAll(talents);
 		avatar.setTalents(new LinkedList<Utilization>(talents));
 
@@ -119,6 +125,5 @@ public class HibernateAvatarDao extends ElysiumHibernateDaoSupport<Avatar> imple
 	public Class<Avatar> getEntityClass() {
 		return Avatar.class;
 	}
-
 
 }

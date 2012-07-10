@@ -30,6 +30,8 @@ package net.micwin.elysium.entities.appliances;
  Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
  Siehe die GNU Affero Public License für weitere Details.
 
+
+
  Sie sollten eine Kopie der GNU Affero Public License zusammen mit diesem
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
@@ -73,7 +75,13 @@ public enum Appliance {
 					"Naniten-Piercing",
 					"Upgrade des Programms 'Naniten-Angriff' um beim Nanitenkampf kritischen Schaden anzubringen. Jede Stufe erhöht bei jedem Kampf die Chance, den dreifachen Schaden zu verursachen, um 5%. Steigt wenn eine gegnerische Gruppe vollständig zerstört wird."),
 
-	SCANNING("Sensor-Scans", "Die Fähigkeit, beim betreten einer Umgebung Daten über diese zu sammeln.");
+	SHORT_RANGE_SCANS(
+					"Kurzstrecken-Scanner (SRS)",
+					"Der SRS scannt beim Eintritt in eine Umgebung diese voll-automatisch. Je höher die Stufe, desto kleinere (und besser abgeschirmte) Objekte können gescannt werden. Steigt mit jedem Scanvorgang."),
+
+	EMISSION_CONTROL(
+					"EmissionsKontrollProgramm (ECP)",
+					"Optimiert die Energie-Emissionen der Nanitengruppen um für andere so schwer auffindbar wie nur möglich zu sein. Pro Stufe wird die Signaturstärke um 5% gesenkt. Wird aktiviert, sobald  eine fremde Einheit nicht gescannt werden konnte und steigt mit jedem Scan, der Einheiten nicht entdecken konnte.");
 
 	private String label;
 

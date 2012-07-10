@@ -12,7 +12,6 @@ import net.micwin.elysium.entities.galaxy.Position;
 import net.micwin.elysium.entities.gates.Gate;
 import net.micwin.elysium.view.BasePage;
 import net.micwin.elysium.view.ElysiumWicketModel;
-import net.micwin.elysium.view.EmptyLink;
 import net.micwin.elysium.view.jumpGates.UsePlanetaryGatePage;
 
 import org.apache.wicket.Component;
@@ -51,6 +50,9 @@ public class NaniteGroupShowPage extends BasePage {
 
 		addToContentBody(new Label("groupGate", "" + gateCode));
 		addToContentBody(new Label("groupCount", NumberFormat.getIntegerInstance().format(group.getNaniteCount())));
+		addToContentBody(new Label("signatureStrength", "" + getScannerBPO().computeSignatureStrength(group)));
+		addToContentBody(new Label("sensorStrength", "" + getScannerBPO().computeLowestVisibleSignature(group)));
+
 		addToContentBody(new Label("groupState", "" + group.getState()));
 		addToContentBody(getDoubleCountLink(groupModel));
 

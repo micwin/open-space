@@ -85,8 +85,8 @@ public class AvatarBPO extends BaseBPO {
 
 			getTalentsDao().insert(utilization, true);
 
-		}
-
+		}		
+		
 		Position position;
 
 		if (createSystem) {

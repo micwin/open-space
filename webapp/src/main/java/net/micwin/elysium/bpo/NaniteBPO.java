@@ -95,7 +95,7 @@ public class NaniteBPO extends BaseBPO {
 		nanitesGroup.setNaniteCount(newCount);
 
 		if (raiseCount > 0) {
-			new XpBPO().raiseUsage(nanitesGroup.getController(), Appliance.NANITE_MANAGEMENT);
+			raiseUsage(nanitesGroup.getController(), Appliance.NANITE_MANAGEMENT, false);
 		}
 		getNanitesDao().update(nanitesGroup, true);
 	}
@@ -148,7 +148,7 @@ public class NaniteBPO extends BaseBPO {
 		naniteGroup.getController().getNanites().add(newGroup);
 		newGroup.setController(naniteGroup.getController());
 
-		new XpBPO().raiseUsage(naniteGroup.getController(), Appliance.NANITE_MANAGEMENT);
+		raiseUsage(naniteGroup.getController(), Appliance.NANITE_MANAGEMENT, false);
 
 		getNanitesDao().update(naniteGroup, true);
 		getNanitesDao().update(newGroup, true);
@@ -196,7 +196,7 @@ public class NaniteBPO extends BaseBPO {
 		}
 
 		naniteGroup.setPosition(targetGate.getPosition());
-		new XpBPO().raiseUsage(naniteGroup.getController(), Appliance.NANITE_MANAGEMENT);
+		raiseUsage(naniteGroup.getController(), Appliance.NANITE_MANAGEMENT, false);
 
 		getNanitesDao().update(naniteGroup, true);
 		return true;
@@ -216,8 +216,6 @@ public class NaniteBPO extends BaseBPO {
 	public void attack(NaniteGroup attacker, NaniteGroup defender) {
 
 		flush();
-
-		XpBPO xpBPO = new XpBPO();
 
 		// first - can they attack?
 		if (!canAttack(attacker, defender)) {
@@ -241,21 +239,21 @@ public class NaniteBPO extends BaseBPO {
 
 		// distribute xp
 
-		xpBPO.raiseUsage(attacker.getController(), Appliance.NANITE_BATTLE);
-		xpBPO.raiseUsage(defender.getController(), Appliance.NANITE_DAMAGE_CONTROL);
+		raiseUsage(attacker.getController(), Appliance.NANITE_BATTLE, false);
+		raiseUsage(defender.getController(), Appliance.NANITE_DAMAGE_CONTROL, false);
 
 		if (attacker.getNaniteCount() < 1) {
 
 			L.debug("killing attacker group");
 			kill(attacker);
-			xpBPO.raiseUsage(defender.getController(), Appliance.NANITE_CRITICAL_HIT);
+			raiseUsage(defender.getController(), Appliance.NANITE_CRITICAL_HIT, false);
 		}
 
 		if (defender.getNaniteCount() < 1) {
 
 			L.debug("killing defender group");
 			kill(defender);
-			xpBPO.raiseUsage(attacker.getController(), Appliance.NANITE_CRITICAL_HIT);
+			raiseUsage(attacker.getController(), Appliance.NANITE_CRITICAL_HIT, false);
 		}
 
 		flush();

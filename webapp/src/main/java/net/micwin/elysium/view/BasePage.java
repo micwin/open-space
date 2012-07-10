@@ -36,7 +36,6 @@ package net.micwin.elysium.view;
  */
 
 import java.util.Collection;
-import java.util.Iterator;
 
 import net.micwin.elysium.bpo.AvatarBPO;
 import net.micwin.elysium.bpo.GateBPO;
@@ -198,7 +197,7 @@ public abstract class BasePage extends WebPage {
 	 * to story page.
 	 */
 	protected void ensureStoryShown() {
-		if (!getElysiumSession().isStoryShown()) {
+		if (getAvatar().getStoryLineItem() != null && !getElysiumSession().isStoryShown()) {
 			throw new RestartResponseException(StoryLinePage.class);
 		}
 	}
@@ -257,5 +256,4 @@ public abstract class BasePage extends WebPage {
 		return new ScannerBPO();
 
 	}
-
 }

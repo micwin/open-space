@@ -5,11 +5,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 import net.micwin.elysium.entities.NaniteGroup;
+import net.micwin.elysium.entities.appliances.Appliance;
+import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.galaxy.Planet;
 import net.micwin.elysium.entities.galaxy.SolarSystem;
 import net.micwin.elysium.entities.gates.Gate;
 
-import org.apache.wicket.MarkupContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +23,18 @@ import org.slf4j.LoggerFactory;
 public class ScannerBPO extends BaseBPO {
 
 	private static final Logger L = LoggerFactory.getLogger(ScannerBPO.class);
+
+	/**
+	 * The energy signature strength one nanite adds to the group total
+	 * signature.
+	 */
+	private static final double BASE_NANITE_SIGNATURE_SIZE = 0.1;
+
+	/**
+	 * The smallest energy signature a unit can detect when having sensors at
+	 * level 0.
+	 */
+	private static final double BASE_SENSOR_STRENGTH = 1;
 
 	/**
 	 * Scans for gates in the same solar system as group. Only works if the
@@ -51,18 +64,109 @@ public class ScannerBPO extends BaseBPO {
 
 	}
 
+	/**
+	 * Scans for other nanite groups on same location. Does raise scanner
+	 * talent.
+	 * 
+	 * @param scanningGroup
+	 * @return
+	 */
+
 	public List<NaniteGroup> scanForOtherNaniteGroups(NaniteGroup scanningGroup) {
 
 		List<NaniteGroup> found = getNanitesDao().findByEnvironment(scanningGroup.getPosition().getEnvironment());
 
 		List<NaniteGroup> result = new LinkedList<NaniteGroup>();
 
+		int hiddenCount = 0;
+
 		for (NaniteGroup naniteGroup : found) {
-			if (!naniteGroup.getId().equals(scanningGroup.getId())) {
-				result.add(naniteGroup);
+
+			// same id
+			if (naniteGroup.getId().equals(scanningGroup.getId())) {
+				continue;
 			}
+
+			// same controller
+			if (scanningGroup.getController().equals(naniteGroup.getController())) {
+				result.add(naniteGroup);
+				continue;
+			}
+
+			// visible by sensors?
+
+			if (isVisibleBy(naniteGroup, scanningGroup)) {
+				result.add(naniteGroup);
+			} else {
+				hiddenCount++;
+			}
+
+		}
+		if (result.size() > 0) {
+			raiseUsage(scanningGroup.getController(), Appliance.SHORT_RANGE_SCANS, false);
 		}
 
+		if (hiddenCount > 0) {
+			raiseUsage(scanningGroup.getController(), Appliance.EMISSION_CONTROL, true);
+
+		}
 		return result;
+	}
+
+	/**
+	 * Checks wether or not target is scannable by scanner,
+	 * 
+	 * @param target
+	 * @param scanner
+	 * @return
+	 */
+	public boolean isVisibleBy(NaniteGroup target, NaniteGroup scanner) {
+		double signatureStrength = computeSignatureStrength(target);
+		double lowestValue = computeLowestVisibleSignature(scanner);
+
+		return signatureStrength >= lowestValue;
+	}
+
+	/**
+	 * Computes the lowest visible signature strength this scanner can see.
+	 * 
+	 * @param scanner
+	 * @return
+	 */
+	public double computeLowestVisibleSignature(NaniteGroup scanner) {
+		return BASE_SENSOR_STRENGTH * Math.pow(0.95, computeShortRangeSensorStrength(scanner));
+	}
+
+	/**
+	 * Computes strength of energy emission signature. The bigger, the better
+	 * this group can get scanned by others, the smaller this group can sneak
+	 * better.
+	 * 
+	 * @param naniteGroup
+	 * @return
+	 */
+	public double computeSignatureStrength(NaniteGroup naniteGroup) {
+
+		double signatureStrength = BASE_NANITE_SIGNATURE_SIZE * naniteGroup.getNaniteCount();
+
+		Utilization ec = getTalent(naniteGroup.getController(), Appliance.EMISSION_CONTROL);
+
+		if (ec != null && ec.getLevel() > 0) {
+			signatureStrength *= Math.pow(0.95, ec.getLevel());
+		}
+		return signatureStrength;
+	}
+
+	/**
+	 * Computes the short range sensor strength of this group, ie a measure for
+	 * the ability of this group to find other (or cloaked) units. The higher,
+	 * the smaller emmissions can get detected and hence the more and the
+	 * smaller and better cloaked units can be seen.
+	 * 
+	 * @param group
+	 * @return
+	 */
+	public long computeShortRangeSensorStrength(NaniteGroup group) {
+		return getTalent(group.getController(), Appliance.SHORT_RANGE_SCANS).getLevel();
 	}
 }

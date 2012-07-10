@@ -79,9 +79,6 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 				L.info("academy ensured.");
 				session.flush();
 				ensureNoStory();
-				L.info("story items killed");
-				session.flush();
-
 				ensureScanningPresent();
 				L.info("scanning presence ensured.");
 				session.flush();
@@ -97,9 +94,11 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 				avatarLoop: for (Iterator<Avatar> iterator = allAvatars.iterator(); iterator.hasNext();) {
 					Avatar avatar = iterator.next();
 
-					for (Iterator<Utilization> talentsIter = avatar.getTalents().iterator(); talentsIter.hasNext();) {
+					Collection<Utilization> talents = getTalentsDao().findByController(avatar);
+
+					for (Iterator<Utilization> talentsIter = talents.iterator(); talentsIter.hasNext();) {
 						Utilization talent = talentsIter.next();
-						if (talent.getAppliance() == Appliance.SCANNING) {
+						if (talent.getAppliance() == Appliance.SHORT_RANGE_SCANS) {
 							// found; check next avatar
 							continue avatarLoop;
 						}
@@ -108,9 +107,13 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 
 					// not found; adding.
 
-					Utilization scanning = Utilization.Factory.create(Appliance.SCANNING, 0, 99);
+					Utilization scanning = Utilization.Factory.create(Appliance.SHORT_RANGE_SCANS, 0, 99);
+					getTalentsDao().insert(scanning, true);
+
 					L.info("adding " + scanning + " to avatar " + avatar);
-					avatar.getTalents().add(scanning);
+
+					talents.add(scanning);
+					avatar.setTalents(talents);
 					getAvatarDao().update(avatar, false);
 				}
 
@@ -125,6 +128,8 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 	}
 
 	private void ensureNoStory() {
+		int itemCount = 0;
+
 		Collection<Avatar> allAvatars = getAvatarDao().loadAll(null);
 		for (Iterator<Avatar> iterator = allAvatars.iterator(); iterator.hasNext();) {
 			Avatar avatar = iterator.next();
@@ -132,11 +137,12 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 			if (avatar.getStoryLineItem() != null) {
 				L.info("clearing story line item '" + avatar.getStoryLineItem() + "' of avatar " + avatar);
 				avatar.setStoryLineItem(null);
-				getAvatarDao().update(avatar, false);
+				itemCount++;
 			}
 		}
+		getAvatarDao().update(allAvatars, true);
 
-		getAvatarDao().flush();
+		L.info(itemCount + " story items killed");
 
 	}
 

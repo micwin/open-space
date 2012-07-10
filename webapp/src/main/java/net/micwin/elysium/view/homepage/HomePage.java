@@ -41,7 +41,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import net.micwin.elysium.bpo.XpBPO;
+import net.micwin.elysium.bpo.BaseBPO;
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.User;
 import net.micwin.elysium.view.BasePage;
@@ -112,7 +112,7 @@ public class HomePage extends BasePage {
 			}
 
 			protected Label composeToGoLabel(final Utilization utilization) {
-				double percentage = 1.0 * utilization.getCount() / new XpBPO().computeNextLevelUsages(utilization);
+				double percentage = 1.0 * utilization.getCount() / new BaseBPO().computeNextLevelUsages(utilization);
 				String text = NumberFormat.getPercentInstance().format(percentage);
 				return new Label("togo", text);
 			}

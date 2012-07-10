@@ -70,7 +70,9 @@ public class AuthPanel extends BasePanel {
 	@Override
 	protected void onInitialize() {
 		super.onInitialize();
-		L.info("user stored in session:" + getEylsiumSession().getUser());
+
+		if (L.isDebugEnabled())
+			L.debug("user stored in session:" + getEylsiumSession().getUser());
 
 		add(getLogoutLink());
 		add(getAuthForm());
@@ -80,7 +82,7 @@ public class AuthPanel extends BasePanel {
 
 		BookmarkablePageLink<LogoutPage> link = new BookmarkablePageLink<LogoutPage>("logoutLink", LogoutPage.class);
 		link.setVisible(getUser() != null);
-		
+
 		if (link.isVisible()) {
 			link.add(new Label("label", Model.of("Logout")));
 		}
