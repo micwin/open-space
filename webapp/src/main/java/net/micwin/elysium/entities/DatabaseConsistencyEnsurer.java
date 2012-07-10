@@ -1,7 +1,9 @@
 package net.micwin.elysium.entities;
 
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 
 import net.micwin.elysium.bpo.AvatarBPO;
 import net.micwin.elysium.bpo.GalaxyBPO;
@@ -11,7 +13,9 @@ import net.micwin.elysium.dao.IGalaxyDao;
 import net.micwin.elysium.dao.IGatesDao;
 import net.micwin.elysium.dao.IOrganizationDao;
 import net.micwin.elysium.dao.ISysParamDao;
+import net.micwin.elysium.dao.ITalentsDao;
 import net.micwin.elysium.dao.IUserDao;
+import net.micwin.elysium.entities.appliances.Appliance;
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.Organization;
@@ -74,13 +78,65 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 				ensureAcademyPresent();
 				L.info("academy ensured.");
 				session.flush();
+				ensureNoStory();
+				L.info("story items killed");
+				session.flush();
+
+				ensureScanningPresent();
+				L.info("scanning presence ensured.");
+				session.flush();
+
 				L.info("closing session after data consistency check");
 
 				return null;
 			}
+
+			private void ensureScanningPresent() {
+
+				Collection<Avatar> allAvatars = getAvatarDao().loadAll(null);
+				avatarLoop: for (Iterator<Avatar> iterator = allAvatars.iterator(); iterator.hasNext();) {
+					Avatar avatar = iterator.next();
+
+					for (Iterator<Utilization> talentsIter = avatar.getTalents().iterator(); talentsIter.hasNext();) {
+						Utilization talent = talentsIter.next();
+						if (talent.getAppliance() == Appliance.SCANNING) {
+							// found; check next avatar
+							continue avatarLoop;
+						}
+
+					}
+
+					// not found; adding.
+
+					Utilization scanning = Utilization.Factory.create(Appliance.SCANNING, 0, 99);
+					L.info("adding " + scanning + " to avatar " + avatar);
+					avatar.getTalents().add(scanning);
+					getAvatarDao().update(avatar, false);
+				}
+
+				getAvatarDao().flush();
+
+			}
+
 		});
 
 		L.info("database sanity ensured");
+
+	}
+
+	private void ensureNoStory() {
+		Collection<Avatar> allAvatars = getAvatarDao().loadAll(null);
+		for (Iterator<Avatar> iterator = allAvatars.iterator(); iterator.hasNext();) {
+			Avatar avatar = iterator.next();
+
+			if (avatar.getStoryLineItem() != null) {
+				L.info("clearing story line item '" + avatar.getStoryLineItem() + "' of avatar " + avatar);
+				avatar.setStoryLineItem(null);
+				getAvatarDao().update(avatar, false);
+			}
+		}
+
+		getAvatarDao().flush();
 
 	}
 
@@ -185,6 +241,10 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 
 	private IAvatarDao getAvatarDao() {
 		return DaoManager.I.getAvatarDao();
+	}
+
+	private ITalentsDao getTalentsDao() {
+		return DaoManager.I.getTalentsDao();
 	}
 
 	private IUserDao getUserDao() {

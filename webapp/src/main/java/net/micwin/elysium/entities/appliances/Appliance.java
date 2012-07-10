@@ -71,7 +71,9 @@ public enum Appliance {
 
 	NANITE_CRITICAL_HIT(
 					"Naniten-Piercing",
-					"Upgradedes programms 'Naniten-Angriff' um beim Nanitenkampf kritischen Schaden anzubringen. Jede Stufe erhöht bei jedem Kampf die Chance, den dreifachen Schaden zu verursachen, um 5%. Steigt wenn eine gegnerische Gruppe vollständig zerstört wird.");
+					"Upgrade des Programms 'Naniten-Angriff' um beim Nanitenkampf kritischen Schaden anzubringen. Jede Stufe erhöht bei jedem Kampf die Chance, den dreifachen Schaden zu verursachen, um 5%. Steigt wenn eine gegnerische Gruppe vollständig zerstört wird."),
+
+	SCANNING("Sensor-Scans", "Die Fähigkeit, beim betreten einer Umgebung Daten über diese zu sammeln.");
 
 	private String label;
 
