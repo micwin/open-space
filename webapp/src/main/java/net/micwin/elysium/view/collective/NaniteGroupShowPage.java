@@ -50,8 +50,10 @@ public class NaniteGroupShowPage extends BasePage {
 
 		addToContentBody(new Label("groupGate", "" + gateCode));
 		addToContentBody(new Label("groupCount", NumberFormat.getIntegerInstance().format(group.getNaniteCount())));
-		addToContentBody(new Label("signatureStrength", "" + getScannerBPO().computeSignatureStrength(group)));
-		addToContentBody(new Label("sensorStrength", "" + getScannerBPO().computeLowestVisibleSignature(group)));
+		addToContentBody(new Label("signatureStrength", ""
+						+ NumberFormat.getNumberInstance().format(getScannerBPO().computeSignatureStrength(group))));
+		addToContentBody(new Label("sensorStrength", ""
+						+ NumberFormat.getNumberInstance().format(getScannerBPO().computeLowestVisibleSignature(group))));
 
 		addToContentBody(new Label("groupState", "" + group.getState()));
 		addToContentBody(getDoubleCountLink(groupModel));
