@@ -190,8 +190,10 @@ public class NaniteBPO extends BaseBPO {
 	 *         otherwise.
 	 */
 	public boolean gateTravel(NaniteGroup naniteGroup, String targetAdress) {
-		Gate targetGate = getGatesDao().findByGateAdress(rectifyGateAdress(targetAdress));
+		targetAdress = rectifyGateAdress(targetAdress);
+		Gate targetGate = getGatesDao().findByGateAdress(targetAdress);
 		if (targetGate == null) {
+			L.warn("cannot jump to gate adress '" + targetAdress + "' - adress not found");
 			return false;
 		}
 
@@ -203,8 +205,7 @@ public class NaniteBPO extends BaseBPO {
 	}
 
 	public String rectifyGateAdress(String gateAdress) {
-		L.warn("gate adress '" + gateAdress + "' not rectified - not yet implemented!");
-		return gateAdress;
+		return gateAdress.trim().toLowerCase();
 	}
 
 	/**
