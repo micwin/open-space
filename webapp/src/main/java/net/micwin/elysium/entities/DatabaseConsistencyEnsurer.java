@@ -218,7 +218,7 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 			L.info("admin already present");
 		}
 
-		L.info("checking for admins avatar ...");
+		L.info("checking for admin avatar ...");
 
 		Avatar adminAvatar = getAvatarDao().findByUser(admin);
 
@@ -233,9 +233,12 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 		L.info("Checking skills");
 
 		// make sure the admin has enough points to conquer any thread
-		for (Utilization talent : adminAvatar.getTalents()) {
+		Collection<Utilization> talents = getTalentsDao().findByController(adminAvatar);
+
+		for (Utilization talent : talents) {
 			talent.setLevel(ADMIN_TALENTS_LEVEL);
 		}
+		getTalentsDao().update(talents, true);
 
 		DaoManager.I.getAvatarDao().update(adminAvatar, true);
 		L.info("admin avatar rectified");
