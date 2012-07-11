@@ -203,7 +203,7 @@ public class NaniteBPO extends BaseBPO {
 	}
 
 	public String rectifyGateAdress(String gateAdress) {
-		L.warn("gate adress '' not rectified - not yet implemented!");
+		L.warn("gate adress '" + gateAdress + "' not rectified - not yet implemented!");
 		return gateAdress;
 	}
 

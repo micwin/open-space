@@ -190,7 +190,7 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 
 			L.info("lost sector  created");
 		} else {
-			L.info("arena lost sector present");
+			L.info("arena found - assuming lost sector is present");
 		}
 
 	}
