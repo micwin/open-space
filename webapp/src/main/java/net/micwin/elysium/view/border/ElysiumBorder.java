@@ -37,6 +37,7 @@ package net.micwin.elysium.view.border;
 
 import net.micwin.elysium.entities.characters.User;
 import net.micwin.elysium.view.ElysiumSession;
+import net.micwin.elysium.view.documentation.DocumentationPage;
 import net.micwin.elysium.view.login.AuthPanel;
 import net.micwin.elysium.view.nav.NavPanel;
 
@@ -44,6 +45,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.ResourceModel;
 import org.slf4j.Logger;
@@ -68,6 +70,7 @@ public class ElysiumBorder extends Border {
 
 		addToBorder(getNavPanel());
 		addToBorder(getAuthPanel());
+		addToBorder(getDocumentationLink());
 
 		User user = getUser();
 		if (user == null) {
@@ -77,6 +80,10 @@ public class ElysiumBorder extends Border {
 			addToBorder(new Label("roles", rolesString));
 		}
 
+	}
+
+	private Component getDocumentationLink() {
+		return new BookmarkablePageLink("documentationLink", DocumentationPage.class);
 	}
 
 	private User getUser() {
