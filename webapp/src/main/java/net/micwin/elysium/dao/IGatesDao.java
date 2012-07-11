@@ -30,4 +30,11 @@ public interface IGatesDao extends IElysiumEntityDao<Gate> {
 	 * @return
 	 */
 	public Gate findByGateAdress(String code);
+
+	/**
+	 * Deletes specific gate from the database.
+	 * 
+	 * @param gate
+	 */
+	public void delete(Gate gate, boolean flush);
 }

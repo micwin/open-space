@@ -191,6 +191,21 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 			L.info("lost sector  created");
 		} else {
 			L.info("arena found - assuming lost sector is present");
+
+			// cross checking wether the arena environment sticks to the correct
+			// gate
+			Planet arenaPlanet = (Planet) arenaGate.getPosition().getEnvironment();
+			Collection<Gate> gatesKnottedToArenaPlanet = getGatesDao().findByEnvironment(arenaPlanet);
+			if (gatesKnottedToArenaPlanet.size() > 1) {
+				L.warn("too many gates point to arena - rectifying ...");
+				for (Gate gate : gatesKnottedToArenaPlanet) {
+					if (!gate.equals(arenaGate)) {
+						L.warn("deleting gate " + gate.getGateAdress() + " ...");
+						getGatesDao().delete(gate, true);
+					}
+				}
+			}
+
 		}
 
 	}
