@@ -1,5 +1,7 @@
 package net.micwin.elysium.view.collective;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -51,9 +53,8 @@ public class NaniteGroupShowPage extends BasePage {
 		addToContentBody(new Label("groupGate", "" + gateCode));
 		addToContentBody(new Label("groupCount", NumberFormat.getIntegerInstance().format(group.getNaniteCount())));
 		addToContentBody(new Label("signatureStrength", ""
-						+ NumberFormat.getNumberInstance().format(getScannerBPO().computeSignatureStrength(group))));
-		addToContentBody(new Label("sensorStrength", ""
-						+ NumberFormat.getNumberInstance().format(getScannerBPO().computeLowestVisibleSignature(group))));
+						+ new DecimalFormat("0.0####", DecimalFormatSymbols.getInstance()).format(getScannerBPO()
+										.computeSignatureStrength(group))));
 
 		addToContentBody(new Label("groupState", "" + group.getState()));
 		addToContentBody(getDoubleCountLink(groupModel));

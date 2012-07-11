@@ -61,11 +61,11 @@ public enum Appliance {
 
 	NANITE_MANAGEMENT(
 					"Naniten-Management",
-					"Unterprogramme um  Naniten zu kontrollieren. Pro Stufe verdoppelt sich die Gesamtmenge der beherrschbaren Naniten; die Anzahl der maximalen Gruppen erhöht sich um 1 je Stufe. Steigt durch Verwendung der Funktionen 'Teilen', 'Verdoppeln', 'Gate-Reise' und 'Gruppe löschen''"),
+					"Unterprogramm um  Naniten zu kontrollieren. Pro Stufe verdoppelt sich die Gesamtmenge der beherrschbaren Naniten; die Anzahl der maximalen Gruppen erhöht sich um 1 je Stufe. Steigt durch Verwendung der Funktionen 'Teilen', 'Verdoppeln', 'Gate-Reise' und 'Gruppe löschen''"),
 
 	NANITE_BATTLE(
 					"Naniten-Angriff",
-					"Unterprogramme um Naniten anzugreifen. Pro Stufe wächst der Schaden jedes angreifenden Nanits um 10%. Steigt durch Verwendung der Funktion 'Angreifen'"),
+					"Unterprogramm um Naniten anzugreifen. Pro Stufe wächst der Schaden jedes angreifenden Nanits um 10%. Steigt durch Verwendung der Funktion 'Angreifen'"),
 
 	NANITE_DAMAGE_CONTROL(
 					"Naniten-Schadenskontrolle",

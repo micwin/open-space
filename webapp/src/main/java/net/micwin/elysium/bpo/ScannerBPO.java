@@ -154,6 +154,7 @@ public class ScannerBPO extends BaseBPO {
 		if (ec != null && ec.getLevel() > 0) {
 			signatureStrength *= Math.pow(0.95, ec.getLevel());
 		}
+
 		return signatureStrength;
 	}
 
