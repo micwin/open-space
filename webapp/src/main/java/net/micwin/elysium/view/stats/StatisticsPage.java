@@ -84,6 +84,9 @@ public class StatisticsPage extends BasePage {
 				Avatar avatar = item.getModelObject();
 				item.add(new Label("name", avatar.getName()));
 				item.add(new Label("level", Model.of(avatar.getLevel())));
+				item.add(new Label("groupsCount", Model.of(avatar.getNanites().size())));
+				item.add(new Label("totalNanitesCount", Model.of(getNanitesBPO().countNanites(avatar))));
+
 				item.add(new Label("birthDate", Model.of(avatar.getCreationDate().toString())));
 				Date lastLoginDate = avatar.getUser().getLastLoginDate();
 				item.add(new Label("lastLogin", Model.of(lastLoginDate != null ? lastLoginDate.toString()
