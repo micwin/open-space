@@ -36,6 +36,7 @@ package net.micwin.elysium.entities.characters;
  */
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -112,6 +113,8 @@ public final class User extends ElysiumEntity implements Serializable {
 
 	private String skin;
 
+	private Date lastLoginDate;
+
 	public void setRole(Role role) {
 		this.role = role;
 	}
@@ -173,5 +176,13 @@ public final class User extends ElysiumEntity implements Serializable {
 	@Override
 	public Class getBaseClass() {
 		return User.class;
+	}
+
+	public Date getLastLoginDate() {
+		return lastLoginDate;
+	}
+
+	public void setLastLoginDate(Date newLastLoginDate) {
+		lastLoginDate = newLastLoginDate;
 	}
 }

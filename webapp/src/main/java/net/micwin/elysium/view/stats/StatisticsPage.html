@@ -8,23 +8,37 @@
 <span wicket:id="layout">
 <h1>Statistik</h1>
 
-Server online seit : <span wicket:id="startupTime" /><br />
+<table width="75%" border="1">
+	<tr>
+		<th>Server online seit</th>
+		<th>Anzahl registrierte Spieler</th>
+		<th>Gates</th>
+	</tr>
+	<tr>
+		<td wicket:id="startupTime" align="center" />
+		<td wicket:id="userCount" align="center" />
+		<td wicket:id="gateCount" align="center" />
 
-Anzahl registrierte Spieler : <span
-	wicket:id="userCount" /><br />
+	</tr>
+</table>
+<p />
 
+<h1>Rangliste</h1>
 <table cellspacing="0" class="groupList" border="1" width="75%">
 	<tr>
 		<th>Name</th>
 		<th>Stufe</th>
 		<th>Geburtsdatum</th>
+		<th>Letzter Login</th>
 	</tr>
 	<tr wicket:id="rankingTable">
 		<td wicket:id="name" />
 		<td wicket:id="level" />
 		<td wicket:id="birthDate" />
+		<td wicket:id="lastLogin" />
 	</tr>
-</table></span>
+</table>
+</span>
 
 </body>
 </html>

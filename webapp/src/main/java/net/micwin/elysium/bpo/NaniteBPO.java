@@ -56,7 +56,7 @@ public class NaniteBPO extends BaseBPO {
 
 	private static final Logger L = LoggerFactory.getLogger(NaniteBPO.class);
 
-	private static final int MAX_NOOB_LEVEL = 25;
+	private static final int MAX_NOOB_LEVEL = 50;
 
 	private static final double BASE_DAMAGE_PER_NANITE = 0.01;
 

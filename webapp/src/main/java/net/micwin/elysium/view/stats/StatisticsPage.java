@@ -1,7 +1,9 @@
 package net.micwin.elysium.view.stats;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -31,6 +33,8 @@ public class StatisticsPage extends BasePage {
 		super.onInitialize();
 		addToContentBody(createUserCountLabel());
 		addToContentBody(createStartupTimeLabel());
+		addToContentBody(new Label("gateCount", Model.of(DaoManager.I.getGatesDao().countEntries())));
+
 		addToContentBody(createRankingTable());
 	}
 
@@ -81,6 +85,9 @@ public class StatisticsPage extends BasePage {
 				item.add(new Label("name", avatar.getName()));
 				item.add(new Label("level", Model.of(avatar.getLevel())));
 				item.add(new Label("birthDate", Model.of(avatar.getCreationDate().toString())));
+				Date lastLoginDate = avatar.getUser().getLastLoginDate();
+				item.add(new Label("lastLogin", Model.of(lastLoginDate != null ? lastLoginDate.toString()
+								: "<unbekannt>")));
 
 			}
 		};

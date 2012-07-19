@@ -89,6 +89,8 @@ public class Avatar extends ElysiumEntity {
 	@OneToMany(mappedBy = "controller")
 	private Collection<NaniteGroup> nanites;
 
+	private Date lastLogin;
+
 	public Avatar() {
 	}
 
@@ -181,5 +183,4 @@ public class Avatar extends ElysiumEntity {
 	public String getHomeGateAdress() {
 		return homeGateAdress;
 	}
-
 }

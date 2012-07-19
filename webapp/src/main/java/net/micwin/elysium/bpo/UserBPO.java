@@ -36,6 +36,7 @@ package net.micwin.elysium.bpo;
  */
 
 import java.io.Serializable;
+import java.util.Date;
 
 import net.micwin.elysium.entities.characters.User;
 import net.micwin.elysium.entities.characters.User.Role;
@@ -136,6 +137,9 @@ public class UserBPO extends BaseBPO implements Serializable {
 		} else if (L.isDebugEnabled()) {
 			L.debug("logged in user '" + user.getLogin() + "'");
 		}
+
+		user.setLastLoginDate(new Date());
+		getUserDao().update(user, true);
 
 		return user;
 	}
