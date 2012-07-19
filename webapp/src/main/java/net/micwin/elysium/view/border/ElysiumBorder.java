@@ -40,6 +40,7 @@ import net.micwin.elysium.view.ElysiumSession;
 import net.micwin.elysium.view.documentation.DocumentationPage;
 import net.micwin.elysium.view.login.AuthPanel;
 import net.micwin.elysium.view.nav.NavPanel;
+import net.micwin.elysium.view.stats.StatisticsPage;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.Session;
@@ -57,6 +58,7 @@ public class ElysiumBorder extends Border {
 	 * 
 	 */
 	private static final long serialVersionUID = -1650615903715041577L;
+
 	private static final Logger L = LoggerFactory.getLogger(ElysiumBorder.class);
 
 	public ElysiumBorder(boolean addFeedbackPanel) {
@@ -71,6 +73,7 @@ public class ElysiumBorder extends Border {
 		addToBorder(getNavPanel());
 		addToBorder(getAuthPanel());
 		addToBorder(getDocumentationLink());
+		addToBorder(getStatisticsLink());
 
 		User user = getUser();
 		if (user == null) {
@@ -79,6 +82,11 @@ public class ElysiumBorder extends Border {
 			String rolesString = user.getRole().name() + "/" + user.getState().name();
 			addToBorder(new Label("roles", rolesString));
 		}
+
+	}
+
+	private Component getStatisticsLink() {
+		return new BookmarkablePageLink("statisticsLink", StatisticsPage.class);
 
 	}
 

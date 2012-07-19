@@ -164,4 +164,11 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> extend
 		return target;
 	}
 
+	public int countEntries() {
+
+		// TODO faster
+		Collection<T> all = loadAll(new LinkedList<T>());
+		return all.size();
+	}
+
 }

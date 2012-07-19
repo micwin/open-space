@@ -35,6 +35,8 @@ package net.micwin.elysium.view;
 
  */
 
+import java.util.Date;
+
 import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.entities.DatabaseConsistencyEnsurer;
 import net.micwin.elysium.entities.GalaxyTimer;
@@ -59,13 +61,15 @@ public class ElysiumApplication extends WebApplication {
 
 	private DatabaseConsistencyEnsurer ensurer;
 
+	private Date startupTime = new Date();
+
 	public ElysiumApplication() {
 	}
 
 	@Override
 	public void init() {
 
-		galaxyTimer = ensurer.loadGalaxyTimer ();
+		galaxyTimer = ensurer.loadGalaxyTimer();
 
 		L.info("ElysiumApplication initialized");
 
@@ -107,6 +111,10 @@ public class ElysiumApplication extends WebApplication {
 
 	public DatabaseConsistencyEnsurer getEnsurer() {
 		return ensurer;
+	}
+
+	public Date getStartupTime() {
+		return startupTime;
 	}
 
 }

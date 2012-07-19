@@ -111,4 +111,11 @@ public interface IElysiumEntityDao<T extends ElysiumEntity> {
 	 */
 	Collection<T> loadAll(Collection<T> target);
 
+	/**
+	 * Returns the number of entries.
+	 * 
+	 * @return
+	 */
+	int countEntries();
+
 }

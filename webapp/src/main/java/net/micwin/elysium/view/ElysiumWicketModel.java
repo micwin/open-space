@@ -12,8 +12,12 @@ import org.apache.wicket.model.LoadableDetachableModel;
  * 
  * @param <E>
  */
-public class ElysiumWicketModel<E extends ElysiumEntity> extends LoadableDetachableModel<Object> {
+public class ElysiumWicketModel<E extends ElysiumEntity> extends LoadableDetachableModel<E> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 422698831001094350L;
 	private Class<E> baseClass;
 	private Long id;
 
@@ -31,18 +35,19 @@ public class ElysiumWicketModel<E extends ElysiumEntity> extends LoadableDetacha
 	 * Returns the model object as an elysium entity.
 	 * 
 	 * @return
+	 * @deprecated
 	 */
 	public E getEntity() {
 		return (E) getObject();
 	}
 
 	@Override
-	public Object getObject() {
+	public E getObject() {
 		return load();
 	}
 
 	@Override
-	public void setObject(Object object) {
+	public void setObject(E object) {
 		super.setObject(null);
 	}
 }
