@@ -1,0 +1,30 @@
+<html
+	xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd">
+<head>
+<title>${title}</title>
+</head>
+<body>
+
+<span wicket:id="layout">
+<h1>Statistik</h1>
+
+Server online seit : <span wicket:id="startupTime" /><br />
+
+Anzahl registrierte Spieler : <span
+	wicket:id="userCount" /><br />
+
+<table cellspacing="0" class="groupList" border="1" width="75%">
+	<tr>
+		<th>Name</th>
+		<th>Stufe</th>
+		<th>Geburtsdatum</th>
+	</tr>
+	<tr wicket:id="rankingTable">
+		<td wicket:id="name" />
+		<td wicket:id="level" />
+		<td wicket:id="birthDate" />
+	</tr>
+</table></span>
+
+</body>
+</html>
