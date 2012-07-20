@@ -256,4 +256,14 @@ public abstract class BasePage extends WebPage {
 		return new ScannerBPO();
 
 	}
+
+	/**
+	 * Returns the avatar bpo instance.
+	 * 
+	 * @return
+	 */
+	protected AvatarBPO getAvatarBPO() {
+		return new AvatarBPO();
+	}
+
 }

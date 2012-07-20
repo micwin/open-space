@@ -9,7 +9,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import net.micwin.elysium.bpo.BaseBPO;
 import net.micwin.elysium.entities.NaniteGroup;
+import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.galaxy.Position;
 import net.micwin.elysium.entities.gates.Gate;
 import net.micwin.elysium.view.BasePage;
@@ -201,15 +203,28 @@ public class NaniteGroupShowPage extends BasePage {
 			protected void populateItem(Item item) {
 				final ElysiumWicketModel<NaniteGroup> naniteGroupModel = (ElysiumWicketModel<NaniteGroup>) item
 								.getModel();
-				NaniteGroup naniteGroup = (NaniteGroup) naniteGroupModel.getObject();
+				NaniteGroup otherGroup = (NaniteGroup) naniteGroupModel.getObject();
 
-				Position position = naniteGroup.getPosition();
+				Position position = otherGroup.getPosition();
 				Gate gate = getGateBPO().getGateAt(position.getEnvironment());
 				String gateCode = gate.getGateAdress();
 
-				item.add(new Label("owner", new Model(naniteGroup.getController().getName())));
-				item.add(new Label("strength", new Model(NumberFormat.getIntegerInstance().format(
-								naniteGroup.getNaniteCount()))));
+				item.add(new Label("owner", new Model(otherGroup.getController().getName())));
+
+				NaniteGroup scanningGroup = scanningGroupModel.getObject();
+				boolean canScanDetails = getScannerBPO().canScanDetails(scanningGroup, otherGroup);
+				String leveltext = canScanDetails ? NumberFormat
+								.getIntegerInstance().format(otherGroup.getController().getLevel()) : "???";
+				item.add(new Label("level", new Model(leveltext)));
+
+				item.add(new Label("signature", new Model(NumberFormat.getNumberInstance().format(
+								getScannerBPO().computeSignatureStrength(otherGroup)))));
+
+				String countText = canScanDetails ? NumberFormat
+								.getNumberInstance().format(otherGroup.getNaniteCount()) : "???";
+
+				item.add(new Label("count", new Model(countText)));
+
 				item.add(getAttackCommandLink(scanningGroupModel, naniteGroupModel));
 
 			}

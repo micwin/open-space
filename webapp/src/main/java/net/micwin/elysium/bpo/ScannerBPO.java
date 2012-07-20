@@ -170,4 +170,29 @@ public class ScannerBPO extends BaseBPO {
 	public long computeShortRangeSensorStrength(NaniteGroup group) {
 		return getTalent(group.getController(), Appliance.SHORT_RANGE_SCANS).getLevel();
 	}
+
+	/**
+	 * Determnine wether or not nanite group scanner can scan details like the
+	 * exact count or avatar level of other group.
+	 * 
+	 * @param scannerGroup
+	 * @param otherGroup
+	 * @return
+	 */
+	public boolean canScanDetails(NaniteGroup scannerGroup, NaniteGroup otherGroup) {
+
+		if (scannerGroup.getController().equals(otherGroup.getController())) {
+			return true;
+		}
+
+		Utilization scanner = getTalent(scannerGroup.getController(), Appliance.SHORT_RANGE_SCANS);
+		int scannerStrength = scanner.getLevel() + scannerGroup.getController().getLevel();
+
+		Utilization ecp = getTalent(otherGroup.getController(), Appliance.EMISSION_CONTROL);
+		int ecpStrength = ecp != null ? ecp.getLevel() : 0;
+		ecpStrength += otherGroup.getController().getLevel();
+
+		return scannerStrength > ecpStrength;
+	}
+
 }
