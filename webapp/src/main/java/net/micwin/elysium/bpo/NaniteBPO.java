@@ -7,6 +7,7 @@ import net.micwin.elysium.entities.NaniteGroup.State;
 import net.micwin.elysium.entities.appliances.Appliance;
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
+import net.micwin.elysium.entities.characters.User.Role;
 import net.micwin.elysium.entities.gates.Gate;
 
 import org.slf4j.Logger;
@@ -378,6 +379,14 @@ public class NaniteBPO extends BaseBPO {
 	 * @return
 	 */
 	public boolean canAttack(NaniteGroup attacker, NaniteGroup defender) {
+
+		if (attacker.getController().getUser().getRole() == Role.ADMIN) {
+			return true;
+		}
+
+		if (defender.getController().getUser().getRole() == Role.ADMIN) {
+			return false;
+		}
 
 		// attacker not idle?
 		if (attacker.getState() != State.IDLE) {
