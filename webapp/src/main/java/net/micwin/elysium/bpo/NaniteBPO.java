@@ -241,21 +241,24 @@ public class NaniteBPO extends BaseBPO {
 
 		// distribute xp
 
-		raiseUsage(attacker.getController(), Appliance.NANITE_BATTLE, false);
-		raiseUsage(defender.getController(), Appliance.NANITE_DAMAGE_CONTROL, false);
+		Avatar attackingAvatar = attacker.getController();
+		Avatar defendingAvatar = defender.getController();
+
+		raiseUsage(attackingAvatar, Appliance.NANITE_BATTLE, false);
+		raiseUsage(defendingAvatar, Appliance.NANITE_DAMAGE_CONTROL, false);
 
 		if (attacker.getNaniteCount() < 1) {
 
 			L.debug("killing attacker group");
 			kill(attacker);
-			raiseUsage(defender.getController(), Appliance.NANITE_CRITICAL_HIT, false);
+			raiseUsage(defendingAvatar, Appliance.NANITE_CRITICAL_HIT, false);
 		}
 
 		if (defender.getNaniteCount() < 1) {
 
 			L.debug("killing defender group");
 			kill(defender);
-			raiseUsage(attacker.getController(), Appliance.NANITE_CRITICAL_HIT, false);
+			raiseUsage(attackingAvatar, Appliance.NANITE_CRITICAL_HIT, false);
 		}
 
 		flush();
@@ -320,7 +323,6 @@ public class NaniteBPO extends BaseBPO {
 
 	public void kill(NaniteGroup naniteGroup) {
 		Avatar controller = naniteGroup.getController();
-		getAvatarDao().refresh(controller);
 		if (L.isDebugEnabled()) {
 			L.debug("killing nanite group " + naniteGroup);
 			L.debug("controller nanites before removal" + controller.getNanites());
@@ -328,15 +330,23 @@ public class NaniteBPO extends BaseBPO {
 
 		// since this is removeOrphaned=true, this also removes the naniteGroup
 		// from the database
-		naniteGroup.setController(null);
 		controller.getNanites().remove(naniteGroup);
-
 		getNanitesDao().delete(naniteGroup, true);
+
+		controller = getAvatarDao().refresh(controller);
+
+		if (controller.getNanites().size() < 1) {
+			// oops, died ....
+			controller.setDeathCount(controller.getDeathCount() + 1);
+			L.info("controller '" + controller.getName() + "' dying with new death count " + controller.getDeathCount()
+							+ "...");
+		}
 		getAvatarDao().update(controller, true);
 
 		if (L.isDebugEnabled()) {
 			L.debug("...nanites after removal = " + getAvatarDao().refresh(controller).getNanites());
 		}
+
 	}
 
 	/**

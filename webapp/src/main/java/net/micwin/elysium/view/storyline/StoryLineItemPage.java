@@ -54,7 +54,7 @@ public abstract class StoryLineItemPage extends BasePage {
 
 	protected StoryLineItemPage(boolean addFeedbackPanel) {
 		super(addFeedbackPanel);
-		ensureAvatarPresent();
+		ensureAvatarPresent(true);
 
 		Boolean storyItemResolved = new StoryLineBPO().checkSolved(getStoryLineItem(), getAvatar());
 		if (storyItemResolved != null && storyItemResolved && getStoryLineItem().getNextItem() != null) {

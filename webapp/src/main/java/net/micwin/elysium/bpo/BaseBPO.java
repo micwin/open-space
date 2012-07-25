@@ -123,8 +123,11 @@ public class BaseBPO {
 	 * @param createIfMissing
 	 * @return
 	 */
-	protected Utilization getTalent(Avatar person, Appliance appliance) {
-		getAvatarDao().refresh(person);
+	public Utilization getTalent(Avatar person, Appliance appliance) {
+
+		if (L.isDebugEnabled()) {
+			L.debug("retrieving talent '" + appliance + "' for avatar '" + person + "'");
+		}
 		for (Utilization talent : person.getTalents()) {
 			if (talent.getAppliance() == appliance) {
 				return talent;

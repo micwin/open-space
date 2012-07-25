@@ -2,6 +2,7 @@ package net.micwin.elysium.view;
 
 import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.entities.ElysiumEntity;
+import net.micwin.elysium.entities.characters.Avatar;
 
 import org.apache.wicket.model.LoadableDetachableModel;
 
@@ -13,6 +14,12 @@ import org.apache.wicket.model.LoadableDetachableModel;
  * @param <E>
  */
 public class ElysiumWicketModel<E extends ElysiumEntity> extends LoadableDetachableModel<E> {
+
+	public static <E extends ElysiumEntity> ElysiumWicketModel<E> of(E entity) {
+
+		return new ElysiumWicketModel<E>(entity);
+
+	}
 
 	/**
 	 * 
@@ -50,4 +57,5 @@ public class ElysiumWicketModel<E extends ElysiumEntity> extends LoadableDetacha
 	public void setObject(E object) {
 		super.setObject(null);
 	}
+
 }

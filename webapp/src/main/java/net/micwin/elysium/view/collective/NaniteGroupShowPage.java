@@ -41,13 +41,14 @@ public class NaniteGroupShowPage extends BasePage {
 	@Override
 	protected void onInitialize() {
 		super.onInitialize();
-		ensureAvatarPresent();
+		ensureAvatarPresent(true);
 		ensureLoggedIn();
 		ensureStoryShown();
 
 		NaniteGroup group = getElysiumSession().getNamedEntity(NE_NANITE_GROUP);
 
 		final ElysiumWicketModel<NaniteGroup> groupModel = new ElysiumWicketModel<NaniteGroup>(group);
+		addToContentBody(new Label("groupId", "" + group.getId()));
 		addToContentBody(new Label("groupPosition", "" + group.getPosition().getEnvironment()));
 
 		String gateCode = getGateBPO().getGateAt(group.getPosition().getEnvironment()).getGateAdress();

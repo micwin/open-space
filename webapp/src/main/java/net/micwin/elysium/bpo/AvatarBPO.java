@@ -85,8 +85,8 @@ public class AvatarBPO extends BaseBPO {
 
 			getTalentsDao().insert(utilization, true);
 
-		}		
-		
+		}
+
 		Position position;
 
 		if (createSystem) {
@@ -204,4 +204,89 @@ public class AvatarBPO extends BaseBPO {
 		return ratio <= 0.5 || ratio >= 2.0;
 	}
 
+	/**
+	 * Check wether or not this avatar is alive.
+	 * 
+	 * @param avatar
+	 * @return
+	 */
+	public boolean isAlive(Avatar avatar) {
+
+		if (avatar.getPersonality() == Race.NANITE)
+			return avatar.getNanites().size() > 0;
+
+		throw new IllegalStateException("race '" + avatar.getPersonality() + "' not handled yet");
+	}
+
+	public int computeResurrectionLevelCost(Avatar avatar) {
+
+		// cost depends on how often the avatar already has been died.
+		// 8 there will be no removal of skills, each skill keeps level 1
+		int levelCost = (int) Math.min(0.1 * avatar.getDeathCount() * avatar.getLevel(), avatar.getLevel()
+						- avatar.getTalents().size());
+
+		return levelCost;
+	}
+
+	public void resurrect(Avatar avatar) {
+
+		// drop some levels
+		int levelCost = computeResurrectionLevelCost(avatar);
+
+		LinkedList<Utilization> talents = new LinkedList<Utilization>();
+
+		talents.addAll(avatar.getTalents());
+		while (levelCost > 0) {
+			int talentIndex = (int) (Math.random() * talents.size());
+			Utilization talent = talents.get(talentIndex);
+			if (talent.getLevel() == 1) {
+				continue;
+			}
+			talent.setLevel(talent.getLevel() - 1);
+			levelCost--;
+			getTalentsDao().update(talent, true);
+		}
+
+		Gate homeGate = getGatesDao().findByGateAdress(avatar.getHomeGateAdress());
+
+		NaniteGroup created = getNanitesDao().create(1, homeGate.getPosition());
+		created.setController(avatar);
+		getNanitesDao().update(created, true);
+		avatar.getNanites().add(created);
+		getAvatarDao().update(avatar, true);
+		L.info("avatar '" + avatar.getName() + "' of user '" + avatar.getUser().getName() + "' resurrected (now "
+						+ avatar.getDeathCount() + " times)");
+	}
+
+	public void remove(Avatar avatar) {
+
+		// kill the avatar entity.
+		getAvatarDao().delete(avatar, true);
+	}
+
+	public void leverage(Avatar avatar, int targetLevel) {
+
+		if (targetLevel < avatar.getLevel()) {
+		}
+
+		L.info("leveraging avatar '" + avatar.getName() + "' from level " + avatar.getLevel() + " to level "
+						+ targetLevel + "...");
+
+		int talentCount = avatar.getTalents().size();
+		int delta = targetLevel - avatar.getLevel();
+
+		LinkedList<Utilization> talentsBuffer = new LinkedList<Utilization>(avatar.getTalents());
+		while (delta > 0) {
+
+			int index = (int) (Math.random() * talentCount);
+
+			Utilization utilization = talentsBuffer.get(index);
+			utilization.setLevel(utilization.getLevel() + 1);
+			getTalentsDao().update(utilization, false);
+			delta--;
+		}
+
+		getTalentsDao().flush();
+		L.info("leveraging done.");
+	}
 }

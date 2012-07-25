@@ -147,6 +147,9 @@ public class ScannerBPO extends BaseBPO {
 	 */
 	public double computeSignatureStrength(NaniteGroup naniteGroup) {
 
+		if (L.isDebugEnabled()) {
+			L.debug("cpmouting signature strength for target " + naniteGroup);
+		}
 		double signatureStrength = BASE_NANITE_SIGNATURE_SIZE * naniteGroup.getNaniteCount();
 
 		Utilization ec = getTalent(naniteGroup.getController(), Appliance.EMISSION_CONTROL);

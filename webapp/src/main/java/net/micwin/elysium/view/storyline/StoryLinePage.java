@@ -46,7 +46,7 @@ public class StoryLinePage extends BasePage {
 	public StoryLinePage() {
 		super(false);
 
-		ensureAvatarPresent();
+		ensureAvatarPresent(true);
 
 		/**
 		 * Redirect to item page

@@ -1,0 +1,38 @@
+<html
+	xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd">
+<head>
+<title>${title}</title>
+</head>
+
+<body>
+
+<span wicket:id="layout"> <span wicket:id="feedback"
+	id="feedback" />
+<h1>Kollektiv ausgel&ouml;scht</h1>
+
+Die letzte Gruppe deines Kollektivs wurde zerst&auml;rt, und damit dein
+kollektives Bewusstsein ausgel&ouml;scht.
+<p />
+
+Das ist das <span wicket:id="deathCount" />. Mal. Du verlierst deshalb
+beim Wiederbeleben <span wicket:id="levelCost" /> zuf&auml;llig
+ausgew&auml;hlte Stufen deiner Unterprogramme. Alternativ kannst du auch
+von vorne beginnen und dir ein v&ouml;llig neues Kollektiv erschaffen:
+
+
+<p />
+
+
+<p />
+
+<table width="90%">
+	<tr>
+		<td><a wicket:id="startOverLink" href="Create"">Neu</a></td>
+		<td><a wicket:id="resurrectLink" href="Resurrect">Wiederbeleben</a></td>
+	</tr>
+
+</table>
+</span>
+
+</body>
+</html>

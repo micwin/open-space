@@ -34,12 +34,12 @@ package net.micwin.elysium.entities;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.UniqueConstraint;
 
 import net.micwin.elysium.entities.characters.Avatar;
 
@@ -52,7 +52,7 @@ public abstract class ElysiumEntity {
 
 	private String name;
 
-	@ManyToOne(optional = true)
+	@ManyToOne(optional = true, fetch = FetchType.EAGER)
 	private Avatar controller;
 
 	/**
@@ -91,7 +91,7 @@ public abstract class ElysiumEntity {
 
 	@Override
 	public int hashCode() {
-		return (int) (NaniteGroup.class.hashCode() + getId());
+		return (int) (getBaseClass().hashCode() + getId());
 	}
 
 	@Override

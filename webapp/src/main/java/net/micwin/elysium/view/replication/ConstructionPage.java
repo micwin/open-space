@@ -55,7 +55,7 @@ public class ConstructionPage extends BasePage {
 	public ConstructionPage() {
 		super(true);
 		ensureStoryShown();
-		ensureAvatarPresent();
+		ensureAvatarPresent(true);
 	}
 
 	@Override

@@ -68,7 +68,7 @@ public class NaniteGroupListPage extends BasePage {
 	public NaniteGroupListPage() {
 		super(true);
 		ensureStoryShown();
-		ensureAvatarPresent();
+		ensureAvatarPresent(true);
 	}
 
 	@Override
@@ -107,6 +107,8 @@ public class NaniteGroupListPage extends BasePage {
 			protected void populateItem(Item item) {
 				final IModel naniteGroupModel = item.getModel();
 				final NaniteGroup nanitesGroup = (NaniteGroup) naniteGroupModel.getObject();
+
+				item.add(new Label("groupId", Model.of(nanitesGroup.getId())));
 
 				Position position = nanitesGroup.getPosition();
 				Gate gate = getGateBPO().getGateAt(position.getEnvironment());

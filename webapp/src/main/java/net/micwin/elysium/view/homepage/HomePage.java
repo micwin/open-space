@@ -67,7 +67,7 @@ public class HomePage extends BasePage {
 
 	public HomePage() {
 		super(true);
-		ensureAvatarPresent();
+		ensureAvatarPresent(true);
 		ensureStoryShown();
 
 	}

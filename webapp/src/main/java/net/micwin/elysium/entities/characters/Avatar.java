@@ -37,10 +37,13 @@ package net.micwin.elysium.entities.characters;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -83,13 +86,19 @@ public class Avatar extends ElysiumEntity {
 	@Enumerated(EnumType.STRING)
 	private StoryLineItem storyLineItem;
 
-	@OneToMany
+	@OneToMany(orphanRemoval = true, fetch = FetchType.EAGER)
 	private Collection<Utilization> talents;
 
-	@OneToMany(mappedBy = "controller")
+	@OneToMany(mappedBy = "controller", orphanRemoval = true)
 	private Collection<NaniteGroup> nanites;
 
 	private Date lastLogin;
+
+	/**
+	 * Ther number of times this avatar has been died.
+	 */
+	@Column(name = "deathCount", columnDefinition = "int default 0")
+	private int deathCount = 0;
 
 	public Avatar() {
 	}
@@ -182,5 +191,18 @@ public class Avatar extends ElysiumEntity {
 
 	public String getHomeGateAdress() {
 		return homeGateAdress;
+	}
+
+	public int getDeathCount() {
+		return deathCount;
+	}
+
+	public void setDeathCount(int deathCount) {
+		this.deathCount = deathCount;
+	}
+
+	@Override
+	public String toString() {
+		return "Avatar " + getName() + " (" + user + ")";
 	}
 }

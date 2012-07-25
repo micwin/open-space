@@ -11,14 +11,8 @@
 
 
 	<logger name="net.micwin.elysium">
-		<level value="INFO" />
-	</logger>
-
-	<logger name="net.micwin.elysium.bpo.GateBPO">
 		<level value="DEBUG" />
 	</logger>
-
-
 
 	<root>
 		<priority value="WARN" />

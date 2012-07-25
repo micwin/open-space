@@ -45,7 +45,9 @@ import net.micwin.elysium.entities.ElysiumEntity;
 import net.micwin.elysium.entities.GalaxyTimer;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.User;
+import net.micwin.elysium.entities.characters.User.Role;
 import net.micwin.elysium.view.avatar.CreateAvatarPage;
+import net.micwin.elysium.view.avatar.ResurrectAvatarPage;
 import net.micwin.elysium.view.border.ElysiumBorder;
 import net.micwin.elysium.view.errors.EntityNotAccessiblePage;
 import net.micwin.elysium.view.storyline.StoryLinePage;
@@ -59,6 +61,7 @@ import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.border.Border;
+import org.apache.wicket.markup.html.link.Link;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -165,6 +168,14 @@ public abstract class BasePage extends WebPage {
 		return getElysiumSession().getUser();
 	}
 
+	protected boolean isAdmin() {
+		if (getUser() == null) {
+			return false;
+		}
+
+		return getUser().getRole() == Role.ADMIN;
+	}
+
 	protected Avatar getAvatar() {
 		return new AvatarBPO().findByUser(getUser());
 	}
@@ -182,13 +193,20 @@ public abstract class BasePage extends WebPage {
 	/**
 	 * Ensures that the logged in user has an avatar. If not, switch to avatar
 	 * creation page.
+	 * 
+	 * @param checkAlive
+	 *            wether or not the avatar is alive.
 	 */
-	protected void ensureAvatarPresent() {
+	protected void ensureAvatarPresent(boolean checkAlive) {
 
 		if (getAvatar() == null)
 
 		{
 			throw new RestartResponseException(CreateAvatarPage.class);
+		}
+
+		if (checkAlive && !getAvatarBPO().isAlive(getAvatar())) {
+			throw new RestartResponseException(ResurrectAvatarPage.class);
 		}
 	}
 
@@ -264,6 +282,20 @@ public abstract class BasePage extends WebPage {
 	 */
 	protected AvatarBPO getAvatarBPO() {
 		return new AvatarBPO();
+	}
+
+	protected Component createDummyLink(final String id, boolean enabled, boolean visible) {
+		Link dummyLink = new Link(id) {
+
+			@Override
+			public void onClick() {
+				L.debug("someone clicked on dumm link " + id);
+			}
+		};
+
+		dummyLink.setEnabled(enabled);
+		dummyLink.setVisible(visible);
+		return dummyLink;
 	}
 
 }

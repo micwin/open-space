@@ -63,7 +63,7 @@ public class UsePlanetaryGatePage extends BasePage {
 	public UsePlanetaryGatePage() {
 		super(true);
 		ensureStoryShown();
-		ensureAvatarPresent();
+		ensureAvatarPresent(true);
 		ensureSessionEntityPresent(NaniteGroup.class, "naniteGroup");
 	}
 

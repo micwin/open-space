@@ -4,8 +4,10 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import net.micwin.elysium.bpo.AvatarBPO;
+import net.micwin.elysium.bpo.BaseBPO;
 import net.micwin.elysium.bpo.GalaxyBPO;
 import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.dao.IAvatarDao;
@@ -31,9 +33,13 @@ import net.micwin.elysium.entities.gates.Gate;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.tool.hbm2ddl.SchemaUpdate;
 import org.slf4j.Logger;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.util.SystemPropertyUtils;
+
+import sun.tools.tree.AddExpression;
 
 /**
  * Simply said, a sort of special DAO that manages its own hibernate session to
@@ -70,6 +76,9 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 			@Override
 			public Object doInHibernate(org.hibernate.Session session) throws HibernateException, SQLException {
 
+				// ensureDataTableStructureCorrect();
+				checkAvatars();
+				ensureAllNaniteGroupsHaveController();
 				ensureLostSystemPresent();
 				L.info("lost systems ensured.");
 				ensureAdminPresent();
@@ -86,6 +95,33 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 				L.info("closing session after data consistency check");
 
 				return null;
+			}
+
+			private void ensureDataTableStructureCorrect() {
+
+				SysParam dbVersion = getSysParamDao().findByKey("dbVersion", null);
+				if (dbVersion == null) {
+
+					int result = getSession().createSQLQuery("ALTER TABLE Avatar ADD COLUMN DEATHCOUNT int default 0")
+									.executeUpdate();
+
+					getSysParamDao().create("dbVersion", "1");
+					getSysParamDao().flush();
+				}
+
+			}
+
+			private void ensureAllNaniteGroupsHaveController() {
+
+				LinkedList<NaniteGroup> all = new LinkedList<NaniteGroup>();
+				DaoManager.I.getNanitesDao().loadAll(all);
+				for (NaniteGroup naniteGroup : all) {
+					if (naniteGroup.getController() == null) {
+						L.info("removing orphaned nanite group " + naniteGroup);
+						DaoManager.I.getNanitesDao().delete(naniteGroup, true);
+					}
+				}
+
 			}
 
 			private void ensureScanningPresent() {
@@ -124,6 +160,40 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 		});
 
 		L.info("database sanity ensured");
+
+	}
+
+	protected void checkAvatars() {
+
+		// check skills and controllers
+		LinkedList<Avatar> all = new LinkedList<Avatar>();
+		getAvatarDao().loadAll(all);
+
+		for (Avatar avatar : all) {
+
+			boolean addedSomething = false;
+
+			for (Utilization initialTalent : avatar.getPersonality().getInitialTalents()) {
+
+				Utilization talent = new AvatarBPO().getTalent(avatar, initialTalent.getAppliance());
+
+				if (talent == null) {
+					L.info("adding skill '" + initialTalent.getAppliance() + "' to avatar '" + avatar.getName() + "'");
+
+					Utilization utilization = Utilization.Factory.create(initialTalent.getAppliance(),
+									initialTalent.getLevel(), initialTalent.getMaxLevel());
+
+					utilization.setController(avatar);
+					avatar.getTalents().add(utilization);
+					getTalentsDao().update(utilization, true);
+					addedSomething = true;
+				}
+
+				if (addedSomething) {
+					getAvatarDao().update(avatar, true);
+				}
+			}
+		}
 
 	}
 

@@ -17,6 +17,7 @@ import net.micwin.elysium.view.ElysiumWicketModel;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RefreshingView;
 import org.apache.wicket.model.IModel;
@@ -91,11 +92,56 @@ public class StatisticsPage extends BasePage {
 				Date lastLoginDate = avatar.getUser().getLastLoginDate();
 				item.add(new Label("lastLogin", Model.of(lastLoginDate != null ? lastLoginDate.toString()
 								: "<unbekannt>")));
+				item.add(getLeverageLink(avatar, 51));
+				item.add(getLeverageLink(avatar, 101));
+				item.add(getResurectLink(avatar));
 
 			}
 		};
 
 		return rankingTable;
+	}
+
+	protected Component getLeverageLink(Avatar avatar, final int targetLevel) {
+		String id = "leverage" + targetLevel + "Link";
+
+		if (!isAdmin() ||  avatar.getLevel() > targetLevel) {
+			return createDummyLink(id, false, false);
+		}
+
+		final ElysiumWicketModel<Avatar> model = ElysiumWicketModel.of(avatar);
+		Link leverageLink = new Link(id) {
+
+			@Override
+			public void onClick() {
+				getAvatarBPO().leverage(model.getObject(), targetLevel);
+				setResponsePage(StatisticsPage.class);
+
+			}
+		};
+		return leverageLink;
+	}
+
+
+	protected Component getResurectLink(Avatar avatar) {
+		if (!isAdmin() || getAvatarBPO().isAlive(avatar)) {
+
+			return createDummyLink("resurrectLink", false, false);
+		}
+
+		final ElysiumWicketModel<Avatar> model = ElysiumWicketModel.of(avatar);
+
+		Link resurrectLink = new Link("resurrectLink") {
+
+			@Override
+			public void onClick() {
+
+				getAvatarBPO().resurrect(model.getObject());
+				setResponsePage(StatisticsPage.class);
+			}
+		};
+
+		return resurrectLink;
 	}
 
 	private void filterAdmins(List<Avatar> avatars) {
