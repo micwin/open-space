@@ -2,18 +2,15 @@ package net.micwin.elysium.entities;
 
 import java.sql.SQLException;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 import net.micwin.elysium.bpo.AvatarBPO;
-import net.micwin.elysium.bpo.BaseBPO;
 import net.micwin.elysium.bpo.GalaxyBPO;
 import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.dao.IAvatarDao;
 import net.micwin.elysium.dao.IGalaxyDao;
 import net.micwin.elysium.dao.IGatesDao;
-import net.micwin.elysium.dao.IOrganizationDao;
 import net.micwin.elysium.dao.ISysParamDao;
 import net.micwin.elysium.dao.ITalentsDao;
 import net.micwin.elysium.dao.IUserDao;
@@ -33,13 +30,9 @@ import net.micwin.elysium.entities.gates.Gate;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.tool.hbm2ddl.SchemaUpdate;
 import org.slf4j.Logger;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import org.springframework.util.SystemPropertyUtils;
-
-import sun.tools.tree.AddExpression;
 
 /**
  * Simply said, a sort of special DAO that manages its own hibernate session to
