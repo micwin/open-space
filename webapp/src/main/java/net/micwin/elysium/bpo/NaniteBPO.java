@@ -512,7 +512,7 @@ public class NaniteBPO extends BaseBPO {
 			return false;
 		}
 
-		if (group.getNaniteCount() >= 16384) {
+		if (group.getNaniteCount() > 0) {
 			return true;
 		}
 
