@@ -93,19 +93,12 @@ public class AdvancerTask extends TimerTask {
 
 		for (Iterator iterator = result.iterator(); iterator.hasNext();) {
 			NaniteGroup naniteGroup = (NaniteGroup) iterator.next();
-			if (naniteGroup.getState() != State.FORTIFYING) {
-				continue;
-			}
 
-			if (naniteGroup.getStateEndGT().before(GalaxyTimer.get().getGalaxyDate())) {
+			boolean changedSomething = advanceFortifying(naniteGroup);
 
-				naniteGroup.setStateEndGT(null);
-				naniteGroup.setState(State.IDLE);
-				naniteGroup.setFortified(true);
+			if (changedSomething) {
 				changeCount++;
 				currentSession.save(naniteGroup);
-			} else {
-				L.debug("nanite group still has to wait until " + naniteGroup.getStateEndGT() + " ");
 			}
 
 		}
@@ -113,5 +106,27 @@ public class AdvancerTask extends TimerTask {
 		currentSession.getTransaction().commit();
 
 		L.info(changeCount + " groups advanced");
+	}
+
+	/**
+	 * Checks wether this group is fortifying and if, check dates.
+	 * 
+	 * @param naniteGroup
+	 * @return
+	 */
+	public boolean advanceFortifying(NaniteGroup naniteGroup) {
+
+		if (naniteGroup.getState() != State.FORTIFYING) {
+			return false;
+		}
+
+		if (naniteGroup.getStateEndGT().before(GalaxyTimer.get().getGalaxyDate())) {
+			naniteGroup.setStateEndGT(null);
+			naniteGroup.setState(State.IDLE);
+			naniteGroup.setFortified(true);
+			return true;
+		}
+		L.debug("nanite group still has to wait until " + naniteGroup.getStateEndGT() + " ");
+		return false;
 	}
 }

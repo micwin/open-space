@@ -174,8 +174,7 @@ public class NaniteGroupListPage extends BasePage {
 					}
 				};
 
-				link.setVisible((naniteGroupModel.getObject().getNaniteCount() > 1)
-								&& getNanitesBPO().canRaiseGroupCount(naniteGroupModel.getObject().getController()));
+				link.setVisible(getNanitesBPO().canSplit (naniteGroupModel.getObject()));
 				return link;
 			}
 

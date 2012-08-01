@@ -170,9 +170,11 @@ public class NaniteGroupShowPage extends BasePage {
 			}
 		};
 
+		
 		String currentGateAdress = getGateBPO().getGateAt(groupModel.getEntity()).getGateAdress();
 
 		link.setEnabled(!"arena".equals(currentGateAdress));
+		link.setVisible(getNanitesBPO().canJumpGate(groupModel.getObject()));
 
 		return link;
 	}
@@ -187,7 +189,9 @@ public class NaniteGroupShowPage extends BasePage {
 			}
 		};
 
-		link.setEnabled(!"elysium".equals(getGateBPO().getGateAt(groupModel.getEntity()).getGateAdress()));
+		String currentGateAdress = getGateBPO().getGateAt(groupModel.getEntity()).getGateAdress();
+		link.setEnabled(!"elysium".equals(currentGateAdress));
+		link.setVisible(getNanitesBPO().canJumpGate(groupModel.getObject()));
 
 		return link;
 	}

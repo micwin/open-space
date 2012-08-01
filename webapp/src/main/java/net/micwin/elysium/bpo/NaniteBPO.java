@@ -308,6 +308,10 @@ public class NaniteBPO extends BaseBPO {
 				L.debug("engaging newbie protection  lvl < " + MAX_NOOB_LEVEL + " - last nanite group not killed");
 			newCount = 1;
 		}
+		
+		
+		
+		
 
 		if (newCount > 0) {
 			damageDone = naniteGroup.getNaniteCount() - newCount;
@@ -375,8 +379,13 @@ public class NaniteBPO extends BaseBPO {
 			L.debug("is fortified - halfing damage");
 			factor /= 2;
 		}
-		// evaluate and add critical hit
 
+		if (offensive && defender.getState() != State.IDLE) {
+			// defender is busy...
+			factor *= 3;
+		}
+
+		// evaluate and add critical hit
 		Utilization critical = new AvatarBPO().getTalent(getAvatarDao().refresh(attacker.getController()),
 						Appliance.NANITE_CRITICAL_HIT);
 
@@ -426,7 +435,7 @@ public class NaniteBPO extends BaseBPO {
 			return true;
 		}
 
-		if (defender.getController().getUser().getRole() == Role.ADMIN) {
+		if (defender.getController().getUser().getRole() == Role.ADMIN && defender.isFortified()) {
 			return false;
 		}
 
