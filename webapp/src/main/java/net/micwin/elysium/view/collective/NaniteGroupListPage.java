@@ -131,32 +131,34 @@ public class NaniteGroupListPage extends BasePage {
 								nanitesGroup.getNaniteCount()));
 				item.add(new Label("groupCount", countModel));
 				String stateString = nanitesGroup.getState().toString();
-				if (nanitesGroup.isFortified()) {
-					stateString = "B " + stateString;
-				}
 				item.add(new Label("groupState", new Model(stateString)));
 				item.add(getDoubleCountLink(naniteGroupModel, countModel));
 				item.add(getGateLink(naniteGroupModel));
 
 				item.add(getSplitLink(naniteGroupModel));
 				item.add(getKillLink(naniteGroupModel));
-				item.add(getFortifyLink(naniteGroupModel));
+				item.add(getEntrenchLink(naniteGroupModel));
 
 			}
 
-			private Component getFortifyLink(final IModel<NaniteGroup> naniteGroupModel) {
-				Link<NaniteGroup> fortifyLink = new Link<NaniteGroup>("fortify", naniteGroupModel) {
+			private Component getEntrenchLink(final IModel<NaniteGroup> naniteGroupModel) {
+				Link<NaniteGroup> entrenchLink = new Link<NaniteGroup>("entrench", naniteGroupModel) {
+
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = -7730841008038281114L;
 
 					@Override
 					public void onClick() {
 
-						getNanitesBPO().fortify(getModelObject());
+						getNanitesBPO().entrench(getModelObject());
 					}
 
 				};
 
-				fortifyLink.setVisible(getNanitesBPO().canFortify(naniteGroupModel.getObject()));
-				return fortifyLink;
+				entrenchLink.setVisible(getNanitesBPO().canEntrench(naniteGroupModel.getObject()));
+				return entrenchLink;
 			}
 
 			protected Link getSplitLink(final IModel<NaniteGroup> naniteGroupModel) {
@@ -174,7 +176,7 @@ public class NaniteGroupListPage extends BasePage {
 					}
 				};
 
-				link.setVisible(getNanitesBPO().canSplit (naniteGroupModel.getObject()));
+				link.setVisible(getNanitesBPO().canSplit(naniteGroupModel.getObject()));
 				return link;
 			}
 

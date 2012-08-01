@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import net.micwin.elysium.entities.NaniteGroup;
+import net.micwin.elysium.entities.NaniteGroup.State;
 import net.micwin.elysium.entities.appliances.Appliance;
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.galaxy.Planet;
@@ -80,25 +81,28 @@ public class ScannerBPO extends BaseBPO {
 
 		int hiddenCount = 0;
 
-		for (NaniteGroup naniteGroup : found) {
+		for (NaniteGroup targetGroup : found) {
 
 			// same id
-			if (naniteGroup.getId().equals(scanningGroup.getId())) {
+			if (targetGroup.getId().equals(scanningGroup.getId())) {
 				continue;
 			}
 
 			// same controller
-			if (scanningGroup.getController().equals(naniteGroup.getController())) {
-				result.add(naniteGroup);
+			if (scanningGroup.getController().equals(targetGroup.getController())) {
+				result.add(targetGroup);
 				continue;
 			}
 
 			// visible by sensors?
 
-			if (isVisibleBy(naniteGroup, scanningGroup)) {
-				result.add(naniteGroup);
+			if (isVisibleBy(targetGroup, scanningGroup)) {
+				result.add(targetGroup);
 			} else {
 				hiddenCount++;
+				if (targetGroup.getState() == State.ENTRENCHED) {
+					raiseUsage(targetGroup.getController(), Appliance.EMISSION_CONTROL, true);
+				}
 			}
 
 		}
@@ -148,13 +152,10 @@ public class ScannerBPO extends BaseBPO {
 	public double computeSignatureStrength(NaniteGroup naniteGroup) {
 
 		if (L.isDebugEnabled()) {
-			L.debug("cpmouting signature strength for target " + naniteGroup);
+			L.debug("computing signature strength for target " + naniteGroup);
 		}
-		double signatureStrength = BASE_NANITE_SIGNATURE_SIZE * naniteGroup.getNaniteCount();
-		if (naniteGroup.isFortified()) {
-			signatureStrength *= 10;
-		}
-
+		double signatureStrength = BASE_NANITE_SIGNATURE_SIZE * naniteGroup.getNaniteCount()
+						* naniteGroup.getState().getSignatureFactor();
 		Utilization ec = getTalent(naniteGroup.getController(), Appliance.EMISSION_CONTROL);
 
 		if (ec != null && ec.getLevel() > 0) {
@@ -174,7 +175,8 @@ public class ScannerBPO extends BaseBPO {
 	 * @return
 	 */
 	public long computeShortRangeSensorStrength(NaniteGroup group) {
-		return getTalent(group.getController(), Appliance.SHORT_RANGE_SCANS).getLevel();
+		return (long) (getTalent(group.getController(), Appliance.SHORT_RANGE_SCANS).getLevel() * group.getState()
+						.getSensorFactor());
 	}
 
 	/**

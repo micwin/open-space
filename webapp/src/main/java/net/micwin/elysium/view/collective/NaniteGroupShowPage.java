@@ -78,8 +78,7 @@ public class NaniteGroupShowPage extends BasePage {
 	}
 
 	private Component composeTitleText(NaniteGroup group) {
-		String key = group.isFortified() || group.getState() == State.FORTIFYING ? "fortress" : "naniteGroup";
-
+		String key = "naniteGroup";
 		return new Label("titleText", new ResourceModel(key));
 	}
 
@@ -170,7 +169,6 @@ public class NaniteGroupShowPage extends BasePage {
 			}
 		};
 
-		
 		String currentGateAdress = getGateBPO().getGateAt(groupModel.getEntity()).getGateAdress();
 
 		link.setEnabled(!"arena".equals(currentGateAdress));
