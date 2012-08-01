@@ -138,6 +138,9 @@ public class NaniteGroup extends ElysiumEntity {
 	@Column
 	private Date stateEndGT;
 
+	@Column(name = "battleCounter", nullable = false, columnDefinition = "int default 0")
+	private int battleCounter = 0;
+
 	public void setPosition(Position position) {
 		this.position = position;
 	}
@@ -184,4 +187,15 @@ public class NaniteGroup extends ElysiumEntity {
 		return stateEndGT;
 	}
 
+	public void raiseBattleCounter() {
+		battleCounter++;
+	}
+
+	public void setBattleCounter(int battleCounter) {
+		this.battleCounter = battleCounter;
+	}
+
+	public int getBattleCounter() {
+		return battleCounter;
+	}
 }

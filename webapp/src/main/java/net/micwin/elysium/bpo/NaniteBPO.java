@@ -234,6 +234,9 @@ public class NaniteBPO extends BaseBPO {
 		long damageDoneToDefender = doDamage(defender, attackerStrength);
 		long damageDoneToAttacker = doDamage(attacker, defenderStrength);
 
+		attacker.raiseBattleCounter();
+		defender.raiseBattleCounter();
+
 		flush();
 
 		if (L.isDebugEnabled()) {
@@ -254,6 +257,7 @@ public class NaniteBPO extends BaseBPO {
 
 			L.debug("killing attacker group");
 			kill(attacker);
+			defender.getController().raiseFragCount();
 			raiseUsage(defendingAvatar, Appliance.NANITE_CRITICAL_HIT, false);
 		}
 
@@ -261,7 +265,9 @@ public class NaniteBPO extends BaseBPO {
 
 			L.debug("killing defender group");
 			kill(defender);
+			attacker.getController().raiseFragCount();
 			raiseUsage(attackingAvatar, Appliance.NANITE_CRITICAL_HIT, false);
+
 		}
 
 		flush();

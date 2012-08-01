@@ -58,9 +58,9 @@ public class StatisticsPage extends BasePage {
 
 			@Override
 			public int compare(Avatar o1, Avatar o2) {
-				if (o1.getLevel() > o2.getLevel())
+				if (o1.getPoints() > o2.getPoints())
 					return -1;
-				if (o1.getLevel() < o2.getLevel()) {
+				if (o1.getPoints() < o2.getPoints()) {
 					return 1;
 				}
 				return 0;
@@ -84,10 +84,9 @@ public class StatisticsPage extends BasePage {
 			protected void populateItem(Item<Avatar> item) {
 				Avatar avatar = item.getModelObject();
 				item.add(new Label("name", avatar.getName()));
-				item.add(new Label("level", Model.of(avatar.getLevel())));
+				item.add(new Label("points", Model.of(avatar.getPoints())));
 				item.add(new Label("groupsCount", Model.of(avatar.getNanites().size())));
-				item.add(new Label("totalNanitesCount", Model.of(getNanitesBPO().countNanites(avatar))));
-
+	
 				item.add(new Label("birthDate", Model.of(avatar.getCreationDate().toString())));
 				Date lastLoginDate = avatar.getUser().getLastLoginDate();
 				item.add(new Label("lastLogin", Model.of(lastLoginDate != null ? lastLoginDate.toString()

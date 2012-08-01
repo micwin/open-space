@@ -100,6 +100,9 @@ public class Avatar extends ElysiumEntity {
 	@Column(name = "deathCount", columnDefinition = "int default 0")
 	private int deathCount = 0;
 
+	@Column(name = "fragCount", nullable = false, columnDefinition = "int default 0")
+	private int fragCount = 0;
+
 	public Avatar() {
 	}
 
@@ -204,5 +207,23 @@ public class Avatar extends ElysiumEntity {
 	@Override
 	public String toString() {
 		return "Avatar " + getName() + " (" + user + ")";
+	}
+
+	public void raiseFragCount() {
+		setFragCount(getFragCount() + 1);
+	}
+
+	public void setFragCount(int fragCount) {
+		this.fragCount = fragCount;
+	}
+
+	public int getFragCount() {
+		return fragCount;
+	}
+
+	public long getPoints() {
+
+		return getLevel() + getFragCount() - getDeathCount();
+
 	}
 }
