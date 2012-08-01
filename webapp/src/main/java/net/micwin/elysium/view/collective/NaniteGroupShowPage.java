@@ -11,6 +11,7 @@ import java.util.List;
 
 import net.micwin.elysium.bpo.BaseBPO;
 import net.micwin.elysium.entities.NaniteGroup;
+import net.micwin.elysium.entities.NaniteGroup.State;
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.galaxy.Position;
 import net.micwin.elysium.entities.gates.Gate;
@@ -25,6 +26,7 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RefreshingView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.ResourceModel;
 
 public class NaniteGroupShowPage extends BasePage {
 
@@ -46,7 +48,6 @@ public class NaniteGroupShowPage extends BasePage {
 		ensureStoryShown();
 
 		NaniteGroup group = getElysiumSession().getNamedEntity(NE_NANITE_GROUP);
-
 		final ElysiumWicketModel<NaniteGroup> groupModel = new ElysiumWicketModel<NaniteGroup>(group);
 		addToContentBody(new Label("groupId", "" + group.getId()));
 		addToContentBody(new Label("groupPosition", "" + group.getPosition().getEnvironment()));
@@ -72,7 +73,14 @@ public class NaniteGroupShowPage extends BasePage {
 		addToContentBody(composeQuickJumpItems(group));
 		addToContentBody(getOtherNanitesTable(group));
 		addToContentBody(getSplitLink(groupModel));
+		addToContentBody(composeTitleText(group));
 
+	}
+
+	private Component composeTitleText(NaniteGroup group) {
+		String key = group.isFortified() || group.getState() == State.FORTIFYING ? "fortress" : "naniteGroup";
+
+		return new Label("titleText", new ResourceModel(key));
 	}
 
 	protected Link getDoubleCountLink(final ElysiumWicketModel<NaniteGroup> groupModel) {
@@ -110,9 +118,7 @@ public class NaniteGroupShowPage extends BasePage {
 			}
 		};
 
-		link.setVisible(groupModel.getEntity().getController().getNanites().size() < 2
-						&& (groupModel.getEntity().getNaniteCount() > 1)
-						&& getNanitesBPO().canRaiseGroupCount(groupModel.getEntity().getController()));
+		link.setVisible(getNanitesBPO().canSplit(groupModel.getObject()));
 		return link;
 	}
 
@@ -148,6 +154,7 @@ public class NaniteGroupShowPage extends BasePage {
 		};
 
 		link.setEnabled(!homeGateAdress.equals(currentGateAdress));
+		link.setVisible(getNanitesBPO().canJumpGate(groupModel.getObject()));
 
 		return link;
 	}
@@ -214,15 +221,15 @@ public class NaniteGroupShowPage extends BasePage {
 
 				NaniteGroup scanningGroup = scanningGroupModel.getObject();
 				boolean canScanDetails = getScannerBPO().canScanDetails(scanningGroup, otherGroup);
-				String leveltext = canScanDetails ? NumberFormat
-								.getIntegerInstance().format(otherGroup.getController().getLevel()) : "???";
+				String leveltext = canScanDetails ? NumberFormat.getIntegerInstance().format(
+								otherGroup.getController().getLevel()) : "???";
 				item.add(new Label("level", new Model(leveltext)));
 
 				item.add(new Label("signature", new Model(NumberFormat.getNumberInstance().format(
 								getScannerBPO().computeSignatureStrength(otherGroup)))));
 
-				String countText = canScanDetails ? NumberFormat
-								.getNumberInstance().format(otherGroup.getNaniteCount()) : "???";
+				String countText = canScanDetails ? NumberFormat.getNumberInstance()
+								.format(otherGroup.getNaniteCount()) : "???";
 
 				item.add(new Label("count", new Model(countText)));
 

@@ -38,6 +38,7 @@ package net.micwin.elysium.dao;
 import java.util.List;
 
 import net.micwin.elysium.entities.NaniteGroup;
+import net.micwin.elysium.entities.NaniteGroup.State;
 import net.micwin.elysium.entities.galaxy.Environment;
 import net.micwin.elysium.entities.galaxy.Position;
 
@@ -87,5 +88,13 @@ public interface INanitesDao extends IElysiumEntityDao<NaniteGroup> {
 	 * @param naniteGroup
 	 */
 	NaniteGroup refresh(NaniteGroup naniteGroup);
+
+	/**
+	 * Finds nanite groups by a specific state.
+	 * 
+	 * @param state
+	 * @return
+	 */
+	List<NaniteGroup> findbyState(State state);
 
 }

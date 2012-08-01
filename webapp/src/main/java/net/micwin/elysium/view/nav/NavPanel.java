@@ -55,10 +55,10 @@ public class NavPanel extends BasePanel {
 		add(createHomePageLink());
 		add(createStoryLineLink());
 		add(createGroupsLink());
-
 		add(createReplicationLink());
 
 	}
+
 
 	protected BookmarkablePageLink<StoryLinePage> createStoryLineLink() {
 		BookmarkablePageLink<StoryLinePage> link = new BookmarkablePageLink<StoryLinePage>("storyLineLink",

@@ -33,7 +33,9 @@ package net.micwin.elysium.entities;
  Sie sollten eine Kopie der GNU Affero Public License zusammen mit diesem
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
- */import javax.persistence.Column;
+ */import java.util.Date;
+
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -56,7 +58,7 @@ public class NaniteGroup extends ElysiumEntity {
 
 	public enum State {
 
-		IDLE, REPLICATING;
+		IDLE, REPLICATING, FORTIFYING;
 	}
 
 	public NaniteGroup() {
@@ -73,6 +75,12 @@ public class NaniteGroup extends ElysiumEntity {
 
 	@Column
 	private State state = State.IDLE;
+
+	@Column(nullable = false, columnDefinition = "boolean default false")
+	private boolean fortified = false;
+
+	@Column
+	private Date stateEndGT;;
 
 	public void setPosition(Position position) {
 		this.position = position;
@@ -111,4 +119,21 @@ public class NaniteGroup extends ElysiumEntity {
 	public SupportMode getSupportMode() {
 		return supportMode;
 	}
+
+	public boolean isFortified() {
+		return fortified;
+	}
+
+	public void setFortified(boolean newFortified) {
+		this.fortified = newFortified;
+	}
+
+	public void setStateEndGT(Date stateEndGT) {
+		this.stateEndGT = stateEndGT;
+	}
+
+	public Date getStateEndGT() {
+		return stateEndGT;
+	}
+
 }

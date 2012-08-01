@@ -71,7 +71,7 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 
 				// ensureDataTableStructureCorrect();
 				checkAvatars();
-				ensureAllNaniteGroupsHaveController();
+				checkNaniteGroups();
 				ensureLostSystemPresent();
 				L.info("lost systems ensured.");
 				ensureAdminPresent();
@@ -104,7 +104,15 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 
 			}
 
-			private void ensureAllNaniteGroupsHaveController() {
+			private void checkNaniteGroups() {
+
+				// update fortified flag without any instance (because code
+				// would crash)
+				int count = getSession().createSQLQuery(
+								"UPDATE " + NaniteGroup.class.getSimpleName()
+												+ " SET fortified=false where fortified IS null").executeUpdate();
+
+				L.info(count + " fortified flags adjusted");
 
 				LinkedList<NaniteGroup> all = new LinkedList<NaniteGroup>();
 				DaoManager.I.getNanitesDao().loadAll(all);

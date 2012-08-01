@@ -34,6 +34,8 @@ package net.micwin.elysium.view;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
+import net.micwin.elysium.dao.DaoManager;
+import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.User;
 
 import org.apache.wicket.Session;
@@ -58,4 +60,7 @@ public abstract class BasePanel extends Panel {
 		return (ElysiumSession) Session.get();
 	}
 
+	protected Avatar getAvatar() {
+		return DaoManager.I.getAvatarDao().findByUser(getUser());
+	}
 }

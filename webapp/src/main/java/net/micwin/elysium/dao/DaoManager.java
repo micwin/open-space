@@ -167,4 +167,5 @@ public class DaoManager {
 		daoInstances.put(Organization.class, orgaDao);
 	}
 
+	
 }

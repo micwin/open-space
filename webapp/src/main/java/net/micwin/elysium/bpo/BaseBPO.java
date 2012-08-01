@@ -96,6 +96,7 @@ public class BaseBPO {
 		return getDaoManager().getBluePrintDao();
 	}
 
+
 	/**
 	 * DONT CALL THIS METHOD! Its a hack and surely will be replaced by a more
 	 * elegant construct.

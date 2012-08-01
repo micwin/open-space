@@ -35,18 +35,83 @@ package net.micwin.elysium.jobs;
 
  */
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.TimerTask;
 
+import net.micwin.elysium.dao.DaoManager;
+import net.micwin.elysium.entities.GalaxyTimer;
+import net.micwin.elysium.entities.NaniteGroup;
+import net.micwin.elysium.entities.NaniteGroup.State;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class AdvancerTask extends TimerTask {
 
 	private static final Logger L = LoggerFactory.getLogger(AdvancerTask.class);
 
+	@Autowired
+	private SessionFactory sessionFactory;
+
 	@Override
 	public void run() {
-		L.info("running ...");
+		L.info("running @ galaxy time " + GalaxyTimer.get().getGalaxyDate() + "...");
+
+		Session session = sessionFactory.openSession();
+
+		try {
+
+			runNanitesAdvancer();
+
+		} catch (Exception e) {
+
+			L.error("exception while advancer loop", e);
+		}
+
+		session.flush();
+		session.close();
+
 		L.info("done");
+	}
+
+	private void runNanitesAdvancer() {
+		L.info("running nanites advancer ...");
+
+		org.hibernate.classic.Session currentSession = sessionFactory.getCurrentSession();
+
+		currentSession.getTransaction().begin();
+
+		List<NaniteGroup> result = new LinkedList<NaniteGroup>();
+
+		DaoManager.I.getNanitesDao().loadAll(result);
+		int changeCount = 0;
+
+		for (Iterator iterator = result.iterator(); iterator.hasNext();) {
+			NaniteGroup naniteGroup = (NaniteGroup) iterator.next();
+			if (naniteGroup.getState() != State.FORTIFYING) {
+				continue;
+			}
+
+			if (naniteGroup.getStateEndGT().before(GalaxyTimer.get().getGalaxyDate())) {
+
+				naniteGroup.setStateEndGT(null);
+				naniteGroup.setState(State.IDLE);
+				naniteGroup.setFortified(true);
+				changeCount++;
+				currentSession.save(naniteGroup);
+			} else {
+				L.debug("nanite group still has to wait until " + naniteGroup.getStateEndGT() + " ");
+			}
+
+		}
+
+		currentSession.getTransaction().commit();
+
+		L.info(changeCount + " groups advanced");
 	}
 }

@@ -10,6 +10,7 @@
 
 	<!-- Yes we do spring auto wiring. -->
 	<context:annotation-config />
+	<context:component-scan base-package="net.micwin.elysium.jobs" />
 
 	<!-- =================================================== -->
 	<!-- =========== configuring persistence layer ======= -->
@@ -106,7 +107,6 @@
 		<property name="organizationDao">
 			<bean id="organizationDao__" class="net.micwin.elysium.dao.HibernateOrganizationDao" />
 		</property>
-
 
 	</bean>
 

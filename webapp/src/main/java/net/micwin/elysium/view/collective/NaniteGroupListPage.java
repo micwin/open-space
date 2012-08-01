@@ -42,6 +42,7 @@ import java.util.List;
 
 import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.entities.NaniteGroup;
+import net.micwin.elysium.entities.NaniteGroup.State;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.User;
 import net.micwin.elysium.entities.galaxy.Environment;
@@ -93,18 +94,17 @@ public class NaniteGroupListPage extends BasePage {
 	private Component getGroupsTable() {
 
 		Iterator<NaniteGroup> nanites = getAvatar().getNanites().iterator();
-		final List<IModel> models = new ArrayList<IModel>();
+		final List<IModel<NaniteGroup>> models = new ArrayList<IModel<NaniteGroup>>();
 		while (nanites.hasNext()) {
 			models.add(new ElysiumWicketModel<NaniteGroup>(nanites.next()));
 		}
 
 		Component groupsTable = new RefreshingView<NaniteGroup>("groupsTable") {
-			protected Iterator getItemModels() {
-
+			protected Iterator<IModel<NaniteGroup>> getItemModels() {
 				return models.iterator();
 			}
 
-			protected void populateItem(Item item) {
+			protected void populateItem(Item<NaniteGroup> item) {
 				final IModel naniteGroupModel = item.getModel();
 				final NaniteGroup nanitesGroup = (NaniteGroup) naniteGroupModel.getObject();
 
@@ -130,13 +130,33 @@ public class NaniteGroupListPage extends BasePage {
 				Model<String> countModel = new Model<String>(NumberFormat.getIntegerInstance().format(
 								nanitesGroup.getNaniteCount()));
 				item.add(new Label("groupCount", countModel));
-				item.add(new Label("groupState", new Model(nanitesGroup.getState())));
+				String stateString = nanitesGroup.getState().toString();
+				if (nanitesGroup.isFortified()) {
+					stateString = "B " + stateString;
+				}
+				item.add(new Label("groupState", new Model(stateString)));
 				item.add(getDoubleCountLink(naniteGroupModel, countModel));
 				item.add(getGateLink(naniteGroupModel));
 
 				item.add(getSplitLink(naniteGroupModel));
 				item.add(getKillLink(naniteGroupModel));
+				item.add(getFortifyLink(naniteGroupModel));
 
+			}
+
+			private Component getFortifyLink(final IModel<NaniteGroup> naniteGroupModel) {
+				Link<NaniteGroup> fortifyLink = new Link<NaniteGroup>("fortify", naniteGroupModel) {
+
+					@Override
+					public void onClick() {
+
+						getNanitesBPO().fortify(getModelObject());
+					}
+
+				};
+
+				fortifyLink.setVisible(getNanitesBPO().canFortify(naniteGroupModel.getObject()));
+				return fortifyLink;
 			}
 
 			protected Link getSplitLink(final IModel<NaniteGroup> naniteGroupModel) {

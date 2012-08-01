@@ -1,7 +1,8 @@
 package net.micwin.elysium.bpo;
 
-import java.util.Iterator;
+import java.util.Date;
 
+import net.micwin.elysium.entities.GalaxyTimer;
 import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.NaniteGroup.State;
 import net.micwin.elysium.entities.appliances.Appliance;
@@ -62,6 +63,8 @@ public class NaniteBPO extends BaseBPO {
 	private static final double BASE_DAMAGE_PER_NANITE = 0.01;
 
 	private static final double BASE_MAX_NANITE_COUNT = 256;
+
+	private static final int FORTIFICATION_MIN_LEVEL = 50;
 
 	public void doubleCount(NaniteGroup nanitesGroup) {
 
@@ -225,8 +228,8 @@ public class NaniteBPO extends BaseBPO {
 			return;
 		}
 
-		long attackerStrength = calculateAttackDamage(attacker, true);
-		long defenderStrength = calculateAttackDamage(defender, false);
+		long attackerStrength = calculateAttackDamage(attacker, true, defender);
+		long defenderStrength = calculateAttackDamage(defender, false, attacker);
 
 		long damageDoneToDefender = doDamage(defender, attackerStrength);
 		long damageDoneToAttacker = doDamage(attacker, defenderStrength);
@@ -280,7 +283,8 @@ public class NaniteBPO extends BaseBPO {
 		}
 
 		if (damageControl != null) {
-			factor *= Math.pow(0.9, damageControl.getLevel() - 1);
+			int level = damageControl.getLevel() - 1;
+			factor *= Math.pow(0.9, level);
 		}
 
 		long damageDone = (long) (damage * factor);
@@ -288,6 +292,11 @@ public class NaniteBPO extends BaseBPO {
 		if (L.isDebugEnabled()) {
 
 			L.debug("effective damage is " + damageDone);
+		}
+
+		if (naniteGroup.isFortified()) {
+			L.debug("nanitegroup is fortified - halfing damage received");
+			damageDone = (long) (damageDone * 0.5);
 		}
 
 		long newCount = Math.round(naniteGroup.getNaniteCount() - damageDone);
@@ -356,18 +365,29 @@ public class NaniteBPO extends BaseBPO {
 	 * @param attacker
 	 * @return
 	 */
-	public long calculateAttackDamage(NaniteGroup attacker, boolean offensive) {
+	public long calculateAttackDamage(NaniteGroup attacker, boolean offensive, NaniteGroup defender) {
 
 		Utilization nanitesBattle = new AvatarBPO().getTalent(getAvatarDao().refresh(attacker.getController()),
 						Appliance.NANITE_BATTLE);
 
 		double factor = nanitesBattle == null ? 0.3 : Math.pow(1.1, nanitesBattle.getLevel() - 1);
+		if (attacker.isFortified()) {
+			L.debug("is fortified - halfing damage");
+			factor /= 2;
+		}
 		// evaluate and add critical hit
 
 		Utilization critical = new AvatarBPO().getTalent(getAvatarDao().refresh(attacker.getController()),
 						Appliance.NANITE_CRITICAL_HIT);
+
 		if (critical != null && critical.getLevel() > 0) {
-			boolean doesCritical = Math.random() * 100 <= critical.getLevel() * 5;
+			int criticalProbability = critical.getLevel() * 5;
+			if (defender.isFortified() && !attacker.isFortified()) {
+				// defender is fortified and attacker not, so ... chances raise
+				criticalProbability *= 2;
+			}
+
+			boolean doesCritical = Math.random() * 100 <= criticalProbability;
 			if (doesCritical) {
 				L.debug("critical hit!");
 				factor *= 3;
@@ -390,6 +410,18 @@ public class NaniteBPO extends BaseBPO {
 	 */
 	public boolean canAttack(NaniteGroup attacker, NaniteGroup defender) {
 
+		if (attacker.isFortified() && !defender.isFortified()) {
+			// attacker is fortress and defender not. Fortresses only can attack
+			// other fortresses
+			return false;
+		}
+
+		// same owner?
+		if (attacker.getController().equals(defender.getController())) {
+			L.debug("cannot attack - same controller");
+			return false;
+		}
+
 		if (attacker.getController().getUser().getRole() == Role.ADMIN) {
 			return true;
 		}
@@ -400,12 +432,6 @@ public class NaniteBPO extends BaseBPO {
 
 		// attacker not idle?
 		if (attacker.getState() != State.IDLE) {
-			return false;
-		}
-
-		// same owner?
-		if (attacker.getController().equals(defender.getController())) {
-			L.debug("cannot attack - same controller");
 			return false;
 		}
 
@@ -444,10 +470,77 @@ public class NaniteBPO extends BaseBPO {
 	 * @return
 	 */
 	public boolean canRaiseNanitesCount(NaniteGroup naniteGroup) {
+		if (naniteGroup.isFortified()) {
+			return false;
+		}
 		if (naniteGroup.getNaniteCount() >= Integer.MAX_VALUE)
 			return false;
 
 		return computeMaxTotalCount(naniteGroup.getController()) - countNanites(naniteGroup.getController()) > 0;
 	}
 
+	/**
+	 * Checks wether the given nanite group can fortify, ie become a planetary
+	 * stronghold.
+	 * 
+	 * @return
+	 */
+	public boolean canFortify(NaniteGroup group) {
+		if (group.isFortified()) {
+			return false;
+		}
+
+		if (group.getState() != State.IDLE) {
+			return false;
+		}
+
+		if (group.getNaniteCount() >= 16384) {
+			return true;
+		}
+
+		Avatar avatar = group.getController();
+		if (avatar.getUser().getRole() == Role.ADMIN) {
+			return true;
+		}
+
+		return false;
+
+	}
+
+	/**
+	 * Checks wether the given nanite group can fortify, ie become a planetary
+	 * stronghold.
+	 * 
+	 * @return
+	 */
+	public void fortify(NaniteGroup group) {
+		if (!canFortify(group)) {
+			return;
+		}
+
+		long fortifyingEndDateMillis = GalaxyTimer.get().getGalaxyDate().getTime() + computeFortifyingDuration(group);
+
+		group.setState(State.FORTIFYING);
+		Date endDate = new Date(fortifyingEndDateMillis);
+		group.setStateEndGT(endDate);
+		getNanitesDao().update(group, true);
+	}
+
+	private long computeFortifyingDuration(NaniteGroup group) {
+
+		// for now, we need 1 Minute for each level.
+		return group.getController().getLevel() * 60 * 60 * 1000;
+	}
+
+	public boolean canSplit(NaniteGroup nanitesGroup) {
+
+		return nanitesGroup.getNaniteCount() > 1 && !nanitesGroup.isFortified()
+						&& nanitesGroup.getState() == State.IDLE && canRaiseGroupCount(nanitesGroup.getController());
+
+	}
+
+	public boolean canJumpGate(NaniteGroup naniteGroup) {
+
+		return !naniteGroup.isFortified() && naniteGroup.getState() == State.IDLE;
+	}
 }
