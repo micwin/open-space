@@ -24,5 +24,10 @@ public class DocumentationPage extends BasePage {
 						State.ENTRENCHED.getSensorFactor())));
 		addToContentBody(new Label("entrenchedCounterstrikeFactor", NumberFormat.getNumberInstance().format(
 						State.ENTRENCHED.getCounterStrikeDamageFactor())));
+		int level = getAvatar() != null ? getAvatar().getLevel() : 5;
+		addToContentBody(new Label("level", NumberFormat.getIntegerInstance().format(level)));
+
+		addToContentBody(new Label("entrenchingDuration", NumberFormat.getIntegerInstance().format(
+						level * 5)));
 	}
 }
