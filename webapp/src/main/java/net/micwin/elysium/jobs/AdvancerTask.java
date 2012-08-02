@@ -98,7 +98,7 @@ public class AdvancerTask extends TimerTask {
 
 			if (changedSomething) {
 				changeCount++;
-				currentSession.save(naniteGroup);
+				currentSession.update(naniteGroup);
 			}
 
 		}
@@ -109,7 +109,7 @@ public class AdvancerTask extends TimerTask {
 	}
 
 	/**
-	 * Checks wether this group is fortifying and if, check dates.
+	 * Checks wether this group is entrenching and if, check dates.
 	 * 
 	 * @param naniteGroup
 	 * @return
