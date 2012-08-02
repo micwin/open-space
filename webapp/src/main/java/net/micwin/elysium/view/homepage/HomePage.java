@@ -78,6 +78,9 @@ public class HomePage extends BasePage {
 
 		addToContentBody(new Label("name", "" + getAvatar().getName()));
 		addToContentBody(new Label("level", NumberFormat.getIntegerInstance(getLocale()).format(getAvatar().getLevel())));
+		addToContentBody(new Label("frags", "" + getAvatar().getFragCount()));
+		addToContentBody(new Label("deaths", NumberFormat.getIntegerInstance(getLocale()).format(getAvatar().getDeathCount())));
+
 		addToContentBody(getTalents());
 
 	}

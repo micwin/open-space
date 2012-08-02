@@ -120,6 +120,8 @@ public class NaniteGroup extends ElysiumEntity {
 
 	}
 
+	public static final long MAX_NANITES_COUNT = Integer.MAX_VALUE;
+
 	public NaniteGroup() {
 	}
 

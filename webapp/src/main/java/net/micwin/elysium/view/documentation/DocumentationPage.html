@@ -119,11 +119,31 @@ h&ouml;rt sich zuerst wenig an, doch die Prozente multiplizieren sich
 und es wird die sp&auml;ter normal vorkommen, das zehnfache oder
 Hundertfache deines Basis-Schadenswerts (du erinnerst dich - 1/10 Punkt
 pro Nanit) auszuteilen.</p>
-<p>Die Obergrenze f&uuml;r die Anzahl der Naniten / Gruppe ist&nbsp;
-2^32 , also etwas &uuml;ber 2 Milliarden. Diesen Wert erreichst du mit
+<p>Die Obergrenze f&uuml;r die Anzahl der Naniten / Gruppe ist <span
+	wicket:id="maxNanitesGroupSize" />. Diesen Wert erreichst du mit
 Naniten-Management auf Stufe 25 und bis da hin solltest du
 Naniten-Management &uuml;ben und immer mit maximaler Truppenst&auml;rke
 angreifen.</p>
+Eine Anmerkung noch: je gr&ouml;sser eine Gruppe wird, desto schlechter
+l&auml;sst sie sich organisieren. Darum bringt dir jedes weitere
+hinzugef&uuml;gte Nanit immer weniger Schlagkraft, je gr&ouml;sser die
+Gruppe ist und darum reduziert sich die gemittelte Schlagkraft aller
+Naniten in der Gruppe. Beispiel: Hat ein Nanit noch einen
+Schlagkraft-Faktor von <span wicket:id="attackFactor1" />, so haben 10
+Naniten einen Schlagkraft-Faktor von <span wicket:id="attackFactor10" />,
+100 einen Schlagkraft-Faktor von <span wicket:id="attackFactor100" />,
+1000 von <span wicket:id="attackFactor1000" />, 10000 von <span
+	wicket:id="attackFactor10000" />, 1 Million von <span
+	wicket:id="attackFactor1Mio" /> und maximal besetzte Nanitengruppen schlagen nur noch mit Faktor <span wicket:id="attackFactorMax" /> zu.
+Das bedeutet nicht dass es nichts bringt mit grossen Gruppen
+anzugreifen; es bedeutet lediglich, dass eine Gruppe mit 2*n Naniten
+nicht doppelt so stark ist wie eine mit n. Zur Berechnung der gesamten
+Schlagkraft wird dieser Faktor ja trotzdem noch mit der Anzahl der
+Naniten multipliziert, und auch mit deinen sonstigen Modifikationen.
+Abgesehen von diesen sonstigen Modifikationen wird eine Gruppe mit mehr
+Naniten als eine zweite immer auch mehr Schaden verursachen wie diese
+zweite Gruppe.
+<p />
 <h2>Naniten-Angriff</h2>
 <p>Das Unterprogramm "Naniten-Angriff" verst&auml;rkt deine
 Schlagkraft. Das bedeutet, jeder einzelne Nanit verursacht beim Ziel
@@ -212,19 +232,28 @@ entdeckt, ihre Erfahrung in Emmisionskontrolle erh&ouml;ht.
 Leider hat niemand daran gedacht, das einbuddeln umkehrbar zu machen;
 sobald eine Gruppe einmal mit einem Planeten verwoben ist, kann man sie
 da nicht mehr herausholen. Und ausserdem kann eine eingebuddelte Gruppe
-nicht angreifen und nur ausserordentlich schlecht zur&uuml;ckschlagen wenn selbst angegriffen
-(Gegenschlagschaden Faktor <span
+nicht angreifen und nur ausserordentlich schlecht zur&uuml;ckschlagen
+wenn selbst angegriffen (Gegenschlagschaden Faktor <span
 	wicket:id="entrenchedCounterstrikeFactor" />). Daf&uuml;r kann sie
 sich problemlos vergr&ouml;ssern und splitten und die so entstandene,
-neue Gruppe ist dann wieder ganz normal bewegbar und angreifbar. Es ist z.B. eine beliebte Taktik, einzelne Naniten einzubuddeln und auf eine g&uuml;nstige Gelegenheit f&uuml;r einen &Uuml;berraschungsangriff zu warten.<p />
-Eine Gruppe einzubuddeln dauert etwas, n&auml;mlich genau 5 Sekunden pro Stufe. Mit deiner Stufe dauert das Enbuddeln 5 * <span wicket:id="level" /> = <span wicket:id="entrenchingDuration" /> Sekunden, pro Gruppe.
+neue Gruppe ist dann wieder ganz normal bewegbar und angreifbar. Es ist
+z.B. eine beliebte Taktik, einzelne Naniten einzubuddeln und auf eine
+g&uuml;nstige Gelegenheit f&uuml;r einen &Uuml;berraschungsangriff zu
+warten.
 
-<br><h1>Ziel des Spiels</h1>
+<p />
+Eine Gruppe einzubuddeln dauert etwas, n&auml;mlich genau 5 Sekunden pro
+Stufe. Mit deiner Stufe dauert das Enbuddeln 5 *
+<span wicket:id="level" /> = <span
+	wicket:id="entrenchingDuration" /> Sekunden, pro Gruppe. <br><h1>Ziel des Spiels</h1>
 Das Ziel des Spiels ist es, erst mal ne Menge Spass zu haben, gegnerische Nanitengruppen zu pl&auml;tten, Geheimnisse herauszufinden und in der Rangliste ganz oben zu stehen.<p />
 A propos Rangliste ...
 
 <h1>Die Rangliste</h1>
 Die Rangliste zeigt die Liste der Spieler in der Reihenfolge ihrer Stufe minus Anzahl der bereits erlittenen Tode, plus Frag-Count an. Der Frag-Count ist der Z&auml;hler, wieviele gegnerische Gruppen ein Kollektiv schon erlegt hat.
-</span>
+ usw bis zur maximalen
+Gruppenst&auml;rke einen Faktor </span>
+
+
 </body>
 </html>

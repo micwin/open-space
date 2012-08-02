@@ -77,7 +77,7 @@ public class NaniteBPO extends BaseBPO {
 		long currentTotalCount = countNanites(nanitesGroup.getController());
 
 		// compute how much this group can grow at max
-		long maxGroupRaise = Math.min(Integer.MAX_VALUE - nanitesGroup.getNaniteCount(), maxTotalCount
+		long maxGroupRaise = Math.min(NaniteGroup.MAX_NANITES_COUNT - nanitesGroup.getNaniteCount(), maxTotalCount
 						- currentTotalCount);
 
 		// compute how much the group effectively grows
@@ -374,7 +374,7 @@ public class NaniteBPO extends BaseBPO {
 		double factor = nanitesBattle == null ? 0.3 : Math.pow(1.1, nanitesBattle.getLevel() - 1);
 
 		factor *= offensive ? attacker.getState().getAttackDamageFactor() : attacker.getState()
-						.getCounterStrikeDamageFactor();
+						.getCounterStrikeDamageFactor() * computeNumberBasedEfficiencyFactor(attacker.getNaniteCount());
 
 		// evaluate and add critical hit
 		Utilization critical = new AvatarBPO().getTalent(getAvatarDao().refresh(attacker.getController()),
@@ -395,6 +395,13 @@ public class NaniteBPO extends BaseBPO {
 						+ " and nanites battle factor = " + factor + ", resulting in a total attack damage of "
 						+ totalAttackDamage);
 		return totalAttackDamage;
+	}
+
+	public double computeNumberBasedEfficiencyFactor(long count) {
+		// how long the way between max and 1 ?
+		double log = Math.log(count);
+		return Math.pow(0.9, log);
+
 	}
 
 	/**
@@ -458,7 +465,7 @@ public class NaniteBPO extends BaseBPO {
 		if (!naniteGroup.getState().canRaiseNanitesCount()) {
 			return false;
 		}
-		if (naniteGroup.getNaniteCount() >= Integer.MAX_VALUE)
+		if (naniteGroup.getNaniteCount() >= NaniteGroup.MAX_NANITES_COUNT)
 			return false;
 
 		return computeMaxTotalCount(naniteGroup.getController()) - countNanites(naniteGroup.getController()) > 0;
