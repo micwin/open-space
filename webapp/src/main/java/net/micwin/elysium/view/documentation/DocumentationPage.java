@@ -45,8 +45,7 @@ public class DocumentationPage extends BasePage {
 		addToContentBody(new Label("attackFactorMax", NumberFormat.getNumberInstance().format(
 						new NaniteBPO().computeNumberBasedEfficiencyFactor(Integer.MAX_VALUE))));
 
-		addToContentBody(new Label("maxNanitesGroupSize", NumberFormat.getNumberInstance().format(
-						new NaniteBPO().computeNumberBasedEfficiencyFactor(NaniteGroup.MAX_NANITES_COUNT))));
+		addToContentBody(new Label("maxNanitesGroupSize", NumberFormat.getNumberInstance().format(NaniteGroup.MAX_NANITES_COUNT)));
 
 	}
 }
