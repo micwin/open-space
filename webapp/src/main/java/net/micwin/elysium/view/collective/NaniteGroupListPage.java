@@ -212,8 +212,8 @@ public class NaniteGroupListPage extends BasePage {
 						setResponsePage(UsePlanetaryGatePage.class);
 					};
 				};
-				gateLink.setVisible(gate != null);
-
+				gateLink.setVisible(gate != null && getNanitesBPO().canJumpGate(naniteGroup));
+	
 				return gateLink;
 			}
 

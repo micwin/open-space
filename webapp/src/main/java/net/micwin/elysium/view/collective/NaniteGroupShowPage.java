@@ -63,18 +63,25 @@ public class NaniteGroupShowPage extends BasePage {
 		addToContentBody(new Label("groupState", "" + group.getState()));
 		addToContentBody(getDoubleCountLink(groupModel));
 
-		addToContentBody(new Link<Gate>("jumpGate") {
-			public void onClick() {
-				getElysiumSession().setNamedEntity(NE_NANITE_GROUP, groupModel.getEntity());
-				setResponsePage(UsePlanetaryGatePage.class);
-			};
-		});
+		addToContentBody(composeJumpLink(groupModel));
 
 		addToContentBody(composeQuickJumpItems(group));
 		addToContentBody(getOtherNanitesTable(group));
 		addToContentBody(getSplitLink(groupModel));
 		addToContentBody(composeTitleText(group));
 
+	}
+
+	public Link<Gate> composeJumpLink(final ElysiumWicketModel<NaniteGroup> groupModel) {
+		Link<Gate> link = new Link<Gate>("jumpGate") {
+			public void onClick() {
+				getElysiumSession().setNamedEntity(NE_NANITE_GROUP, groupModel.getEntity());
+				setResponsePage(UsePlanetaryGatePage.class);
+			};
+		};
+
+		link.setEnabled(getNanitesBPO().canJumpGate(groupModel.getObject()));
+		return link;
 	}
 
 	private Component composeTitleText(NaniteGroup group) {
