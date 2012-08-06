@@ -51,6 +51,7 @@ import net.micwin.elysium.entities.ElysiumEntity;
 import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.galaxy.Position;
+import net.micwin.elysium.messaging.IMessageEndpoint;
 import net.micwin.elysium.view.storyline.StoryLineItem;
 
 import org.slf4j.Logger;
@@ -63,7 +64,7 @@ import org.slf4j.LoggerFactory;
  * 
  */
 @Entity
-public class Avatar extends ElysiumEntity {
+public class Avatar extends ElysiumEntity implements IMessageEndpoint {
 
 	private static final Logger L = LoggerFactory.getLogger(Avatar.class);
 

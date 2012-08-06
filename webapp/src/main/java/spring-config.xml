@@ -66,6 +66,7 @@
 				<value>net.micwin.elysium.entities.NaniteGroup</value>
 				<value>net.micwin.elysium.entities.gates.Gate</value>
 				<value>net.micwin.elysium.entities.characters.Organization</value>
+				<value>net.micwin.elysium.entities.messaging.Message</value>
 			</list>
 		</property>
 	</bean>
@@ -107,6 +108,11 @@
 		<property name="organizationDao">
 			<bean id="organizationDao__" class="net.micwin.elysium.dao.HibernateOrganizationDao" />
 		</property>
+		<property name="messageDao">
+			<bean id="messageDao__" class="net.micwin.elysium.dao.HibernateMessageDao" />
+		</property>
+
+
 
 	</bean>
 

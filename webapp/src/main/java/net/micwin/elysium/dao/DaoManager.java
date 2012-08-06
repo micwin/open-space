@@ -45,6 +45,7 @@ import net.micwin.elysium.entities.characters.Organization;
 import net.micwin.elysium.entities.characters.User;
 import net.micwin.elysium.entities.galaxy.Galaxy;
 import net.micwin.elysium.entities.gates.Gate;
+import net.micwin.elysium.entities.messaging.Message;
 import net.micwin.elysium.entities.replication.BluePrint;
 import net.micwin.elysium.entities.replication.BuildPlan;
 
@@ -167,5 +168,13 @@ public class DaoManager {
 		daoInstances.put(Organization.class, orgaDao);
 	}
 
-	
+	public IMessageDao getMessageDao() {
+		return (IMessageDao) getDao(Message.class);
+	}
+
+	public void setMessageDao(IMessageDao msgDao) {
+		checkDaoNotPresent(Message.class);
+		daoInstances.put(Message.class, msgDao);
+	}
+
 }
