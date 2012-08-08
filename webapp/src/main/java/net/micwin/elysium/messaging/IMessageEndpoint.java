@@ -12,6 +12,10 @@ public interface IMessageEndpoint {
 	 */
 	public static final String TYPE_USER = "USR#";
 
+	public static final String TYPE_NANITE_GROUP = "NAG#";
+
+	public static final String TYPE_SYSTEM = "SYS#";
+
 	/**
 	 * A String that uniquely identifies this end point.
 	 * 

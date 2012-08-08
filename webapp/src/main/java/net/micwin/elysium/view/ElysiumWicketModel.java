@@ -1,9 +1,14 @@
 package net.micwin.elysium.view;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.entities.ElysiumEntity;
 import net.micwin.elysium.entities.characters.Avatar;
+import net.micwin.elysium.entities.messaging.Message;
 
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 
 /**
@@ -56,6 +61,22 @@ public class ElysiumWicketModel<E extends ElysiumEntity> extends LoadableDetacha
 	@Override
 	public void setObject(E object) {
 		super.setObject(null);
+	}
+
+	/**
+	 * Converts a list of elysium entities into a list of IModels wrapping these
+	 * 
+	 * @param <T>
+	 * @param entities
+	 * @return
+	 */
+	public static <T extends ElysiumEntity> List<IModel<T>> asModelList(List<T> entities) {
+		List<IModel<T>> list = new LinkedList<IModel<T>>();
+
+		for (T entity : entities) {
+			list.add(new ElysiumWicketModel<T>(entity));
+		}
+		return list;
 	}
 
 }

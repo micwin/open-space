@@ -49,17 +49,18 @@ import net.micwin.elysium.messaging.IMessageEndpoint;
 public interface IMessageDao extends IElysiumEntityDao<Message> {
 
 	/**
-	 * Find messages fitting to parameters.
+	 * Find message in which specified ent point either is sender or receiver.
 	 * 
-	 * @param sender
-	 *            Optional. Sender of messages. May be <code>null</code>.
-	 * @param receiver
-	 *            Optional. Receiver of messages. May be <code>null</code>.
-	 * 
-	 * @param filterViewed
-	 *            wether or not alread viewed messages get removed from result.
+	 * @param endPoint
 	 * @return
 	 */
-	List<Message> find(IMessageEndpoint sender, IMessageEndpoint receiver, boolean filterViewed);
+	List<Message> findByEndPoint(IMessageEndpoint endPoint);
+
+	/**
+	 * Sends a new message.
+	 * 
+	 * @param message
+	 */
+	void send(Message message);
 
 }

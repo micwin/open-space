@@ -55,11 +55,12 @@ import net.micwin.elysium.entities.galaxy.Sector;
 import net.micwin.elysium.entities.galaxy.SolarSystem;
 import net.micwin.elysium.entities.gates.Gate;
 import net.micwin.elysium.entities.replication.BluePrint;
+import net.micwin.elysium.messaging.IMessageEndpoint;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AvatarBPO extends BaseBPO {
+public class AvatarBPO extends BaseBPO implements IMessageEndpoint {
 
 	private static final Logger L = LoggerFactory.getLogger(AvatarBPO.class);
 
@@ -146,6 +147,7 @@ public class AvatarBPO extends BaseBPO {
 
 		getAvatarDao().update(avatar, true);
 
+		new MessageBPO().send(this, avatar, "Willkommen bei open space! Dein Avatar wurde angelegt!");
 		return avatar;
 	}
 
@@ -288,5 +290,11 @@ public class AvatarBPO extends BaseBPO {
 
 		getTalentsDao().flush();
 		L.info("leveraging done.");
+	}
+
+	@Override
+	public String getEndPointId() {
+		
+		return IMessageEndpoint.TYPE_SYSTEM+"AvatarBPO";
 	}
 }

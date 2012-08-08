@@ -62,7 +62,6 @@ public class NavPanel extends BasePanel {
 
 	}
 
-
 	protected BookmarkablePageLink<StoryLinePage> createStoryLineLink() {
 		BookmarkablePageLink<StoryLinePage> link = new BookmarkablePageLink<StoryLinePage>("storyLineLink",
 						StoryLinePage.class);
@@ -77,13 +76,10 @@ public class NavPanel extends BasePanel {
 						MessagesListPage.class);
 		// link.setVisible(StoryLinePage.userCanShow(getUser()));
 
-		link.setVisible(true);
+		link.setVisible(getAvatar() != null);
 		return link;
 	}
 
-	
-	
-	
 	protected BookmarkablePageLink<NaniteGroupListPage> createGroupsLink() {
 		BookmarkablePageLink<NaniteGroupListPage> link = new BookmarkablePageLink<NaniteGroupListPage>("groupsLink",
 						NaniteGroupListPage.class);

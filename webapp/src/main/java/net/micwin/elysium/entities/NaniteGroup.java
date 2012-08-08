@@ -46,6 +46,8 @@ import javax.persistence.ManyToOne;
 import net.micwin.elysium.entities.appliances.Appliance;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.galaxy.Position;
+import net.micwin.elysium.entities.messaging.Message;
+import net.micwin.elysium.messaging.IMessageEndpoint;
 
 /**
  * A pile of nanites.
@@ -54,7 +56,7 @@ import net.micwin.elysium.entities.galaxy.Position;
  * 
  */
 @Entity
-public class NaniteGroup extends ElysiumEntity {
+public class NaniteGroup extends ElysiumEntity implements IMessageEndpoint {
 
 	public enum State {
 
@@ -199,5 +201,10 @@ public class NaniteGroup extends ElysiumEntity {
 
 	public int getBattleCounter() {
 		return battleCounter;
+	}
+
+	@Override
+	public String getEndPointId() {
+		return IMessageEndpoint.TYPE_NANITE_GROUP + getId();
 	}
 }

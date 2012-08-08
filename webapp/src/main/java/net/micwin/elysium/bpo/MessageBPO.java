@@ -2,26 +2,28 @@ package net.micwin.elysium.bpo;
 
 import java.util.List;
 
+import net.micwin.elysium.entities.GalaxyTimer;
 import net.micwin.elysium.entities.messaging.Message;
 import net.micwin.elysium.messaging.IMessageEndpoint;
 
 public class MessageBPO extends BaseBPO {
 
-
 	/**
-	 * Returns messages denoted by specified parameters.
+	 * get messagesmin which specified end point either is sender or receiver.
 	 * 
-	 * @param sender
-	 *            optional.
-	 * @param receiver
-	 *            optional.
-	 * @param filterViewed
-	 *            Wether or not already viewed messages are filtered (removed)
-	 *            and hence not part of result.
+	 * @param endPoint
 	 * @return
 	 */
-	public List<Message> getMessages(IMessageEndpoint sender, IMessageEndpoint receiver, boolean filterViewed) {
+	public List<Message> getMessages(IMessageEndpoint endPoint) {
+		return getMessageDao().findByEndPoint(endPoint);
+	}
 
-		return getMessageDao().find(sender, receiver, filterViewed);
+	public void send(IMessageEndpoint sender, IMessageEndpoint receiver, String messageText) {
+		Message message = new Message();
+		message.setDate(GalaxyTimer.get().getGalaxyDate());
+		message.setSenderID(sender.getEndPointId());
+		message.setReceiverID(receiver.getEndPointId());
+		message.setText(messageText);
+		getMessageDao().send(message);
 	}
 }

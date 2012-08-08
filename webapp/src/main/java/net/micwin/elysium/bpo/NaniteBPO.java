@@ -265,9 +265,10 @@ public class NaniteBPO extends BaseBPO {
 
 			L.debug("killing defender group");
 			kill(defender);
+			getMessageBPO().send(defender, defender.getController(),
+							"Gruppe zerstoert durch " + attackingAvatar.getName());
 			attacker.getController().raiseFragCount();
 			raiseUsage(attackingAvatar, Appliance.NANITE_CRITICAL_HIT, false);
-
 		}
 
 		flush();

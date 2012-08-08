@@ -49,6 +49,7 @@ import net.micwin.elysium.entities.GalaxyTimer;
 import net.micwin.elysium.entities.appliances.Appliance;
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
+import net.micwin.elysium.messaging.IMessageEndpoint;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,7 +60,7 @@ import org.slf4j.LoggerFactory;
  * @author MicWin
  * 
  */
-public class BaseBPO {
+public class BaseBPO implements IMessageEndpoint {
 
 	private static final Logger L = LoggerFactory.getLogger(BaseBPO.class);
 
@@ -148,6 +149,10 @@ public class BaseBPO {
 		return new GalaxyBPO();
 	}
 
+	protected MessageBPO getMessageBPO() {
+		return new MessageBPO();
+	}
+
 	/**
 	 * Flushes all data changes being cached in memory to the database.
 	 */
@@ -216,8 +221,11 @@ public class BaseBPO {
 			if (L.isDebugEnabled()) {
 				L.debug("raising level");
 			}
+			
 			talent.setLevel(newLevel);
 			talent.setCount(0);
+			
+			
 		}
 
 		if (L.isDebugEnabled()) {
@@ -237,6 +245,12 @@ public class BaseBPO {
 	public long computeNextLevelUsages(Utilization talent) {
 
 		return (long) (10 * Math.pow(1.3, talent.getLevel()));
+	}
+
+	@Override
+	public String getEndPointId() {
+
+		return IMessageEndpoint.TYPE_SYSTEM + getClass().getSimpleName();
 	}
 
 }

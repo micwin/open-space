@@ -36,25 +36,21 @@ package net.micwin.elysium.view;
  */
 
 import java.util.Collection;
-import java.util.List;
 
 import net.micwin.elysium.bpo.AvatarBPO;
 import net.micwin.elysium.bpo.GateBPO;
 import net.micwin.elysium.bpo.MessageBPO;
 import net.micwin.elysium.bpo.NaniteBPO;
 import net.micwin.elysium.bpo.ScannerBPO;
-import net.micwin.elysium.dao.IMessageDao;
 import net.micwin.elysium.entities.ElysiumEntity;
 import net.micwin.elysium.entities.GalaxyTimer;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.User;
 import net.micwin.elysium.entities.characters.User.Role;
-import net.micwin.elysium.entities.messaging.Message;
 import net.micwin.elysium.view.avatar.CreateAvatarPage;
 import net.micwin.elysium.view.avatar.ResurrectAvatarPage;
 import net.micwin.elysium.view.border.ElysiumBorder;
 import net.micwin.elysium.view.errors.EntityNotAccessiblePage;
-import net.micwin.elysium.view.messages.MessagesListPage;
 import net.micwin.elysium.view.storyline.StoryLinePage;
 import net.micwin.elysium.view.welcome.WelcomePage;
 
@@ -89,26 +85,8 @@ public abstract class BasePage extends WebPage {
 	protected void onInitialize() {
 		super.onInitialize();
 
-		checkForSystemNews();
 		this.border = new ElysiumBorder(addFeedbackPanel);
 		addChild(border);
-	}
-
-	/**
-	 * Checks wether or not we should show a system message instead.
-	 */
-	private void checkForSystemNews() {
-
-		if (getAvatar() == null) {
-			// no avatar so no news to display
-			return;
-		}
-
-		List<Message> messages = getMessageBPO().getMessages(null, getAvatar(), true);
-		if (messages.size() < 1)
-			return;
-		setResponsePage(MessagesListPage.class);
-
 	}
 
 	@Override

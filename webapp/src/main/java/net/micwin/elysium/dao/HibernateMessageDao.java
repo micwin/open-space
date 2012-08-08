@@ -54,47 +54,19 @@ public class HibernateMessageDao extends ElysiumHibernateDaoSupport<Message> imp
 		return Message.class;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<Message> find(IMessageEndpoint sender, IMessageEndpoint receiver, boolean filterViewed) {
-		StringBuffer query = new StringBuffer("from " + Message.class.getSimpleName());
+	public List<Message> findByEndPoint(IMessageEndpoint endPoint) {
 
-		if (sender != null || receiver != null || filterViewed) {
-			query.append(" where ");
-		}
-
-		int partsCount = 0;
-		if (sender != null) {
-			query.append("senderID='").append(sender.getEndPointId()).append('\'');
-			partsCount++;
-		}
-
-		if (receiver != null) {
-			if (partsCount > 0) {
-				query.append(" and ");
-			}
-
-			query.append("receiverID='").append(receiver.getEndPointId()).append('\'');
-			partsCount++;
-		}
-
-		if (filterViewed) {
-
-			if (partsCount > 0) {
-				query.append(" and ");
-			}
-
-			query.append("viewedDate IS NULL");
-		}
-		if (L.isDebugEnabled()) {
-			L.debug("querying with " + query);
-		}
-		List<Message> result = (List<Message>) getHibernateTemplate().find(query.toString());
-
-		if (L.isDebugEnabled()) {
-			L.debug("got results : " + result);
-		}
-		return result;
-
+		StringBuffer query = new StringBuffer();
+		query.append("from ").append(Message.class.getSimpleName());
+		query.append(" where senderID='").append(
+						endPoint.getEndPointId() + "' or receiverID = '" + endPoint.getEndPointId() + "'");
+		return getHibernateTemplate().find(query.toString());
 	}
+
+	@Override
+	public void send(Message message) {
+		getHibernateTemplate().save(message);
+	}
+
 }

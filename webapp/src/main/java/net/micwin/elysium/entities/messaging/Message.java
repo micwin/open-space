@@ -14,6 +14,10 @@ public class Message extends ElysiumEntity {
 	private String senderID;
 	private String receiverID;
 
+	private Date date;
+
+	private String text;
+
 	@Override
 	public Class getBaseClass() {
 		return Message.class;
@@ -41,6 +45,22 @@ public class Message extends ElysiumEntity {
 
 	public String getReceiverID() {
 		return receiverID;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
 	}
 
 }
