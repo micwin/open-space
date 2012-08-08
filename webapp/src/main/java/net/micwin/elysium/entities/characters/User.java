@@ -43,7 +43,9 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
+import net.micwin.elysium.bpo.MessageBPO;
 import net.micwin.elysium.entities.ElysiumEntity;
+import net.micwin.elysium.messaging.IMessageEndpoint;
 
 /**
  * An elysium user.
@@ -53,7 +55,7 @@ import net.micwin.elysium.entities.ElysiumEntity;
  */
 
 @Entity
-public final class User extends ElysiumEntity implements Serializable {
+public final class User extends ElysiumEntity implements Serializable, IMessageEndpoint {
 
 	public static enum Role {
 		/**
@@ -184,5 +186,10 @@ public final class User extends ElysiumEntity implements Serializable {
 
 	public void setLastLoginDate(Date newLastLoginDate) {
 		lastLoginDate = newLastLoginDate;
+	}
+
+	@Override
+	public String getEndPointId() {
+		return IMessageEndpoint.TYPE_USER + login;
 	}
 }

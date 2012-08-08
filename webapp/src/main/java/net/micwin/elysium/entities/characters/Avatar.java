@@ -47,6 +47,7 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import net.micwin.elysium.bpo.MessageBPO;
 import net.micwin.elysium.entities.ElysiumEntity;
 import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.appliances.Utilization;
@@ -226,5 +227,10 @@ public class Avatar extends ElysiumEntity implements IMessageEndpoint {
 
 		return getLevel() + getFragCount() - getDeathCount();
 
+	}
+
+	@Override
+	public String getEndPointId() {
+		return IMessageEndpoint.TYPE_AVATAR + getName();
 	}
 }

@@ -40,6 +40,7 @@ import net.micwin.elysium.dao.IAvatarDao;
 import net.micwin.elysium.dao.IBluePrintDao;
 import net.micwin.elysium.dao.IGalaxyDao;
 import net.micwin.elysium.dao.IGatesDao;
+import net.micwin.elysium.dao.IMessageDao;
 import net.micwin.elysium.dao.INanitesDao;
 import net.micwin.elysium.dao.ISysParamDao;
 import net.micwin.elysium.dao.ITalentsDao;
@@ -96,6 +97,10 @@ public class BaseBPO {
 		return getDaoManager().getBluePrintDao();
 	}
 
+	public IMessageDao getMessageDao() {
+
+		return getDaoManager().getMessageDao();
+	}
 
 	/**
 	 * DONT CALL THIS METHOD! Its a hack and surely will be replaced by a more
