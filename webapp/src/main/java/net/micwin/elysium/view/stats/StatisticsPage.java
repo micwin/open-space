@@ -67,6 +67,10 @@ public class StatisticsPage extends BasePage {
 			}
 		});
 
+		// only show the first 10
+		if (avatars.size() > 10)
+			avatars = avatars.subList(0, 9);
+
 		final List<IModel<Avatar>> modelList = new LinkedList<IModel<Avatar>>();
 
 		for (Avatar avatar : avatars) {
@@ -86,7 +90,7 @@ public class StatisticsPage extends BasePage {
 				item.add(new Label("name", avatar.getName()));
 				item.add(new Label("points", Model.of(avatar.getPoints())));
 				item.add(new Label("groupsCount", Model.of(avatar.getNanites().size())));
-	
+
 				item.add(new Label("birthDate", Model.of(avatar.getCreationDate().toString())));
 				Date lastLoginDate = avatar.getUser().getLastLoginDate();
 				item.add(new Label("lastLogin", Model.of(lastLoginDate != null ? lastLoginDate.toString()
@@ -104,7 +108,7 @@ public class StatisticsPage extends BasePage {
 	protected Component getLeverageLink(Avatar avatar, final int targetLevel) {
 		String id = "leverage" + targetLevel + "Link";
 
-		if (!isAdmin() ||  avatar.getLevel() > targetLevel) {
+		if (!isAdmin() || avatar.getLevel() > targetLevel) {
 			return createDummyLink(id, false, false);
 		}
 
@@ -120,7 +124,6 @@ public class StatisticsPage extends BasePage {
 		};
 		return leverageLink;
 	}
-
 
 	protected Component getResurectLink(Avatar avatar) {
 		if (!isAdmin() || getAvatarBPO().isAlive(avatar)) {
