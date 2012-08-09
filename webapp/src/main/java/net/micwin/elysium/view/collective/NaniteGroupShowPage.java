@@ -13,11 +13,13 @@ import net.micwin.elysium.bpo.BaseBPO;
 import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.NaniteGroup.State;
 import net.micwin.elysium.entities.appliances.Utilization;
+import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.galaxy.Position;
 import net.micwin.elysium.entities.gates.Gate;
 import net.micwin.elysium.view.BasePage;
 import net.micwin.elysium.view.ElysiumWicketModel;
 import net.micwin.elysium.view.jumpGates.UsePlanetaryGatePage;
+import net.micwin.elysium.view.messages.MessageCreatePage;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
@@ -244,6 +246,24 @@ public class NaniteGroupShowPage extends BasePage {
 
 				item.add(getAttackCommandLink(scanningGroupModel, naniteGroupModel));
 
+				item.add(getSendMessageCommandLink(naniteGroupModel));
+
+			}
+
+			private Component getSendMessageCommandLink(final ElysiumWicketModel<NaniteGroup> naniteGroupModel) {
+				Link link = new Link("sendMessage") {
+
+					@Override
+					public void onClick() {
+						Avatar receiver = naniteGroupModel.getObject().getController();
+						getElysiumSession().setNamedEntity("receiver", receiver);
+						setResponsePage(MessageCreatePage.class);
+						return;
+					}
+				};
+				// only show if we are not me.
+				link.setVisible(!naniteGroupModel.getObject().getController().equals(getAvatar()));
+				return link;
 			}
 
 			private Component getAttackCommandLink(final ElysiumWicketModel<NaniteGroup> attackerModel,
@@ -276,5 +296,4 @@ public class NaniteGroupShowPage extends BasePage {
 
 		return otherNanitesTable;
 	}
-
 }

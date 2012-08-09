@@ -3,6 +3,7 @@ package net.micwin.elysium.bpo;
 import java.util.List;
 
 import net.micwin.elysium.entities.GalaxyTimer;
+import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.messaging.Message;
 import net.micwin.elysium.messaging.IMessageEndpoint;
 
@@ -25,5 +26,17 @@ public class MessageBPO extends BaseBPO {
 		message.setReceiverID(receiver.getEndPointId());
 		message.setText(messageText);
 		getMessageDao().send(message);
+	}
+
+	/**
+	 * Wether or not one avatar can send another avatar a message.
+	 * 
+	 * @param sender
+	 * @param receiver
+	 * @return
+	 */
+	public boolean canSendMessage(Avatar sender, Avatar receiver) {
+		// until now, everything is always ok :)
+		return true;
 	}
 }
