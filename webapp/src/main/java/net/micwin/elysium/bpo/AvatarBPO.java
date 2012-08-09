@@ -48,19 +48,17 @@ import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.Race;
 import net.micwin.elysium.entities.characters.User;
-import net.micwin.elysium.entities.characters.User.Role;
 import net.micwin.elysium.entities.galaxy.Planet;
 import net.micwin.elysium.entities.galaxy.Position;
 import net.micwin.elysium.entities.galaxy.Sector;
 import net.micwin.elysium.entities.galaxy.SolarSystem;
 import net.micwin.elysium.entities.gates.Gate;
 import net.micwin.elysium.entities.replication.BluePrint;
-import net.micwin.elysium.messaging.IMessageEndpoint;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AvatarBPO extends BaseBPO implements IMessageEndpoint {
+public class AvatarBPO extends BaseBPO {
 
 	private static final Logger L = LoggerFactory.getLogger(AvatarBPO.class);
 
@@ -147,7 +145,11 @@ public class AvatarBPO extends BaseBPO implements IMessageEndpoint {
 
 		getAvatarDao().update(avatar, true);
 
-		new MessageBPO().send(this, avatar, "Willkommen bei open space! Dein Avatar wurde angelegt!");
+		new MessageBPO().send(
+						this,
+						avatar,
+						avatar.getName()
+										+ " - du bist eine KI und arbeitest als kollektives Bewusstsein eines Nanitenschwarms. Um dein Überleben zu sichern musst du dich weiterentwickeln und kämpfen. Deine Nanitenarmee steht dir zur Verfügung. Viel Erfolg.");
 		return avatar;
 	}
 
@@ -292,9 +294,4 @@ public class AvatarBPO extends BaseBPO implements IMessageEndpoint {
 		L.info("leveraging done.");
 	}
 
-	@Override
-	public String getEndPointId() {
-		
-		return IMessageEndpoint.TYPE_SYSTEM+"AvatarBPO";
-	}
 }

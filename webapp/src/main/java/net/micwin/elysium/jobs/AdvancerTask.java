@@ -44,6 +44,7 @@ import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.entities.GalaxyTimer;
 import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.NaniteGroup.State;
+import net.micwin.elysium.entities.messaging.Message;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -123,6 +124,11 @@ public class AdvancerTask extends TimerTask {
 		if (naniteGroup.getStateEndGT().before(GalaxyTimer.get().getGalaxyDate())) {
 			naniteGroup.setStateEndGT(null);
 			naniteGroup.setState(State.ENTRENCHED);
+			Message message = new Message();
+			message.setSenderID(naniteGroup.getEndPointId());
+			message.setReceiverID(naniteGroup.getController().getEndPointId());
+			message.setText("Eingraben beendet.");
+			DaoManager.I.getMessageDao().insert(message, true);
 			return true;
 		}
 		L.debug("nanite group still has to wait until " + naniteGroup.getStateEndGT() + " ");
