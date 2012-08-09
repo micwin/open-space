@@ -70,7 +70,7 @@ public class StatisticsPage extends BasePage {
 		// only show the first 10
 		boolean notAdmin = getAvatar() == null || getAvatar().getUser().getRole() != Role.ADMIN;
 		if (avatars.size() > 10 && notAdmin)
-			avatars = avatars.subList(0, 9);
+			avatars = avatars.subList(0, 10);
 
 		final List<IModel<Avatar>> modelList = new LinkedList<IModel<Avatar>>();
 
