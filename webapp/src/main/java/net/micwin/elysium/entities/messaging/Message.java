@@ -14,7 +14,7 @@ public class Message extends ElysiumEntity {
 	private String senderID;
 	private String receiverID;
 
-	private Date date = new Date();
+	private Date date;
 
 	private String text;
 

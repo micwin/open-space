@@ -60,7 +60,7 @@ import org.slf4j.LoggerFactory;
  * @author MicWin
  * 
  */
-public class BaseBPO implements IMessageEndpoint {
+public class BaseBPO {
 
 	private static final Logger L = LoggerFactory.getLogger(BaseBPO.class);
 
@@ -221,11 +221,10 @@ public class BaseBPO implements IMessageEndpoint {
 			if (L.isDebugEnabled()) {
 				L.debug("raising level");
 			}
-			
+
 			talent.setLevel(newLevel);
 			talent.setCount(0);
-			
-			
+
 		}
 
 		if (L.isDebugEnabled()) {
@@ -246,11 +245,4 @@ public class BaseBPO implements IMessageEndpoint {
 
 		return (long) (10 * Math.pow(1.3, talent.getLevel()));
 	}
-
-	@Override
-	public String getEndPointId() {
-
-		return IMessageEndpoint.TYPE_SYSTEM + getClass().getSimpleName();
-	}
-
 }

@@ -12,21 +12,28 @@
 
 <h1>Nachrichten</h1>
 
-<table border="1">
+<table border="1" width="75%">
 	<tr>
-		<th>Zeit</th>
-		<th>Gelesen</th>
-		<th>Von</th>
-		<th>An</th>
-		<th>Nachricht</th>
+		<th align="left">Zeit</th>
+		<th align="left">Gelesen</th>
+		<th align="left">Von</th>
+		<th align="left">An</th>
+
 	</tr>
-	<tr wicket:id="messages">
+	<tr>
+		<th colspan="4" align="left">Nachricht</th>
+	</tr>
+	<span wicket:id="messages">
+	<tr>
 		<td wicket:id="time" />
 		<td wicket:id="read" />
 		<td wicket:id="sender" />
 		<td wicket:id="receiver" />
-		<td wicket:id="message" />
 	</tr>
+	<tr>
+		<td colspan="4" wicket:id="message" />
+	</tr>
+	</span>
 </table>
 <span wicket:id="messageCount" /> Nachrichten <br />
 

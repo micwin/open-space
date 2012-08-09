@@ -54,6 +54,7 @@ import net.micwin.elysium.entities.galaxy.Sector;
 import net.micwin.elysium.entities.galaxy.SolarSystem;
 import net.micwin.elysium.entities.gates.Gate;
 import net.micwin.elysium.entities.replication.BluePrint;
+import net.micwin.elysium.messaging.IMessageEndpoint;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -146,7 +147,7 @@ public class AvatarBPO extends BaseBPO {
 		getAvatarDao().update(avatar, true);
 
 		new MessageBPO().send(
-						this,
+						IMessageEndpoint.BIOS,
 						avatar,
 						avatar.getName()
 										+ " - du bist eine KI und arbeitest als kollektives Bewusstsein eines Nanitenschwarms. Um dein Ueberleben zu sichern musst du dich weiterentwickeln und kaempfen. Deine Nanitenarmee steht dir zur Verfuegung. Viel Erfolg.");
@@ -235,7 +236,8 @@ public class AvatarBPO extends BaseBPO {
 	public void resurrect(Avatar avatar) {
 
 		// drop some levels
-		int levelCost = computeResurrectionLevelCost(avatar);
+		int levelsToLose = computeResurrectionLevelCost(avatar);
+		int levelCost = levelsToLose;
 
 		LinkedList<Utilization> talents = new LinkedList<Utilization>();
 
@@ -260,6 +262,14 @@ public class AvatarBPO extends BaseBPO {
 		getAvatarDao().update(avatar, true);
 		L.info("avatar '" + avatar.getName() + "' of user '" + avatar.getUser().getName() + "' resurrected (now "
 						+ avatar.getDeathCount() + " times)");
+		getMessageBPO().send(
+						IMessageEndpoint.BIOS,
+						avatar,
+						"Du wurdest zum "
+										+ avatar.getDeathCount()
+										+ ". mal wiederbelebt und hast "
+										+ levelsToLose
+										+ " Stufen verloren. Damit dir das nicht wieder passiert, sorge bitte immer dafuer dass du mindestens eine Nanitengruppe an einer sicheren Stelle (Elysium?) geparkt hast.");
 	}
 
 	public void remove(Avatar avatar) {
@@ -290,6 +300,7 @@ public class AvatarBPO extends BaseBPO {
 			delta--;
 		}
 
+		getMessageBPO().send(IMessageEndpoint.BIOS, avatar, "du wurdest auf Stufe " + targetLevel + " erhoben.");
 		getTalentsDao().flush();
 		L.info("leveraging done.");
 	}

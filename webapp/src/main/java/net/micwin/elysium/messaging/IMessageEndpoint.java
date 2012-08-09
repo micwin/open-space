@@ -16,6 +16,14 @@ public interface IMessageEndpoint {
 
 	public static final String TYPE_SYSTEM = "SYS#";
 
+	public static final IMessageEndpoint BIOS = new IMessageEndpoint() {
+
+		@Override
+		public String getEndPointId() {
+			return TYPE_SYSTEM + "BIOS";
+		}
+	};;;
+
 	/**
 	 * A String that uniquely identifies this end point.
 	 * 

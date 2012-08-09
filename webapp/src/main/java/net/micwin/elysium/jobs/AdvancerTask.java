@@ -40,6 +40,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.TimerTask;
 
+import net.micwin.elysium.bpo.MessageBPO;
 import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.entities.GalaxyTimer;
 import net.micwin.elysium.entities.NaniteGroup;
@@ -124,11 +125,7 @@ public class AdvancerTask extends TimerTask {
 		if (naniteGroup.getStateEndGT().before(GalaxyTimer.get().getGalaxyDate())) {
 			naniteGroup.setStateEndGT(null);
 			naniteGroup.setState(State.ENTRENCHED);
-			Message message = new Message();
-			message.setSenderID(naniteGroup.getEndPointId());
-			message.setReceiverID(naniteGroup.getController().getEndPointId());
-			message.setText("Eingraben beendet.");
-			DaoManager.I.getMessageDao().insert(message, true);
+			new MessageBPO().send(naniteGroup, naniteGroup.getController(), "Eingraben beendet.");
 			return true;
 		}
 		L.debug("nanite group still has to wait until " + naniteGroup.getStateEndGT() + " ");
