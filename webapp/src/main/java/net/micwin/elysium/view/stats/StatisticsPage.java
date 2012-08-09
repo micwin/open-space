@@ -68,7 +68,7 @@ public class StatisticsPage extends BasePage {
 		});
 
 		// only show the first 10
-		if (avatars.size() > 10)
+		if (avatars.size() > 10 && getAvatar().getUser().getRole() != Role.ADMIN)
 			avatars = avatars.subList(0, 9);
 
 		final List<IModel<Avatar>> modelList = new LinkedList<IModel<Avatar>>();
