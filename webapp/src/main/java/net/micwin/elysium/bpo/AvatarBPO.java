@@ -149,7 +149,7 @@ public class AvatarBPO extends BaseBPO {
 						this,
 						avatar,
 						avatar.getName()
-										+ " - du bist eine KI und arbeitest als kollektives Bewusstsein eines Nanitenschwarms. Um dein †berleben zu sichern musst du dich weiterentwickeln und kŠmpfen. Deine Nanitenarmee steht dir zur VerfŸgung. Viel Erfolg.");
+										+ " - du bist eine KI und arbeitest als kollektives Bewusstsein eines Nanitenschwarms. Um dein Ueberleben zu sichern musst du dich weiterentwickeln und kaempfen. Deine Nanitenarmee steht dir zur Verfuegung. Viel Erfolg.");
 		return avatar;
 	}
 
