@@ -1,4 +1,4 @@
-package net.micwin.elysium.view.replication;
+package net.micwin.elysium.view.construction;
 
 /*
  (c) 2012 micwin.net
@@ -42,8 +42,8 @@ import java.util.List;
 import net.micwin.elysium.bpo.AvatarBPO;
 import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.entities.characters.User;
-import net.micwin.elysium.entities.replication.BluePrint;
-import net.micwin.elysium.entities.replication.BuildPlan;
+import net.micwin.elysium.entities.engineering.BluePrint;
+import net.micwin.elysium.entities.engineering.BuildPlan;
 import net.micwin.elysium.view.BasePage;
 
 import org.apache.commons.collections.ComparatorUtils;

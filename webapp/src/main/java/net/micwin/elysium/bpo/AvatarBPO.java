@@ -48,12 +48,12 @@ import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.Race;
 import net.micwin.elysium.entities.characters.User;
+import net.micwin.elysium.entities.engineering.BluePrint;
 import net.micwin.elysium.entities.galaxy.Planet;
 import net.micwin.elysium.entities.galaxy.Position;
 import net.micwin.elysium.entities.galaxy.Sector;
 import net.micwin.elysium.entities.galaxy.SolarSystem;
 import net.micwin.elysium.entities.gates.Gate;
-import net.micwin.elysium.entities.replication.BluePrint;
 import net.micwin.elysium.messaging.IMessageEndpoint;
 
 import org.slf4j.Logger;

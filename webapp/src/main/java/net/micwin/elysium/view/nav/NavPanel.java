@@ -38,9 +38,9 @@ package net.micwin.elysium.view.nav;
 import net.micwin.elysium.entities.messaging.Message;
 import net.micwin.elysium.view.BasePanel;
 import net.micwin.elysium.view.collective.NaniteGroupListPage;
+import net.micwin.elysium.view.construction.ConstructionPage;
 import net.micwin.elysium.view.homepage.HomePage;
 import net.micwin.elysium.view.messages.MessagesListPage;
-import net.micwin.elysium.view.replication.ConstructionPage;
 import net.micwin.elysium.view.storyline.StoryLinePage;
 
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;

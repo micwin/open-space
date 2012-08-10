@@ -40,7 +40,7 @@ import java.util.List;
 
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
-import net.micwin.elysium.entities.replication.BluePrint;
+import net.micwin.elysium.entities.engineering.BluePrint;
 
 public class HibernateBluePrintDao extends ElysiumHibernateDaoSupport<BluePrint> implements IBluePrintDao {
 

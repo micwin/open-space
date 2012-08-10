@@ -1,4 +1,4 @@
-package net.micwin.elysium.entities.replication;
+package net.micwin.elysium.entities.engineering;
 
 /*
  (c) 2012 micwin.net
@@ -34,19 +34,20 @@ package net.micwin.elysium.entities.replication;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
+/**
+ * A strategy that compute the complexity of a specific blue print depenmding on
+ * its type.
+ * 
+ * @author MicWin
+ * 
+ */
+public interface IComplexityCalculator {
 
-import javax.persistence.Entity;
+	/**
+	 * computes the complexity of the passed blueprint.
+	 * 
+	 * @param bluePrint
+	 */
+	long calculateComplexity(BluePrint bluePrint);
 
-import net.micwin.elysium.entities.ElysiumEntity;
-
-@Entity
-public class Component extends ElysiumEntity {
-
-	protected Component() {
-	}
-
-	@Override
-	public Class getBaseClass() {
-		return Component.class;
-	}
 }

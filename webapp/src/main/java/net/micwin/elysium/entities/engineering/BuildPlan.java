@@ -1,4 +1,4 @@
-package net.micwin.elysium.entities.replication;
+package net.micwin.elysium.entities.engineering;
 
 /*
  (c) 2012 micwin.net
@@ -34,20 +34,58 @@ package net.micwin.elysium.entities.replication;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
-/**
- * A strategy that compute the complexity of a specific blue print depenmding on
- * its type.
- * 
- * @author MicWin
- * 
- */
-public interface IComplexityCalculator {
 
-	/**
-	 * computes the complexity of the passed blueprint.
-	 * 
-	 * @param bluePrint
-	 */
-	long calculateComplexity(BluePrint bluePrint);
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+import net.micwin.elysium.entities.ElysiumEntity;
+import net.micwin.elysium.entities.characters.Avatar;
+
+@Entity
+public class BuildPlan extends ElysiumEntity {
+
+	@OneToOne
+	private BluePrint blueprint;
+
+	@OneToOne
+	private Component componentInBuild;
+
+	@OneToMany
+	private List<Component> builtComponents;
+
+	public BuildPlan() {
+	}
+
+	public void setBlueprint(BluePrint blueprint) {
+		this.blueprint = blueprint;
+	}
+
+	public BluePrint getBlueprint() {
+		return blueprint;
+	}
+
+	public void setComponentInBuild(Component componentInBuild) {
+		this.componentInBuild = componentInBuild;
+	}
+
+	public Component getComponentInBuild() {
+		return componentInBuild;
+	}
+
+	public List<Component> getBuiltComponents() {
+		return builtComponents;
+	}
+
+	public void setBuiltComponents(List<Component> builtComponents) {
+		this.builtComponents = builtComponents;
+	}
+
+	@Override
+	public Class<BuildPlan> getBaseClass() {
+		return BuildPlan.class;
+	};
 
 }

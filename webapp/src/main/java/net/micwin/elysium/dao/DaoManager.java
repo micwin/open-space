@@ -43,11 +43,11 @@ import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.Organization;
 import net.micwin.elysium.entities.characters.User;
+import net.micwin.elysium.entities.engineering.BluePrint;
+import net.micwin.elysium.entities.engineering.BuildPlan;
 import net.micwin.elysium.entities.galaxy.Galaxy;
 import net.micwin.elysium.entities.gates.Gate;
 import net.micwin.elysium.entities.messaging.Message;
-import net.micwin.elysium.entities.replication.BluePrint;
-import net.micwin.elysium.entities.replication.BuildPlan;
 
 public class DaoManager {
 

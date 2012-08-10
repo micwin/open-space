@@ -1,4 +1,4 @@
-package net.micwin.elysium.entities.replication;
+package net.micwin.elysium.entities.engineering;
 
 /*
  (c) 2012 micwin.net

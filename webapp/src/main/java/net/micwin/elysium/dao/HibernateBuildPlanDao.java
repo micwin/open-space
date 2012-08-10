@@ -38,7 +38,7 @@ package net.micwin.elysium.dao;
 import java.util.List;
 
 import net.micwin.elysium.entities.characters.Avatar;
-import net.micwin.elysium.entities.replication.BuildPlan;
+import net.micwin.elysium.entities.engineering.BuildPlan;
 
 public class HibernateBuildPlanDao extends ElysiumHibernateDaoSupport<BuildPlan> implements IBuildPlanDao {
 

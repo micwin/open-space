@@ -59,10 +59,10 @@
 				<value>net.micwin.elysium.entities.galaxy.Planet</value>
 				<value>net.micwin.elysium.entities.galaxy.Sector</value>
 				<value>net.micwin.elysium.entities.galaxy.SolarSystem</value>
-				<value>net.micwin.elysium.entities.replication.BluePrint</value>
+				<value>net.micwin.elysium.entities.engineering.BluePrint</value>
 				<value>net.micwin.elysium.entities.SysParam</value>
-				<value>net.micwin.elysium.entities.replication.BuildPlan</value>
-				<value>net.micwin.elysium.entities.replication.Component</value>
+				<value>net.micwin.elysium.entities.engineering.BuildPlan</value>
+				<value>net.micwin.elysium.entities.engineering.Component</value>
 				<value>net.micwin.elysium.entities.NaniteGroup</value>
 				<value>net.micwin.elysium.entities.gates.Gate</value>
 				<value>net.micwin.elysium.entities.characters.Organization</value>
