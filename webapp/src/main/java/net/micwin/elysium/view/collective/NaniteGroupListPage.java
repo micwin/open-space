@@ -68,14 +68,15 @@ public class NaniteGroupListPage extends BasePage {
 
 	public NaniteGroupListPage() {
 		super(true);
-		ensureStoryShown();
-		ensureAvatarPresent(true);
+
 	}
 
 	@Override
 	protected void onInitialize() {
 		super.onInitialize();
 
+		ensureStoryShown();
+		
 		if (getAvatar().getNanites().size() == 1) {
 
 			getElysiumSession().setNamedEntity(NaniteGroupShowPage.NE_NANITE_GROUP,
@@ -213,7 +214,7 @@ public class NaniteGroupListPage extends BasePage {
 					};
 				};
 				gateLink.setVisible(gate != null && getNanitesBPO().canJumpGate(naniteGroup));
-	
+
 				return gateLink;
 			}
 
