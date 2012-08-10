@@ -37,12 +37,15 @@ package net.micwin.elysium.dao;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.Race;
 import net.micwin.elysium.entities.characters.User;
+import net.micwin.elysium.entities.characters.User.Role;
 import net.micwin.elysium.entities.galaxy.Position;
 
 /**
@@ -74,7 +77,8 @@ public interface IAvatarDao extends IElysiumEntityDao<Avatar> {
 	 * @param storyLineItem
 	 * @return
 	 */
-	Avatar create(User user, String name, Race race, Collection<Utilization> talents, Position position, Date birthDate, Collection<NaniteGroup> nanites);
+	Avatar create(User user, String name, Race race, Collection<Utilization> talents, Position position,
+					Date birthDate, Collection<NaniteGroup> nanites);
 
 	/**
 	 * Checks wether or not the specified Avatar Name already exists.
@@ -99,5 +103,13 @@ public interface IAvatarDao extends IElysiumEntityDao<Avatar> {
 	 * @param avatar
 	 */
 	void delete(Avatar avatar, boolean flush);
-	
+
+	/**
+	 * Returns all avatars fitting to specified role.
+	 * 
+	 * @param role
+	 * @return
+	 */
+	List<Avatar> findByRole(Role role);
+
 }

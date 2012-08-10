@@ -46,9 +46,10 @@ import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.Organization;
 import net.micwin.elysium.entities.characters.Race;
 import net.micwin.elysium.entities.characters.User;
+import net.micwin.elysium.entities.characters.User.Role;
 import net.micwin.elysium.entities.galaxy.Position;
 
-import org.hibernate.LockMode;
+import org.hibernate.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -124,6 +125,16 @@ public class HibernateAvatarDao extends ElysiumHibernateDaoSupport<Avatar> imple
 	@Override
 	public Class<Avatar> getEntityClass() {
 		return Avatar.class;
+	}
+
+	@Override
+	public List<Avatar> findByRole(Role role) {
+		String queryString = "from " + Avatar.class.getSimpleName() + " where user.role=:role";
+		Query query = getSession().createQuery(queryString);
+		query.setParameter("role", role);
+
+		return query.list();
+
 	}
 
 }
