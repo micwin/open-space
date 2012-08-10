@@ -51,6 +51,7 @@ import net.micwin.elysium.view.avatar.CreateAvatarPage;
 import net.micwin.elysium.view.avatar.ResurrectAvatarPage;
 import net.micwin.elysium.view.border.ElysiumBorder;
 import net.micwin.elysium.view.errors.EntityNotAccessiblePage;
+import net.micwin.elysium.view.homepage.HomePage;
 import net.micwin.elysium.view.storyline.StoryLinePage;
 import net.micwin.elysium.view.welcome.WelcomePage;
 
@@ -201,6 +202,7 @@ public abstract class BasePage extends WebPage {
 	 */
 	protected void ensureAvatarPresent(boolean checkAlive) {
 
+		ensureLoggedIn();
 		if (getAvatar() == null)
 
 		{
@@ -217,6 +219,7 @@ public abstract class BasePage extends WebPage {
 	 * to story page.
 	 */
 	protected void ensureStoryShown() {
+		ensureAvatarPresent(true);
 		if (getAvatar().getStoryLineItem() != null && !getElysiumSession().isStoryShown()) {
 			throw new RestartResponseException(StoryLinePage.class);
 		}
