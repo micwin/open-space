@@ -14,6 +14,8 @@ public class Gate extends ElysiumEntity {
 
 	private String gateAdress;
 
+	private String gatePass ; 
+	
 	public Gate() {
 	}
 
@@ -41,5 +43,13 @@ public class Gate extends ElysiumEntity {
 	@Override
 	public String toString() {
 		return gateAdress + " @ " + position;
+	}
+
+	public void setGatePass(String gatePass) {
+		this.gatePass = gatePass;
+	}
+
+	public String getGatePass() {
+		return gatePass;
 	}
 }

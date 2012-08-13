@@ -55,7 +55,7 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 	/**
 	 * THis works as a marker what the current database version is.
 	 */
-	private static final SysParam DEFAULT_DATABASE_VERSION = new SysParam("dbVersion", "1");
+	private static final SysParam DEFAULT_DATABASE_VERSION = new SysParam("dbVersion", "3");
 
 	private static final Logger L = org.slf4j.LoggerFactory.getLogger(DatabaseConsistencyEnsurer.class);
 
@@ -78,10 +78,13 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 			public Object doInHibernate(org.hibernate.Session session) throws HibernateException, SQLException {
 
 				loadDbVersion();
-				migrateToV1(session);
+				createInitialDbEntries();
 				migrateToV2(session);
-
+	
 				L.info("closing session after data consistency check");
+
+				session.clear();
+				session.close();
 
 				return null;
 			}
@@ -93,11 +96,11 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 
 			}
 
-			private void migrateToV1(Session session) {
+			private void createInitialDbEntries() {
 
 				if (dbVersion == null) {
 					L.info("----------------------------------------");
-					L.info("migrating database to V1 ...");
+					L.info("initial database setup to V" + DEFAULT_DATABASE_VERSION.getValue() + "...");
 					L.info("----------------------------------------");
 					checkAvatars();
 					checkNaniteGroups();
@@ -105,15 +108,14 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 					L.info("lost systems ensured.");
 					ensureAdminPresent();
 					L.info("admin ensured.");
-					session.flush();
+
 					ensureAcademyPresent();
 					L.info("academy ensured.");
-					session.flush();
 					ensureNoStory();
 					ensureScanningPresent();
 					L.info("scanning presence ensured.");
-					setDbVersion(1);
-					L.info("migration to V1 done");
+					setDbVersion(Integer.valueOf(DEFAULT_DATABASE_VERSION.getValue()));
+					L.info("migration to V" + DEFAULT_DATABASE_VERSION.getValue() + " done");
 				}
 			}
 
@@ -270,7 +272,7 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 			orga.setController(admin);
 			DaoManager.I.getOrganizationDao().insert(orga, false);
 			admin.setOrganization(orga);
-			DaoManager.I.getAvatarDao().update(admin, false);
+			DaoManager.I.getAvatarDao().update(admin, true);
 			L.info("Open Space Academy created and admin made controller");
 		}
 	}
@@ -320,6 +322,7 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 				}
 			}
 
+			getGatesDao().flush();
 		}
 
 	}
@@ -404,6 +407,8 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 
 				}
 				session.update(galaxyTimeparam);
+				session.flush();
+				session.close();
 				return null;
 			}
 		});
@@ -424,6 +429,9 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 				if (galaxyTimeParam == null)
 					galaxyTimeParam = getSysParamDao().create("galaxyTime",
 									"" + (System.currentTimeMillis() + HUNDRET_YEARS_MILLIS));
+
+				session.flush();
+				session.close();
 
 				return new GalaxyTimer(Long.valueOf(galaxyTimeParam.getValue()));
 
