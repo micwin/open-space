@@ -79,6 +79,7 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 
 				loadDbVersion();
 				migrateToV1(session);
+				migrateToV2(session);
 
 				L.info("closing session after data consistency check");
 
@@ -94,7 +95,6 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 			private void migrateToV1(Session session) {
 
 				if (dbVersion == null) {
-					insertDeathCount();
 					checkAvatars();
 					checkNaniteGroups();
 					ensureLostSystemPresent();
@@ -123,18 +123,22 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 
 			}
 
-			public void insertDeathCount() {
-				try {
-					int result = getSession().createSQLQuery("ALTER TABLE Avatar ADD COLUMN DEATHCOUNT int default 0")
-									.executeUpdate();
-				} catch (SQLGrammarException e) {
+			public void migrateToV2(Session session) {
 
-					// checking for "Column already exists"
+				if (dbVersion.getValue().equals("1")) {
+					try {
+						int result = getSession().createSQLQuery(
+										"ALTER TABLE Avatar ADD COLUMN DEATHCOUNT int default 0").executeUpdate();
+					} catch (SQLGrammarException e) {
 
-					if (e.getCause().getMessage().contains("Column already exists")) {
-						L.error("cannot alter table Avatar for having DEATHCOUNT - already present.");
-					} else
-						throw e;
+						// checking for "Column already exists"
+
+						if (e.getCause().getMessage().contains("Column already exists")) {
+							L.error("cannot alter table Avatar for having DEATHCOUNT - already present.");
+						} else
+							throw e;
+					}
+					setDbVersion(2);
 				}
 
 			}
