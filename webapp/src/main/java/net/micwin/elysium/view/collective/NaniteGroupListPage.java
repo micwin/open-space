@@ -35,8 +35,10 @@ package net.micwin.elysium.view.collective;
 
  */
 
+import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -76,7 +78,7 @@ public class NaniteGroupListPage extends BasePage {
 		super.onInitialize();
 
 		ensureStoryShown();
-		
+
 		if (getAvatar().getNanites().size() == 1) {
 
 			getElysiumSession().setNamedEntity(NaniteGroupShowPage.NE_NANITE_GROUP,
@@ -132,7 +134,16 @@ public class NaniteGroupListPage extends BasePage {
 								nanitesGroup.getNaniteCount()));
 				item.add(new Label("groupCount", countModel));
 				String stateString = nanitesGroup.getState().toString();
+				if (nanitesGroup.getStateEndGT() != null && nanitesGroup.getStateEndGT().after(new Date())) {
+					stateString = stateString
+									+ " (bis "
+									+ DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(
+													nanitesGroup.getStateEndGT()) + " )";
+				}
 				item.add(new Label("groupState", new Model(stateString)));
+				item.add(new Label("battleCount", new Model(NumberFormat.getIntegerInstance().format(
+								nanitesGroup.getBattleCounter()))));
+
 				item.add(getDoubleCountLink(naniteGroupModel, countModel));
 				item.add(getGateLink(naniteGroupModel));
 
