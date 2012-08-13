@@ -2,7 +2,9 @@ package net.micwin.elysium.bpo;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
+import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.entities.GalaxyTimer;
 import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.NaniteGroup.State;
@@ -539,10 +541,9 @@ public class NaniteBPO extends BaseBPO {
 		if (naniteGroup.getState() != State.IDLE) {
 			return false;
 		}
-		
-		return new GateBPO().hasPublicGate (naniteGroup.getPosition().getEnvironment()) ; 		
-		
-		
+
+		return new GateBPO().hasPublicGate(naniteGroup.getPosition().getEnvironment());
+
 	}
 
 	/**
@@ -568,4 +569,20 @@ public class NaniteBPO extends BaseBPO {
 		return false;
 
 	}
+
+	public void untrenchArena(List<NaniteGroup> naniteGroupsNearGate) {
+		for (NaniteGroup naniteGroup : naniteGroupsNearGate) {
+			switch (naniteGroup.getState()) {
+			case ENTRENCHING:
+			case ENTRENCHED:
+				naniteGroup.setState(State.IDLE);
+				naniteGroup.setStateEndGT(null);
+				DaoManager.I.getNanitesDao().update(naniteGroup, true);
+				new MessageBPO().send(naniteGroup, naniteGroup.getController(),
+								"Eine unbeschreibliche Macht hat uns aus dem Boden gehoben und das Subraumtor gesperrt. Wir sitzen hier fest!");
+				break;
+
+			}
+		}
+	};
 }

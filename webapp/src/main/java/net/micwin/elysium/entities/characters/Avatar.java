@@ -69,6 +69,8 @@ public class Avatar extends ElysiumEntity implements IMessageEndpoint {
 
 	private static final Logger L = LoggerFactory.getLogger(Avatar.class);
 
+	private static final int POINTS_PER_ARENA_WIN = 10;
+
 	@OneToOne
 	private User user;
 
@@ -104,6 +106,9 @@ public class Avatar extends ElysiumEntity implements IMessageEndpoint {
 
 	@Column(name = "fragCount", nullable = false, columnDefinition = "int default 0")
 	private int fragCount = 0;
+
+	@Column(name = "arenaWins", nullable = false, columnDefinition = "int default 0")
+	private int arenaWins = 0;
 
 	public Avatar() {
 	}
@@ -225,12 +230,24 @@ public class Avatar extends ElysiumEntity implements IMessageEndpoint {
 
 	public long getPoints() {
 
-		return getLevel() + getFragCount() - getDeathCount();
+		return getLevel() + getFragCount() - getDeathCount() +  arenaWins * POINTS_PER_ARENA_WIN;
 
 	}
 
 	@Override
 	public String getEndPointId() {
 		return IMessageEndpoint.TYPE_AVATAR + getName();
+	}
+
+	public void raiseArenaWins() {
+		setArenaWins(getArenaWins() + 1);
+	}
+
+	public void setArenaWins(int arenaWins) {
+		this.arenaWins = arenaWins;
+	}
+
+	public int getArenaWins() {
+		return arenaWins;
 	}
 }

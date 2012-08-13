@@ -35,16 +35,20 @@ package net.micwin.elysium.jobs;
 
  */
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TimerTask;
 
+import net.micwin.elysium.bpo.GateBPO;
 import net.micwin.elysium.bpo.MessageBPO;
+import net.micwin.elysium.bpo.NaniteBPO;
 import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.entities.GalaxyTimer;
 import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.NaniteGroup.State;
+import net.micwin.elysium.entities.gates.Gate;
 import net.micwin.elysium.entities.messaging.Message;
 
 import org.hibernate.Session;
@@ -69,7 +73,7 @@ public class AdvancerTask extends TimerTask {
 		try {
 
 			runNanitesAdvancer();
-			advanceArena() ; 
+			advanceArena();
 
 		} catch (Exception e) {
 
@@ -83,8 +87,46 @@ public class AdvancerTask extends TimerTask {
 	}
 
 	private void advanceArena() {
-		
-		
+
+		Gate arenaGate = DaoManager.I.getGatesDao().findByGateAdress("arena");
+		List<NaniteGroup> naniteGroupsNearGate = DaoManager.I.getNanitesDao().findByEnvironment(
+						arenaGate.getPosition().getEnvironment());
+		HashSet<String> parties = new HashSet<String>();
+		for (NaniteGroup naniteGroup : naniteGroupsNearGate) {
+			if (!parties.contains(naniteGroup.getController().getName())) {
+				parties.add(naniteGroup.getController().getName());
+			}
+
+		}
+
+		if (arenaGate.getGatePass() == null) {
+			if (Math.random() * 10 <= 1 && parties.size() >= 5) {
+
+				arenaGate.setGatePass("" + Math.random());
+				DaoManager.I.getGatesDao().update(arenaGate, true);
+				new NaniteBPO().untrenchArena(naniteGroupsNearGate);
+				L.info("arena locked");
+			}
+		} else if (naniteGroupsNearGate.size() == 1) {
+			NaniteGroup winner = naniteGroupsNearGate.get(0);
+			winner.getController().raiseArenaWins();
+			Gate elysiumGate = DaoManager.I.getGatesDao().findByGateAdress("elysium");
+			winner.setPosition(elysiumGate.getPosition());
+			DaoManager.I.getAvatarDao().update(winner.getController(), true);
+			DaoManager.I.getNanitesDao().update(winner, true);
+
+			new MessageBPO().send(
+							winner,
+							winner.getController(),
+							"Wir haben ein Arena-Turnier gewonnen! Der Sieg wurde uns zugeschrieben und die Gruppe zum Elysium transportiert. Herzlichen Glückwunsch, wir sind die Größten!");
+			arenaGate.setGatePass(null);
+			DaoManager.I.getGatesDao().update(arenaGate, true);
+			L.info("arena battle ended. Winner is " + winner.getController().getName());
+		} else if (arenaGate.getGatePass() != null) {
+			
+			// as long the tournament hppens, we untrench all units.
+			new NaniteBPO().untrenchArena(naniteGroupsNearGate);
+		}
 	}
 
 	private void runNanitesAdvancer() {

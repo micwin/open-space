@@ -1,5 +1,7 @@
 package net.micwin.elysium.view.stats;
 
+import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -91,10 +93,14 @@ public class StatisticsPage extends BasePage {
 				item.add(new Label("points", Model.of(avatar.getPoints())));
 				item.add(new Label("groupsCount", Model.of(avatar.getNanites().size())));
 
-				item.add(new Label("birthDate", Model.of(avatar.getCreationDate().toString())));
+				item.add(new Label("birthDate", Model.of(DateFormat.getDateInstance(DateFormat.SHORT).format(
+								avatar.getCreationDate()))));
 				Date lastLoginDate = avatar.getUser().getLastLoginDate();
-				item.add(new Label("lastLogin", Model.of(lastLoginDate != null ? lastLoginDate.toString()
-								: "<unbekannt>")));
+				item.add(new Label("lastLogin", Model.of(lastLoginDate != null ? DateFormat.getDateInstance(
+								DateFormat.SHORT).format(lastLoginDate) : "<unbekannt>")));
+
+				item.add(new Label("arenaWins", Model.of(NumberFormat.getIntegerInstance()
+								.format(avatar.getArenaWins()))));
 				item.add(getLeverageLink(avatar, 51));
 				item.add(getLeverageLink(avatar, 101));
 				item.add(getResurectLink(avatar));
