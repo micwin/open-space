@@ -30,6 +30,7 @@ import net.micwin.elysium.entities.gates.Gate;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.exception.SQLGrammarException;
 import org.slf4j.Logger;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -51,7 +52,14 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 
 	private static final long HUNDRET_YEARS_MILLIS = (long) (1000 * 60 * 60 * 24 * 365.25 * 100);
 
+	/**
+	 * THis works as a marker what the current database version is.
+	 */
+	private static final SysParam DEFAULT_DATABASE_VERSION = new SysParam("dbVersion", "1");
+
 	private static final Logger L = org.slf4j.LoggerFactory.getLogger(DatabaseConsistencyEnsurer.class);
+
+	protected SysParam dbVersion;
 
 	/**
 	 * Ensures database consistency. If missing, creates admin, first sector,
@@ -69,43 +77,69 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 			@Override
 			public Object doInHibernate(org.hibernate.Session session) throws HibernateException, SQLException {
 
-				// ensureDataTableStructureCorrect();
-				checkAvatars();
-				checkNaniteGroups();
-				ensureLostSystemPresent();
-				L.info("lost systems ensured.");
-				ensureAdminPresent();
-				L.info("admin ensured.");
-				session.flush();
-				ensureAcademyPresent();
-				L.info("academy ensured.");
-				session.flush();
-				ensureNoStory();
-				ensureScanningPresent();
-				L.info("scanning presence ensured.");
-				session.flush();
+				loadDbVersion();
+				migrateToV1(session);
 
 				L.info("closing session after data consistency check");
 
 				return null;
 			}
 
-			private void ensureDataTableStructureCorrect() {
+			private void loadDbVersion() {
 
-				SysParam dbVersion = getSysParamDao().findByKey("dbVersion", null);
+				dbVersion = getSysParamDao().findByKey(DEFAULT_DATABASE_VERSION.getKey(), null);
+
+			}
+
+			private void migrateToV1(Session session) {
+
 				if (dbVersion == null) {
+					insertDeathCount();
+					checkAvatars();
+					checkNaniteGroups();
+					ensureLostSystemPresent();
+					L.info("lost systems ensured.");
+					ensureAdminPresent();
+					L.info("admin ensured.");
+					session.flush();
+					ensureAcademyPresent();
+					L.info("academy ensured.");
+					session.flush();
+					ensureNoStory();
+					ensureScanningPresent();
+					L.info("scanning presence ensured.");
+					setDbVersion(1);
+				}
+			}
 
+			private void setDbVersion(int version) {
+				if (dbVersion == null) {
+					dbVersion = new SysParam(DEFAULT_DATABASE_VERSION.getKey(), "" + version);
+					getSysParamDao().insert(dbVersion, true);
+				} else {
+					dbVersion.setValue("" + version);
+					getSysParamDao().update(dbVersion, true);
+				}
+
+			}
+
+			public void insertDeathCount() {
+				try {
 					int result = getSession().createSQLQuery("ALTER TABLE Avatar ADD COLUMN DEATHCOUNT int default 0")
 									.executeUpdate();
+				} catch (SQLGrammarException e) {
 
-					getSysParamDao().create("dbVersion", "1");
-					getSysParamDao().flush();
+					// checking for "Column already exists"
+
+					if (e.getCause().getMessage().contains("Column already exists")) {
+						L.error("cannot alter table Avatar for having DEATHCOUNT - already present.");
+					} else
+						throw e;
 				}
 
 			}
 
 			private void checkNaniteGroups() {
-
 
 				LinkedList<NaniteGroup> all = new LinkedList<NaniteGroup>();
 				DaoManager.I.getNanitesDao().loadAll(all);

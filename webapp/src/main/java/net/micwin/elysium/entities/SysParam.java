@@ -47,12 +47,17 @@ import javax.persistence.Entity;
 @Entity
 public class SysParam extends ElysiumEntity {
 
-	public SysParam() {
-	}
-
 	@Column(unique = true)
 	String key;
 	String value;
+
+	public SysParam() {
+	}
+
+	public SysParam(String key, String value) {
+		this.key = key;
+		this.value = value;
+	}
 
 	public String getKey() {
 		return key;
