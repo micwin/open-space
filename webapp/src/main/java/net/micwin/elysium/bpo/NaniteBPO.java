@@ -1,5 +1,6 @@
 package net.micwin.elysium.bpo;
 
+import java.util.Collection;
 import java.util.Date;
 
 import net.micwin.elysium.entities.GalaxyTimer;
@@ -194,10 +195,40 @@ public class NaniteBPO extends BaseBPO {
 	 *         otherwise.
 	 */
 	public boolean gateTravel(NaniteGroup naniteGroup, String targetAdress) {
+
+		// check wether local gate is free
+
+		Collection<Gate> localGate = getGatesDao().findByEnvironment(naniteGroup.getPosition().getEnvironment());
+		if (localGate.isEmpty()) {
+			getMessageBPO().send(naniteGroup, naniteGroup.getController(),
+							"Kann Adresse '" + targetAdress + "' nicht anspringen - kein Absprungtor verfügbar");
+			L.warn("cannot jump to gate adress '" + targetAdress + "' - no gate to enter in environment");
+			return false;
+		} else if (localGate.iterator().next().getGatePass() != null) {
+			getMessageBPO().send(
+							naniteGroup,
+							naniteGroup.getController(),
+							"Kann Adresse '" + targetAdress
+											+ "' nicht anspringen - lokales Absprungtor ist abgeschlossen");
+			L.warn("cannot jump to gate adress '" + targetAdress + "' - lacal gate locked.");
+			return false;
+
+		}
+
 		targetAdress = rectifyGateAdress(targetAdress);
 		Gate targetGate = getGatesDao().findByGateAdress(targetAdress);
 		if (targetGate == null) {
+			getMessageBPO().send(
+							naniteGroup,
+							naniteGroup.getController(),
+							"Kann Adresse '" + targetAdress
+											+ "' nicht anspringen - Adresse unbekannt oder Tor nicht (mehr) vorhanden");
 			L.warn("cannot jump to gate adress '" + targetAdress + "' - adress not found");
+			return false;
+		} else if (targetGate.getGatePass() != null) {
+			getMessageBPO().send(naniteGroup, naniteGroup.getController(),
+							"Kann Adresse '" + targetAdress + "' nicht anspringen - Tor abgesperrt");
+			L.warn("cannot jump to gate adress '" + targetAdress + "' - gate locked");
 			return false;
 		}
 
@@ -505,7 +536,6 @@ public class NaniteBPO extends BaseBPO {
 	}
 
 	public boolean canJumpGate(NaniteGroup naniteGroup) {
-
 		return naniteGroup.getState() == State.IDLE;
 	}
 
