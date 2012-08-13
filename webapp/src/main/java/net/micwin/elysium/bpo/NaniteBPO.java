@@ -536,7 +536,13 @@ public class NaniteBPO extends BaseBPO {
 	}
 
 	public boolean canJumpGate(NaniteGroup naniteGroup) {
-		return naniteGroup.getState() == State.IDLE;
+		if (naniteGroup.getState() != State.IDLE) {
+			return false;
+		}
+		
+		return new GateBPO().hasPublicGate (naniteGroup.getPosition().getEnvironment()) ; 		
+		
+		
 	}
 
 	/**

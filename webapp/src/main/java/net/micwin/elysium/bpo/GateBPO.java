@@ -28,4 +28,19 @@ public class GateBPO extends BaseBPO {
 
 	}
 
+	/**
+	 * Checks wethrr or not specified environment has a public gate, ie a gate
+	 * without password (incoming and outgoing).
+	 * 
+	 * @param environment
+	 * @return
+	 */
+	public boolean hasPublicGate(Environment environment) {
+		Gate gate = getGateAt(environment);
+		if (gate == null) {
+			return false;
+		}
+
+		return gate.getGatePass() == null;
+	}
 }
