@@ -69,6 +69,7 @@ public class AdvancerTask extends TimerTask {
 		try {
 
 			runNanitesAdvancer();
+			advanceArena() ; 
 
 		} catch (Exception e) {
 
@@ -79,6 +80,11 @@ public class AdvancerTask extends TimerTask {
 		session.close();
 
 		L.info("done");
+	}
+
+	private void advanceArena() {
+		
+		
 	}
 
 	private void runNanitesAdvancer() {

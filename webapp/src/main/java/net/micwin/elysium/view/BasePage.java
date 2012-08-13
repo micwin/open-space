@@ -64,6 +64,7 @@ import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.model.ResourceModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -305,6 +306,16 @@ public abstract class BasePage extends WebPage {
 		dummyLink.setEnabled(enabled);
 		dummyLink.setVisible(visible);
 		return dummyLink;
+	}
+
+	/**
+	 * Returns a specific text key from the resource files (properties).
+	 * 
+	 * @param messageKey
+	 * @return
+	 */
+	protected String getLocalizedMessage(String messageKey) {
+		return new ResourceModel(messageKey).getObject();
 	}
 
 }

@@ -5,11 +5,14 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import net.micwin.elysium.bpo.BaseBPO;
+import net.micwin.elysium.bpo.GateBPO;
 import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.NaniteGroup.State;
 import net.micwin.elysium.entities.appliances.Utilization;
@@ -63,6 +66,8 @@ public class NaniteGroupShowPage extends BasePage {
 										.computeSignatureStrength(group))));
 
 		addToContentBody(new Label("groupState", "" + group.getState()));
+		addToContentBody(new Label("envState", getEnvStateString(group)));
+
 		addToContentBody(getDoubleCountLink(groupModel));
 
 		addToContentBody(composeJumpLink(groupModel));
@@ -72,6 +77,20 @@ public class NaniteGroupShowPage extends BasePage {
 		addToContentBody(getSplitLink(groupModel));
 		addToContentBody(composeTitleText(group));
 
+	}
+
+	private String getEnvStateString(NaniteGroup group) {
+
+		List<String> messages = new LinkedList<String>();
+		Gate gate = new GateBPO().getGateAt(group.getPosition().getEnvironment());
+
+		if (gate == null) {
+			messages.add(getLocalizedMessage("noGatePresent"));
+		} else if (gate.getGatePass() != null) {
+			messages.add(getLocalizedMessage("gateLocked"));
+		}
+
+		return messages.size() < 1 ? "" : messages.toString();
 	}
 
 	public Link<Gate> composeJumpLink(final ElysiumWicketModel<NaniteGroup> groupModel) {
