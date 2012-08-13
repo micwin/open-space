@@ -2,7 +2,6 @@ package net.micwin.elysium.entities.gates;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
 
 import net.micwin.elysium.entities.ElysiumEntity;
 import net.micwin.elysium.entities.galaxy.Position;

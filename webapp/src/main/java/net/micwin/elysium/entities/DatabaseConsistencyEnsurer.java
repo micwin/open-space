@@ -89,12 +89,16 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 			private void loadDbVersion() {
 
 				dbVersion = getSysParamDao().findByKey(DEFAULT_DATABASE_VERSION.getKey(), null);
+				L.info("current db version is " + dbVersion);
 
 			}
 
 			private void migrateToV1(Session session) {
 
 				if (dbVersion == null) {
+					L.info("----------------------------------------");
+					L.info("migrating database to V1 ...");
+					L.info("----------------------------------------");
 					checkAvatars();
 					checkNaniteGroups();
 					ensureLostSystemPresent();
@@ -109,6 +113,7 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 					ensureScanningPresent();
 					L.info("scanning presence ensured.");
 					setDbVersion(1);
+					L.info("migration to V1 done");
 				}
 			}
 
@@ -126,6 +131,11 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 			public void migrateToV2(Session session) {
 
 				if (dbVersion.getValue().equals("1")) {
+
+					L.info("----------------------------------------");
+					L.info("migrating database to V2 ...");
+					L.info("----------------------------------------");
+
 					try {
 						int result = getSession().createSQLQuery(
 										"ALTER TABLE Avatar ADD COLUMN DEATHCOUNT int default 0").executeUpdate();
@@ -138,7 +148,9 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 						} else
 							throw e;
 					}
+
 					setDbVersion(2);
+					L.info("migration done.");
 				}
 
 			}

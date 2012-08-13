@@ -81,4 +81,9 @@ public class SysParam extends ElysiumEntity {
 		return SysParam.class;
 	}
 
+	@Override
+	public String toString() {
+		return SysParam.class.getSimpleName() + " " + key + "=" + value;
+	}
+
 }
