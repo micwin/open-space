@@ -130,6 +130,7 @@ public class UserBPO extends BaseBPO implements Serializable {
 		if (L.isDebugEnabled()) {
 			L.debug("logging in user '" + login + "'");
 		}
+		
 		User user = getUserDao().getUser(login, pass);
 		if (user == null) {
 			L.error("user '" + login + "' not logged in");
