@@ -315,7 +315,8 @@ public abstract class BasePage extends WebPage {
 	 * @return
 	 */
 	protected String getLocalizedMessage(String messageKey) {
-		return new ResourceModel(messageKey).getObject();
+		return getLocalizer().getString(messageKey, this);
+
 	}
 
 }
