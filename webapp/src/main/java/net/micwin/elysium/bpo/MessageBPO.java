@@ -1,5 +1,6 @@
 package net.micwin.elysium.bpo;
 
+import java.util.Date;
 import java.util.List;
 
 import net.micwin.elysium.entities.GalaxyTimer;
@@ -21,7 +22,7 @@ public class MessageBPO extends BaseBPO {
 
 	public void send(IMessageEndpoint sender, IMessageEndpoint receiver, String messageText) {
 		Message message = new Message();
-		message.setDate(GalaxyTimer.get().getGalaxyDate());
+		message.setDate(new Date());
 		message.setSenderID(sender.getEndPointId());
 		message.setReceiverID(receiver.getEndPointId());
 		message.setText(messageText);
