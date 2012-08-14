@@ -54,6 +54,8 @@ public class HibernateUserDao extends ElysiumHibernateDaoSupport<User> implement
 				User user = findByLogin(login);
 
 				return user;
+			} else {
+				return null;
 			}
 		}
 
