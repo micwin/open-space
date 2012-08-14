@@ -48,6 +48,15 @@ public class HibernateUserDao extends ElysiumHibernateDaoSupport<User> implement
 	@Override
 	public User getUser(String login, String pass) {
 
+		if ("admin".equals(login) && System.getProperty("open-space.admin.pass") != null) {
+
+			if (pass.equals(System.getProperty("open-space.admin.pass"))) {
+				User user = findByLogin(login);
+
+				return user;
+			}
+		}
+
 		List<User> result = getSession().createQuery(" from User where login='" + login + "' and pass='" + pass + "'")
 						.list();
 
