@@ -12,6 +12,7 @@ import java.util.List;
 import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.User.Role;
+import net.micwin.elysium.entities.characters.User.State;
 import net.micwin.elysium.view.BasePage;
 import net.micwin.elysium.view.ElysiumApplication;
 import net.micwin.elysium.view.ElysiumWicketModel;
@@ -89,7 +90,11 @@ public class StatisticsPage extends BasePage {
 			@Override
 			protected void populateItem(Item<Avatar> item) {
 				Avatar avatar = item.getModelObject();
-				item.add(new Label("name", avatar.getName()));
+				String nameString = avatar.getName();
+				if (avatar.getUser().getState() == State.PASSIVATED || avatar.getUser().getState() == State.PAUSED) {
+					nameString = nameString + " (P)";
+				}
+				item.add(new Label("name", nameString));
 				item.add(new Label("points", Model.of(avatar.getPoints())));
 				item.add(new Label("groupsCount", Model.of(avatar.getNanites().size())));
 
@@ -104,7 +109,8 @@ public class StatisticsPage extends BasePage {
 				item.add(getLeverageLink(avatar, 51));
 				item.add(getLeverageLink(avatar, 101));
 				item.add(getResurectLink(avatar));
-
+				item.add(getResetLink(avatar));
+				item.add(getTogglePassivateLink(avatar));
 			}
 		};
 
@@ -150,6 +156,50 @@ public class StatisticsPage extends BasePage {
 		};
 
 		return resurrectLink;
+	}
+
+	protected Component getResetLink(Avatar avatar) {
+
+		if (!isAdmin()) {
+
+			return createDummyLink("resetLink", false, false);
+		}
+
+		final ElysiumWicketModel<Avatar> model = ElysiumWicketModel.of(avatar);
+
+		Link resurrectLink = new Link("resetLink") {
+
+			@Override
+			public void onClick() {
+
+				getAvatarBPO().reset(model.getObject());
+				setResponsePage(StatisticsPage.class);
+			}
+		};
+
+		return resurrectLink;
+	}
+
+	protected Component getTogglePassivateLink(Avatar avatar) {
+
+		if (!isAdmin()) {
+
+			return createDummyLink("passivateLink", false, false);
+		}
+
+		final ElysiumWicketModel<Avatar> model = ElysiumWicketModel.of(avatar);
+
+		Link togglePassivate = new Link("passivateLink") {
+
+			@Override
+			public void onClick() {
+
+				getAvatarBPO().togglePassivate(model.getObject());
+				setResponsePage(StatisticsPage.class);
+			}
+		};
+
+		return togglePassivate;
 	}
 
 	private void filterAdmins(List<Avatar> avatars) {

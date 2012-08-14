@@ -134,9 +134,12 @@ public class UserBPO extends BaseBPO implements Serializable {
 		if (user == null) {
 			L.error("user '" + login + "' not logged in");
 			return null;
-		} else if (L.isDebugEnabled()) {
-			L.debug("logged in user '" + user.getLogin() + "'");
+		} else if (user.getState() != State.ACTIVE && user.getState() != State.IN_REGISTRATION) {
+			L.error("user '" + login + "' in state " + user.getState());
+			return null;
 		}
+
+		L.info("logged in user '" + user.getLogin() + "'");
 
 		user.setLastLoginDate(new Date());
 		getUserDao().update(user, true);

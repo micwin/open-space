@@ -118,7 +118,7 @@ public class AuthPanel extends BasePanel {
 
 				User user = new UserBPO().login(login, pass);
 				if (user == null) {
-					error("user '" + login + "' unknown or pass mismatch");
+					error("user '" + login + "' unknown, passivated or pass mismatch");
 				} else {
 					getEylsiumSession().setUser(user);
 					L.debug("user logged in");

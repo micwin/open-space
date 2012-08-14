@@ -48,6 +48,7 @@ import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.Race;
 import net.micwin.elysium.entities.characters.User;
+import net.micwin.elysium.entities.characters.User.State;
 import net.micwin.elysium.entities.engineering.BluePrint;
 import net.micwin.elysium.entities.galaxy.Planet;
 import net.micwin.elysium.entities.galaxy.Position;
@@ -305,4 +306,59 @@ public class AvatarBPO extends BaseBPO {
 		L.info("leveraging done.");
 	}
 
+	/**
+	 * Resets an avatar, ie resets sub programs to start level, removes stars,
+	 * frags and deaths, kills all groups BUT keeps messages!
+	 * 
+	 * @param avatar
+	 */
+	public void reset(Avatar avatar) {
+
+		Gate homeGate = getGatesDao().findByGateAdress(avatar.getHomeGateAdress());
+
+		List<NaniteGroup> nanitesToRemove = new LinkedList<NaniteGroup>(avatar.getNanites());
+
+		for (NaniteGroup naniteGroup : nanitesToRemove) {
+			avatar.getNanites().remove(naniteGroup);
+		}
+
+		NaniteGroup initialGroup = getNanitesDao().create(avatar.getPersonality().getInitialNanites(),
+						homeGate.getPosition());
+		initialGroup.setController(avatar) ; 
+		avatar.getNanites().add(initialGroup);
+
+		avatar.setArenaWins(0);
+		avatar.setDeathCount(0);
+		avatar.setFragCount(0);
+
+		List<Utilization> taltnts = new LinkedList<Utilization>(avatar.getTalents());
+		for (Utilization utilization : taltnts) {
+			avatar.getTalents().remove(utilization);
+		}
+
+		for (Utilization utilization : getTalentsDao().createInitialTalents(avatar.getPersonality())) {
+			getTalentsDao().insert(utilization, true);
+			avatar.getTalents().add(utilization);
+		}
+
+		getAvatarDao().update(avatar, true);
+	}
+
+	public void togglePassivate(Avatar avatar) {
+		User user = avatar.getUser();
+
+		switch (user.getState()) {
+		case PASSIVATED:
+			user.setState(State.IN_REGISTRATION);
+			break;
+		case IN_REGISTRATION:
+			user.setState(State.PASSIVATED);
+			break;
+		default:
+			throw new UnsupportedOperationException("user state '" + user.getState() + "' not yet handled");
+
+		}
+
+		getAvatarDao().update(avatar, true);
+	}
 }

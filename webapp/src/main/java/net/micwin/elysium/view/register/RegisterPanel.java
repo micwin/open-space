@@ -42,6 +42,7 @@ import net.micwin.elysium.view.homepage.HomePage;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.Session;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
@@ -49,6 +50,8 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.sun.corba.se.impl.orbutil.GetPropertyAction;
 
 public class RegisterPanel extends BasePanel {
 
@@ -71,6 +74,17 @@ public class RegisterPanel extends BasePanel {
 	protected void onInitialize() {
 		super.onInitialize();
 		add(getRegisterForm());
+
+		if (!isRegistrationEnabled()) {
+			add(new Label("comment", "Registrierung deaktiviert! Bitte versuchen Sie es sp&auml;ter noch einmal"));
+		} else {
+			add(new Label("comment", ""));
+
+		}
+	}
+
+	private boolean isRegistrationEnabled() {
+		return !System.getProperty("open-space.registration.disabled", "false").equals("true");
 	}
 
 	private Component getRegisterForm() {
@@ -91,6 +105,7 @@ public class RegisterPanel extends BasePanel {
 								RegisterPanel.this, "pass2"));
 				add(password2TextField);
 
+				setVisible(isRegistrationEnabled()) ;
 				L.debug("RegisterForm initialized");
 			};
 
