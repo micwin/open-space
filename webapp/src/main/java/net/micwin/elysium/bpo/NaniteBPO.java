@@ -340,8 +340,10 @@ public class NaniteBPO extends BaseBPO {
 						&& naniteGroup.getController().getNanites().size() == 1) {
 			// newbie protection
 			if (L.isDebugEnabled())
-				L.debug("engaging newbie protection  lvl < " + MAX_NOOB_LEVEL + " - last nanite group not killed");
+				L.debug("engaging newbie protection  lvl < " + MAX_NOOB_LEVEL + " - last nanite group not killed and moved to elysium");
 			newCount = 1;
+			Gate elysiumGate = getGatesDao().findByGateAdress("elysium") ; 
+			naniteGroup.setPosition(elysiumGate.getPosition()) ; 
 		}
 
 		if (newCount > 0) {

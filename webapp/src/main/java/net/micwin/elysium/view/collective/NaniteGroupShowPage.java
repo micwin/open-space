@@ -101,7 +101,7 @@ public class NaniteGroupShowPage extends BasePage {
 			};
 		};
 
-		link.setEnabled(getNanitesBPO().canJumpGate(groupModel.getObject()));
+		link.setVisible(getNanitesBPO().canJumpGate(groupModel.getObject()));
 		return link;
 	}
 

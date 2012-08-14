@@ -123,9 +123,33 @@ public class AdvancerTask extends TimerTask {
 			DaoManager.I.getGatesDao().update(arenaGate, true);
 			L.info("arena battle ended. Winner is " + winner.getController().getName());
 		} else if (arenaGate.getGatePass() != null) {
-			
-			// as long the tournament hppens, we untrench all units.
+
+			// as long the tournament hppens, we untrench all units...
 			new NaniteBPO().untrenchArena(naniteGroupsNearGate);
+
+			// ... and apply some decrease
+
+			int randomIndex = (int) (naniteGroupsNearGate.size() * Math.random());
+
+			NaniteGroup victim = naniteGroupsNearGate.get(randomIndex);
+
+			// lose max 20% of Nanites, but a minmum of 100
+			int nanitesToRemove = (int) Math.max(100, victim.getNaniteCount() * Math.random() * 0.2);
+
+			if (nanitesToRemove >= victim.getNaniteCount()) {
+				// uh,... move to elysium instead
+				Gate elysiumGate = DaoManager.I.getGatesDao().findByGateAdress("elysium");
+				victim.setPosition(elysiumGate.getPosition());
+				new MessageBPO().send(victim, victim.getController(),
+								"eine unbeschreibliche Macht hat uns gepackt und aus dem geschlossenen Arena-Planeten ins Elysium verschoben.");
+			} else {
+				victim.setNaniteCount(victim.getNaniteCount() - nanitesToRemove);
+				new MessageBPO().send(victim, victim.getController(), "eine unbeschreibliche Macht hat uns "
+								+ nanitesToRemove + " Naniten genommen");
+			}
+
+			DaoManager.I.getNanitesDao().update(victim, true);
+
 		}
 	}
 
