@@ -35,6 +35,7 @@ package net.micwin.elysium.jobs;
 
  */
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -48,6 +49,8 @@ import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.entities.GalaxyTimer;
 import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.NaniteGroup.State;
+import net.micwin.elysium.entities.SysParam;
+import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.gates.Gate;
 import net.micwin.elysium.entities.messaging.Message;
 
@@ -74,6 +77,7 @@ public class AdvancerTask extends TimerTask {
 
 			runNanitesAdvancer();
 			advanceArena();
+			reanalyzePublicGates();
 
 		} catch (Exception e) {
 
@@ -86,84 +90,25 @@ public class AdvancerTask extends TimerTask {
 		L.info("done");
 	}
 
+	/**
+	 * Retrieves all gates that are not home gates (any more) and publish them
+	 * into a sys property.
+	 */
+	private void reanalyzePublicGates() {
+		try {
+			new PublicGatesAdvancer().advance();
+		} catch (Exception e) {
+			L.error("could not advance public gates", e);
+		}
+	}
+
 	private void advanceArena() {
-		L.info("advancing arena ...");
-
-		Gate arenaGate = DaoManager.I.getGatesDao().findByGateAdress("arena");
-		List<NaniteGroup> naniteGroupsNearGate = DaoManager.I.getNanitesDao().findByEnvironment(
-						arenaGate.getPosition().getEnvironment());
-		HashSet<String> parties = new HashSet<String>();
-		for (NaniteGroup naniteGroup : naniteGroupsNearGate) {
-			if (!parties.contains(naniteGroup.getController().getName())) {
-				parties.add(naniteGroup.getController().getName());
-			}
-
+		try {
+			new ArenaAdvancer().advance();
+		} catch (Exception e) {
+			L.error("could not advance arena", e);
 		}
 
-		L.debug("parties on arena: " + parties.size() + parties);
-
-		if (arenaGate.getGatePass() == null) {
-			if (Math.random() * 10 <= 1 && parties.size() >= 5) {
-				L.info("locking arena ...");
-				arenaGate.setGatePass("" + Math.random());
-				DaoManager.I.getGatesDao().update(arenaGate, true);
-				new NaniteBPO().untrenchArena(naniteGroupsNearGate);
-				L.info("arena lockled now. Let the games begin!");
-			}
-		} else if (naniteGroupsNearGate.size() == 1) {
-
-			NaniteGroup winner = naniteGroupsNearGate.get(0);
-			winner.getController().raiseArenaWins();
-			Gate elysiumGate = DaoManager.I.getGatesDao().findByGateAdress("elysium");
-			winner.setPosition(elysiumGate.getPosition());
-			DaoManager.I.getAvatarDao().update(winner.getController(), true);
-			DaoManager.I.getNanitesDao().update(winner, true);
-
-			new MessageBPO().send(
-							winner,
-							winner.getController(),
-							"Wir haben ein Arena-Turnier gewonnen! Der Sieg wurde uns zugeschrieben und die Gruppe zum Elysium transportiert. Herzlichen Glückwunsch, wir sind die Größten!");
-			arenaGate.setGatePass(null);
-			DaoManager.I.getGatesDao().update(arenaGate, true);
-			L.info("arena battle ended. Winner is " + winner.getController().getName());
-		} else if (naniteGroupsNearGate.size() < 1) {
-			L.info("ending arena battle without winner") ;
-			arenaGate.setGatePass(null);
-			DaoManager.I.getGatesDao().update(arenaGate, true);
-			
-		} else {
-
-			// as long the tournament hppens, we untrench all units...
-			new NaniteBPO().untrenchArena(naniteGroupsNearGate);
-
-			// ... and apply some decrease
-
-			int randomIndex = (int) (naniteGroupsNearGate.size() * Math.random());
-
-			NaniteGroup victim = naniteGroupsNearGate.get(randomIndex);
-
-			// lose max 20% of Nanites, but a minmum of 100
-			int nanitesToRemove = (int) Math.max(100, victim.getNaniteCount() * Math.random() * 0.2);
-
-			if (nanitesToRemove >= victim.getNaniteCount()) {
-				// uh,... move to elysium instead
-				Gate elysiumGate = DaoManager.I.getGatesDao().findByGateAdress("elysium");
-				victim.setPosition(elysiumGate.getPosition());
-				new MessageBPO().send(victim, victim.getController(),
-								"eine unbeschreibliche Macht hat uns gepackt und aus dem geschlossenen Arena-Planeten ins Elysium verschoben.");
-				L.info(victim + " transferred from closed arena to elysium");
-			} else {
-				victim.setNaniteCount(victim.getNaniteCount() - nanitesToRemove);
-				new MessageBPO().send(victim, victim.getController(),
-								"eine unbeschreibliche Macht hat uns " + nanitesToRemove
-												+ " Naniten genommen. Wir haben jetzt noch " + victim.getNaniteCount());
-				L.info("removed " + nanitesToRemove + " nanites from group " + victim);
-
-			}
-
-			DaoManager.I.getNanitesDao().update(victim, true);
-
-		}
 	}
 
 	private void runNanitesAdvancer() {

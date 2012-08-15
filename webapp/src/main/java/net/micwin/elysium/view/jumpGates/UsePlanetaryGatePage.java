@@ -38,6 +38,7 @@ package net.micwin.elysium.view.jumpGates;
 import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.entities.ElysiumEntity;
 import net.micwin.elysium.entities.NaniteGroup;
+import net.micwin.elysium.entities.SysParam;
 import net.micwin.elysium.entities.characters.User;
 import net.micwin.elysium.view.BasePage;
 import net.micwin.elysium.view.ElysiumWicketModel;
@@ -45,7 +46,9 @@ import net.micwin.elysium.view.collective.NaniteGroupListPage;
 import net.micwin.elysium.view.errors.EntityNotAccessiblePage;
 import net.micwin.elysium.view.homepage.HomePage;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
@@ -73,6 +76,22 @@ public class UsePlanetaryGatePage extends BasePage {
 
 		NaniteGroup naniteGroup = getElysiumSession().getNamedEntity("naniteGroup");
 		addToContentBody(getTargetGateAdressForm());
+		addToContentBody(getPublicGatesLink());
+	}
+
+	private Component getPublicGatesLink() {
+		SysParam publicGatesList = DaoManager.I.getSysParamDao().findByKey("publicGates", null) ; 
+		String list = null ; 
+		
+		if (publicGatesList == null) {
+			list = "" ; 
+		} else {
+			list = publicGatesList.getValue()+",elysium" ; 
+			
+		}
+	   Label label = new Label("publicGates", list) ;  
+		
+		return label;
 	}
 
 	private Form getTargetGateAdressForm() {

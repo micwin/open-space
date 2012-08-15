@@ -37,4 +37,11 @@ public interface IGatesDao extends IElysiumEntityDao<Gate> {
 	 * @param gate
 	 */
 	public void delete(Gate gate, boolean flush);
+
+	/**
+	 * Find all gates that do NOT have their adress in this list.
+	 * @param gateAdresses
+	 * @return
+	 */
+	public Collection<Gate> findByNotHavingAdress(Collection<String> gateAdresses);
 }
