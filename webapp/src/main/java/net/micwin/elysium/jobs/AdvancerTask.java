@@ -87,6 +87,7 @@ public class AdvancerTask extends TimerTask {
 	}
 
 	private void advanceArena() {
+		L.info("advancing arena ...");
 
 		Gate arenaGate = DaoManager.I.getGatesDao().findByGateAdress("arena");
 		List<NaniteGroup> naniteGroupsNearGate = DaoManager.I.getNanitesDao().findByEnvironment(
@@ -99,15 +100,18 @@ public class AdvancerTask extends TimerTask {
 
 		}
 
+		L.debug("parties on arena: " + parties.size() + parties);
+
 		if (arenaGate.getGatePass() == null) {
 			if (Math.random() * 10 <= 1 && parties.size() >= 5) {
-
+				L.info("locking arena ...");
 				arenaGate.setGatePass("" + Math.random());
 				DaoManager.I.getGatesDao().update(arenaGate, true);
 				new NaniteBPO().untrenchArena(naniteGroupsNearGate);
-				L.info("arena locked");
+				L.info("arena lockled now. Let the games begin!");
 			}
 		} else if (naniteGroupsNearGate.size() == 1) {
+
 			NaniteGroup winner = naniteGroupsNearGate.get(0);
 			winner.getController().raiseArenaWins();
 			Gate elysiumGate = DaoManager.I.getGatesDao().findByGateAdress("elysium");
@@ -122,7 +126,12 @@ public class AdvancerTask extends TimerTask {
 			arenaGate.setGatePass(null);
 			DaoManager.I.getGatesDao().update(arenaGate, true);
 			L.info("arena battle ended. Winner is " + winner.getController().getName());
-		} else if (arenaGate.getGatePass() != null) {
+		} else if (naniteGroupsNearGate.size() < 1) {
+			L.info("ending arena battle without winner") ;
+			arenaGate.setGatePass(null);
+			DaoManager.I.getGatesDao().update(arenaGate, true);
+			
+		} else {
 
 			// as long the tournament hppens, we untrench all units...
 			new NaniteBPO().untrenchArena(naniteGroupsNearGate);
@@ -142,10 +151,14 @@ public class AdvancerTask extends TimerTask {
 				victim.setPosition(elysiumGate.getPosition());
 				new MessageBPO().send(victim, victim.getController(),
 								"eine unbeschreibliche Macht hat uns gepackt und aus dem geschlossenen Arena-Planeten ins Elysium verschoben.");
+				L.info(victim + " transferred from closed arena to elysium");
 			} else {
 				victim.setNaniteCount(victim.getNaniteCount() - nanitesToRemove);
-				new MessageBPO().send(victim, victim.getController(), "eine unbeschreibliche Macht hat uns "
-								+ nanitesToRemove + " Naniten genommen");
+				new MessageBPO().send(victim, victim.getController(),
+								"eine unbeschreibliche Macht hat uns " + nanitesToRemove
+												+ " Naniten genommen. Wir haben jetzt noch " + victim.getNaniteCount());
+				L.info("removed " + nanitesToRemove + " nanites from group " + victim);
+
 			}
 
 			DaoManager.I.getNanitesDao().update(victim, true);
