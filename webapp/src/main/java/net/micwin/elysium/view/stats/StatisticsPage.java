@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.entities.characters.Avatar;
@@ -98,11 +99,12 @@ public class StatisticsPage extends BasePage {
 				item.add(new Label("points", Model.of(avatar.getPoints())));
 				item.add(new Label("groupsCount", Model.of(avatar.getNanites().size())));
 
-				item.add(new Label("birthDate", Model.of(DateFormat.getDateInstance(DateFormat.SHORT).format(
-								avatar.getCreationDate()))));
+				item.add(new Label("birthDate", Model.of(DateFormat.getDateInstance(DateFormat.SHORT, Locale.GERMANY)
+								.format(avatar.getCreationDate()))));
 				Date lastLoginDate = avatar.getUser().getLastLoginDate();
-				item.add(new Label("lastLogin", Model.of(lastLoginDate != null ? DateFormat.getDateInstance(
-								DateFormat.SHORT).format(lastLoginDate) : "<unbekannt>")));
+				item.add(new Label("lastLogin", Model.of(lastLoginDate != null ? DateFormat.getDateTimeInstance(
+								DateFormat.SHORT, DateFormat.SHORT, Locale.GERMANY).format(lastLoginDate)
+								: "<unbekannt>")));
 
 				item.add(new Label("arenaWins", Model.of(NumberFormat.getIntegerInstance()
 								.format(avatar.getArenaWins()))));
