@@ -37,7 +37,6 @@ package net.micwin.elysium.entities.characters;
 import java.util.Collection;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -47,7 +46,6 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import net.micwin.elysium.bpo.MessageBPO;
 import net.micwin.elysium.entities.ElysiumEntity;
 import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.appliances.Utilization;

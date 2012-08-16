@@ -9,8 +9,6 @@ import net.micwin.elysium.entities.galaxy.Environment;
 import net.micwin.elysium.entities.galaxy.Position;
 import net.micwin.elysium.entities.gates.Gate;
 
-import org.hibernate.Query;
-import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,17 +81,9 @@ public class HibernateGatesDao extends ElysiumHibernateDaoSupport<Gate> implemen
 	}
 
 	@Override
-	public Collection<Gate> findByNotHavingAdress(Collection<String> gateAdresses) {
+	public Collection<String> findPublicGateAdresses() {
+		String query = "select gateAdress from Gate where gateAdress not in (select homeGateAdress from Avatar)";
 
-		StringBuffer listString = new StringBuffer(1000);
-		for (String gateAdress : gateAdresses) {
-			if (listString.length() > 0) {
-				listString.append(',');
-			}
-			listString.append('\'').append(gateAdress).append('\'');
-		}
-
-		return getHibernateTemplate().find("from Gate where gateAdress not in (" + listString.toString() + ')');
-
+		return getHibernateTemplate().find(query);
 	}
 }
