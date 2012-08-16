@@ -1,5 +1,6 @@
 package net.micwin.elysium.dao;
 
+import java.util.Collection;
 import java.util.List;
 
 import net.micwin.elysium.entities.NaniteGroup;
@@ -71,6 +72,14 @@ public class HibernateNanitesDao extends ElysiumHibernateDaoSupport<NaniteGroup>
 		example.setState(state);
 		List<NaniteGroup> result = getHibernateTemplate().findByExample(example);
 		return result;
+	}
+
+	@Override
+	public Collection<NaniteGroup> loadByState(State state) {
+		List<NaniteGroup> queryResult = lookupHql(" from NaniteGroup where state=" + state.ordinal());
+
+		return queryResult;
+
 	}
 
 }

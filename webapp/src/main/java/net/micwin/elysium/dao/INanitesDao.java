@@ -35,6 +35,7 @@ package net.micwin.elysium.dao;
 
  */
 
+import java.util.Collection;
 import java.util.List;
 
 import net.micwin.elysium.entities.NaniteGroup;
@@ -96,5 +97,10 @@ public interface INanitesDao extends IElysiumEntityDao<NaniteGroup> {
 	 * @return
 	 */
 	List<NaniteGroup> findbyState(State state);
+
+	/**
+	 * Loads all nanites in specified state
+	 */
+	Collection<NaniteGroup> loadByState(State state);
 
 }

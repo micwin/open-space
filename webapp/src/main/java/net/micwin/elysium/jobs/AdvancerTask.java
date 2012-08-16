@@ -36,23 +36,16 @@ package net.micwin.elysium.jobs;
  */
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TimerTask;
 
-import net.micwin.elysium.bpo.GateBPO;
 import net.micwin.elysium.bpo.MessageBPO;
-import net.micwin.elysium.bpo.NaniteBPO;
 import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.entities.GalaxyTimer;
 import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.NaniteGroup.State;
-import net.micwin.elysium.entities.SysParam;
-import net.micwin.elysium.entities.characters.Avatar;
-import net.micwin.elysium.entities.gates.Gate;
-import net.micwin.elysium.entities.messaging.Message;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -118,13 +111,13 @@ public class AdvancerTask extends TimerTask {
 
 		currentSession.getTransaction().begin();
 
-		List<NaniteGroup> result = new LinkedList<NaniteGroup>();
+		
 
-		DaoManager.I.getNanitesDao().loadAll(result);
+		Collection<NaniteGroup> result = DaoManager.I.getNanitesDao().loadByState(State.ENTRENCHING);
 		int changeCount = 0;
 
-		for (Iterator iterator = result.iterator(); iterator.hasNext();) {
-			NaniteGroup naniteGroup = (NaniteGroup) iterator.next();
+		for (Iterator <NaniteGroup>iterator = result.iterator(); iterator.hasNext();) {
+			NaniteGroup naniteGroup = iterator.next();
 
 			boolean changedSomething = advanceEntrenching(naniteGroup);
 
@@ -134,8 +127,10 @@ public class AdvancerTask extends TimerTask {
 			}
 
 		}
-
-		currentSession.getTransaction().commit();
+		if (changeCount > 0) {
+			currentSession.flush();
+			currentSession.getTransaction().commit();
+		}
 
 		L.info(changeCount + " groups advanced");
 	}
