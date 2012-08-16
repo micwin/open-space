@@ -96,11 +96,6 @@ public interface INanitesDao extends IElysiumEntityDao<NaniteGroup> {
 	 * @param state
 	 * @return
 	 */
-	List<NaniteGroup> findbyState(State state);
-
-	/**
-	 * Loads all nanites in specified state
-	 */
-	Collection<NaniteGroup> loadByState(State state);
+	Collection<NaniteGroup> findByState(State state);
 
 }

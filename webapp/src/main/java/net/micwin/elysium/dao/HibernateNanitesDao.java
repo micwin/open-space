@@ -66,18 +66,10 @@ public class HibernateNanitesDao extends ElysiumHibernateDaoSupport<NaniteGroup>
 		return result;
 	}
 
-	@Override
-	public List<NaniteGroup> findbyState(State state) {
-		NaniteGroup example = new NaniteGroup();
-		example.setState(state);
-		List<NaniteGroup> result = getHibernateTemplate().findByExample(example);
-		return result;
-	}
 
 	@Override
-	public Collection<NaniteGroup> loadByState(State state) {
+	public Collection<NaniteGroup> findByState(State state) {
 		List<NaniteGroup> queryResult = lookupHql(" from NaniteGroup where state=" + state.ordinal());
-
 		return queryResult;
 
 	}

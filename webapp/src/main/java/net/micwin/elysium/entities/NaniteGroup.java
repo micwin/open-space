@@ -207,4 +207,9 @@ public class NaniteGroup extends ElysiumEntity implements IMessageEndpoint {
 	public String getEndPointId() {
 		return IMessageEndpoint.TYPE_NANITE_GROUP + getId();
 	}
+	
+	@Override
+	public String toString() {
+		return getName();
+	}
 }

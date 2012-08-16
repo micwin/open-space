@@ -111,12 +111,10 @@ public class AdvancerTask extends TimerTask {
 
 		currentSession.getTransaction().begin();
 
-		
-
-		Collection<NaniteGroup> result = DaoManager.I.getNanitesDao().loadByState(State.ENTRENCHING);
+		Collection<NaniteGroup> result = DaoManager.I.getNanitesDao().findByState(State.ENTRENCHING);
 		int changeCount = 0;
 
-		for (Iterator <NaniteGroup>iterator = result.iterator(); iterator.hasNext();) {
+		for (Iterator<NaniteGroup> iterator = result.iterator(); iterator.hasNext();) {
 			NaniteGroup naniteGroup = iterator.next();
 
 			boolean changedSomething = advanceEntrenching(naniteGroup);

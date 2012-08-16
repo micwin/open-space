@@ -122,6 +122,9 @@ public abstract class ElysiumEntity {
 	}
 
 	public final String getName() {
+		if (name == null) {
+			name = getBaseClass().getSimpleName() + "#" + getId();
+		}
 		return name;
 	}
 
