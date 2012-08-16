@@ -37,8 +37,6 @@ package net.micwin.elysium.jobs;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.TimerTask;
 
 import net.micwin.elysium.bpo.MessageBPO;
@@ -69,15 +67,17 @@ public class AdvancerTask extends TimerTask {
 		try {
 
 			runNanitesAdvancer();
+			session.flush();
 			advanceArena();
+			session.flush();
 			reanalyzePublicGates();
+			session.flush();
 
 		} catch (Exception e) {
 
 			L.error("exception while advancer loop", e);
 		}
 
-		session.flush();
 		session.close();
 
 		L.info("done");
@@ -128,6 +128,7 @@ public class AdvancerTask extends TimerTask {
 		if (changeCount > 0) {
 			currentSession.flush();
 			currentSession.getTransaction().commit();
+
 		}
 
 		L.info(changeCount + " groups advanced");
