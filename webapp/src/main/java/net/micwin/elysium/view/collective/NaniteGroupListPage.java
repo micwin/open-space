@@ -216,6 +216,7 @@ public class NaniteGroupListPage extends BasePage {
 					@Override
 					public void onClick() {
 						getNanitesBPO().split(naniteGroupModel.getObject());
+						setResponsePage(NaniteGroupListPage.class);
 					}
 				};
 
@@ -234,6 +235,7 @@ public class NaniteGroupListPage extends BasePage {
 					@Override
 					public void onClick() {
 						getNanitesBPO().kill(naniteGroupModel.getObject());
+						setResponsePage(NaniteGroupListPage.class);
 					}
 				};
 
