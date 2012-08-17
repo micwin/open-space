@@ -72,7 +72,7 @@ public class HibernateSysParamDao extends ElysiumHibernateDaoSupport<SysParam> i
 		}
 
 		sysParam.setValue(value);
-		update(sysParam, true);
+		update(sysParam);
 		if (L.isDebugEnabled())
 			L.debug("created sysparam key='" + sysParam.getKey() + "' value='" + sysParam.getValue() + "'");
 		return sysParam;

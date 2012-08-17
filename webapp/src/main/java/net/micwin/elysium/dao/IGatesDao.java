@@ -36,7 +36,7 @@ public interface IGatesDao extends IElysiumEntityDao<Gate> {
 	 * 
 	 * @param gate
 	 */
-	public void delete(Gate gate, boolean flush);
+	public void delete(Gate gate);
 
 	/**
 	 * Returns the list of public gate adresses, ie adresses of gates that are

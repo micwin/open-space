@@ -16,6 +16,7 @@ import net.micwin.elysium.entities.gates.Gate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 /*
  (c) 2012 micwin.net
@@ -57,6 +58,7 @@ import org.slf4j.LoggerFactory;
  * @author MicWin
  * 
  */
+
 public class NaniteBPO extends BaseBPO {
 
 	private static final Logger L = LoggerFactory.getLogger(NaniteBPO.class);
@@ -104,7 +106,7 @@ public class NaniteBPO extends BaseBPO {
 		if (raiseCount > 0) {
 			raiseUsage(nanitesGroup.getController(), Appliance.NANITE_MANAGEMENT, false);
 		}
-		getNanitesDao().update(nanitesGroup, true);
+		getNanitesDao().update(nanitesGroup);
 	}
 
 	/**
@@ -155,11 +157,12 @@ public class NaniteBPO extends BaseBPO {
 		naniteGroup.getController().getNanites().add(newGroup);
 		newGroup.setController(naniteGroup.getController());
 
+		newGroup.getController().getNanites().add(newGroup);
 		raiseUsage(naniteGroup.getController(), Appliance.NANITE_MANAGEMENT, false);
 
-		getNanitesDao().update(naniteGroup, true);
-		getNanitesDao().update(newGroup, true);
-		getAvatarDao().update(naniteGroup.getController(), true);
+		getNanitesDao().update(naniteGroup);
+		getNanitesDao().update(newGroup);
+		getAvatarDao().update(naniteGroup.getController());
 	}
 
 	public boolean canRaiseGroupCount(Avatar avatar) {
@@ -238,7 +241,7 @@ public class NaniteBPO extends BaseBPO {
 		naniteGroup.setPosition(targetGate.getPosition());
 		raiseUsage(naniteGroup.getController(), Appliance.NANITE_MANAGEMENT, false);
 
-		getNanitesDao().update(naniteGroup, true);
+		getNanitesDao().update(naniteGroup);
 		return true;
 	}
 
@@ -357,7 +360,7 @@ public class NaniteBPO extends BaseBPO {
 			naniteGroup.setNaniteCount(0);
 		}
 
-		getNanitesDao().update(naniteGroup, true);
+		getNanitesDao().update(naniteGroup);
 
 		return damageDone;
 
@@ -373,7 +376,7 @@ public class NaniteBPO extends BaseBPO {
 		// since this is removeOrphaned=true, this also removes the naniteGroup
 		// from the database
 		controller.getNanites().remove(naniteGroup);
-		getNanitesDao().delete(naniteGroup, true);
+		getNanitesDao().delete(naniteGroup);
 
 		controller = getAvatarDao().refresh(controller);
 
@@ -383,7 +386,7 @@ public class NaniteBPO extends BaseBPO {
 			L.info("controller '" + controller.getName() + "' dying with new death count " + controller.getDeathCount()
 							+ "...");
 		}
-		getAvatarDao().update(controller, true);
+		getAvatarDao().update(controller);
 
 		if (L.isDebugEnabled()) {
 			L.debug("...nanites after removal = " + getAvatarDao().refresh(controller).getNanites());
@@ -519,7 +522,7 @@ public class NaniteBPO extends BaseBPO {
 		group.setState(State.ENTRENCHING);
 		Date endDate = new Date(fortifyingEndDateMillis);
 		group.setStateEndGT(endDate);
-		getNanitesDao().update(group, true);
+		getNanitesDao().update(group);
 	}
 
 	private long computeEntrenchingDuration(NaniteGroup group) {
@@ -575,7 +578,7 @@ public class NaniteBPO extends BaseBPO {
 			case ENTRENCHED:
 				naniteGroup.setState(State.IDLE);
 				naniteGroup.setStateEndGT(null);
-				DaoManager.I.getNanitesDao().update(naniteGroup, true);
+				DaoManager.I.getNanitesDao().update(naniteGroup);
 				new MessageBPO().send(naniteGroup, naniteGroup.getController(),
 								"Eine unbeschreibliche Macht hat uns aus dem Boden gehoben und das Subraumtor gesperrt. Wir sitzen hier fest!");
 				break;

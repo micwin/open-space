@@ -34,7 +34,7 @@ public class PublicGatesAdvancer {
 			publicGatesParam = DaoManager.I.getSysParamDao().create("publicGates", paramValue);
 		} else {
 			publicGatesParam.setValue(paramValue);
-			DaoManager.I.getSysParamDao().update(publicGatesParam, false);
+			DaoManager.I.getSysParamDao().update(publicGatesParam);
 		}
 
 		if (L.isDebugEnabled()) {

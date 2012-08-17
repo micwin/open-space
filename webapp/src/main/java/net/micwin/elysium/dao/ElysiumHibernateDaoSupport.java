@@ -36,18 +36,17 @@ package net.micwin.elysium.dao;
  */
 
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
 import net.micwin.elysium.entities.ElysiumEntity;
 import net.micwin.elysium.entities.characters.Avatar;
 
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> {
 
@@ -64,9 +63,9 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> {
 	 * @param elements
 	 * @param flush
 	 */
-	public void update(final Iterable<T> elements, final boolean flush) {
+	public void update(final Iterable<T> elements) {
 		for (T element : elements) {
-			update(element, flush);
+			update(element);
 		}
 
 	}
@@ -101,7 +100,7 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> {
 	 * @param elements
 	 * @param flush
 	 */
-	public final void update(final T entity, boolean flush) {
+	public final void update(final T entity) {
 
 		new TxBracelet<T>(sf) {
 
@@ -123,7 +122,7 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> {
 	 * @param elements
 	 * @param flush
 	 */
-	public final void update(final Object o, boolean flush) {
+	public final void update(final Object o) {
 
 		new TxBracelet<T>(sf) {
 
@@ -143,7 +142,7 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> {
 	 *            the entity to be inserted.
 	 * @param flush
 	 */
-	public final void insert(final T entity, final boolean flush) {
+	public final void insert(final T entity) {
 
 		new TxBracelet<T>(sf) {
 
@@ -151,9 +150,6 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> {
 			public T doWork(Session session, Transaction tx) {
 				session.save(entity);
 
-				if (flush) {
-					session.flush();
-				}
 				return null;
 			}
 		}.execute();
@@ -165,13 +161,12 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> {
 		return;
 	}
 
-	public void delete(final T entity, boolean flush) {
+	public void delete(final T entity) {
 		new TxBracelet<T>(sf) {
 
 			@Override
 			public T doWork(Session session, Transaction tx) {
 				session.delete(entity);
-				session.evict(entity);
 				return null;
 
 			}
@@ -181,14 +176,18 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> {
 
 	public final T loadById(final Long id) {
 
-		return new TxBracelet<T>(sf) {
+		try {
+			return new TxBracelet<T>(sf) {
 
-			@Override
-			public T doWork(Session session, Transaction tx) {
-				return (T) session.load(getEntityClass(), id);
-			}
-		}.execute();
+				@Override
+				public T doWork(Session session, Transaction tx) {
+					return (T) session.load(getEntityClass(), id);
+				}
+			}.execute();
 
+		} catch (org.hibernate.ObjectNotFoundException e) {
+			return null;
+		}
 	}
 
 	public abstract Class<T> getEntityClass();

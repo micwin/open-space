@@ -174,11 +174,11 @@ public class BaseBPO {
 		if (talent == null && createIfMissing) {
 
 			talent = Utilization.Factory.create(appliance, 0, 99);
-			getTalentsDao().insert(talent, true);
+			getTalentsDao().insert(talent);
 
 			L.info("adding " + talent + " to avatar " + avatar);
 			avatar.getTalents().add(talent);
-			getAvatarDao().update(avatar, false);
+			getAvatarDao().update(avatar);
 		}
 		int newCount = talent.getCount() + 1;
 
@@ -212,7 +212,7 @@ public class BaseBPO {
 			L.debug("new level / usages is " + talent.getLevel() + " / " + talent.getCount());
 		}
 
-		getTalentsDao().update(talent, true);
+		getTalentsDao().update(talent);
 
 	}
 

@@ -143,7 +143,7 @@ public class UserBPO extends BaseBPO implements Serializable {
 		L.info("logged in user '" + user.getLogin() + "'");
 
 		user.setLastLoginDate(new Date());
-		getUserDao().update(user, true);
+		getUserDao().update(user);
 
 		return user;
 	}

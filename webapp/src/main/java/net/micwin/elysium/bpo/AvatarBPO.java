@@ -84,7 +84,7 @@ public class AvatarBPO extends BaseBPO {
 
 		for (Utilization utilization : talentsList) {
 
-			getTalentsDao().insert(utilization, true);
+			getTalentsDao().insert(utilization);
 
 		}
 
@@ -127,7 +127,7 @@ public class AvatarBPO extends BaseBPO {
 		avatar.setUser(user);
 
 		initialNanitesGroup.setController(avatar);
-		getNanitesDao().insert(initialNanitesGroup, true);
+		getNanitesDao().insert(initialNanitesGroup);
 
 		if (createSystem) {
 
@@ -145,7 +145,7 @@ public class AvatarBPO extends BaseBPO {
 			L.debug("home gate adress of avatar " + avatar.getName() + " set to " + avatar.getHomeGateAdress());
 		}
 
-		getAvatarDao().update(avatar, true);
+		getAvatarDao().update(avatar);
 
 		new MessageBPO().send(
 						IMessageEndpoint.BIOS,
@@ -252,16 +252,16 @@ public class AvatarBPO extends BaseBPO {
 			}
 			talent.setLevel(talent.getLevel() - 1);
 			levelCost--;
-			getTalentsDao().update(talent, true);
+			getTalentsDao().update(talent);
 		}
 
 		Gate homeGate = getGatesDao().findByGateAdress(avatar.getHomeGateAdress());
 
 		NaniteGroup created = getNanitesDao().create(1, homeGate.getPosition());
 		created.setController(avatar);
-		getNanitesDao().update(created, true);
+		getNanitesDao().update(created);
 		avatar.getNanites().add(created);
-		getAvatarDao().update(avatar, true);
+		getAvatarDao().update(avatar);
 		L.info("avatar '" + avatar.getName() + "' of user '" + avatar.getUser().getName() + "' resurrected (now "
 						+ avatar.getDeathCount() + " times)");
 		getMessageBPO().send(
@@ -277,7 +277,7 @@ public class AvatarBPO extends BaseBPO {
 	public void remove(Avatar avatar) {
 
 		// kill the avatar entity.
-		getAvatarDao().delete(avatar, true);
+		getAvatarDao().delete(avatar);
 	}
 
 	public void leverage(Avatar avatar, int targetLevel) {
@@ -298,7 +298,7 @@ public class AvatarBPO extends BaseBPO {
 
 			Utilization utilization = talentsBuffer.get(index);
 			utilization.setLevel(utilization.getLevel() + 1);
-			getTalentsDao().update(utilization, false);
+			getTalentsDao().update(utilization);
 			delta--;
 		}
 
@@ -337,11 +337,11 @@ public class AvatarBPO extends BaseBPO {
 		}
 
 		for (Utilization utilization : getTalentsDao().createInitialTalents(avatar.getPersonality())) {
-			getTalentsDao().insert(utilization, true);
+			getTalentsDao().insert(utilization);
 			avatar.getTalents().add(utilization);
 		}
 
-		getAvatarDao().update(avatar, true);
+		getAvatarDao().update(avatar);
 	}
 
 	public void togglePassivate(Avatar avatar) {
@@ -359,6 +359,6 @@ public class AvatarBPO extends BaseBPO {
 
 		}
 
-		getAvatarDao().update(avatar, true);
+		getAvatarDao().update(avatar);
 	}
 }

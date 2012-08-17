@@ -37,7 +37,7 @@ public class ArenaAdvancer {
 			if (Math.random() * 10 <= 1 && parties.size() >= 5) {
 				L.debug("locking arena ...");
 				arenaGate.setGatePass("" + Math.random());
-				DaoManager.I.getGatesDao().update(arenaGate, false);
+				DaoManager.I.getGatesDao().update(arenaGate);
 				new NaniteBPO().untrenchArena(naniteGroupsNearGate);
 				L.info("arena lockled now. Let the games begin!");
 			} else {
@@ -53,21 +53,21 @@ public class ArenaAdvancer {
 			Gate elysiumGate = DaoManager.I.getGatesDao().findByGateAdress("elysium");
 			for (NaniteGroup group : naniteGroupsNearGate) {
 				winner.setPosition(elysiumGate.getPosition());
-				DaoManager.I.getNanitesDao().update(group, false);
+				DaoManager.I.getNanitesDao().update(group);
 
 			}
-			DaoManager.I.getAvatarDao().update(winner, false);
+			DaoManager.I.getAvatarDao().update(winner);
 			new MessageBPO().send(
 							winner,
 							winner.getController(),
 							"Wir haben ein Arena-Turnier gewonnen! Der Sieg wurde uns zugeschrieben und die Gruppe zum Elysium transportiert. Herzlichen Glückwunsch, wir sind die Größten!");
 			arenaGate.setGatePass(null);
-			DaoManager.I.getGatesDao().update(arenaGate, false);
+			DaoManager.I.getGatesDao().update(arenaGate);
 			L.info("arena battle ended. Winner is " + winner.getController().getName());
 		} else if (naniteGroupsNearGate.size() < 1) {
 			L.info("ending arena battle without winner");
 			arenaGate.setGatePass(null);
-			DaoManager.I.getGatesDao().update(arenaGate, false);
+			DaoManager.I.getGatesDao().update(arenaGate);
 
 		} else {
 
@@ -100,7 +100,7 @@ public class ArenaAdvancer {
 				L.info("removed " + nanitesToRemove + " nanites from group " + victim);
 
 			}
-			DaoManager.I.getNanitesDao().update(victim, false);
+			DaoManager.I.getNanitesDao().update(victim);
 		}
 		L.debug("arena advancement done") ; 
 

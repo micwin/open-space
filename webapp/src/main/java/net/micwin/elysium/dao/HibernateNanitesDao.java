@@ -61,7 +61,7 @@ public class HibernateNanitesDao extends ElysiumHibernateDaoSupport<NaniteGroup>
 		group.setNaniteCount(nanitesCount);
 		group.setPosition(position);
 		group.setState(State.IDLE);
-		update(group, true);
+		update(group);
 		return group;
 	}
 

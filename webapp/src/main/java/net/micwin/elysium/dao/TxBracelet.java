@@ -17,15 +17,14 @@ public abstract class TxBracelet<T> {
 	private static final Logger L = LoggerFactory.getLogger(TxBracelet.class);
 
 	private SessionFactory sf;
-	private boolean createSessionOnDemand = false;
-
+	
 	public TxBracelet(SessionFactory sf) {
 		this(sf, false);
 	}
 
 	public TxBracelet(SessionFactory sf, boolean createSessionOnDemand) {
 		this.sf = sf;
-		this.createSessionOnDemand = createSessionOnDemand;
+
 	}
 
 	/**
@@ -33,28 +32,15 @@ public abstract class TxBracelet<T> {
 	 */
 	public final T execute() {
 
-		Session session = createSessionOnDemand ? sf.openSession() : sf.getCurrentSession();
-		Transaction tx = session.beginTransaction();
+		Session session = sf.getCurrentSession();
 		T rv = null;
 		try {
-			rv = doWork(session, tx);
-			if (createSessionOnDemand && tx.isActive()) {
-				tx.commit();
-			}
+			rv = doWork(session, session.getTransaction());
 		} catch (Exception e) {
 			L.error("cannot do work", e);
-			if (tx.isActive()) {
-				tx.rollback();
-			}
 			if (e instanceof RuntimeException)
 				throw (RuntimeException) e;
-		} finally {
-
-			if (createSessionOnDemand && session.isOpen()) {
-				session.close();
-			}
 		}
-
 		return rv;
 	}
 

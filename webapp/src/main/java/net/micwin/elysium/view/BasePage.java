@@ -51,11 +51,9 @@ import net.micwin.elysium.view.avatar.CreateAvatarPage;
 import net.micwin.elysium.view.avatar.ResurrectAvatarPage;
 import net.micwin.elysium.view.border.ElysiumBorder;
 import net.micwin.elysium.view.errors.EntityNotAccessiblePage;
-import net.micwin.elysium.view.homepage.HomePage;
 import net.micwin.elysium.view.storyline.StoryLinePage;
 import net.micwin.elysium.view.welcome.WelcomePage;
 
-import org.apache.wicket.Application;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.RestartResponseException;
@@ -64,7 +62,6 @@ import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.model.ResourceModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

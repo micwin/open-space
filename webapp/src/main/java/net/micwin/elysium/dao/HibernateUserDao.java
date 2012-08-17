@@ -76,7 +76,7 @@ public class HibernateUserDao extends ElysiumHibernateDaoSupport<User> implement
 	@Override
 	public User create(String login, String pass, State state, Role role) {
 		User user = new User(login, pass, state, role);
-		update(user, true);
+		update(user);
 		return user;
 	}
 

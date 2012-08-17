@@ -70,7 +70,7 @@ public interface IElysiumEntityDao<T extends ElysiumEntity> {
 	 * @param entity
 	 * @param flush
 	 */
-	void insert(T entity, boolean flush);
+	void insert(T entity);
 
 	/**
 	 * Saves existing entity.
@@ -78,7 +78,7 @@ public interface IElysiumEntityDao<T extends ElysiumEntity> {
 	 * @param entity
 	 * @param flush
 	 */
-	void update(T entity, boolean flush);
+	void update(T entity);
 
 	/**
 	 * Saves all those entities and flushes at the end, if desired.
@@ -86,7 +86,7 @@ public interface IElysiumEntityDao<T extends ElysiumEntity> {
 	 * @param entities
 	 * @param flush
 	 */
-	public void update(Iterable<T> elements, boolean flush);
+	public void update(Iterable<T> elements);
 
 	/**
 	 * Query hits by a single string property value.

@@ -32,6 +32,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.exception.SQLGrammarException;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Simply said, a sort of special DAO that manages its own hibernate session to
@@ -41,6 +42,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * 
  */
 
+@Transactional
 public class DatabaseConsistencyEnsurer {
 
 	/**
@@ -56,35 +58,42 @@ public class DatabaseConsistencyEnsurer {
 	private static final SysParam DEFAULT_DATABASE_VERSION = new SysParam("dbVersion", "3");
 
 	private static final Logger L = org.slf4j.LoggerFactory.getLogger(DatabaseConsistencyEnsurer.class);
+	
+	
 
 	protected SysParam dbVersion;
 
-	@Autowired
-	protected SessionFactory sessionFactory;
+	private SessionFactory sessionFactory;
 
+	
 	/**
 	 * Ensures database consistency. If missing, creates admin, first sector,
 	 * lost sector, first solar system etc pp.
 	 */
+	@Transactional
 	public void ensureDatabaseConsistency() {
+		
 
 		L.info("starting DatabaseEnsurer");
 		/**
 		 * Do all in a session managed by hibernate.
 		 */
 
-		Session session = sessionFactory.openSession();
+		Session session = sessionFactory.getCurrentSession();
+		
+		session.beginTransaction() ; 
 
 		loadGalaxyTimer();
 
 		loadDbVersion();
 		createInitialDbEntries();
 		migrateToV2(session);
+		
+		
+		
+		session.getTransaction().commit() ; 
 
 		L.info("closing session after data consistency check");
-
-		session.close();
-
 	}
 
 	private void loadDbVersion() {
@@ -119,10 +128,10 @@ public class DatabaseConsistencyEnsurer {
 	private void setDbVersion(int version) {
 		if (dbVersion == null) {
 			dbVersion = new SysParam(DEFAULT_DATABASE_VERSION.getKey(), "" + version);
-			getSysParamDao().insert(dbVersion, true);
+			getSysParamDao().insert(dbVersion);
 		} else {
 			dbVersion.setValue("" + version);
-			getSysParamDao().update(dbVersion, true);
+			getSysParamDao().update(dbVersion);
 		}
 
 	}
@@ -177,13 +186,13 @@ public class DatabaseConsistencyEnsurer {
 			// not found; adding.
 
 			Utilization scanning = Utilization.Factory.create(Appliance.SHORT_RANGE_SCANS, 0, 99);
-			getTalentsDao().insert(scanning, true);
+			getTalentsDao().insert(scanning);
 
 			L.info("adding " + scanning + " to avatar " + avatar);
 
 			talents.add(scanning);
 			avatar.setTalents(talents);
-			getAvatarDao().update(avatar, true);
+			getAvatarDao().update(avatar);
 		}
 
 	}
@@ -209,12 +218,12 @@ public class DatabaseConsistencyEnsurer {
 
 					utilization.setController(avatar);
 					avatar.getTalents().add(utilization);
-					getTalentsDao().update(utilization, true);
+					getTalentsDao().update(utilization);
 					addedSomething = true;
 				}
 
 				if (addedSomething) {
-					getAvatarDao().update(avatar, true);
+					getAvatarDao().update(avatar);
 				}
 			}
 		}
@@ -234,7 +243,7 @@ public class DatabaseConsistencyEnsurer {
 				itemCount++;
 			}
 		}
-		getAvatarDao().update(allAvatars, true);
+		getAvatarDao().update(allAvatars);
 
 		L.info(itemCount + " story items killed");
 
@@ -248,9 +257,9 @@ public class DatabaseConsistencyEnsurer {
 			L.info("admin does not have a organization assigned - create OSA");
 			Organization orga = Organization.create("Open Space Academy", "OSA");
 			orga.setController(admin);
-			DaoManager.I.getOrganizationDao().insert(orga, false);
+			DaoManager.I.getOrganizationDao().insert(orga);
 			admin.setOrganization(orga);
-			DaoManager.I.getAvatarDao().update(admin, true);
+			DaoManager.I.getAvatarDao().update(admin);
 			L.info("Open Space Academy created and admin made controller");
 		}
 	}
@@ -272,14 +281,14 @@ public class DatabaseConsistencyEnsurer {
 			// first, arena
 			arenaGate = getGatesDao().create(new Position(lostSystem.getPlanets().get(0), 0, 0));
 			arenaGate.setGateAdress("arena");
-			getGatesDao().update(arenaGate, false);
+			getGatesDao().update(arenaGate);
 
 			// then, elysium
 			Planet elysium = lostSystem.getPlanets().get(lostSystem.getPlanets().size() - 1);
 			elysium.setElysium(true);
 			Gate elysiumGate = getGatesDao().create(new Position(elysium, 0, 0));
 			elysiumGate.setGateAdress("elysium");
-			getGatesDao().update(elysiumGate, false);
+			getGatesDao().update(elysiumGate);
 			getGalaxyDao().save(elysium);
 
 			L.info("lost sector  created");
@@ -295,7 +304,7 @@ public class DatabaseConsistencyEnsurer {
 				for (Gate gate : gatesKnottedToArenaPlanet) {
 					if (!gate.equals(arenaGate)) {
 						L.warn("deleting gate " + gate.getGateAdress() + " ...");
-						getGatesDao().delete(gate, true);
+						getGatesDao().delete(gate);
 					}
 				}
 			}
@@ -346,12 +355,12 @@ public class DatabaseConsistencyEnsurer {
 		for (Utilization talent : talents) {
 			talent.setLevel(ADMIN_TALENTS_LEVEL);
 		}
-		getTalentsDao().update(talents, true);
+		getTalentsDao().update(talents);
 
-		DaoManager.I.getAvatarDao().update(adminAvatar, true);
+		DaoManager.I.getAvatarDao().update(adminAvatar);
 		L.info("admin avatar rectified");
 
-		DaoManager.I.getUserDao().update(admin, true);
+		DaoManager.I.getUserDao().update(admin);
 
 		L.info("admin user rectified");
 	}
@@ -390,18 +399,22 @@ public class DatabaseConsistencyEnsurer {
 
 	public GalaxyTimer loadGalaxyTimer() {
 
-		SysParam galaxyTimeParam = new TxBracelet<SysParam>(sessionFactory , true) {
-			public SysParam doWork(Session session, org.hibernate.Transaction tx) {
+		SysParam galaxyTimeParam = getSysParamDao().findByKey("galaxyTime", null);
+		if (galaxyTimeParam == null)
+			galaxyTimeParam = getSysParamDao().create("galaxyTime",
+							"" + (System.currentTimeMillis() + HUNDRET_YEARS_MILLIS));
 
-				SysParam galaxyTimeParam = getSysParamDao().findByKey("galaxyTime", null);
-				if (galaxyTimeParam == null)
-					galaxyTimeParam = getSysParamDao().create("galaxyTime",
-									"" + (System.currentTimeMillis() + HUNDRET_YEARS_MILLIS));
-				return galaxyTimeParam;
-			};
+		GalaxyTimer galaxyTimer = new GalaxyTimer(Long.valueOf(galaxyTimeParam.getValue()));
+		GalaxyTimer.set(galaxyTimer);
 
-		}.execute();
+		return galaxyTimer;
+	}
 
-		return new GalaxyTimer(Long.valueOf(galaxyTimeParam.getValue()));
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+
+	public SessionFactory getSessionFactory() {
+		return sessionFactory;
 	}
 }

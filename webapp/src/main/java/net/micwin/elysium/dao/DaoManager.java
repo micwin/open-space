@@ -52,7 +52,6 @@ import net.micwin.elysium.entities.galaxy.Galaxy;
 import net.micwin.elysium.entities.gates.Gate;
 import net.micwin.elysium.entities.messaging.Message;
 
-@Service
 public class DaoManager {
 
 	private HashMap<Class, IElysiumEntityDao> daoInstances = new HashMap<Class, IElysiumEntityDao>();

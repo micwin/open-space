@@ -102,7 +102,7 @@ public interface IAvatarDao extends IElysiumEntityDao<Avatar> {
 	 * 
 	 * @param avatar
 	 */
-	void delete(Avatar avatar, boolean flush);
+	void delete(Avatar avatar);
 
 	/**
 	 * Returns all avatars fitting to specified role.

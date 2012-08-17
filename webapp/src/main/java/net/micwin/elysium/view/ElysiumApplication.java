@@ -37,6 +37,8 @@ package net.micwin.elysium.view;
 
 import java.util.Date;
 
+import net.micwin.elysium.dao.DaoManager;
+import net.micwin.elysium.entities.DatabaseConsistencyEnsurer;
 import net.micwin.elysium.view.welcome.WelcomePage;
 
 import org.apache.wicket.Page;
@@ -52,9 +54,8 @@ public class ElysiumApplication extends WebApplication {
 
 	private static final Logger L = LoggerFactory.getLogger(ElysiumApplication.class);
 	
-
 	private Date startupTime = new Date();
-
+	
 	public ElysiumApplication() {
 	}
 
@@ -62,6 +63,8 @@ public class ElysiumApplication extends WebApplication {
 	public void init() {
 		super.init() ; 
 		getComponentInstantiationListeners().add(new SpringComponentInjector(this)) ;
+		
+		
 		L.info("ElysiumApplication initialized");
 
 	}

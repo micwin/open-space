@@ -32,7 +32,7 @@ public class HibernateTalentsDao extends ElysiumHibernateDaoSupport<Utilization>
 							initialTalent.getMaxLevel()));
 		}
 
-		update(newTalents, true);
+		update(newTalents);
 		return newTalents;
 
 	}

@@ -68,7 +68,7 @@ public class HibernateMessageDao extends ElysiumHibernateDaoSupport<Message> imp
 
 	@Override
 	public void send(Message message) {
-		update(message, true);
+		update(message);
 	}
 
 }

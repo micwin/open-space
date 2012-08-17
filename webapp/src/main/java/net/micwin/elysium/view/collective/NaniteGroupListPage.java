@@ -38,13 +38,12 @@ package net.micwin.elysium.view.collective;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.entities.NaniteGroup;
-import net.micwin.elysium.entities.NaniteGroup.State;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.User;
 import net.micwin.elysium.entities.galaxy.Environment;
@@ -55,18 +54,30 @@ import net.micwin.elysium.view.ElysiumWicketModel;
 import net.micwin.elysium.view.jumpGates.UsePlanetaryGatePage;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.repeater.DefaultItemReuseStrategy;
+import org.apache.wicket.markup.repeater.IItemReuseStrategy;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RefreshingView;
+import org.apache.wicket.markup.repeater.ReuseIfModelsEqualStrategy;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.model.util.SetModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class NaniteGroupListPage extends BasePage {
 
-	@SpringBean
-	DaoManager daoManager;
+	private static final Logger L = LoggerFactory.getLogger(NaniteGroupListPage.class);
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private ArrayList<IModel<NaniteGroup>> models;
 
 	public NaniteGroupListPage() {
 		super(true);
@@ -94,23 +105,45 @@ public class NaniteGroupListPage extends BasePage {
 		super.onBeforeRender();
 	}
 
-	private Component getGroupsTable() {
+	private Collection<IModel<NaniteGroup>> getModels() {
 
-		Iterator<NaniteGroup> nanites = getAvatar().getNanites().iterator();
-		final List<IModel<NaniteGroup>> models = new ArrayList<IModel<NaniteGroup>>();
-		while (nanites.hasNext()) {
-			models.add(new ElysiumWicketModel<NaniteGroup>(nanites.next()));
+		L.debug("aquiring new models");
+		if (models == null) {
+			models = new ArrayList<IModel<NaniteGroup>>();
+		} else {
+			models.clear();
+		}
+		Collection<NaniteGroup> nanites = getAvatar().getNanites();
+		for (NaniteGroup naniteGroup : nanites) {
+			models.add(ElysiumWicketModel.of(naniteGroup));
 		}
 
+		L.debug("having " + models.size() + " entries");
+
+		return models;
+
+	}
+
+	private Component getGroupsTable() {
+
 		Component groupsTable = new RefreshingView<NaniteGroup>("groupsTable") {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -8476174688323600468L;
+
 			protected Iterator<IModel<NaniteGroup>> getItemModels() {
-				return models.iterator();
+				return getModels().iterator();
+			}
+
+			@Override
+			protected void onBeforeRender() {
+				super.onBeforeRender();
 			}
 
 			protected void populateItem(Item<NaniteGroup> item) {
 				final IModel naniteGroupModel = item.getModel();
 				final NaniteGroup nanitesGroup = (NaniteGroup) naniteGroupModel.getObject();
-
 				item.add(new Label("groupId", Model.of(nanitesGroup.getId())));
 
 				Position position = nanitesGroup.getPosition();
@@ -163,7 +196,6 @@ public class NaniteGroupListPage extends BasePage {
 
 					@Override
 					public void onClick() {
-
 						getNanitesBPO().entrench(getModelObject());
 					}
 
@@ -184,7 +216,6 @@ public class NaniteGroupListPage extends BasePage {
 					@Override
 					public void onClick() {
 						getNanitesBPO().split(naniteGroupModel.getObject());
-						setResponsePage(NaniteGroupListPage.class);
 					}
 				};
 
@@ -198,12 +229,11 @@ public class NaniteGroupListPage extends BasePage {
 					/**
 					 * 
 					 */
-					private static final long serialVersionUID = -213962075156991317L;
+					private static final long serialVersionUID = 7583594232053856025L;
 
 					@Override
 					public void onClick() {
 						getNanitesBPO().kill(naniteGroupModel.getObject());
-						setResponsePage(NaniteGroupListPage.class);
 					}
 				};
 
@@ -236,7 +266,6 @@ public class NaniteGroupListPage extends BasePage {
 					@Override
 					public void onClick() {
 						getNanitesBPO().doubleCount(nanitesGroupModel.getObject());
-						setResponsePage(NaniteGroupListPage.class);
 					}
 				};
 				Avatar controller = nanitesGroupModel.getObject().getController();

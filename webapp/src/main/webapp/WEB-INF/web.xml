@@ -22,6 +22,12 @@
 
 
 	<!-- wicket stuff -->
+<!---->
+<!--	<filter>-->
+<!--		<filter-name>openSessionInView</filter-name>-->
+<!--		<filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>-->
+<!--	</filter>-->
+
 	<filter>
 		<filter-name>wicket-spring</filter-name>
 		<filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
@@ -34,6 +40,13 @@
 	</filter>
 
 	<!-- mappings -->
+
+<!--	<filter-mapping>-->
+<!--		<filter-name>openSessionInView</filter-name>-->
+<!--		<url-pattern>/*</url-pattern>-->
+<!--	</filter-mapping>-->
+
+
 	<filter-mapping>
 		<filter-name>elysiumFilter</filter-name>
 		<url-pattern>/*</url-pattern>

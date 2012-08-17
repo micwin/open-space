@@ -58,13 +58,13 @@ public class HibernateGalaxyDao extends ElysiumHibernateDaoSupport<Galaxy> imple
 
 	@Override
 	public void save(SolarSystem solarSystem) {
-		update(solarSystem, true);
+		update(solarSystem);
 
 	}
 
 	@Override
 	public void save(Planet planet) {
-		update(planet, true);
+		update(planet);
 
 	}
 
@@ -85,7 +85,7 @@ public class HibernateGalaxyDao extends ElysiumHibernateDaoSupport<Galaxy> imple
 
 	@Override
 	public void save(Sector sector) {
-		update(sector, true);
+		update(sector);
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class HibernateGalaxyDao extends ElysiumHibernateDaoSupport<Galaxy> imple
 	}
 
 	@Override
-	public void update(Iterable<Galaxy> elements, boolean flush) {
+	public void update(Iterable<Galaxy> elements) {
 		throw new IllegalStateException("Galaxy is a dummy entity. you cant load it.");
 	}
 

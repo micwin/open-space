@@ -97,24 +97,24 @@ public class HibernateAvatarDao extends ElysiumHibernateDaoSupport<Avatar> imple
 		avatar.setPosition(position);
 		avatar.setStoryLineItem(race.getFirstStoryItem());
 
-		insert(avatar, true);
+		insert(avatar);
 
 		Organization organization = new Organization();
 		organization.setController(avatar);
 		avatar.setOrganization(organization);
-		DaoManager.I.getOrganizationDao().update(organization, true);
+		DaoManager.I.getOrganizationDao().update(organization);
 
 		for (Iterator talentsIter = talents.iterator(); talentsIter.hasNext();) {
 			Utilization utilization = (Utilization) talentsIter.next();
 			utilization.setController(avatar);
 		}
 
-		DaoManager.I.getTalentsDao().update(talents, true);
+		DaoManager.I.getTalentsDao().update(talents);
 		avatar.setTalents(new LinkedList<Utilization>(talents));
 
 		avatar.setNanites(nanites);
 
-		update(avatar, true);
+		update(avatar);
 
 		return avatar;
 	}
