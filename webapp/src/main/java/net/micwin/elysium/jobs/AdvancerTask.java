@@ -72,6 +72,9 @@ public class AdvancerTask extends TimerTask {
 			session.flush();
 			reanalyzePublicGates();
 			session.flush();
+			advanceNpc();
+			session.flush();
+			
 
 		} catch (Exception e) {
 
@@ -81,6 +84,14 @@ public class AdvancerTask extends TimerTask {
 		session.close();
 
 		L.info("done");
+	}
+
+	private void advanceNpc() {
+		try {
+			new NPCAdvancer().advance();
+		} catch (Exception e) {
+			L.error("could not advance npcs", e);
+		}
 	}
 
 	/**

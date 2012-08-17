@@ -1,14 +1,18 @@
 package net.micwin.elysium.entities;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 
 import net.micwin.elysium.bpo.AvatarBPO;
 import net.micwin.elysium.bpo.GalaxyBPO;
+import net.micwin.elysium.bpo.NaniteBPO;
+import net.micwin.elysium.bpo.UserBPO;
 import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.dao.IAvatarDao;
 import net.micwin.elysium.dao.IGalaxyDao;
 import net.micwin.elysium.dao.IGatesDao;
+import net.micwin.elysium.dao.IMessageDao;
 import net.micwin.elysium.dao.ISysParamDao;
 import net.micwin.elysium.dao.ITalentsDao;
 import net.micwin.elysium.dao.IUserDao;
@@ -26,6 +30,7 @@ import net.micwin.elysium.entities.galaxy.Position;
 import net.micwin.elysium.entities.galaxy.Sector;
 import net.micwin.elysium.entities.galaxy.SolarSystem;
 import net.micwin.elysium.entities.gates.Gate;
+import net.micwin.elysium.jobs.NPCAdvancer;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -58,21 +63,17 @@ public class DatabaseConsistencyEnsurer {
 	private static final SysParam DEFAULT_DATABASE_VERSION = new SysParam("dbVersion", "3");
 
 	private static final Logger L = org.slf4j.LoggerFactory.getLogger(DatabaseConsistencyEnsurer.class);
-	
-	
 
 	protected SysParam dbVersion;
 
 	private SessionFactory sessionFactory;
 
-	
 	/**
 	 * Ensures database consistency. If missing, creates admin, first sector,
 	 * lost sector, first solar system etc pp.
 	 */
 	@Transactional
 	public void ensureDatabaseConsistency() {
-		
 
 		L.info("starting DatabaseEnsurer");
 		/**
@@ -80,20 +81,43 @@ public class DatabaseConsistencyEnsurer {
 		 */
 
 		Session session = sessionFactory.getCurrentSession();
-		
-		session.beginTransaction() ; 
+
+		session.beginTransaction();
 
 		loadGalaxyTimer();
 
 		loadDbVersion();
 		createInitialDbEntries();
 		migrateToV2(session);
-		
-		
-		
-		session.getTransaction().commit() ; 
+		insertNPC();
+		clearOutGarbage();
+
+		session.getTransaction().commit();
 
 		L.info("closing session after data consistency check");
+	}
+
+	/**
+	 * Insert an npc into the game.
+	 */
+	private void insertNPC() {
+		Collection<Avatar> result = DaoManager.I.getAvatarDao().findByStringProperty("name", NPCAdvancer.NAME_AI_0);
+		Avatar npcAvatar = result.isEmpty() ? null : result.iterator().next();
+
+		if (npcAvatar == null) {
+			String pass = NPCAdvancer.NAME_AI_0 + (Math.random() * Integer.MAX_VALUE);
+			new UserBPO().register(NPCAdvancer.NAME_AI_0, pass, pass);
+			User npcUser = DaoManager.I.getUserDao().findByLogin(NPCAdvancer.NAME_AI_0);
+			npcAvatar = new AvatarBPO().create(npcUser, NPCAdvancer.NAME_AI_0, Race.NANITE, true);
+			new NaniteBPO().entrench(npcAvatar.getNanites().iterator().next());
+			npcUser.setLastLoginDate(new Date());
+			npcUser.setState(State.NPC);
+			DaoManager.I.getUserDao().update(npcUser);
+		}
+
+	}
+
+	private void clearOutGarbage() {
 	}
 
 	private void loadDbVersion() {

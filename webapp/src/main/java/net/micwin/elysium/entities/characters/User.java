@@ -102,7 +102,13 @@ public final class User extends ElysiumEntity implements Serializable, IMessageE
 		/**
 		 * User has been paused. Unit in game are completely protected.
 		 */
-		PAUSED;
+		PAUSED,
+
+		/**
+		 * Signals that this user is an npc holder, ie a machine user, not a
+		 * person.
+		 */
+		NPC;
 	}
 
 	private String login;
