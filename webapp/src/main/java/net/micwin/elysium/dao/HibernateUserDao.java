@@ -34,15 +34,19 @@ package net.micwin.elysium.dao;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
+import java.util.Collection;
 import java.util.List;
 
 import net.micwin.elysium.entities.characters.User;
 import net.micwin.elysium.entities.characters.User.Role;
 import net.micwin.elysium.entities.characters.User.State;
 
+import org.hibernate.SessionFactory;
+
 public class HibernateUserDao extends ElysiumHibernateDaoSupport<User> implements IUserDao {
 
-	public HibernateUserDao() {
+	public HibernateUserDao(SessionFactory sf) {
+		super(sf);
 	}
 
 	@Override
@@ -59,8 +63,7 @@ public class HibernateUserDao extends ElysiumHibernateDaoSupport<User> implement
 			}
 		}
 
-		List<User> result = getSession().createQuery(" from User where login='" + login + "' and pass='" + pass + "'")
-						.list();
+		List<User> result = lookupHql(" from User where login='" + login + "' and pass='" + pass + "'");
 
 		if (result == null || result.size() < 1) {
 			return null;
@@ -73,18 +76,18 @@ public class HibernateUserDao extends ElysiumHibernateDaoSupport<User> implement
 	@Override
 	public User create(String login, String pass, State state, Role role) {
 		User user = new User(login, pass, state, role);
-		getHibernateTemplate().save(user);
+		update(user, true);
 		return user;
 	}
 
 	@Override
 	public User findByLogin(String login) {
-		List<User> result = getSession().createQuery(" from User where login='" + login + "'").list();
+		Collection<User> result = findByStringProperty("login", login);
 		if (result.size() < 1) {
 			return null;
 
 		} else
-			return result.get(0);
+			return result.iterator().next();
 	}
 
 	@Override

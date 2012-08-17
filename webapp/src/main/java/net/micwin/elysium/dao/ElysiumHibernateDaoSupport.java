@@ -40,18 +40,23 @@ import java.util.LinkedList;
 import java.util.List;
 
 import net.micwin.elysium.entities.ElysiumEntity;
-import net.micwin.elysium.entities.appliances.Appliance;
-import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
 
-import org.hibernate.LockMode;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> extends HibernateDaoSupport {
+public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> {
 
 	private static final Logger L = LoggerFactory.getLogger(ElysiumHibernateDaoSupport.class);
+	private final SessionFactory sf;
+
+	protected ElysiumHibernateDaoSupport(SessionFactory sf) {
+		this.sf = sf;
+	}
 
 	/**
 	 * Updates already existing entities.
@@ -59,27 +64,27 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> extend
 	 * @param elements
 	 * @param flush
 	 */
-	public void update(final Iterable<T> elements, boolean flush) {
-
+	public void update(final Iterable<T> elements, final boolean flush) {
 		for (T element : elements) {
 			update(element, false);
 		}
 
 		if (flush) {
-			getHibernateTemplate().flush();
+			flush();
 		}
 
 	}
 
 	protected List<T> lookupHql(final String hqlString) {
 
-		List<T> result = getHibernateTemplate().find(hqlString);
+		return new TxBracelet<List<T>>(sf, true) {
 
-		if (L.isDebugEnabled()) {
-			L.debug("query " + hqlString + " returns " + result.getClass() + " (" + result + ")");
-		}
+			@Override
+			public List<T> doWork(Session session, Transaction tx) {
+				return session.createQuery(hqlString).list();
+			}
+		}.execute();
 
-		return new LinkedList<T>(result);
 	}
 
 	/**
@@ -88,15 +93,38 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> extend
 	 * @param elements
 	 * @param flush
 	 */
-	public final void update(T entity, boolean flush) {
-		if (L.isDebugEnabled()) {
-			L.debug("saved entity '" + getEntityClass().getSimpleName() + "' (" + entity.getId() + ")");
-		}
-		getHibernateTemplate().saveOrUpdate(entity);
+	public final void update(final T entity, boolean flush) {
 
-		if (flush) {
-			getHibernateTemplate().flush();
-		}
+		new TxBracelet<T>(sf, true) {
+
+			@Override
+			public T doWork(Session session, Transaction tx) {
+				if (L.isDebugEnabled()) {
+					L.debug("saved entity '" + getEntityClass().getSimpleName() + "' (" + entity.getId() + ")");
+				}
+				session.saveOrUpdate(entity);
+				return null;
+			}
+		}.execute();
+		return;
+	}
+
+	/**
+	 * Updates an already existing entities.
+	 * 
+	 * @param elements
+	 * @param flush
+	 */
+	public final void update(final Object o, boolean flush) {
+
+		new TxBracelet<T>(sf, true) {
+
+			@Override
+			public T doWork(Session session, Transaction tx) {
+				session.saveOrUpdate(o);
+				return null;
+			}
+		}.execute();
 		return;
 	}
 
@@ -107,30 +135,44 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> extend
 	 *            the entity to be inserted.
 	 * @param flush
 	 */
-	public final void insert(T entity, boolean flush) {
+	public final void insert(final T entity, boolean flush) {
 
-		getHibernateTemplate().saveOrUpdate(entity);
+		new TxBracelet<T>(sf, true) {
+
+			@Override
+			public T doWork(Session session, Transaction tx) {
+				session.save(entity);
+				return null;
+			}
+		}.execute();
 
 		if (L.isDebugEnabled()) {
 			L.debug("inserted entity '" + getEntityClass().getSimpleName() + "' (" + entity.getId() + ")");
 		}
 
 		if (flush) {
-			getHibernateTemplate().flush();
+			flush();
 		}
 		return;
 	}
 
-	public void delete(T entity, boolean flush) {
-		getHibernateTemplate().delete(entity);
-		if (flush)
-			getHibernateTemplate().flush();
+	public void delete(final T entity, boolean flush) {
 
-		getHibernateTemplate().evict(entity);
+		new TxBracelet<T>(sf, true) {
+
+			@Override
+			public T doWork(Session session, Transaction tx) {
+				session.delete(entity);
+				session.evict(entity);
+				return null;
+			}
+		}.execute();
+
 	}
 
 	public final T loadById(Long id) {
-		return (T) getHibernateTemplate().load(getEntityClass(), id);
+		return (T) sf.getCurrentSession().load(getEntityClass(), id);
+
 	}
 
 	public abstract Class<T> getEntityClass();
@@ -139,7 +181,7 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> extend
 	 * Flushes changes in memory to the db.
 	 */
 	public void flush() {
-		getHibernateTemplate().flush();
+		sf.getCurrentSession().flush();
 	}
 
 	public Collection<T> findByController(Avatar controller) {
@@ -148,7 +190,7 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> extend
 
 	public T refresh(T entity) {
 
-		getHibernateTemplate().refresh(entity, LockMode.OPTIMISTIC_FORCE_INCREMENT);
+		sf.getCurrentSession().refresh(entity);
 		return entity;
 	}
 
@@ -156,19 +198,21 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> extend
 		return lookupHql("from " + getEntityClass().getSimpleName() + " where " + property + "='" + value + "'");
 	};
 
-	public Collection<T> loadAll(Collection<T> target) {
-		if (target == null)
-			target = new LinkedList<T>();
-
-		target.addAll(getHibernateTemplate().loadAll(getEntityClass()));
-		return target;
-	}
-
 	public int countEntries() {
 
-		// TODO faster
-		Collection<T> all = loadAll(new LinkedList<T>());
-		return all.size();
+		return new TxBracelet<Number>(sf, true) {
+
+			@Override
+			public Number doWork(Session session, Transaction tx) {
+				return ((Number) sf.getCurrentSession()
+								.createQuery("Select Count(*) From " + getEntityClass().getSimpleName()).uniqueResult());
+			}
+		}.execute().intValue();
+
+	}
+
+	protected Query createQuery(String hql) {
+		return sf.getCurrentSession().createQuery(hql);
 	}
 
 }

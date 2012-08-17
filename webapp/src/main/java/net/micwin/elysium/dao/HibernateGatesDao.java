@@ -9,15 +9,17 @@ import net.micwin.elysium.entities.galaxy.Environment;
 import net.micwin.elysium.entities.galaxy.Position;
 import net.micwin.elysium.entities.gates.Gate;
 
+import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class HibernateGatesDao extends ElysiumHibernateDaoSupport<Gate> implements IGatesDao {
 
-	private static final Logger L = LoggerFactory.getLogger(HibernateGatesDao.class);
-
-	public HibernateGatesDao() {
+	protected HibernateGatesDao(SessionFactory sf) {
+		super(sf);
 	}
+
+	private static final Logger L = LoggerFactory.getLogger(HibernateGatesDao.class);
 
 	@Override
 	public Collection<Gate> findByEnvironment(Environment environment) {
@@ -84,6 +86,6 @@ public class HibernateGatesDao extends ElysiumHibernateDaoSupport<Gate> implemen
 	public Collection<String> findPublicGateAdresses() {
 		String query = "select gateAdress from Gate where gateAdress not in (select homeGateAdress from Avatar)";
 
-		return getHibernateTemplate().find(query);
+		return createQuery(query).list();
 	}
 }

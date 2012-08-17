@@ -2,6 +2,7 @@ package net.micwin.elysium.view.stats;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -53,8 +54,7 @@ public class StatisticsPage extends BasePage {
 
 	private Component createRankingTable() {
 
-		List<Avatar> avatars = new LinkedList<Avatar>();
-		DaoManager.I.getAvatarDao().loadAll(avatars);
+		List<Avatar> avatars = new LinkedList<Avatar>(DaoManager.I.getAvatarDao().loadAll()) ;
 
 		filterAdmins(avatars);
 		Collections.sort(avatars, new Comparator<Avatar>() {

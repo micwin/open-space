@@ -50,6 +50,7 @@ import net.micwin.elysium.entities.characters.User.Role;
 import net.micwin.elysium.entities.galaxy.Position;
 
 import org.hibernate.Query;
+import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,7 +58,8 @@ public class HibernateAvatarDao extends ElysiumHibernateDaoSupport<Avatar> imple
 
 	private static final Logger L = LoggerFactory.getLogger(HibernateAvatarDao.class);
 
-	public HibernateAvatarDao() {
+	public HibernateAvatarDao(SessionFactory sf) {
+		super(sf);
 	}
 
 	@Override
@@ -98,14 +100,14 @@ public class HibernateAvatarDao extends ElysiumHibernateDaoSupport<Avatar> imple
 		Organization organization = new Organization();
 		organization.setController(avatar);
 		avatar.setOrganization(organization);
-		getHibernateTemplate().save(organization);
+		DaoManager.I.getOrganizationDao().update(organization, true);
 
 		for (Iterator talentsIter = talents.iterator(); talentsIter.hasNext();) {
 			Utilization utilization = (Utilization) talentsIter.next();
 			utilization.setController(avatar);
 		}
 
-		getHibernateTemplate().saveOrUpdateAll(talents);
+		DaoManager.I.getTalentsDao().update(talents, true);
 		avatar.setTalents(new LinkedList<Utilization>(talents));
 
 		avatar.setNanites(nanites);
@@ -119,7 +121,7 @@ public class HibernateAvatarDao extends ElysiumHibernateDaoSupport<Avatar> imple
 	public boolean nameExists(String name) {
 		Avatar avatar = new Avatar();
 		avatar.setName(name);
-		return getHibernateTemplate().findByExample(avatar).size() > 0;
+		return super.findByStringProperty("name", name).size() > 0;
 	}
 
 	@Override
@@ -130,11 +132,16 @@ public class HibernateAvatarDao extends ElysiumHibernateDaoSupport<Avatar> imple
 	@Override
 	public List<Avatar> findByRole(Role role) {
 		String queryString = "from " + Avatar.class.getSimpleName() + " where user.role=:role";
-		Query query = getSession().createQuery(queryString);
+		Query query = createQuery(queryString);
 		query.setParameter("role", role);
 
 		return query.list();
 
+	}
+
+	@Override
+	public Collection<Avatar> loadAll() {
+		return createQuery("from " + Avatar.class.getSimpleName()).list();
 	}
 
 }

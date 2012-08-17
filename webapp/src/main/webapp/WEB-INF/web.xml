@@ -16,25 +16,23 @@
 	</context-param>
 
 
-	<!-- wicket stuff -->
-	<filter>
-		<filter-name>wicket-spring</filter-name>
-		<filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
-		<init-param>
-			<param-name>applicationFactoryClassName</param-name>
-			<param-value>org.apache.wicket.spring.SpringWebApplicationFactory</param-value>
-		</init-param>
-		<init-param>
-			<param-name>applicationClassName</param-name>
-			<param-value>net.micwin.elysium.view.ElysiumApplication</param-value>
-		</init-param>
-	</filter>
-
 	<filter>
 		<filter-name>openSessionInViewFilter</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
 	</filter>
 
+
+	<!-- wicket stuff -->
+	<filter>
+		<filter-name>wicket-spring</filter-name>
+		<filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
+		<init-param>
+			<param-name>applicationClassName</param-name>
+			<param-value>net.micwin.elysium.view.ElysiumApplication</param-value>
+		</init-param>
+		
+		
+	</filter>
 
 	<!-- mappings -->
 	<filter-mapping>

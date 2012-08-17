@@ -37,10 +37,6 @@ package net.micwin.elysium.view;
 
 import java.util.Date;
 
-import net.micwin.elysium.dao.DaoManager;
-import net.micwin.elysium.entities.DatabaseConsistencyEnsurer;
-import net.micwin.elysium.entities.GalaxyTimer;
-import net.micwin.elysium.entities.SysParam;
 import net.micwin.elysium.view.welcome.WelcomePage;
 
 import org.apache.wicket.Page;
@@ -48,18 +44,14 @@ import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
+import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ElysiumApplication extends WebApplication {
 
 	private static final Logger L = LoggerFactory.getLogger(ElysiumApplication.class);
-
-	private DaoManager daoManager;
-
-	private GalaxyTimer galaxyTimer;
-
-	private DatabaseConsistencyEnsurer ensurer;
+	
 
 	private Date startupTime = new Date();
 
@@ -68,15 +60,9 @@ public class ElysiumApplication extends WebApplication {
 
 	@Override
 	public void init() {
-
-		galaxyTimer = ensurer.loadGalaxyTimer();
-
+		super.init() ; 
+		getComponentInstantiationListeners().add(new SpringComponentInjector(this)) ;
 		L.info("ElysiumApplication initialized");
-
-	}
-
-	public GalaxyTimer getGalaxyTimer() {
-		return galaxyTimer;
 
 	}
 
@@ -93,24 +79,7 @@ public class ElysiumApplication extends WebApplication {
 
 	@Override
 	protected void onDestroy() {
-		ensurer.update(galaxyTimer);
 
-	}
-
-	public void setDaoManager(DaoManager daoManager) {
-		this.daoManager = daoManager;
-	}
-
-	public DaoManager getDaoManager() {
-		return daoManager;
-	}
-
-	public void setEnsurer(DatabaseConsistencyEnsurer ensurer) {
-		this.ensurer = ensurer;
-	}
-
-	public DatabaseConsistencyEnsurer getEnsurer() {
-		return ensurer;
 	}
 
 	public Date getStartupTime() {

@@ -4,12 +4,15 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.hibernate.SessionFactory;
+
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Race;
 
 public class HibernateTalentsDao extends ElysiumHibernateDaoSupport<Utilization> implements ITalentsDao {
 
-	public HibernateTalentsDao() {
+	public HibernateTalentsDao(SessionFactory sf) {
+		super(sf);
 	}
 
 	@Override
@@ -29,9 +32,7 @@ public class HibernateTalentsDao extends ElysiumHibernateDaoSupport<Utilization>
 							initialTalent.getMaxLevel()));
 		}
 
-		getHibernateTemplate().saveOrUpdateAll(newTalents);
-
-		getHibernateTemplate().flush();
+		update(newTalents, true);
 		return newTalents;
 
 	}

@@ -36,6 +36,9 @@ package net.micwin.elysium.dao;
  */
 import java.util.HashMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import net.micwin.elysium.entities.ElysiumEntity;
 import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.SysParam;
@@ -49,6 +52,7 @@ import net.micwin.elysium.entities.galaxy.Galaxy;
 import net.micwin.elysium.entities.gates.Gate;
 import net.micwin.elysium.entities.messaging.Message;
 
+@Service
 public class DaoManager {
 
 	private HashMap<Class, IElysiumEntityDao> daoInstances = new HashMap<Class, IElysiumEntityDao>();
@@ -67,6 +71,7 @@ public class DaoManager {
 		return (IUserDao) getDao(User.class);
 	}
 
+	@Autowired
 	public void setUserDao(IUserDao userDao) {
 		checkDaoNotPresent(User.class);
 		daoInstances.put(User.class, userDao);
@@ -84,6 +89,7 @@ public class DaoManager {
 		return (IAvatarDao) getDao(Avatar.class);
 	}
 
+	@Autowired
 	public void setAvatarDao(IAvatarDao avatarDao) {
 		checkDaoNotPresent(Avatar.class);
 		daoInstances.put(Avatar.class, avatarDao);
@@ -93,6 +99,7 @@ public class DaoManager {
 		return (INanitesDao) getDao(NaniteGroup.class);
 	}
 
+	@Autowired
 	public void setNanitesDao(INanitesDao nanitesDao) {
 		checkDaoNotPresent(NaniteGroup.class);
 		daoInstances.put(NaniteGroup.class, nanitesDao);
@@ -103,11 +110,13 @@ public class DaoManager {
 		return (IBluePrintDao) getDao(BluePrint.class);
 	}
 
+	@Autowired
 	public void setBluePrintDao(IBluePrintDao bluePrintDao) {
 		checkDaoNotPresent(BluePrint.class);
 		daoInstances.put(BluePrint.class, bluePrintDao);
 	}
 
+	@Autowired
 	public void setSysParamDao(ISysParamDao sysParamDao) {
 		checkDaoNotPresent(SysParam.class);
 		daoInstances.put(SysParam.class, sysParamDao);
@@ -121,6 +130,7 @@ public class DaoManager {
 		return (IBuildPlanDao) getDao(BuildPlan.class);
 	}
 
+	@Autowired
 	public void setBuildPlanDao(IBuildPlanDao buildPlanDao) {
 
 		checkDaoNotPresent(BuildPlan.class);
@@ -136,6 +146,7 @@ public class DaoManager {
 		return (IGalaxyDao) getDao(Galaxy.class);
 	}
 
+	@Autowired
 	public void setGalaxyDao(IGalaxyDao galaxyDao) {
 		checkDaoNotPresent(Galaxy.class);
 		daoInstances.put(Galaxy.class, galaxyDao);
@@ -145,6 +156,7 @@ public class DaoManager {
 		return (ITalentsDao) getDao(Utilization.class);
 	}
 
+	@Autowired
 	public void setTalentsDao(ITalentsDao talentsDao) {
 		checkDaoNotPresent(Utilization.class);
 		daoInstances.put(Utilization.class, talentsDao);
@@ -154,6 +166,7 @@ public class DaoManager {
 		return (IGatesDao) getDao(Gate.class);
 	}
 
+	@Autowired
 	public void setGatesDao(IGatesDao gatesDao) {
 		checkDaoNotPresent(Gate.class);
 		daoInstances.put(Gate.class, gatesDao);
@@ -163,6 +176,7 @@ public class DaoManager {
 		return (IOrganizationDao) getDao(Organization.class);
 	}
 
+	@Autowired
 	public void setOrganizationDao(IOrganizationDao orgaDao) {
 		checkDaoNotPresent(Organization.class);
 		daoInstances.put(Organization.class, orgaDao);
@@ -172,9 +186,9 @@ public class DaoManager {
 		return (IMessageDao) getDao(Message.class);
 	}
 
+	@Autowired
 	public void setMessageDao(IMessageDao msgDao) {
 		checkDaoNotPresent(Message.class);
 		daoInstances.put(Message.class, msgDao);
 	}
-
 }

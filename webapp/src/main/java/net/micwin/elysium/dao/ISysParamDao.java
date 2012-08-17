@@ -58,24 +58,4 @@ public interface ISysParamDao extends IElysiumEntityDao<SysParam> {
 	 */
 	public SysParam create(String key, String value);
 
-	/**
-	 * Closes the current session.
-	 * 
-	 * @param flush
-	 */
-	void closeSession(boolean flush);
-
-	/**
-	 * Creates a persistency session (w/o revealing its type)
-	 * 
-	 * @return
-	 */
-	Object createSession();
-
-	/**
-	 * Closes a session obtained by calling {@link #createSession()}.
-	 * 
-	 * @param session
-	 */
-	void closeSession(Object session);
 }

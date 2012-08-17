@@ -39,15 +39,17 @@ import java.util.List;
 import net.micwin.elysium.entities.messaging.Message;
 import net.micwin.elysium.messaging.IMessageEndpoint;
 
+import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class HibernateMessageDao extends ElysiumHibernateDaoSupport<Message> implements IMessageDao {
 
-	private static final Logger L = LoggerFactory.getLogger(HibernateMessageDao.class);
-
-	public HibernateMessageDao() {
+	protected HibernateMessageDao(SessionFactory sf) {
+		super(sf);
 	}
+
+	private static final Logger L = LoggerFactory.getLogger(HibernateMessageDao.class);
 
 	@Override
 	public Class<Message> getEntityClass() {
@@ -61,12 +63,12 @@ public class HibernateMessageDao extends ElysiumHibernateDaoSupport<Message> imp
 		query.append("from ").append(Message.class.getSimpleName());
 		query.append(" where senderID='").append(
 						endPoint.getEndPointId() + "' or receiverID = '" + endPoint.getEndPointId() + "'");
-		return getHibernateTemplate().find(query.toString());
+		return createQuery(query.toString()).list();
 	}
 
 	@Override
 	public void send(Message message) {
-		getHibernateTemplate().save(message);
+		update(message, true);
 	}
 
 }

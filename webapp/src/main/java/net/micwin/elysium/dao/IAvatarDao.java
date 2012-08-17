@@ -112,4 +112,7 @@ public interface IAvatarDao extends IElysiumEntityDao<Avatar> {
 	 */
 	List<Avatar> findByRole(Role role);
 
+	
+	Collection<Avatar> loadAll();
+
 }

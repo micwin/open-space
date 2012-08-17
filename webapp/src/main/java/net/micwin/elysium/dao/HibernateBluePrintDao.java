@@ -38,11 +38,17 @@ package net.micwin.elysium.dao;
 import java.util.Arrays;
 import java.util.List;
 
+import org.hibernate.SessionFactory;
+
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.engineering.BluePrint;
 
 public class HibernateBluePrintDao extends ElysiumHibernateDaoSupport<BluePrint> implements IBluePrintDao {
+
+	protected HibernateBluePrintDao(SessionFactory sf) {
+		super(sf);
+	}
 
 	@Override
 	public BluePrint create(Avatar owner, String nameKey, Utilization... utilizations) {

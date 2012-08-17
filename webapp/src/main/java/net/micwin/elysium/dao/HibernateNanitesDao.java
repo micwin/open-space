@@ -3,6 +3,8 @@ package net.micwin.elysium.dao;
 import java.util.Collection;
 import java.util.List;
 
+import org.hibernate.SessionFactory;
+
 import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.NaniteGroup.State;
 import net.micwin.elysium.entities.galaxy.Environment;
@@ -45,6 +47,9 @@ import net.micwin.elysium.entities.gates.Gate;
  */
 public class HibernateNanitesDao extends ElysiumHibernateDaoSupport<NaniteGroup> implements INanitesDao {
 
+	protected HibernateNanitesDao(SessionFactory sf) {
+		super(sf);	}
+
 	@Override
 	public Class<NaniteGroup> getEntityClass() {
 		return NaniteGroup.class;
@@ -56,7 +61,7 @@ public class HibernateNanitesDao extends ElysiumHibernateDaoSupport<NaniteGroup>
 		group.setNaniteCount(nanitesCount);
 		group.setPosition(position);
 		group.setState(State.IDLE);
-		getSession().save(group);
+		update(group, true);
 		return group;
 	}
 

@@ -37,10 +37,16 @@ package net.micwin.elysium.dao;
 
 import java.util.List;
 
+import org.hibernate.SessionFactory;
+
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.engineering.BuildPlan;
 
 public class HibernateBuildPlanDao extends ElysiumHibernateDaoSupport<BuildPlan> implements IBuildPlanDao {
+
+	protected HibernateBuildPlanDao(SessionFactory sf) {
+		super(sf);
+	}
 
 	@Override
 	public Class<BuildPlan> getEntityClass() {

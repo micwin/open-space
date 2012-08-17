@@ -64,8 +64,6 @@ public class BaseBPO {
 
 	private static final Logger L = LoggerFactory.getLogger(BaseBPO.class);
 
-	private static DaoManager daoManager;
-
 	protected IUserDao getUserDao() {
 		return getDaoManager().getUserDao();
 	}
@@ -103,23 +101,12 @@ public class BaseBPO {
 		return getDaoManager().getMessageDao();
 	}
 
-	/**
-	 * DONT CALL THIS METHOD! Its a hack and surely will be replaced by a more
-	 * elegant construct.
-	 * 
-	 * @param newDaoManager
-	 */
-	@Deprecated
-	public void setDaoManager(DaoManager newDaoManager) {
-		daoManager = newDaoManager;
-	}
-
-	protected DaoManager getDaoManager() {
-		return daoManager;
-	}
-
 	protected IGatesDao getGatesDao() {
 		return getDaoManager().getGatesDao();
+	}
+
+	private DaoManager getDaoManager() {
+		return DaoManager.I;
 	}
 
 	/**

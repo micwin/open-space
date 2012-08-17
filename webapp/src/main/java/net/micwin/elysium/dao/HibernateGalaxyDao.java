@@ -43,23 +43,28 @@ import net.micwin.elysium.entities.galaxy.Planet;
 import net.micwin.elysium.entities.galaxy.Sector;
 import net.micwin.elysium.entities.galaxy.SolarSystem;
 
+import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-public class HibernateGalaxyDao extends HibernateDaoSupport implements IGalaxyDao {
+public class HibernateGalaxyDao extends ElysiumHibernateDaoSupport<Galaxy> implements IGalaxyDao {
+
+	protected HibernateGalaxyDao(SessionFactory sf) {
+		super(sf);
+	}
 
 	private static final Logger L = LoggerFactory.getLogger(HibernateGalaxyDao.class);
 
 	@Override
 	public void save(SolarSystem solarSystem) {
-		getHibernateTemplate().saveOrUpdate(solarSystem);
+		update(solarSystem, true);
 
 	}
 
 	@Override
 	public void save(Planet planet) {
-		getHibernateTemplate().saveOrUpdate(planet);
+		update(planet, true);
 
 	}
 
@@ -69,8 +74,8 @@ public class HibernateGalaxyDao extends HibernateDaoSupport implements IGalaxyDa
 		if (L.isDebugEnabled()) {
 			L.debug("looking for thinnest sector");
 		}
-		List<Sector> results = getHibernateTemplate().find(
-						" from Sector as sector order by sector.solarSystems.size asc limit 1");
+		List<Sector> results = createQuery(" from Sector as sector order by sector.solarSystems.size asc limit 1")
+						.list();
 
 		if (L.isDebugEnabled() && results.size() < 1) {
 			L.debug("no thinnest sector present.");
@@ -81,36 +86,12 @@ public class HibernateGalaxyDao extends HibernateDaoSupport implements IGalaxyDa
 
 	@Override
 	public void save(Sector sector) {
-		getHibernateTemplate().save(sector);
-	}
-
-	@Override
-	public Galaxy loadById(Long id) {
-		throw new IllegalStateException("Galaxy is a dummy entity. you cant load it.");
+		update(sector, true);
 	}
 
 	@Override
 	public Class<Galaxy> getEntityClass() {
 		return Galaxy.class;
-	}
-
-	@Override
-	public void insert(Galaxy entity, boolean flush) {
-		super.getHibernateTemplate().saveOrUpdate(entity);
-		if (flush) {
-			flush();
-		}
-
-	}
-
-	@Override
-	public void flush() {
-		getHibernateTemplate().flush();
-	}
-
-	@Override
-	public void update(Galaxy entity, boolean flush) {
-		throw new IllegalStateException("Galaxy is a dummy entity. you cant load it.");
 	}
 
 	@Override
@@ -126,11 +107,6 @@ public class HibernateGalaxyDao extends HibernateDaoSupport implements IGalaxyDa
 	@Override
 	public Collection<Galaxy> findByStringProperty(String property, String value) {
 		throw new IllegalStateException("Galaxy is a dummy entity. you cant load it.");
-	}
-
-	@Override
-	public Collection<Galaxy> loadAll(Collection<Galaxy> target) {
-		throw new IllegalStateException("Galaxy is a dummy entity. you cant load any of them.");
 	}
 
 	@Override

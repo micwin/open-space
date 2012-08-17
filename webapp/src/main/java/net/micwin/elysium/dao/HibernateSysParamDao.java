@@ -35,30 +35,31 @@ package net.micwin.elysium.dao;
 
  */
 
+import java.util.Collection;
 import java.util.List;
 
 import net.micwin.elysium.entities.SysParam;
 
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.StatelessSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class HibernateSysParamDao extends ElysiumHibernateDaoSupport<SysParam> implements ISysParamDao {
 
-	private static final Logger L = LoggerFactory.getLogger(HibernateSysParamDao.class);
-
-	public HibernateSysParamDao() {
+	protected HibernateSysParamDao(SessionFactory sf) {
+		super(sf);
 	}
+
+	private static final Logger L = LoggerFactory.getLogger(HibernateSysParamDao.class);
 
 	@Override
 	public SysParam findByKey(String key, String defaultValue) {
 
-		List<SysParam> result = getSession().createQuery(" from SysParam where key='" + key + "'").list();
-		if (result.size() < 1) {
-			return null;
-		} else
-			return result.get(0);
+		Collection<SysParam> result = findByStringProperty("key", key);
+		return result.size() > 0 ? result.iterator().next() : null;
+
 	}
 
 	@Override
@@ -71,8 +72,7 @@ public class HibernateSysParamDao extends ElysiumHibernateDaoSupport<SysParam> i
 		}
 
 		sysParam.setValue(value);
-		getHibernateTemplate().saveOrUpdate(sysParam);
-		getHibernateTemplate().flush();
+		update(sysParam, true);
 		if (L.isDebugEnabled())
 			L.debug("created sysparam key='" + sysParam.getKey() + "' value='" + sysParam.getValue() + "'");
 		return sysParam;
@@ -81,27 +81,6 @@ public class HibernateSysParamDao extends ElysiumHibernateDaoSupport<SysParam> i
 	@Override
 	public Class<SysParam> getEntityClass() {
 		return SysParam.class;
-	}
-
-	@Override
-	public void closeSession(boolean flush) {
-		if (flush) {
-			getHibernateTemplate().flush();
-		}
-		getHibernateTemplate().getSessionFactory().getCurrentSession().close();
-	}
-
-	@Override
-	public Object createSession() {
-
-		return getHibernateTemplate().getSessionFactory().openStatelessSession();
-
-	}
-
-	@Override
-	public void closeSession(Object session) {
-		StatelessSession hibernateSesion = (StatelessSession) session;
-		hibernateSesion.close();
 	}
 
 }

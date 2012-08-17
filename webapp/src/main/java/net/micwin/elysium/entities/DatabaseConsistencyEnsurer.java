@@ -1,9 +1,7 @@
 package net.micwin.elysium.entities;
 
-import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 import net.micwin.elysium.bpo.AvatarBPO;
 import net.micwin.elysium.bpo.GalaxyBPO;
@@ -14,6 +12,7 @@ import net.micwin.elysium.dao.IGatesDao;
 import net.micwin.elysium.dao.ISysParamDao;
 import net.micwin.elysium.dao.ITalentsDao;
 import net.micwin.elysium.dao.IUserDao;
+import net.micwin.elysium.dao.TxBracelet;
 import net.micwin.elysium.entities.appliances.Appliance;
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
@@ -28,12 +27,11 @@ import net.micwin.elysium.entities.galaxy.Sector;
 import net.micwin.elysium.entities.galaxy.SolarSystem;
 import net.micwin.elysium.entities.gates.Gate;
 
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.exception.SQLGrammarException;
 import org.slf4j.Logger;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Simply said, a sort of special DAO that manages its own hibernate session to
@@ -43,7 +41,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
  * 
  */
 
-public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
+public class DatabaseConsistencyEnsurer {
 
 	/**
 	 * The level each admin talent gets from the start.
@@ -61,159 +59,141 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 
 	protected SysParam dbVersion;
 
+	@Autowired
+	protected SessionFactory sessionFactory;
+
 	/**
 	 * Ensures database consistency. If missing, creates admin, first sector,
 	 * lost sector, first solar system etc pp.
 	 */
 	public void ensureDatabaseConsistency() {
 
-		GalaxyTimer.set(loadGalaxyTimer());
-
+		L.info("starting DatabaseEnsurer");
 		/**
 		 * Do all in a session managed by hibernate.
 		 */
-		getHibernateTemplate().execute(new HibernateCallback() {
 
-			@Override
-			public Object doInHibernate(org.hibernate.Session session) throws HibernateException, SQLException {
+		Session session = sessionFactory.openSession();
 
-				loadDbVersion();
-				createInitialDbEntries();
-				migrateToV2(session);
-	
-				L.info("closing session after data consistency check");
+		loadGalaxyTimer();
 
-				session.clear();
-				session.close();
+		loadDbVersion();
+		createInitialDbEntries();
+		migrateToV2(session);
 
-				return null;
+		L.info("closing session after data consistency check");
+
+		session.close();
+
+	}
+
+	private void loadDbVersion() {
+
+		dbVersion = getSysParamDao().findByKey(DEFAULT_DATABASE_VERSION.getKey(), null);
+		L.info("current db version is " + dbVersion);
+
+	}
+
+	private void createInitialDbEntries() {
+
+		if (dbVersion == null) {
+			L.info("----------------------------------------");
+			L.info("initial database setup to V" + DEFAULT_DATABASE_VERSION.getValue() + "...");
+			L.info("----------------------------------------");
+			checkAvatars();
+			ensureLostSystemPresent();
+			L.info("lost systems ensured.");
+			ensureAdminPresent();
+			L.info("admin ensured.");
+
+			ensureAcademyPresent();
+			L.info("academy ensured.");
+			ensureNoStory();
+			ensureScanningPresent();
+			L.info("scanning presence ensured.");
+			setDbVersion(Integer.valueOf(DEFAULT_DATABASE_VERSION.getValue()));
+			L.info("migration to V" + DEFAULT_DATABASE_VERSION.getValue() + " done");
+		}
+	}
+
+	private void setDbVersion(int version) {
+		if (dbVersion == null) {
+			dbVersion = new SysParam(DEFAULT_DATABASE_VERSION.getKey(), "" + version);
+			getSysParamDao().insert(dbVersion, true);
+		} else {
+			dbVersion.setValue("" + version);
+			getSysParamDao().update(dbVersion, true);
+		}
+
+	}
+
+	public void migrateToV2(Session session) {
+
+		if (dbVersion.getValue().equals("1")) {
+
+			L.info("----------------------------------------");
+			L.info("migrating database to V2 ...");
+			L.info("----------------------------------------");
+
+			try {
+				int result = sessionFactory.getCurrentSession()
+								.createSQLQuery("ALTER TABLE Avatar ADD COLUMN DEATHCOUNT int default 0")
+								.executeUpdate();
+			} catch (SQLGrammarException e) {
+
+				// checking for "Column already exists"
+
+				if (e.getCause().getMessage().contains("Column already exists")) {
+					L.error("cannot alter table Avatar for having DEATHCOUNT - already present.");
+				} else
+					throw e;
 			}
 
-			private void loadDbVersion() {
-
-				dbVersion = getSysParamDao().findByKey(DEFAULT_DATABASE_VERSION.getKey(), null);
-				L.info("current db version is " + dbVersion);
-
-			}
-
-			private void createInitialDbEntries() {
-
-				if (dbVersion == null) {
-					L.info("----------------------------------------");
-					L.info("initial database setup to V" + DEFAULT_DATABASE_VERSION.getValue() + "...");
-					L.info("----------------------------------------");
-					checkAvatars();
-					checkNaniteGroups();
-					ensureLostSystemPresent();
-					L.info("lost systems ensured.");
-					ensureAdminPresent();
-					L.info("admin ensured.");
-
-					ensureAcademyPresent();
-					L.info("academy ensured.");
-					ensureNoStory();
-					ensureScanningPresent();
-					L.info("scanning presence ensured.");
-					setDbVersion(Integer.valueOf(DEFAULT_DATABASE_VERSION.getValue()));
-					L.info("migration to V" + DEFAULT_DATABASE_VERSION.getValue() + " done");
-				}
-			}
-
-			private void setDbVersion(int version) {
-				if (dbVersion == null) {
-					dbVersion = new SysParam(DEFAULT_DATABASE_VERSION.getKey(), "" + version);
-					getSysParamDao().insert(dbVersion, true);
-				} else {
-					dbVersion.setValue("" + version);
-					getSysParamDao().update(dbVersion, true);
-				}
-
-			}
-
-			public void migrateToV2(Session session) {
-
-				if (dbVersion.getValue().equals("1")) {
-
-					L.info("----------------------------------------");
-					L.info("migrating database to V2 ...");
-					L.info("----------------------------------------");
-
-					try {
-						int result = getSession().createSQLQuery(
-										"ALTER TABLE Avatar ADD COLUMN DEATHCOUNT int default 0").executeUpdate();
-					} catch (SQLGrammarException e) {
-
-						// checking for "Column already exists"
-
-						if (e.getCause().getMessage().contains("Column already exists")) {
-							L.error("cannot alter table Avatar for having DEATHCOUNT - already present.");
-						} else
-							throw e;
-					}
-
-					setDbVersion(2);
-					L.info("migration done.");
-				}
-
-			}
-
-			private void checkNaniteGroups() {
-
-				LinkedList<NaniteGroup> all = new LinkedList<NaniteGroup>();
-				DaoManager.I.getNanitesDao().loadAll(all);
-				for (NaniteGroup naniteGroup : all) {
-					if (naniteGroup.getController() == null) {
-						L.info("removing orphaned nanite group " + naniteGroup);
-						DaoManager.I.getNanitesDao().delete(naniteGroup, true);
-					}
-				}
-
-			}
-
-			private void ensureScanningPresent() {
-
-				Collection<Avatar> allAvatars = getAvatarDao().loadAll(null);
-				avatarLoop: for (Iterator<Avatar> iterator = allAvatars.iterator(); iterator.hasNext();) {
-					Avatar avatar = iterator.next();
-
-					Collection<Utilization> talents = getTalentsDao().findByController(avatar);
-
-					for (Iterator<Utilization> talentsIter = talents.iterator(); talentsIter.hasNext();) {
-						Utilization talent = talentsIter.next();
-						if (talent.getAppliance() == Appliance.SHORT_RANGE_SCANS) {
-							// found; check next avatar
-							continue avatarLoop;
-						}
-
-					}
-
-					// not found; adding.
-
-					Utilization scanning = Utilization.Factory.create(Appliance.SHORT_RANGE_SCANS, 0, 99);
-					getTalentsDao().insert(scanning, true);
-
-					L.info("adding " + scanning + " to avatar " + avatar);
-
-					talents.add(scanning);
-					avatar.setTalents(talents);
-					getAvatarDao().update(avatar, false);
-				}
-
-				getAvatarDao().flush();
-
-			}
-
-		});
+			setDbVersion(2);
+			L.info("migration done.");
+		}
 
 		L.info("database sanity ensured");
+
+	}
+
+	private void ensureScanningPresent() {
+
+		Collection<Avatar> allAvatars = getAvatarDao().loadAll();
+		avatarLoop: for (Iterator<Avatar> iterator = allAvatars.iterator(); iterator.hasNext();) {
+			Avatar avatar = iterator.next();
+
+			Collection<Utilization> talents = getTalentsDao().findByController(avatar);
+
+			for (Iterator<Utilization> talentsIter = talents.iterator(); talentsIter.hasNext();) {
+				Utilization talent = talentsIter.next();
+				if (talent.getAppliance() == Appliance.SHORT_RANGE_SCANS) {
+					// found; check next avatar
+					continue avatarLoop;
+				}
+
+			}
+
+			// not found; adding.
+
+			Utilization scanning = Utilization.Factory.create(Appliance.SHORT_RANGE_SCANS, 0, 99);
+			getTalentsDao().insert(scanning, true);
+
+			L.info("adding " + scanning + " to avatar " + avatar);
+
+			talents.add(scanning);
+			avatar.setTalents(talents);
+			getAvatarDao().update(avatar, false);
+		}
+
+		getAvatarDao().flush();
 
 	}
 
 	protected void checkAvatars() {
 
 		// check skills and controllers
-		LinkedList<Avatar> all = new LinkedList<Avatar>();
-		getAvatarDao().loadAll(all);
+		Collection<Avatar> all = getAvatarDao().loadAll();
 
 		for (Avatar avatar : all) {
 
@@ -246,7 +226,7 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 	private void ensureNoStory() {
 		int itemCount = 0;
 
-		Collection<Avatar> allAvatars = getAvatarDao().loadAll(null);
+		Collection<Avatar> allAvatars = getAvatarDao().loadAll();
 		for (Iterator<Avatar> iterator = allAvatars.iterator(); iterator.hasNext();) {
 			Avatar avatar = iterator.next();
 
@@ -393,25 +373,18 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 	}
 
 	public void update(final GalaxyTimer galaxyTimer) {
+		Session session = sessionFactory.getCurrentSession();
+		SysParam galaxyTimeparam = getSysParamDao().findByKey("galaxyTime", null);
+		if (galaxyTimeparam == null) {
+			galaxyTimeparam = getSysParamDao().create("galaxyTime", "" + galaxyTimer.getGalaxyDate().getTime());
 
-		getHibernateTemplate().execute(new HibernateCallback() {
+		} else {
+			galaxyTimeparam.setValue("" + galaxyTimer.getGalaxyDate().getTime());
 
-			@Override
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
-				SysParam galaxyTimeparam = getSysParamDao().findByKey("galaxyTime", null);
-				if (galaxyTimeparam == null) {
-					galaxyTimeparam = getSysParamDao().create("galaxyTime", "" + galaxyTimer.getGalaxyDate().getTime());
-
-				} else {
-					galaxyTimeparam.setValue("" + galaxyTimer.getGalaxyDate().getTime());
-
-				}
-				session.update(galaxyTimeparam);
-				session.flush();
-				session.close();
-				return null;
-			}
-		});
+		}
+		session.update(galaxyTimeparam);
+		session.flush();
+		return;
 
 	}
 
@@ -421,24 +394,18 @@ public class DatabaseConsistencyEnsurer extends HibernateDaoSupport {
 
 	public GalaxyTimer loadGalaxyTimer() {
 
-		GalaxyTimer galaxyTimer = (GalaxyTimer) getHibernateTemplate().execute(new HibernateCallback() {
+		SysParam galaxyTimeParam = new TxBracelet<SysParam>(sessionFactory, true) {
+			public SysParam doWork(Session session, org.hibernate.Transaction tx) {
 
-			@Override
-			public GalaxyTimer doInHibernate(Session session) throws HibernateException, SQLException {
 				SysParam galaxyTimeParam = getSysParamDao().findByKey("galaxyTime", null);
 				if (galaxyTimeParam == null)
 					galaxyTimeParam = getSysParamDao().create("galaxyTime",
 									"" + (System.currentTimeMillis() + HUNDRET_YEARS_MILLIS));
+				return galaxyTimeParam;
+			};
 
-				session.flush();
-				session.close();
+		}.execute();
 
-				return new GalaxyTimer(Long.valueOf(galaxyTimeParam.getValue()));
-
-			}
-
-		});
-
-		return galaxyTimer;
+		return new GalaxyTimer(Long.valueOf(galaxyTimeParam.getValue()));
 	}
 }

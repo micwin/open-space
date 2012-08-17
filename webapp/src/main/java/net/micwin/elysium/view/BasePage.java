@@ -249,7 +249,7 @@ public abstract class BasePage extends WebPage {
 	}
 
 	protected GalaxyTimer getGalaxyTimer() {
-		return ((ElysiumApplication) Application.get()).getGalaxyTimer();
+		return GalaxyTimer.get();
 	}
 
 	/**
