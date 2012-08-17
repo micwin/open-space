@@ -56,8 +56,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class UsePlanetaryGatePage extends BasePage {
 
-	@SpringBean
-	DaoManager daoManager;
 
 	@SuppressWarnings("rawtypes")
 	Form targetAdressForm = null;

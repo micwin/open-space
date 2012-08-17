@@ -11,11 +11,7 @@
 
 
 	<logger name="net.micwin.elysium">
-		<level value="DEBUG" />
-	</logger>
-
-	<logger name="net.micwin.elysium.dao">
-		<level value="WARN" />
+		<level value="INFO" />
 	</logger>
 
 	<root>
