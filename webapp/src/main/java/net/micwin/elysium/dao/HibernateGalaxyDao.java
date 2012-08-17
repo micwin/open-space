@@ -74,14 +74,13 @@ public class HibernateGalaxyDao extends ElysiumHibernateDaoSupport<Galaxy> imple
 		if (L.isDebugEnabled()) {
 			L.debug("looking for thinnest sector");
 		}
-		List<Sector> results = createQuery(" from Sector as sector order by sector.solarSystems.size asc limit 1")
-						.list();
+		List results = lookupHql("from Sector as sector order by sector.solarSystems.size asc limit 1");
 
 		if (L.isDebugEnabled() && results.size() < 1) {
 			L.debug("no thinnest sector present.");
 
 		}
-		return results.size() < 1 ? null : results.get(0);
+		return (Sector) (results.size() < 1 ? null : results.get(0));
 	}
 
 	@Override

@@ -66,21 +66,29 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> {
 	 */
 	public void update(final Iterable<T> elements, final boolean flush) {
 		for (T element : elements) {
-			update(element, false);
-		}
-
-		if (flush) {
-			flush();
+			update(element, flush);
 		}
 
 	}
 
 	protected List<T> lookupHql(final String hqlString) {
 
-		return new TxBracelet<List<T>>(sf, true) {
+		return new TxBracelet<List<T>>(sf) {
 
 			@Override
 			public List<T> doWork(Session session, Transaction tx) {
+				return session.createQuery(hqlString).list();
+			}
+		}.execute();
+
+	}
+
+	protected List lookupHqlBare(final String hqlString) {
+
+		return new TxBracelet<List>(sf) {
+
+			@Override
+			public List doWork(Session session, Transaction tx) {
 				return session.createQuery(hqlString).list();
 			}
 		}.execute();
@@ -95,7 +103,7 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> {
 	 */
 	public final void update(final T entity, boolean flush) {
 
-		new TxBracelet<T>(sf, true) {
+		new TxBracelet<T>(sf) {
 
 			@Override
 			public T doWork(Session session, Transaction tx) {
@@ -117,7 +125,7 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> {
 	 */
 	public final void update(final Object o, boolean flush) {
 
-		new TxBracelet<T>(sf, true) {
+		new TxBracelet<T>(sf) {
 
 			@Override
 			public T doWork(Session session, Transaction tx) {
@@ -135,13 +143,17 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> {
 	 *            the entity to be inserted.
 	 * @param flush
 	 */
-	public final void insert(final T entity, boolean flush) {
+	public final void insert(final T entity, final boolean flush) {
 
-		new TxBracelet<T>(sf, true) {
+		new TxBracelet<T>(sf) {
 
 			@Override
 			public T doWork(Session session, Transaction tx) {
 				session.save(entity);
+
+				if (flush) {
+					session.flush();
+				}
 				return null;
 			}
 		}.execute();
@@ -150,47 +162,51 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> {
 			L.debug("inserted entity '" + getEntityClass().getSimpleName() + "' (" + entity.getId() + ")");
 		}
 
-		if (flush) {
-			flush();
-		}
 		return;
 	}
 
 	public void delete(final T entity, boolean flush) {
-
-		new TxBracelet<T>(sf, true) {
+		new TxBracelet<T>(sf) {
 
 			@Override
 			public T doWork(Session session, Transaction tx) {
 				session.delete(entity);
 				session.evict(entity);
 				return null;
+
 			}
 		}.execute();
 
 	}
 
-	public final T loadById(Long id) {
-		return (T) sf.getCurrentSession().load(getEntityClass(), id);
+	public final T loadById(final Long id) {
+
+		return new TxBracelet<T>(sf) {
+
+			@Override
+			public T doWork(Session session, Transaction tx) {
+				return (T) session.load(getEntityClass(), id);
+			}
+		}.execute();
 
 	}
 
 	public abstract Class<T> getEntityClass();
 
-	/**
-	 * Flushes changes in memory to the db.
-	 */
-	public void flush() {
-		sf.getCurrentSession().flush();
-	}
-
 	public Collection<T> findByController(Avatar controller) {
 		return lookupHql("from " + getEntityClass().getSimpleName() + " where controller.id=" + controller.getId());
 	}
 
-	public T refresh(T entity) {
+	public T refresh(final T entity) {
 
-		sf.getCurrentSession().refresh(entity);
+		new TxBracelet<T>(sf) {
+
+			@Override
+			public T doWork(Session session, Transaction tx) {
+				session.refresh(entity);
+				return null;
+			}
+		}.execute();
 		return entity;
 	}
 
@@ -200,19 +216,19 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> {
 
 	public int countEntries() {
 
-		return new TxBracelet<Number>(sf, true) {
+		return new TxBracelet<Number>(sf) {
 
 			@Override
 			public Number doWork(Session session, Transaction tx) {
-				return ((Number) sf.getCurrentSession()
-								.createQuery("Select Count(*) From " + getEntityClass().getSimpleName()).uniqueResult());
+				return ((Number) session.createQuery("Select Count(*) From " + getEntityClass().getSimpleName())
+								.uniqueResult());
 			}
 		}.execute().intValue();
 
 	}
 
-	protected Query createQuery(String hql) {
-		return sf.getCurrentSession().createQuery(hql);
+	protected SessionFactory getSessionFactory() {
+		return sf;
 	}
 
 }

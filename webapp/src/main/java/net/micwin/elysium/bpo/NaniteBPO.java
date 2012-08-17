@@ -180,6 +180,7 @@ public class NaniteBPO extends BaseBPO {
 	 * @return
 	 */
 	public long countNanites(Avatar controller) {
+		getAvatarDao().refresh(controller);
 		long count = 0;
 		for (NaniteGroup group : controller.getNanites()) {
 			count += group.getNaniteCount();
@@ -253,8 +254,6 @@ public class NaniteBPO extends BaseBPO {
 	 */
 	public void attack(NaniteGroup attacker, NaniteGroup defender) {
 
-		flush();
-
 		// first - can they attack?
 		if (!canAttack(attacker, defender)) {
 
@@ -269,8 +268,6 @@ public class NaniteBPO extends BaseBPO {
 
 		attacker.raiseBattleCounter();
 		defender.raiseBattleCounter();
-
-		flush();
 
 		if (L.isDebugEnabled()) {
 			L.debug("damage effective done to defender : " + damageDoneToDefender);
@@ -303,8 +300,6 @@ public class NaniteBPO extends BaseBPO {
 			attacker.getController().raiseFragCount();
 			raiseUsage(attackingAvatar, Appliance.NANITE_CRITICAL_HIT, false);
 		}
-
-		flush();
 
 	}
 
@@ -340,10 +335,11 @@ public class NaniteBPO extends BaseBPO {
 						&& naniteGroup.getController().getNanites().size() == 1) {
 			// newbie protection
 			if (L.isDebugEnabled())
-				L.debug("engaging newbie protection  lvl < " + MAX_NOOB_LEVEL + " - last nanite group not killed and moved to elysium");
+				L.debug("engaging newbie protection  lvl < " + MAX_NOOB_LEVEL
+								+ " - last nanite group not killed and moved to elysium");
 			newCount = 1;
-			Gate elysiumGate = getGatesDao().findByGateAdress("elysium") ; 
-			naniteGroup.setPosition(elysiumGate.getPosition()) ; 
+			Gate elysiumGate = getGatesDao().findByGateAdress("elysium");
+			naniteGroup.setPosition(elysiumGate.getPosition());
 		}
 
 		if (newCount > 0) {

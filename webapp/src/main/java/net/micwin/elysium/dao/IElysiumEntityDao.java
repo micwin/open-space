@@ -89,11 +89,6 @@ public interface IElysiumEntityDao<T extends ElysiumEntity> {
 	public void update(Iterable<T> elements, boolean flush);
 
 	/**
-	 * Flushes changes in memory to the db.
-	 */
-	void flush();
-
-	/**
 	 * Query hits by a single string property value.
 	 * 
 	 * @param property

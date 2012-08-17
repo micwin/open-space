@@ -50,7 +50,9 @@ import net.micwin.elysium.entities.characters.User.Role;
 import net.micwin.elysium.entities.galaxy.Position;
 
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -131,17 +133,12 @@ public class HibernateAvatarDao extends ElysiumHibernateDaoSupport<Avatar> imple
 
 	@Override
 	public List<Avatar> findByRole(Role role) {
-		String queryString = "from " + Avatar.class.getSimpleName() + " where user.role=:role";
-		Query query = createQuery(queryString);
-		query.setParameter("role", role);
-
-		return query.list();
+		return lookupHql("from " + Avatar.class.getSimpleName() + " where user.role=" + role.ordinal());
 
 	}
 
 	@Override
 	public Collection<Avatar> loadAll() {
-		return createQuery("from " + Avatar.class.getSimpleName()).list();
+		return lookupHql("from " + Avatar.class.getSimpleName());
 	}
-
 }

@@ -38,7 +38,9 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
 				<prop key="hibernate.dialect">${database.dialect}</prop>
 				<prop key="hibernate.connection.pool_size">${database.poolSize}</prop>
-				<prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</prop> 
+				<prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory
+				</prop>
+				<prop key="hibernate.connection.release_mode">after_transaction</prop>
 				<prop key="hibernate.current_session_context_class">thread</prop>
 				<!-- prop key="hibernate.show_sql">${database.showSql}</prop -->
 				<prop key="hibernate.show_sql">false</prop>
@@ -116,11 +118,17 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 	<!-- =================================================== -->
 
 
-	<bean id="openSessionInViewFilter"
-		class="org.springframework.orm.hibernate3.support.OpenSessionInViewFilter">
-		<property name="flushMode" value="AUTO" />
-		<property name="singleSession" value="true" />
+	<!-- <bean id="openSessionInViewFilter" -->
+	<!-- class="org.springframework.orm.hibernate3.support.OpenSessionInViewFilter"> -->
+	<!-- <property name="flushMode" value="AUTO" /> -->
+	<!-- <property name="singleSession" value="true" /> -->
+	<!-- </bean> -->
+
+	<bean id="elysiumFilter" class="net.micwin.elysium.jee.ElysiumFilter">
+		<property name="sf" ref="sessionFactory" />
 	</bean>
+
+
 
 
 

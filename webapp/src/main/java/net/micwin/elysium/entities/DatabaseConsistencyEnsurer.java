@@ -183,10 +183,8 @@ public class DatabaseConsistencyEnsurer {
 
 			talents.add(scanning);
 			avatar.setTalents(talents);
-			getAvatarDao().update(avatar, false);
+			getAvatarDao().update(avatar, true);
 		}
-
-		getAvatarDao().flush();
 
 	}
 
@@ -302,7 +300,6 @@ public class DatabaseConsistencyEnsurer {
 				}
 			}
 
-			getGatesDao().flush();
 		}
 
 	}
@@ -325,7 +322,6 @@ public class DatabaseConsistencyEnsurer {
 		if (admin == null) {
 			L.info("admin missing - creating one ...");
 			admin = getUserDao().create("admin", "admin", State.ACTIVE, Role.ADMIN);
-			getUserDao().flush();
 		} else {
 			L.info("admin already present");
 		}
@@ -394,7 +390,7 @@ public class DatabaseConsistencyEnsurer {
 
 	public GalaxyTimer loadGalaxyTimer() {
 
-		SysParam galaxyTimeParam = new TxBracelet<SysParam>(sessionFactory, true) {
+		SysParam galaxyTimeParam = new TxBracelet<SysParam>(sessionFactory , true) {
 			public SysParam doWork(Session session, org.hibernate.Transaction tx) {
 
 				SysParam galaxyTimeParam = getSysParamDao().findByKey("galaxyTime", null);

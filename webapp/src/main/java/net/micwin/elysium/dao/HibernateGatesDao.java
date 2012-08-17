@@ -86,6 +86,6 @@ public class HibernateGatesDao extends ElysiumHibernateDaoSupport<Gate> implemen
 	public Collection<String> findPublicGateAdresses() {
 		String query = "select gateAdress from Gate where gateAdress not in (select homeGateAdress from Avatar)";
 
-		return createQuery(query).list();
+		return lookupHqlBare(query);
 	}
 }

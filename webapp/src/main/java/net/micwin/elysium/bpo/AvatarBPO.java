@@ -218,8 +218,9 @@ public class AvatarBPO extends BaseBPO {
 	 */
 	public boolean isAlive(Avatar avatar) {
 
-		if (avatar.getPersonality() == Race.NANITE)
-			return avatar.getNanites().size() > 0;
+		if (avatar.getPersonality() == Race.NANITE) {
+			return new NaniteBPO().countNanites(avatar) > 0;
+		}
 
 		throw new IllegalStateException("race '" + avatar.getPersonality() + "' not handled yet");
 	}
@@ -302,7 +303,6 @@ public class AvatarBPO extends BaseBPO {
 		}
 
 		getMessageBPO().send(IMessageEndpoint.BIOS, avatar, "du wurdest auf Stufe " + targetLevel + " erhoben.");
-		getTalentsDao().flush();
 		L.info("leveraging done.");
 	}
 
@@ -324,7 +324,7 @@ public class AvatarBPO extends BaseBPO {
 
 		NaniteGroup initialGroup = getNanitesDao().create(avatar.getPersonality().getInitialNanites(),
 						homeGate.getPosition());
-		initialGroup.setController(avatar) ; 
+		initialGroup.setController(avatar);
 		avatar.getNanites().add(initialGroup);
 
 		avatar.setArenaWins(0);

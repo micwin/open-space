@@ -140,12 +140,6 @@ public class BaseBPO {
 		return new MessageBPO();
 	}
 
-	/**
-	 * Flushes all data changes being cached in memory to the database.
-	 */
-	protected void flush() {
-		getSysParamDao().flush();
-	}
 
 	/**
 	 * Calculates the level based bonus / malus for the specified level

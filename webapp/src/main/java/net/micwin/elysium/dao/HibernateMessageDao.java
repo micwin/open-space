@@ -63,7 +63,7 @@ public class HibernateMessageDao extends ElysiumHibernateDaoSupport<Message> imp
 		query.append("from ").append(Message.class.getSimpleName());
 		query.append(" where senderID='").append(
 						endPoint.getEndPointId() + "' or receiverID = '" + endPoint.getEndPointId() + "'");
-		return createQuery(query.toString()).list();
+		return lookupHql(query.toString());
 	}
 
 	@Override
