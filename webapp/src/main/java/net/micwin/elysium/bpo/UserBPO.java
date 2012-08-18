@@ -130,12 +130,13 @@ public class UserBPO extends BaseBPO implements Serializable {
 		if (L.isDebugEnabled()) {
 			L.debug("logging in user '" + login + "'");
 		}
-		
+
 		User user = getUserDao().getUser(login, pass);
 		if (user == null) {
 			L.error("user '" + login + "' not logged in");
 			return null;
-		} else if (user.getState() != State.ACTIVE && user.getState() != State.IN_REGISTRATION) {
+		} else if (user.getState() != State.ACTIVE && user.getState() != State.IN_REGISTRATION
+						&& user.getState() != State.NPC) {
 			L.error("user '" + login + "' in state " + user.getState());
 			return null;
 		}

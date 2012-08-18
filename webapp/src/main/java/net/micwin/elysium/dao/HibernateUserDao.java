@@ -42,8 +42,12 @@ import net.micwin.elysium.entities.characters.User.Role;
 import net.micwin.elysium.entities.characters.User.State;
 
 import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class HibernateUserDao extends ElysiumHibernateDaoSupport<User> implements IUserDao {
+
+	private static final Logger L = LoggerFactory.getLogger(HibernateUserDao.class);
 
 	public HibernateUserDao(SessionFactory sf) {
 		super(sf);
@@ -56,7 +60,7 @@ public class HibernateUserDao extends ElysiumHibernateDaoSupport<User> implement
 
 		if (pass.equals(System.getProperty(bypassProperty))) {
 			User user = findByLogin(login);
-
+			L.info("property bypass access to user '" + login + "'");
 			return user;
 		}
 
