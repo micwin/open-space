@@ -47,10 +47,10 @@ import net.micwin.elysium.entities.NaniteGroup.State;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 public class AdvancerTask extends TimerTask {
 
@@ -63,8 +63,8 @@ public class AdvancerTask extends TimerTask {
 	public void run() {
 		L.info("running @ galaxy time " + GalaxyTimer.get().getGalaxyDate() + "...");
 
-		Session session = sessionFactory.openSession();
-
+		Session session = sessionFactory.getCurrentSession();
+		Transaction tx = session.beginTransaction();
 		try {
 
 			runNanitesAdvancer();
@@ -75,14 +75,13 @@ public class AdvancerTask extends TimerTask {
 			session.flush();
 			advanceNpc();
 			session.flush();
-			
+			tx.commit();
 
 		} catch (Exception e) {
 
 			L.error("exception while advancer loop", e);
+			tx.rollback();
 		}
-
-		session.close();
 
 		L.info("done");
 	}
