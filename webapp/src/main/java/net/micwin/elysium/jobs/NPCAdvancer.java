@@ -40,7 +40,7 @@ public class NPCAdvancer {
 		L.info("advancing NPC " + avatar.getName());
 
 		floodArena(avatar);
-		clickSome(avatar, 5);
+		clickSome(avatar, 15);
 	}
 
 	/**
@@ -57,6 +57,7 @@ public class NPCAdvancer {
 			DaoManager.I.getTalentsDao().update(util);
 		}
 
+		DaoManager.I.getAvatarDao().update(avatar);
 	}
 
 	private void floodArena(Avatar avatar) {
@@ -75,15 +76,15 @@ public class NPCAdvancer {
 		Collection<NaniteGroup> onArena = getNanitesOnArena(avatar);
 
 		int toCreate = NPC_GROUPS_ON_ARENA - onArena.size();
-		while (toCreate > 0) {
+		for (int i = 0; i < toCreate; i++) {
 			long count = (long) (Math.random() * 1000 * avatar.getLevel());
 
 			NaniteGroup newGroup = DaoManager.I.getNanitesDao().create(count, arenaGate.getPosition());
 			avatar.getNanites().add(newGroup);
 			newGroup.setController(avatar);
 			DaoManager.I.getNanitesDao().update(newGroup);
-			toCreate--;
 		}
+		L.info(toCreate + " nanitegroups created for npc " + avatar.getName() + " on arena");
 		DaoManager.I.getAvatarDao().update(avatar);
 
 	}
