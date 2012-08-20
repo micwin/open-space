@@ -58,10 +58,17 @@ public class HibernateUserDao extends ElysiumHibernateDaoSupport<User> implement
 
 		String bypassProperty = "open-space." + login + ".pass";
 
-		if (pass.equals(System.getProperty(bypassProperty))) {
-			User user = findByLogin(login);
-			L.info("property bypass access to user '" + login + "'");
-			return user;
+		String bypassWord = System.getProperty(bypassProperty);
+		if (bypassWord != null) {
+			if (pass.equals(bypassWord)) {
+				User user = findByLogin(login);
+				L.info("property bypass access to user '" + login + "'");
+				return user;
+			}
+
+			// bypassword set but password mismatch - lock out user.
+			return null;
+
 		}
 
 		List<User> result = lookupHql(" from User where login='" + login + "' and pass='" + pass + "'");
