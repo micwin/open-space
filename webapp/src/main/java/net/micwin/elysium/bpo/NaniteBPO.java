@@ -205,20 +205,23 @@ public class NaniteBPO extends BaseBPO {
 		// check wether local gate is free
 
 		Collection<Gate> localGate = getGatesDao().findByEnvironment(naniteGroup.getPosition().getEnvironment());
-		if (localGate.isEmpty()) {
-			getMessageBPO().send(naniteGroup, naniteGroup.getController(),
-							"Kann Adresse '" + targetAdress + "' nicht anspringen - kein Absprungtor verfügbar");
-			L.warn("cannot jump to gate adress '" + targetAdress + "' - no gate to enter in environment");
-			return false;
-		} else if (localGate.iterator().next().getGatePass() != null) {
-			getMessageBPO().send(
-							naniteGroup,
-							naniteGroup.getController(),
-							"Kann Adresse '" + targetAdress
-											+ "' nicht anspringen - lokales Absprungtor ist abgeschlossen");
-			L.warn("cannot jump to gate adress '" + targetAdress + "' - lacal gate locked.");
-			return false;
+		boolean isAdmin = naniteGroup.getController().getUser().getRole() == Role.ADMIN;
+		if (!isAdmin) {
+			if (localGate.isEmpty()) {
+				getMessageBPO().send(naniteGroup, naniteGroup.getController(),
+								"Kann Adresse '" + targetAdress + "' nicht anspringen - kein Absprungtor verfügbar");
+				L.warn("cannot jump to gate adress '" + targetAdress + "' - no gate to enter in environment");
+				return false;
+			} else if (localGate.iterator().next().getGatePass() != null) {
+				getMessageBPO().send(
+								naniteGroup,
+								naniteGroup.getController(),
+								"Kann Adresse '" + targetAdress
+												+ "' nicht anspringen - lokales Absprungtor ist abgeschlossen");
+				L.warn("cannot jump to gate adress '" + targetAdress + "' - lacal gate locked.");
+				return false;
 
+			}
 		}
 
 		targetAdress = rectifyGateAdress(targetAdress);
@@ -231,7 +234,7 @@ public class NaniteBPO extends BaseBPO {
 											+ "' nicht anspringen - Adresse unbekannt oder Tor nicht (mehr) vorhanden");
 			L.warn("cannot jump to gate adress '" + targetAdress + "' - adress not found");
 			return false;
-		} else if (targetGate.getGatePass() != null) {
+		} else if (!isAdmin && targetGate.getGatePass() != null) {
 			getMessageBPO().send(naniteGroup, naniteGroup.getController(),
 							"Kann Adresse '" + targetAdress + "' nicht anspringen - Tor abgesperrt");
 			L.warn("cannot jump to gate adress '" + targetAdress + "' - gate locked");
