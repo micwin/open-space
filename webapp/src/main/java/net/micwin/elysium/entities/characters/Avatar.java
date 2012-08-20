@@ -228,7 +228,7 @@ public class Avatar extends ElysiumEntity implements IMessageEndpoint {
 
 	public long getPoints() {
 
-		return getLevel() + getFragCount() - getDeathCount() +  arenaWins * POINTS_PER_ARENA_WIN;
+		return getLevel() - getDeathCount() + arenaWins * POINTS_PER_ARENA_WIN;
 
 	}
 
