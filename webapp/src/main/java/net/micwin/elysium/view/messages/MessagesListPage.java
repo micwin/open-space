@@ -5,12 +5,14 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.entities.messaging.Message;
 import net.micwin.elysium.view.BasePage;
 import net.micwin.elysium.view.ElysiumWicketModel;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RefreshingView;
 import org.apache.wicket.model.IModel;
@@ -58,6 +60,22 @@ public class MessagesListPage extends BasePage {
 				item.add(new Label("receiver", Model.of(message.getReceiverID())));
 				item.add(new Label("message", Model.of(message.getText())));
 				item.add(new Label("read", Model.of(message.getViewedDate() == null ? "*" : "")));
+				item.add((getDeleteLink(message, isAdmin())));
+			}
+
+			private Component getDeleteLink(Message message, boolean admin) {
+				if (!admin)
+					return createDummyLink("delete", false, false);
+				Link<Message> deleteLink = new Link<Message>("delete", ElysiumWicketModel.of(message)) {
+
+					@Override
+					public void onClick() {
+						DaoManager.I.getMessageDao().delete(getModelObject());
+						setResponsePage(MessagesListPage.class) ; 
+					}
+				};
+
+				return deleteLink;
 			}
 		};
 

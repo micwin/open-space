@@ -35,8 +35,6 @@ package net.micwin.elysium.dao;
 
  */
 
-import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import net.micwin.elysium.entities.messaging.Message;
@@ -65,5 +63,11 @@ public interface IMessageDao extends IElysiumEntityDao<Message> {
 	 */
 	void send(Message message);
 
+	/**
+	 * Deletes a message.
+	 * 
+	 * @param message
+	 */
+	void delete(Message message);
 
 }
