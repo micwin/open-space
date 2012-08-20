@@ -49,7 +49,6 @@ import net.micwin.elysium.entities.GalaxyTimer;
 import net.micwin.elysium.entities.appliances.Appliance;
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
-import net.micwin.elysium.messaging.IMessageEndpoint;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
