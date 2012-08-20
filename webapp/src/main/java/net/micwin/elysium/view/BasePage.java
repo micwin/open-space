@@ -170,11 +170,8 @@ public abstract class BasePage extends WebPage {
 	}
 
 	protected boolean isAdmin() {
-		if (getUser() == null) {
-			return false;
-		}
 
-		return getUser().getRole() == Role.ADMIN;
+		return getElysiumSession().isAdmin();
 	}
 
 	protected Avatar getAvatar() {
@@ -313,7 +310,6 @@ public abstract class BasePage extends WebPage {
 	 */
 	protected String getLocalizedMessage(String messageKey) {
 		return getLocalizer().getString(messageKey, this);
-
 	}
 
 }

@@ -41,6 +41,7 @@ import java.util.Map;
 
 import net.micwin.elysium.entities.ElysiumEntity;
 import net.micwin.elysium.entities.characters.User;
+import net.micwin.elysium.entities.characters.User.Role;
 
 import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.request.Request;
@@ -96,6 +97,13 @@ public class ElysiumSession extends WebSession {
 			L.debug("switching session from user '" + user + "' to user '" + newUser + "'");
 		}
 		user = newUser;
+
+		// We do it that way to ensure that a admin can use admin features when
+		// logging in as normal player. THere is no way of getting rid of this
+		// admin flag except letting the httpsession expire.
+		if (user != null && user.getRole() == Role.ADMIN) {
+			setAttribute("isAdmin", "true");
+		}
 
 	}
 
@@ -154,5 +162,9 @@ public class ElysiumSession extends WebSession {
 		user = null;
 		ctx.clear();
 		super.invalidate();
+	}
+
+	public boolean isAdmin() {
+		return "true".equals(getAttribute("isAdmin"));
 	}
 }
