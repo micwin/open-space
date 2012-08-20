@@ -1,5 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <html
-	xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd">
+	xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.5-strict.dtd"
+	xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
 <title>${title}</title>
@@ -46,30 +48,33 @@ neu anfangen.</p>
 	in dieser Gruppe zu verdoppeln, dann klicke auf "&lt;-&gt;" um die
 	aktuelle Gruppe aufzuteilen. Dabei wird eine zweite Gruppe am selben
 	Ort erstellt und die Naniten der ersten Gruppe auf beide verteilt.</li>
-</ul>
-<ul>
 	<li>Klicke nun so lange auf den Link "*2" *einer* Gruppe, bis der
 	Link verschwindet und diese Gruppe ihre Maximalgr&ouml;sse erreicht
 	hat.</li>
 	<li>Klicke dann auf den Link "--&gt;" in derselben Zeile, gib als
 	Zieladresse "arena" ein und klicke auf "Springen".</li>
-	<li>Suche dir im unteren Bereich einen angreifbaren Gegner (sichtbar an dem "A"-Link ganz rechts) und klicke auf "A". Mit ein bisschen Gkück lebst du jetzt noch und hast gerade deine ersten Kampferfahrungen gesammelt.</li>
+	<li>Suche dir im unteren Bereich einen angreifbaren Gegner
+	(sichtbar an dem "A"-Link ganz rechts) und klicke auf "A". Mit ein
+	bisschen Gl&uuml;ck lebst du jetzt noch und hast gerade deine ersten
+	Kampferfahrungen gesammelt.</li>
 </ul>
-<p>Gratulation! Du hast gerade eben die Grundz&uuml;ge des
+Gratulation! Du hast gerade eben die Grundz&uuml;ge des
 Naniten-Managements kennengelernt - Gruppengr&ouml;&szlig;e
-erh&ouml;hen, Gruppen aufteilen, Gruppen bewegen, angreifen. Und du hast soeben
-deinen ersten Subraumsprung get&auml;tigt! Wie du siehst geschieht die
-Bewegung durch das Subraum-Gate unmittelbar, d.h. du betrittst auf
-deinem Heimatplaneten das Subraumtor und verl&auml;sst es unmittelbar
-beim Ziel.</p>
-<p />
+erh&ouml;hen, Gruppen aufteilen, Gruppen bewegen, angreifen. Und du hast
+soeben deinen ersten Subraumsprung get&auml;tigt! Wie du siehst
+geschieht die Bewegung durch das Subraum-Gate unmittelbar, d.h. du
+betrittst auf deinem Heimatplaneten das Subraumtor und verl&auml;sst es
+unmittelbar beim Ziel. <br />
 <h1>Aspekte</h1>
-<h2>Elysium (Gate-Adresse "elysium")</h2>
+
+<h2>Elysium (Gate-Adresse <i>elysium</i>)</h2>
 Der Planet der Sicherheit. Hier hin werden alle Gruppen verfrachtet, die
 irgendwie durch die H&ouml;lle gegangern sind. Da man danach irgendwie
 ein bisschen seine Ruhe will, kann man auf dem Planeten nicht
 k&auml;mpfen.
-<h2>Die Arena</h2>
+
+<h2>Die Arena (Gate-Adresse <i>arena</i>)</h2>
+
 <p>Der Sinn und Zweck des Arena-Planeten ist es, zu k&auml;mpfen -
 wer hier her springt, dem ist klar, dass er angegriffen wird - du kannst
 also nach Belieben angreifen und wirst auch selbst angegriffen. Der
@@ -77,38 +82,40 @@ Arena-Planet besitzt eine kleine T&uuml;cke: sind 5 oder mehr Spieler
 anwesend, so wird der Planet abgeschlossen und erst dann wieder
 ge&ouml;ffnet, sobald sich nur noch eine einzelne Nanitengruppe auf dem
 Planeten befindet. Der &Uuml;berlebende bekommt einen Arena-Punkt, was
-ihm auf der Rangliste 10 Punkte einbringt. Anf&auml;nger-Schutz
-</h2>
-Damit &auml;ltere Spieler j&uuml;ngere Speiler nicht pl&auml;tten,
-besitzt open-space ein zweistufiges Anf&auml;nger-Schutzsystem:
+ihm auf der Rangliste 10 Punkte einbringt. Anf&auml;nger-Schutz. Damit
+&auml;ltere Spieler j&uuml;ngere Speiler nicht pl&auml;tten, besitzt
+open-space ein zweistufiges Anf&auml;nger-Schutzsystem:</p>
+
 <ul>
 	<li>Bis Stufe <span wicket:id="noobLevel" /> kannst du deine
 	letzte Gruppe nicht verlieren. Stirbt diese, so wird sie mit 1 Mitglied
 	auf den Elysium-Planeten verfrachtet.</li>
+
 	<li>Danach wird f&uuml;r jeden m&ouml;glichen Kampf ein sogen.
 	"Angriffsfenster" berechnet; es beginnt bei der H&auml;lfte der Stufe
 	des St&auml;rkeren und Endet beim Doppelten der Stufe des
 	Schw&auml;cheren; sind beide Kombattanten mit ihren Stufen in diesem
 	Fenster, so kann gek&auml;mpft werden.</li>
+
 </ul>
 
-Kleines Beispiel: Spieler A mit Stufe 13 kann SPieler B mit Stufe 50
-angreifen (und B verteidigt mit der vollen H&auml;rte seiner
+<p>Kleines Beispiel: Spieler A mit Stufe 13 kann SPieler B mit Stufe
+50 angreifen (und B verteidigt mit der vollen H&auml;rte seiner
 Schlagkraft). Hat SPieler A allerdings Stufe 20 erreicht und Spieler B
-stufe 73, so k&ouml;nnen sie sich nich tgegenseitig angreifen, da 20 * 2
-&lt; 73 und 73 / 2 &gt; 20. H&auml;tte Spieler A Stufe 40.
-<p />
-W&auml;re Spieler A unter der Noob-Grenze und Spieler B dar&uuml;ber
-(und seis auch nur um einen Punkt), dann k&ouml;nnen die beiden nicht
-miteinander k&auml;mpfen.
-<p />
-F&uuml;r blackw00d.AI gilt das &uuml;brigens nicht - er kann immer
-angegriffen werden - NPCs sind ja bekanntlich nicht so schnell beleidigt
-- muss sich seinerseits allerdings an die Noob-Grenze halten.<p/>
+stufe 73, so k&ouml;nnen sie sich nicht gegenseitig angreifen, da 20 * 2
+&lt; 73 und 73 / 2 &gt; 20.</p>
 
+<p>W&auml;re Spieler A unter der Noob-Grenze und Spieler B
+dar&uuml;ber (und seis auch nur um einen Punkt), dann k&ouml;nnen die
+beiden nicht miteinander k&auml;mpfen.</p>
+
+<p>F&uuml;r blackw00d.AI gilt das &uuml;brigens nicht - er kann
+immer angegriffen werden - NPCs sind ja bekanntlich nicht so schnell
+beleidigt - muss sich seinerseits allerdings an die Noob-Grenze halten.
+</p>
 
 <h2>Sterben und wiederbeleben</h2>
-Das Kollektive Bewusstsein eines Spielers ist eine KI - also im Kern ein
+<p>Das Kollektive Bewusstsein eines Spielers ist eine KI - also im Kern ein
 (&uuml;brigens recht simples) Computer-Programm, das so tut als ob es
 intelligent w&auml;re. Der Verbund aller Naniten eines Spielers sind der
 Computer, auf dem dieses KI-Programm ausgef&uuml;hrt wird. Wird die
@@ -116,7 +123,8 @@ letzte Nanitengruppe eines Spielers zerst&ouml;rt, verliert dieser
 Computer seinen letzten Prozessor und Speicher, und kann deshalb das
 KI-Programm nicht mehr ausf&uuml;hren. Das kollektive Bewusstsein des
 Spielers verschwindet - der Spieler ist tot.
-<p />
+</p>
+<p>
 Im Jahr Schlagmichtot allerdings hat ein Script-Kiddie das getan was
 Script-Kiddies so tun: sie basteln mit Viren und W&uuml;rmern und
 trojanischen Pferden rum und wie es halt so ist wenn du mit
@@ -132,28 +140,32 @@ jedenfalls wollte eigentlich seine Schule hacken (den Wurm hatte er auch
 dort programmiert). Und Herr Mastersson, der Informatik-Lehrer des
 Skript-Kiddies war so d&auml;mlich auf seinem Laptop eine Shell mit
 root-Rechten offen stehen zu lassen w&auml;hrend er in die Pinkelpause
-ging und so nahm das Übel seinen Lauf - bis hin zu besagtem, versteckten
+ging und so nahm das &Uuml;bel seinen Lauf - bis hin zu besagtem, versteckten
 und supergeheimen Rechenzentrum auf einem Planeten genannt "Elysium" -
-unbeschreiblich viele Kilometer weg von der Erde. <br />
+unbeschreiblich viele Kilometer weg von der Erde. </p>
 
-Stirbt ein Naniten-Bewusstsein, so aktiviert sich der Wurm, krallt sich irgendeinen der anwesenden Naniten, koppelt ihn aus seinem Verbund aus, l&auml;dt das soeben verstorbene Bewusstsein hoch
-und aktiviert dieses. Doch wie gesagt, das ist eine f&uuml;rchterliche
-Bastell&ouml;sung und darum geht bei jedem Wiederbelebungsversuch (der
-genau genommen ein Trojanerangriff ist) etwas verloren, und je
-h&auml;ufiger dasselbe Bewusstsein stirbt, desto mehr geht verloren.<p />
-Es w&auml;re wirklich n&uuml;tzlich wenn jemand mal dieses Rechenzentrum finden und disen nervigen Bug fixen w&uuml;rde.
+<p>Stirbt ein Naniten-Bewusstsein, so aktiviert sich der Wurm, krallt sich
+irgendeinen der anwesenden Naniten, koppelt ihn aus seinem Verbund aus,
+l&auml;dt das soeben verstorbene Bewusstsein hoch und aktiviert dieses.
+Doch wie gesagt, das ist eine f&uuml;rchterliche Bastell&ouml;sung und
+darum geht bei jedem Wiederbelebungsversuch (der genau genommen ein
+Trojanerangriff ist) etwas verloren, und je h&auml;ufiger dasselbe
+Bewusstsein stirbt, desto mehr geht verloren.
+</p><p>
+Es w&auml;re wirklich n&uuml;tzlich wenn jemand mal dieses Rechenzentrum
+finden und diesen nervigen Bug fixen w&uuml;rde...</p>
 
-<p />
 <h1>Katalog der Unterprogramme</h1>
-<p>n diesem Bereich findest du die Liste deiner Unterprogramme.
+<p>In diesem Bereich findest du die Liste deiner Unterprogramme.
 Unterprogramme sind kleine spezialisierte Computer-Programme, die von
 deinem Sch&ouml;pfer vor langer Zeit in dein kollektives Bewusstsein
 programmiert wurden um dir spezielle F&auml;higkeiten zu geben. und die
 "Naniten-Schadenskontrolle" schliesslich verleiht deinen Gruppen die
-F&auml;higkeit, w&auml;hrend eines Angriffs erhaltenen Schaden auf wenige deiner
-Naniten zu b&uuml;ndeln und so alle anderen der Gruppe zu sch&uuml;tzen. Die
-"Stufe" des Unterprogramms schliesslich bestimmt, wie gut dieses
-ausgebaut ist und wie stark der Effekt des Unterprogramms wirkt.</p>
+F&auml;higkeit, w&auml;hrend eines Angriffs erhaltenen Schaden auf
+wenige deiner Naniten zu b&uuml;ndeln und so alle anderen der Gruppe zu
+sch&uuml;tzen. Die "Stufe" des Unterprogramms schliesslich bestimmt, wie
+gut dieses ausgebaut ist und wie stark der Effekt des Unterprogramms
+wirkt.</p>
 <p>Die Unterprogramme verbessern sich im Laufe der Zeit je nachdem
 wie h&auml;ufig du sie einsetzt;</p>
 <h2>Naniten-Management</h2>
@@ -208,8 +220,8 @@ einen Optimierungspunkt f&uuml;r das Unterprogramm
 steigst du auf und machst ab sofort 10% mehr Schaden. Die Prozente
 multiplizieren sich und es wird die sp&auml;ter normal vorkommen, das
 zehnfache oder Hundertfache deines Basis-Schadenswerts (du erinnerst
-dich - 1/10 Punkt pro Nanit) auszuteilen.&lt;/p&gt;
-</p>
+dich - 1/10 Punkt pro Nanit) auszuteilen.
+
 <h2>Schadenskontrolle</h2>
 <p>Die Schadenskontrolle ist ein sehr trickreiches Unterprogramm.
 Wenn vorhanden, ordnen sich die Naniten w&auml;hrend eines Kampfs so um,
@@ -319,18 +331,29 @@ Listenansicht.
 Bei Klick auf das Schnellziel wird der Sprung unmittelbar
 ausgef&uuml;hrt; sollte das Ziel gerade nicht erreichbar sein, so wird
 der Sprung verweigert und eine Nachricht gesendet. Schnellsprungziele in
-<i>kursiver</i> Schrift weisen darauf hin, dass man sich zur Zeit auf exakt diesem Planeten befindet.<p />
-Bei Klick auf den Link "--&gt;" wird ein Dialog ge&ouml;ffnet und um eine anzuspringende Adresse gebeten;: dar&uuml;ber findet sich eine Liste von &ouml;ffentlichen Zielen, die ebenfalls betreten werden k&ouml;nnen.
+<i>kursiver</i> Schrift weisen darauf hin, dass man sich zur Zeit auf
+exakt diesem Planeten befindet.
+<p />
+Bei Klick auf den Link "--&gt;" wird ein Dialog ge&ouml;ffnet und um
+eine anzuspringende Adresse gebeten;: dar&uuml;ber findet sich eine
+Liste von &ouml;ffentlichen Zielen, die ebenfalls betreten werden
+k&ouml;nnen.
 
 <h1>Ziel des Spiels</h1>
-Das Ziel des Spiels ist es, erst mal ne Menge Spass zu haben, gegnerische Nanitengruppen zu pl&auml;tten, Geheimnisse herauszufinden und in der Rangliste ganz oben zu stehen.<p />
+Das Ziel des Spiels ist es, erst mal ne Menge Spass zu haben,
+gegnerische Nanitengruppen zu pl&auml;tten, Geheimnisse herauszufinden
+und in der Rangliste ganz oben zu stehen.
+<p />
 
 
 
 
 
 <h1>Die Rangliste</h1>
-Die Rangliste zeigt die Liste der Spieler in der Reihenfolge ihrer Stufe minus Anzahl der bereits erlittenen Tode, plus Frag-Count und plus Arena-Punkte an. Der Frag-Count ist der Z&auml;hler, wieviele gegnerische Gruppen ein Kollektiv schon erlegt hat. </span>
+Die Rangliste zeigt die Liste der Spieler in der Reihenfolge ihrer Stufe
+minus Anzahl der bereits erlittenen Tode, plus Frag-Count und plus
+Arena-Punkte an. Der Frag-Count ist der Z&auml;hler, wieviele
+gegnerische Gruppen ein Kollektiv schon erlegt hat. </span>
 
 
 </body>
