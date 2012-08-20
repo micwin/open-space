@@ -3,6 +3,7 @@ package net.micwin.elysium.jobs;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import net.micwin.elysium.bpo.NaniteBPO;
 import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.NaniteGroup.State;
@@ -40,24 +41,6 @@ public class NPCAdvancer {
 		L.info("advancing NPC " + avatar.getName());
 
 		floodArena(avatar);
-		clickSome(avatar, 15);
-	}
-
-	/**
-	 * Simulates some random clicking
-	 */
-	private void clickSome(Avatar avatar, int clickCount) {
-
-		LinkedList<Utilization> talents = new LinkedList<Utilization>(avatar.getTalents());
-
-		for (int i = 0; i < clickCount; i++) {
-			int index = (int) (Math.random() * talents.size());
-			Utilization util = talents.get(index);
-			util.raiseCount();
-			DaoManager.I.getTalentsDao().update(util);
-		}
-
-		DaoManager.I.getAvatarDao().update(avatar);
 	}
 
 	private void floodArena(Avatar avatar) {
