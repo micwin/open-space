@@ -33,7 +33,8 @@ package net.micwin.elysium.entities;
  Sie sollten eine Kopie der GNU Affero Public License zusammen mit diesem
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
- */import java.util.Date;
+ */import java.util.Collection;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -58,11 +59,74 @@ import net.micwin.elysium.messaging.IMessageEndpoint;
 @Entity
 public class NaniteGroup extends ElysiumEntity implements IMessageEndpoint {
 
+	/**
+	 * The mode how the group handles itself.
+	 * 
+	 * @author MicWin
+	 * 
+	 */
+	public enum GroupMode {
+		/**
+		 * A bunch of nanites, flying around, as to say, naked.
+		 */
+		CLOUD(0, 0, 0, 1);
+
+		private final int structurePoints;
+		private final int moduleSlots;
+		private final double signatureMultiplier;
+		private final int minLevel;
+
+		private GroupMode(int minLevel, int structurePoints, int moduleSlots, double signatureMultiplier) {
+			this.minLevel = minLevel;
+			this.structurePoints = structurePoints;
+			this.moduleSlots = moduleSlots;
+			this.signatureMultiplier = signatureMultiplier;
+
+		}
+
+		/**
+		 * The number of non-nanite-body-structure this group carried along.
+		 * 
+		 * @return
+		 */
+		public int getStructurePoints() {
+			return structurePoints;
+		}
+
+		/**
+		 * The number of modules a group of this mode can carry along.
+		 * 
+		 * @return
+		 */
+		public int getModuleSlots() {
+			return moduleSlots;
+		}
+
+		/**
+		 * The factor that signature rises when this mode is active.
+		 * 
+		 * @return
+		 */
+		public double getSignatureMultiplier() {
+			return signatureMultiplier;
+		}
+
+		/**
+		 * theminimum level an avatar must have to apply this mode to a group.
+		 * May loose levels and still keeps able to use such a group.
+		 * 
+		 * @return
+		 */
+		public int getMinLevel() {
+			return minLevel;
+		}
+	}
+
 	public enum State {
 
 		IDLE(1.0, 1.0, 1.0, 1.0, true, 1.0, true, true), ENTRENCHING(0.0, 0.0, 1.1, 0.5, false, 0.9, true, false), ENTRENCHED(
-						0.1, 0.1, 0.2, 10, false, 0.2, true, true), CREATING_COLOSSUS(0.0, 0.0, 1.1, 0.5, false, 1.1,
-						false, false);
+						0.1, 0.1, 0.2, 10, false, 0.2, true, true), UPGRADING(0.0, 0.0, 1.1, 0.5, false, 1.1, false,
+						false);
 
 		final double attackDamageFactor;
 		final double counterStrikeDamageFactor;
@@ -137,6 +201,9 @@ public class NaniteGroup extends ElysiumEntity implements IMessageEndpoint {
 	@Enumerated(EnumType.STRING)
 	private SupportMode supportMode = SupportMode.NONE;
 
+	@Enumerated(EnumType.STRING)
+	private GroupMode groupMode = GroupMode.CLOUD;
+
 	@Column
 	private State state = State.IDLE;
 
@@ -145,6 +212,9 @@ public class NaniteGroup extends ElysiumEntity implements IMessageEndpoint {
 
 	@Column(name = "battleCounter", nullable = false, columnDefinition = "int default 0")
 	private int battleCounter = 0;
+
+	@Column (name="structurePoints",columnDefinition="bigint default 0")
+	private long structurePoints = 0;
 
 	public void setPosition(Position position) {
 		this.position = position;
@@ -213,4 +283,21 @@ public class NaniteGroup extends ElysiumEntity implements IMessageEndpoint {
 	public String toString() {
 		return getName();
 	}
+
+	public GroupMode getGroupMode() {
+		return groupMode;
+	}
+
+	public GroupMode setGroupMode() {
+		return groupMode;
+	}
+
+	public void setStructurePoints(long structurePoints) {
+		this.structurePoints = structurePoints;
+	}
+
+	public long getStructurePoints() {
+		return structurePoints;
+	}
+
 }

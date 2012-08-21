@@ -44,8 +44,6 @@ import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.entities.GalaxyTimer;
 import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.NaniteGroup.State;
-import net.micwin.elysium.entities.colossus.Colossus;
-import net.micwin.elysium.entities.colossus.Colossus.ColossusState;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -89,56 +87,8 @@ public class AdvancerTask extends TimerTask {
 
 		int changeCount = advanceEntrenching();
 
-		changeCount += advanceBuildingColossus();
-
 		L.info(changeCount + " groups advanced");
 
-	}
-
-	private int advanceBuildingColossus() {
-
-		int changeCount = 0;
-
-		// advance colosusses in build
-		Collection<Colossus> colossuses = DaoManager.I.getColossusDao().findByState(ColossusState.BUILDING_REPAIRING);
-
-		L.info("advancing " + colossuses.size() + " colossuses");
-
-		for (Colossus colossus : colossuses) {
-			L.info("processing colossus " + colossus + " ...");
-			if (colossus.getStructurePoints() < colossus.getMaxStructurePoints()) {
-
-				long newStructurePoints = Math.min(colossus.getMaxStructurePoints(), colossus.getStructurePoints()
-								+ colossus.getMainetanceNanites());
-				colossus.setStructurePoints(newStructurePoints);
-				L.info("built / repaired colossus to " + newStructurePoints + " structure points");
-				changeCount++;
-			}
-
-			if (colossus.getStructurePoints() >= colossus.getMaxStructurePoints()) {
-
-				colossus.setState(ColossusState.ACTIVE);
-				new MessageBPO().send(colossus, colossus.getController(), "Koloss Stufe 1 einsatzbereit.");
-				DaoManager.I.getColossusDao().update(colossus);
-				changeCount++;
-			}
-
-		}
-
-		// convert groups to colosusses
-		Collection<NaniteGroup> creatingGroups = DaoManager.I.getNanitesDao().findByState(State.CREATING_COLOSSUS);
-
-		for (NaniteGroup naniteGroup : creatingGroups) {
-
-			Colossus colossus = DaoManager.I.getColossusDao().convert(naniteGroup);
-			new MessageBPO().send(naniteGroup, naniteGroup.getController(),
-							"Umbau zum Koloss Stufe 1 begonnen. Fertigstellung ca 1 Minute");
-			DaoManager.I.getNanitesDao().delete(naniteGroup);
-
-			changeCount++;
-		}
-
-		return changeCount;
 	}
 
 	private int advanceEntrenching() {

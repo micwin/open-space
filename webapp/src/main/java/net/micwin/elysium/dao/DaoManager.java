@@ -36,9 +36,6 @@ package net.micwin.elysium.dao;
  */
 import java.util.HashMap;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import net.micwin.elysium.entities.ElysiumEntity;
 import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.SysParam;
@@ -46,12 +43,13 @@ import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.Organization;
 import net.micwin.elysium.entities.characters.User;
-import net.micwin.elysium.entities.colossus.Colossus;
 import net.micwin.elysium.entities.engineering.BluePrint;
 import net.micwin.elysium.entities.engineering.BuildPlan;
 import net.micwin.elysium.entities.galaxy.Galaxy;
 import net.micwin.elysium.entities.gates.Gate;
 import net.micwin.elysium.entities.messaging.Message;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class DaoManager {
 
@@ -191,17 +189,4 @@ public class DaoManager {
 		checkDaoNotPresent(Message.class);
 		daoInstances.put(Message.class, msgDao);
 	}
-	
-	public IColossusDao getColossusDao() {
-		return (IColossusDao) getDao(Colossus.class);
-	}
-
-	@Autowired
-	public void setColossusDao(IColossusDao colossusDao) {
-		checkDaoNotPresent(Colossus.class);
-		daoInstances.put(Colossus.class, colossusDao);
-	}
-	
-	
-	
 }

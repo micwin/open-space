@@ -61,27 +61,6 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 			</props>
 		</property>
 		<property name="packagesToScan" value="net.micwin.elysium.entities" />
-		<!-- <property name="annotatedClasses"> -->
-		<!-- <list> -->
-		<!-- <value>net.micwin.elysium.entities.appliances.Utilization</value> -->
-		<!-- <value>net.micwin.elysium.entities.characters.Avatar</value> -->
-		<!-- <value>net.micwin.elysium.entities.characters.Organization</value> -->
-		<!-- <value>net.micwin.elysium.entities.characters.User</value> -->
-		<!-- <value>net.micwin.elysium.entities.ElysiumEntity</value> -->
-		<!-- <value>net.micwin.elysium.entities.galaxy.Environment</value> -->
-		<!-- <value>net.micwin.elysium.entities.galaxy.Planet</value> -->
-		<!-- <value>net.micwin.elysium.entities.galaxy.Sector</value> -->
-		<!-- <value>net.micwin.elysium.entities.galaxy.SolarSystem</value> -->
-		<!-- <value>net.micwin.elysium.entities.engineering.BluePrint</value> -->
-		<!-- <value>net.micwin.elysium.entities.SysParam</value> -->
-		<!-- <value>net.micwin.elysium.entities.engineering.BuildPlan</value> -->
-		<!-- <value>net.micwin.elysium.entities.engineering.Component</value> -->
-		<!-- <value>net.micwin.elysium.entities.NaniteGroup</value> -->
-		<!-- <value>net.micwin.elysium.entities.gates.Gate</value> -->
-		<!-- <value>net.micwin.elysium.entities.characters.Organization</value> -->
-		<!-- <value>net.micwin.elysium.entities.messaging.Message</value> -->
-		<!-- </list> -->
-		<!-- </property> -->
 	</bean>
 
 	<!-- =================================================== -->
@@ -134,10 +113,6 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 	</bean>
 
 	<bean id="messageDao" class="net.micwin.elysium.dao.HibernateMessageDao">
-		<constructor-arg ref="sessionFactory" />
-	</bean>
-	
-	<bean id="colossusDao" class="net.micwin.elysium.dao.HibernateColossusDao">
 		<constructor-arg ref="sessionFactory" />
 	</bean>
 	

@@ -41,9 +41,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
 
-import net.micwin.elysium.bpo.ColossusBPO;
 import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.User;
@@ -55,18 +53,12 @@ import net.micwin.elysium.view.ElysiumWicketModel;
 import net.micwin.elysium.view.jumpGates.UsePlanetaryGatePage;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.markup.repeater.DefaultItemReuseStrategy;
-import org.apache.wicket.markup.repeater.IItemReuseStrategy;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RefreshingView;
-import org.apache.wicket.markup.repeater.ReuseIfModelsEqualStrategy;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.util.SetModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -147,6 +139,8 @@ public class NaniteGroupListPage extends BasePage {
 				final NaniteGroup nanitesGroup = (NaniteGroup) naniteGroupModel.getObject();
 				item.add(new Label("groupId", Model.of(nanitesGroup.getId())));
 
+				item.add(new Label("groupMode", Model.of(nanitesGroup.getGroupMode())));
+
 				Position position = nanitesGroup.getPosition();
 				Gate gate = getGateBPO().getGateAt(position.getEnvironment());
 				String gateCode = gate.getGateAdress();
@@ -184,29 +178,6 @@ public class NaniteGroupListPage extends BasePage {
 				item.add(getSplitLink(naniteGroupModel));
 				item.add(getKillLink(naniteGroupModel));
 				item.add(getEntrenchLink(naniteGroupModel));
-				item.add(getCreateColossusLink(naniteGroupModel));
-
-			}
-
-			private Component getCreateColossusLink(final IModel<NaniteGroup> naniteGroupModel) {
-				Link<NaniteGroup> link = new Link<NaniteGroup>("createColossus") {
-
-					@Override
-					public void onClick() {
-						ColossusBPO bpo = new ColossusBPO();
-
-						if (!bpo.canBuildColossus(getAvatar())) {
-							error("cant build colossus any more");
-							return;
-						}
-
-						new ColossusBPO().createColossus(naniteGroupModel.getObject());
-						return;
-					}
-				};
-
-				link.setVisible(new ColossusBPO().canBuildColossus(naniteGroupModel.getObject()));
-				return link;
 			}
 
 			private Component getEntrenchLink(final IModel<NaniteGroup> naniteGroupModel) {

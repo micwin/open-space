@@ -173,7 +173,7 @@ public class NaniteBPO extends BaseBPO {
 		if (talent == null) {
 			return false;
 		}
-		return talent.getLevel() > avatar.getNanites().size() + DaoManager.I.getColossusDao().countByController(avatar);
+		return talent.getLevel() > avatar.getNanites().size();
 	}
 
 	/**
@@ -188,8 +188,6 @@ public class NaniteBPO extends BaseBPO {
 		for (NaniteGroup group : controller.getNanites()) {
 			count += group.getNaniteCount();
 		}
-
-		count += DaoManager.I.getColossusDao().countByController(controller);
 
 		return count;
 	}
