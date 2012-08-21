@@ -61,7 +61,8 @@ public class NaniteGroup extends ElysiumEntity implements IMessageEndpoint {
 	public enum State {
 
 		IDLE(1.0, 1.0, 1.0, 1.0, true, 1.0, true, true), ENTRENCHING(0.0, 0.0, 1.1, 0.5, false, 0.9, true, false), ENTRENCHED(
-						0.1, 0.1, 0.2, 10, false, 0.2, true, true);
+						0.1, 0.1, 0.2, 10, false, 0.2, true, true), CREATING_COLOSSUS(0.0, 0.0, 1.1, 0.5, false, 1.1,
+						false, false);
 
 		final double attackDamageFactor;
 		final double counterStrikeDamageFactor;
@@ -207,7 +208,7 @@ public class NaniteGroup extends ElysiumEntity implements IMessageEndpoint {
 	public String getEndPointId() {
 		return IMessageEndpoint.TYPE_NANITE_GROUP + getId();
 	}
-	
+
 	@Override
 	public String toString() {
 		return getName();

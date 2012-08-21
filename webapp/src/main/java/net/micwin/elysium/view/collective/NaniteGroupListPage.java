@@ -43,6 +43,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import net.micwin.elysium.bpo.ColossusBPO;
 import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.User;
@@ -183,7 +184,29 @@ public class NaniteGroupListPage extends BasePage {
 				item.add(getSplitLink(naniteGroupModel));
 				item.add(getKillLink(naniteGroupModel));
 				item.add(getEntrenchLink(naniteGroupModel));
+				item.add(getCreateColossusLink(naniteGroupModel));
 
+			}
+
+			private Component getCreateColossusLink(final IModel<NaniteGroup> naniteGroupModel) {
+				Link<NaniteGroup> link = new Link<NaniteGroup>("createColossus") {
+
+					@Override
+					public void onClick() {
+						ColossusBPO bpo = new ColossusBPO();
+
+						if (!bpo.canBuildColossus(getAvatar())) {
+							error("cant build colossus any more");
+							return;
+						}
+
+						new ColossusBPO().createColossus(naniteGroupModel.getObject());
+						return;
+					}
+				};
+
+				link.setVisible(new ColossusBPO().canBuildColossus(naniteGroupModel.getObject()));
+				return link;
 			}
 
 			private Component getEntrenchLink(final IModel<NaniteGroup> naniteGroupModel) {
@@ -268,6 +291,7 @@ public class NaniteGroupListPage extends BasePage {
 					@Override
 					public void onClick() {
 						getNanitesBPO().doubleCount(nanitesGroupModel.getObject());
+						setResponsePage(NaniteGroupListPage.class);
 					}
 				};
 				Avatar controller = nanitesGroupModel.getObject().getController();

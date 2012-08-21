@@ -237,4 +237,13 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> {
 		return sf;
 	}
 
+
+
+	public int countByController(Avatar controller) {
+		return ((Number) getSessionFactory()
+						.getCurrentSession()
+						.createQuery("select count(*) from " + getEntityClass().getSimpleName()
+										+ " where controller.id=" + controller.getId()).uniqueResult()).intValue();
+	}
+
 }

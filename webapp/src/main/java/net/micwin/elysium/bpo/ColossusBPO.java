@@ -1,6 +1,8 @@
 package net.micwin.elysium.bpo;
 
 import net.micwin.elysium.dao.DaoManager;
+import net.micwin.elysium.entities.NaniteGroup;
+import net.micwin.elysium.entities.NaniteGroup.State;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.User.Role;
 
@@ -33,5 +35,14 @@ public class ColossusBPO extends BaseBPO {
 		}
 
 		return false;
+	}
+
+	public boolean canBuildColossus(NaniteGroup group) {
+		return canBuildColossus(group.getController()) && group.getState() == State.IDLE;
+	}
+
+	public void createColossus(NaniteGroup group) {
+		group.setState(State.CREATING_COLOSSUS);
+
 	}
 }

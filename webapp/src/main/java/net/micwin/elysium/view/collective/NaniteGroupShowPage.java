@@ -96,7 +96,7 @@ public class NaniteGroupShowPage extends BasePage {
 	public Link<Gate> composeJumpLink(final ElysiumWicketModel<NaniteGroup> groupModel) {
 		Link<Gate> link = new Link<Gate>("jumpGate") {
 			public void onClick() {
-				getElysiumSession().setNamedEntity(NE_NANITE_GROUP, groupModel.getEntity());
+				getElysiumSession().setNamedEntity(NE_NANITE_GROUP, groupModel.getObject());
 				setResponsePage(UsePlanetaryGatePage.class);
 			};
 		};

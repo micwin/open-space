@@ -173,7 +173,7 @@ public class NaniteBPO extends BaseBPO {
 		if (talent == null) {
 			return false;
 		}
-		return talent.getLevel() >= avatar.getNanites().size();
+		return talent.getLevel() > avatar.getNanites().size() + DaoManager.I.getColossusDao().countByController(avatar);
 	}
 
 	/**
@@ -189,11 +189,13 @@ public class NaniteBPO extends BaseBPO {
 			count += group.getNaniteCount();
 		}
 
+		count += DaoManager.I.getColossusDao().countByController(controller);
+
 		return count;
 	}
 
 	/**
-	 * starts a planetary gate travel fport a group of nanites.
+	 * starts a planetary gate travel for a group of nanites.
 	 * 
 	 * @param naniteGroup
 	 * @param targetAdress

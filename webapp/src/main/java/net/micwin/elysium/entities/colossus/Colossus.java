@@ -7,7 +7,7 @@ import javax.persistence.Enumerated;
 
 import net.micwin.elysium.entities.ElysiumEntity;
 import net.micwin.elysium.entities.galaxy.Position;
-
+import net.micwin.elysium.messaging.IMessageEndpoint;
 
 /**
  * A colossus is a structure built out of immobile Nanites. Some can carry other
@@ -18,17 +18,23 @@ import net.micwin.elysium.entities.galaxy.Position;
  * 
  */
 @Entity
-public class Colossus extends ElysiumEntity {
+public class Colossus extends ElysiumEntity implements IMessageEndpoint {
 
 	public static enum ColossusState {
-		
+
 		BUILDING_REPAIRING, ACTIVE;
 	}
+
+	private static final double BASE_STRUCTURE_POINTS = 10000;
+
+	public static final long MIN_MAINETANCE_NANITES = 10000;
 
 	@Enumerated(EnumType.STRING)
 	private ColossusType colossusType;
 
-	private int colossusLevel;
+	private int colossusLevel = 1;
+
+	private int armorPoints = 0;
 
 	@Enumerated(EnumType.STRING)
 	private ColossusState state;
@@ -36,10 +42,12 @@ public class Colossus extends ElysiumEntity {
 	@Embedded
 	private Position position;
 
-	private long structurePoints ; 
+	private long structurePoints;
 
-	private long armorPoints ; 
-	
+	private int battleCounter;
+
+	private int mainetanceNanites;
+
 	@Override
 	public Class<Colossus> getBaseClass() {
 		return Colossus.class;
@@ -85,11 +93,37 @@ public class Colossus extends ElysiumEntity {
 		return structurePoints;
 	}
 
-	public void setArmorPoints(long armorPoints) {
+	public long getMaxStructurePoints() {
+		return (long) Math.pow(BASE_STRUCTURE_POINTS, colossusLevel);
+	}
+
+	@Override
+	public String getEndPointId() {
+		return "COL#" + getId();
+	}
+
+	public void setBattleCounter(int battleCounter) {
+
+		this.battleCounter = battleCounter;
+	}
+
+	public int getBattleCounter() {
+		return battleCounter;
+	}
+
+	public void setMainetanceNanites(int mainetanceNanites) {
+		this.mainetanceNanites = mainetanceNanites;
+	}
+
+	public int getMainetanceNanites() {
+		return mainetanceNanites;
+	}
+
+	public void setArmorPoints(int armorPoints) {
 		this.armorPoints = armorPoints;
 	}
 
-	public long getArmorPoints() {
+	public int getArmorPoints() {
 		return armorPoints;
 	}
 

@@ -44,6 +44,8 @@ import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.entities.GalaxyTimer;
 import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.NaniteGroup.State;
+import net.micwin.elysium.entities.colossus.Colossus;
+import net.micwin.elysium.entities.colossus.Colossus.ColossusState;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -61,66 +63,85 @@ public class AdvancerTask extends TimerTask {
 
 	@Override
 	public void run() {
+
 		L.info("running @ galaxy time " + GalaxyTimer.get().getGalaxyDate() + "...");
 
 		Session session = sessionFactory.getCurrentSession();
 		Transaction tx = session.beginTransaction();
+
 		try {
-
 			runNanitesAdvancer();
-			session.flush();
-			advanceArena();
-			session.flush();
-			reanalyzePublicGates();
-			session.flush();
-			advanceNpc();
-			session.flush();
+			new ArenaAdvancer().advance();
+			new PublicGatesAdvancer().advance();
+			new NPCAdvancer().advance();
+
 			tx.commit();
-
-		} catch (Exception e) {
-
-			L.error("exception while advancer loop", e);
-			tx.rollback();
+		} finally {
+			if (tx.isActive())
+				tx.rollback();
 		}
 
 		L.info("done");
 	}
 
-	private void advanceNpc() {
-		try {
-			new NPCAdvancer().advance();
-		} catch (Exception e) {
-			L.error("could not advance npcs", e);
-		}
-	}
-
-	/**
-	 * Retrieves all gates that are not home gates (any more) and publish them
-	 * into a sys property.
-	 */
-	private void reanalyzePublicGates() {
-		try {
-			new PublicGatesAdvancer().advance();
-		} catch (Exception e) {
-			L.error("could not advance public gates", e);
-		}
-	}
-
-	private void advanceArena() {
-		try {
-			new ArenaAdvancer().advance();
-		} catch (Exception e) {
-			L.error("could not advance arena", e);
-		}
-
-	}
-
 	private void runNanitesAdvancer() {
 		L.info("running nanites advancer ...");
 
-		org.hibernate.classic.Session currentSession = sessionFactory.getCurrentSession();
+		int changeCount = advanceEntrenching();
 
-		currentSession.getTransaction().begin();
+		changeCount += advanceBuildingColossus();
+
+		L.info(changeCount + " groups advanced");
+
+	}
+
+	private int advanceBuildingColossus() {
+
+		int changeCount = 0;
+
+		// advance colosusses in build
+		Collection<Colossus> colossuses = DaoManager.I.getColossusDao().findByState(ColossusState.BUILDING_REPAIRING);
+
+		L.info("advancing " + colossuses.size() + " colossuses");
+
+		for (Colossus colossus : colossuses) {
+			L.info("processing colossus " + colossus + " ...");
+			if (colossus.getStructurePoints() < colossus.getMaxStructurePoints()) {
+
+				long newStructurePoints = Math.min(colossus.getMaxStructurePoints(), colossus.getStructurePoints()
+								+ colossus.getMainetanceNanites());
+				colossus.setStructurePoints(newStructurePoints);
+				L.info("built / repaired colossus to " + newStructurePoints + " structure points");
+				changeCount++;
+			}
+
+			if (colossus.getStructurePoints() >= colossus.getMaxStructurePoints()) {
+
+				colossus.setState(ColossusState.ACTIVE);
+				new MessageBPO().send(colossus, colossus.getController(), "Koloss Stufe 1 einsatzbereit.");
+				DaoManager.I.getColossusDao().update(colossus);
+				changeCount++;
+			}
+
+		}
+
+		// convert groups to colosusses
+		Collection<NaniteGroup> creatingGroups = DaoManager.I.getNanitesDao().findByState(State.CREATING_COLOSSUS);
+
+		for (NaniteGroup naniteGroup : creatingGroups) {
+
+			Colossus colossus = DaoManager.I.getColossusDao().convert(naniteGroup);
+			new MessageBPO().send(naniteGroup, naniteGroup.getController(),
+							"Umbau zum Koloss Stufe 1 begonnen. Fertigstellung ca 1 Minute");
+			DaoManager.I.getNanitesDao().delete(naniteGroup);
+
+			changeCount++;
+		}
+
+		return changeCount;
+	}
+
+	private int advanceEntrenching() {
 
 		Collection<NaniteGroup> result = DaoManager.I.getNanitesDao().findByState(State.ENTRENCHING);
 		int changeCount = 0;
@@ -132,17 +153,12 @@ public class AdvancerTask extends TimerTask {
 
 			if (changedSomething) {
 				changeCount++;
-				currentSession.update(naniteGroup);
+				DaoManager.I.getNanitesDao().update(naniteGroup);
 			}
 
 		}
-		if (changeCount > 0) {
-			currentSession.flush();
-			currentSession.getTransaction().commit();
 
-		}
-
-		L.info(changeCount + " groups advanced");
+		return 0;
 	}
 
 	/**

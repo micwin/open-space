@@ -113,4 +113,12 @@ public interface IElysiumEntityDao<T extends ElysiumEntity> {
 	 */
 	int countEntries();
 
+	/**
+	 * Counts entries of this type that specified avatar controlls.
+	 * 
+	 * @param controller
+	 * @return
+	 */
+	int countByController(Avatar controller);
+
 }
