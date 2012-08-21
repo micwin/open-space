@@ -39,7 +39,9 @@ import java.util.Collection;
 import java.util.List;
 
 import net.micwin.elysium.entities.ElysiumEntity;
+import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.characters.Avatar;
+import net.micwin.elysium.entities.galaxy.Environment;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -209,6 +211,11 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> {
 		return entity;
 	}
 
+	public Collection<T> findByEnvironment(Environment environment) {
+		List<T> result = lookupHql(" from "+getEntityClass().getSimpleName()+" where position.environment.id=" + environment.getId());
+		return result;
+	}
+	
 	public Collection<T> findByStringProperty(String property, String value) {
 		return lookupHql("from " + getEntityClass().getSimpleName() + " where " + property + "='" + value + "'");
 	};

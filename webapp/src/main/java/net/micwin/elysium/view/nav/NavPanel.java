@@ -35,14 +35,16 @@ package net.micwin.elysium.view.nav;
 
  */
 
-import net.micwin.elysium.entities.messaging.Message;
+import net.micwin.elysium.bpo.ColossusBPO;
 import net.micwin.elysium.view.BasePanel;
+import net.micwin.elysium.view.collective.ColossusListPage;
 import net.micwin.elysium.view.collective.NaniteGroupListPage;
 import net.micwin.elysium.view.construction.ConstructionPage;
 import net.micwin.elysium.view.homepage.HomePage;
 import net.micwin.elysium.view.messages.MessagesListPage;
 import net.micwin.elysium.view.storyline.StoryLinePage;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 
 public class NavPanel extends BasePanel {
@@ -59,7 +61,18 @@ public class NavPanel extends BasePanel {
 		add(createGroupsLink());
 		add(createReplicationLink());
 		add(createMessagesLink());
+		add(createColosussedLink());
+	}
 
+	private Component createColosussedLink() {
+		BookmarkablePageLink<ColossusListPage> link = new BookmarkablePageLink<ColossusListPage>(
+						"colossusesListLink", ColossusListPage.class);
+
+		boolean visible = getAvatar() != null
+						&& (new ColossusBPO().countColossuses(getAvatar()) > 0 || new ColossusBPO()
+										.canBuildColossus(getAvatar()));
+		link.setVisible(visible);
+		return link;
 	}
 
 	protected BookmarkablePageLink<StoryLinePage> createStoryLineLink() {

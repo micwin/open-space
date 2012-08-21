@@ -21,13 +21,7 @@ public class HibernateGatesDao extends ElysiumHibernateDaoSupport<Gate> implemen
 
 	private static final Logger L = LoggerFactory.getLogger(HibernateGatesDao.class);
 
-	@Override
-	public Collection<Gate> findByEnvironment(Environment environment) {
-		List<Gate> resultSet = lookupHql(" from Gate where position.environment.id=" + environment.getId());
-
-		LinkedList<Gate> result = new LinkedList<Gate>(resultSet);
-		return result;
-	}
+	
 
 	@Override
 	public Class<Gate> getEntityClass() {

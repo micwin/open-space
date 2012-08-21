@@ -38,6 +38,7 @@ import java.util.Collection;
 
 import net.micwin.elysium.entities.ElysiumEntity;
 import net.micwin.elysium.entities.characters.Avatar;
+import net.micwin.elysium.entities.galaxy.Environment;
 
 public interface IElysiumEntityDao<T extends ElysiumEntity> {
 
@@ -97,6 +98,13 @@ public interface IElysiumEntityDao<T extends ElysiumEntity> {
 	 */
 	Collection<T> findByStringProperty(String property, String value);
 
+	/**
+	 * FInds all entities of this type that are in this environment.
+	 * 
+	 * @param envirinment
+	 * @return
+	 */
+	Collection<T> findByEnvironment(Environment environment);
 
 	/**
 	 * Returns the number of entries.

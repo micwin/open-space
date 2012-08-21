@@ -137,6 +137,10 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 		<constructor-arg ref="sessionFactory" />
 	</bean>
 	
+	<bean id="colossusDao" class="net.micwin.elysium.dao.HibernateColossusDao">
+		<constructor-arg ref="sessionFactory" />
+	</bean>
+	
 	<bean id="daoManager" class="net.micwin.elysium.dao.DaoManager" autowire="byName" />
 
 	<bean id="dbConsistencyEnsurer" class="net.micwin.elysium.entities.DatabaseConsistencyEnsurer" autowire="byName"/>

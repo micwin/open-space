@@ -46,6 +46,7 @@ import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.Organization;
 import net.micwin.elysium.entities.characters.User;
+import net.micwin.elysium.entities.colossus.Colossus;
 import net.micwin.elysium.entities.engineering.BluePrint;
 import net.micwin.elysium.entities.engineering.BuildPlan;
 import net.micwin.elysium.entities.galaxy.Galaxy;
@@ -190,4 +191,17 @@ public class DaoManager {
 		checkDaoNotPresent(Message.class);
 		daoInstances.put(Message.class, msgDao);
 	}
+	
+	public IColossusDao getColossusDao() {
+		return (IColossusDao) getDao(Colossus.class);
+	}
+
+	@Autowired
+	public void setColossusDao(IColossusDao colossusDao) {
+		checkDaoNotPresent(Colossus.class);
+		daoInstances.put(Colossus.class, colossusDao);
+	}
+	
+	
+	
 }
