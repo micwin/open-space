@@ -3,6 +3,7 @@ package net.micwin.elysium.entities;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 import net.micwin.elysium.bpo.AvatarBPO;
 import net.micwin.elysium.bpo.GalaxyBPO;
@@ -17,6 +18,7 @@ import net.micwin.elysium.dao.ISysParamDao;
 import net.micwin.elysium.dao.ITalentsDao;
 import net.micwin.elysium.dao.IUserDao;
 import net.micwin.elysium.dao.TxBracelet;
+import net.micwin.elysium.entities.NaniteGroup.GroupMode;
 import net.micwin.elysium.entities.appliances.Appliance;
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
@@ -32,8 +34,10 @@ import net.micwin.elysium.entities.galaxy.SolarSystem;
 import net.micwin.elysium.entities.gates.Gate;
 import net.micwin.elysium.jobs.NPCAdvancer;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.exception.SQLGrammarException;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,11 +94,31 @@ public class DatabaseConsistencyEnsurer {
 		createInitialDbEntries();
 		migrateToV2(session);
 		insertNPC();
+		setGroupMode();
 		clearOutGarbage();
 
 		session.getTransaction().commit();
 
 		L.info("closing session after data consistency check");
+	}
+
+	private void setGroupMode() {
+
+		TxBracelet txb = new TxBracelet(sessionFactory) {
+
+			@Override
+			public Object doWork(Session session, Transaction tx) {
+				List<NaniteGroup> list = session.createQuery(
+								"from " + NaniteGroup.class.getSimpleName() + " where groupMode is null").list();
+				for (NaniteGroup group : list) {
+					group.setGroupMode(GroupMode.CLOUD);
+					DaoManager.I.getNanitesDao().update(group);
+				}
+
+				return null;
+			}
+		};
+
 	}
 
 	/**

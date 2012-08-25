@@ -44,6 +44,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 
+import com.sun.istack.internal.NotNull;
+
 import net.micwin.elysium.entities.appliances.Appliance;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.galaxy.Position;
@@ -213,7 +215,7 @@ public class NaniteGroup extends ElysiumEntity implements IMessageEndpoint {
 	@Column(name = "battleCounter", nullable = false, columnDefinition = "int default 0")
 	private int battleCounter = 0;
 
-	@Column (name="structurePoints",columnDefinition="bigint default 0")
+	@Column(name = "structurePoints", columnDefinition = "bigint default 0")
 	private long structurePoints = 0;
 
 	public void setPosition(Position position) {
@@ -285,11 +287,14 @@ public class NaniteGroup extends ElysiumEntity implements IMessageEndpoint {
 	}
 
 	public GroupMode getGroupMode() {
+		if (groupMode == null) {
+			groupMode = GroupMode.CLOUD;
+		}
 		return groupMode;
 	}
 
-	public GroupMode setGroupMode() {
-		return groupMode;
+	public void setGroupMode(GroupMode mode) {
+		this.groupMode = mode;
 	}
 
 	public void setStructurePoints(long structurePoints) {
