@@ -104,7 +104,7 @@ public class DatabaseConsistencyEnsurer {
 
 	private void setGroupMode() {
 
-		TxBracelet txb = new TxBracelet(sessionFactory) {
+		new TxBracelet(sessionFactory) {
 
 			@Override
 			public Object doWork(Session session, Transaction tx) {
@@ -114,10 +114,12 @@ public class DatabaseConsistencyEnsurer {
 					group.setGroupMode(GroupMode.CLOUD);
 					DaoManager.I.getNanitesDao().update(group);
 				}
+				session.flush();
+				L.info(list.size() + " nanite group modes set");
 
 				return null;
 			}
-		};
+		}.execute();
 
 	}
 

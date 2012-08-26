@@ -287,9 +287,7 @@ public class NaniteGroup extends ElysiumEntity implements IMessageEndpoint {
 	}
 
 	public GroupMode getGroupMode() {
-		if (groupMode == null) {
-			groupMode = GroupMode.CLOUD;
-		}
+
 		return groupMode;
 	}
 
