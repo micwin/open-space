@@ -1,8 +1,8 @@
 package net.micwin.elysium.dao;
 
-import org.hibernate.SessionFactory;
-
 import net.micwin.elysium.entities.characters.Organization;
+
+import org.hibernate.SessionFactory;
 
 public class HibernateOrganizationDao extends ElysiumHibernateDaoSupport<Organization> implements IOrganizationDao {
 

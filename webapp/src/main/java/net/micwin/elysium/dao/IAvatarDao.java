@@ -37,7 +37,6 @@ package net.micwin.elysium.dao;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 
 import net.micwin.elysium.entities.NaniteGroup;

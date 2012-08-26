@@ -33,23 +33,15 @@ package net.micwin.elysium.entities;
  Sie sollten eine Kopie der GNU Affero Public License zusammen mit diesem
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
- */import java.util.Collection;
-import java.util.Date;
+ */import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
 
-import com.sun.istack.internal.NotNull;
-
-import net.micwin.elysium.entities.appliances.Appliance;
-import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.galaxy.Position;
-import net.micwin.elysium.entities.messaging.Message;
 import net.micwin.elysium.messaging.IMessageEndpoint;
 
 /**

@@ -1,20 +1,15 @@
 package net.micwin.elysium.view.messages;
 
-import javax.security.auth.callback.TextInputCallback;
+import net.micwin.elysium.entities.characters.Avatar;
+import net.micwin.elysium.messaging.IMessageEndpoint;
+import net.micwin.elysium.view.BasePage;
+import net.micwin.elysium.view.collective.NaniteGroupListPage;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
-
-import net.micwin.elysium.entities.NaniteGroup;
-import net.micwin.elysium.entities.characters.Avatar;
-import net.micwin.elysium.messaging.IMessageEndpoint;
-import net.micwin.elysium.view.BasePage;
-import net.micwin.elysium.view.collective.NaniteGroupListPage;
-import net.micwin.elysium.view.collective.NaniteGroupShowPage;
 
 public class MessageCreatePage extends BasePage {
 

@@ -38,7 +38,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import net.micwin.elysium.entities.ElysiumEntity;
-import net.micwin.elysium.messaging.IMessageEndpoint;
 
 @Entity
 public final class Organization extends ElysiumEntity {

@@ -36,13 +36,10 @@ package net.micwin.elysium.dao;
  */
 
 import java.util.Collection;
-import java.util.List;
 
 import net.micwin.elysium.entities.SysParam;
 
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.StatelessSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

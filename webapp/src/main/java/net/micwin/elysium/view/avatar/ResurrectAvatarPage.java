@@ -37,20 +37,16 @@ package net.micwin.elysium.view.avatar;
 
 import java.text.NumberFormat;
 
-import net.micwin.elysium.bpo.AvatarBPO;
-import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.Race;
 import net.micwin.elysium.view.BasePage;
 import net.micwin.elysium.view.homepage.HomePage;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RadioChoice;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.util.ListModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

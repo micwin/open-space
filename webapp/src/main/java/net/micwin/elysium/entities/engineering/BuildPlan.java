@@ -42,7 +42,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import net.micwin.elysium.entities.ElysiumEntity;
-import net.micwin.elysium.entities.characters.Avatar;
 
 @Entity
 public class BuildPlan extends ElysiumEntity {

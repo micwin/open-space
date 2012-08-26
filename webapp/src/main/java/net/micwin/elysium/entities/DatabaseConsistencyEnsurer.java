@@ -13,7 +13,6 @@ import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.dao.IAvatarDao;
 import net.micwin.elysium.dao.IGalaxyDao;
 import net.micwin.elysium.dao.IGatesDao;
-import net.micwin.elysium.dao.IMessageDao;
 import net.micwin.elysium.dao.ISysParamDao;
 import net.micwin.elysium.dao.ITalentsDao;
 import net.micwin.elysium.dao.IUserDao;
@@ -34,13 +33,11 @@ import net.micwin.elysium.entities.galaxy.SolarSystem;
 import net.micwin.elysium.entities.gates.Gate;
 import net.micwin.elysium.jobs.NPCAdvancer;
 
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.exception.SQLGrammarException;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**

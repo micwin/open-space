@@ -5,8 +5,6 @@ import java.util.List;
 
 import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.entities.ElysiumEntity;
-import net.micwin.elysium.entities.characters.Avatar;
-import net.micwin.elysium.entities.messaging.Message;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;

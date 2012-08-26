@@ -36,7 +36,6 @@ package net.micwin.elysium.entities.galaxy;
  */
 import javax.persistence.Embedded;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
 
 import net.micwin.elysium.entities.ElysiumEntity;
 

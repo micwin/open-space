@@ -3,11 +3,9 @@ package net.micwin.elysium.jobs;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import net.micwin.elysium.bpo.NaniteBPO;
 import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.NaniteGroup.State;
-import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.User;
 import net.micwin.elysium.entities.gates.Gate;

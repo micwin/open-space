@@ -4,10 +4,10 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.hibernate.SessionFactory;
-
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Race;
+
+import org.hibernate.SessionFactory;
 
 public class HibernateTalentsDao extends ElysiumHibernateDaoSupport<Utilization> implements ITalentsDao {
 

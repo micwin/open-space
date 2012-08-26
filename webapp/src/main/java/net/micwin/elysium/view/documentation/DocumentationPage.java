@@ -2,12 +2,12 @@ package net.micwin.elysium.view.documentation;
 
 import java.text.NumberFormat;
 
-import org.apache.wicket.markup.html.basic.Label;
-
 import net.micwin.elysium.bpo.NaniteBPO;
 import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.NaniteGroup.State;
 import net.micwin.elysium.view.BasePage;
+
+import org.apache.wicket.markup.html.basic.Label;
 
 public class DocumentationPage extends BasePage {
 

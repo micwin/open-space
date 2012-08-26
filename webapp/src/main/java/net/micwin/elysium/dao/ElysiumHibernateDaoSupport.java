@@ -39,7 +39,6 @@ import java.util.Collection;
 import java.util.List;
 
 import net.micwin.elysium.entities.ElysiumEntity;
-import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.galaxy.Environment;
 
@@ -48,7 +47,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Transactional;
 
 public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> {
 

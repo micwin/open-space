@@ -3,7 +3,6 @@ package net.micwin.elysium.bpo;
 import java.util.Date;
 import java.util.List;
 
-import net.micwin.elysium.entities.GalaxyTimer;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.messaging.Message;
 import net.micwin.elysium.messaging.IMessageEndpoint;

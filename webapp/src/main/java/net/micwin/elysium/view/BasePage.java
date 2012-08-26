@@ -46,7 +46,6 @@ import net.micwin.elysium.entities.ElysiumEntity;
 import net.micwin.elysium.entities.GalaxyTimer;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.User;
-import net.micwin.elysium.entities.characters.User.Role;
 import net.micwin.elysium.view.avatar.CreateAvatarPage;
 import net.micwin.elysium.view.avatar.ResurrectAvatarPage;
 import net.micwin.elysium.view.border.ElysiumBorder;

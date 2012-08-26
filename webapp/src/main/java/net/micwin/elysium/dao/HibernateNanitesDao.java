@@ -3,13 +3,12 @@ package net.micwin.elysium.dao;
 import java.util.Collection;
 import java.util.List;
 
-import org.hibernate.SessionFactory;
-
 import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.NaniteGroup.State;
 import net.micwin.elysium.entities.galaxy.Environment;
 import net.micwin.elysium.entities.galaxy.Position;
-import net.micwin.elysium.entities.gates.Gate;
+
+import org.hibernate.SessionFactory;
 
 /*
  (c) 2012 micwin.net

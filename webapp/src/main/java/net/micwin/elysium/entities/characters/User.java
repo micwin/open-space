@@ -43,7 +43,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
-import net.micwin.elysium.bpo.MessageBPO;
 import net.micwin.elysium.entities.ElysiumEntity;
 import net.micwin.elysium.messaging.IMessageEndpoint;
 

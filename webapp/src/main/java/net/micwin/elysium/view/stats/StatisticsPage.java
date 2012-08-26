@@ -2,7 +2,6 @@ package net.micwin.elysium.view.stats;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;

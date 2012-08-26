@@ -1,9 +1,9 @@
 package net.micwin.elysium.view.storyline.nanite;
 
-import org.apache.wicket.markup.html.basic.Label;
-
 import net.micwin.elysium.view.storyline.StoryLineItem;
 import net.micwin.elysium.view.storyline.StoryLineItemPage;
+
+import org.apache.wicket.markup.html.basic.Label;
 
 public class BootingPage extends StoryLineItemPage {
 

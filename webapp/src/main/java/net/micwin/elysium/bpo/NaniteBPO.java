@@ -16,7 +16,6 @@ import net.micwin.elysium.entities.gates.Gate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Transactional;
 
 /*
  (c) 2012 micwin.net

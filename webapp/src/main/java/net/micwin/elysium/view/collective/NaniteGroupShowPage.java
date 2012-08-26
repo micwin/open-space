@@ -5,17 +5,12 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ResourceBundle;
 
-import net.micwin.elysium.bpo.BaseBPO;
 import net.micwin.elysium.bpo.GateBPO;
 import net.micwin.elysium.entities.NaniteGroup;
-import net.micwin.elysium.entities.NaniteGroup.State;
-import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.galaxy.Position;
 import net.micwin.elysium.entities.gates.Gate;

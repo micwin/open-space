@@ -37,8 +37,6 @@ package net.micwin.elysium.view;
 
 import java.util.Date;
 
-import net.micwin.elysium.dao.DaoManager;
-import net.micwin.elysium.entities.DatabaseConsistencyEnsurer;
 import net.micwin.elysium.view.welcome.WelcomePage;
 
 import org.apache.wicket.Page;
