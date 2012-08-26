@@ -55,7 +55,9 @@ public class NaniteGroupShowPage extends BasePage {
 		NaniteGroup group = getElysiumSession().getNamedEntity(NE_NANITE_GROUP);
 		final ElysiumWicketModel<NaniteGroup> groupModel = new ElysiumWicketModel<NaniteGroup>(group);
 		addToContentBody(new Label("groupId", "" + group.getId()));
-		addToContentBody(new Label("groupMode", "" + group.getGroupMode()));
+		
+		getLocalizedMessage("groupMode."+group.getGroupMode()) ; 
+		addToContentBody(new Label("groupMode", getLocalizedMessage("groupMode."+group.getGroupMode())));
 
 		addToContentBody(new Label("groupPosition", "" + group.getPosition().getEnvironment()));
 
