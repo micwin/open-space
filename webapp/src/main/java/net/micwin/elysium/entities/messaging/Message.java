@@ -18,9 +18,29 @@ public class Message extends ElysiumEntity {
 
 	private String text;
 
+	/**
+	 * The local mailbox this message is in.
+	 */
+	private String mailBox;
+
 	@Override
 	public Class getBaseClass() {
 		return Message.class;
+	}
+
+	public Message copy(boolean alsoCopyId) {
+
+		Message copy = new Message();
+
+		if (alsoCopyId)
+			copy.setId(getId());
+		copy.senderID = senderID;
+		copy.receiverID = receiverID;
+		copy.text = text;
+		copy.viewedDate = viewedDate;
+		copy.date = date;
+
+		return copy;
 	}
 
 	public void setViewedDate(Date viewDate) {
@@ -61,6 +81,14 @@ public class Message extends ElysiumEntity {
 
 	public void setText(String text) {
 		this.text = text;
+	}
+
+	public void setMailBox(String endPointId) {
+		this.mailBox = endPointId;
+	}
+
+	public String getMailBox() {
+		return this.mailBox;
 	}
 
 }

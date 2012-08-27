@@ -37,6 +37,7 @@ package net.micwin.elysium.dao;
 import java.util.Collection;
 
 import net.micwin.elysium.entities.ElysiumEntity;
+import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.galaxy.Environment;
 
@@ -120,5 +121,14 @@ public interface IElysiumEntityDao<T extends ElysiumEntity> {
 	 * @return
 	 */
 	int countByController(Avatar controller);
+
+	/**
+	 * Returns all entities of controller in environment.
+	 * 
+	 * @param controller
+	 * @param environment
+	 * @return
+	 */
+	Collection<T> findBy(Avatar controller, Environment environment);
 
 }

@@ -36,12 +36,12 @@ package net.micwin.elysium.jobs;
  */
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.TimerTask;
 
 import net.micwin.elysium.bpo.MessageBPO;
 import net.micwin.elysium.dao.DaoManager;
-import net.micwin.elysium.entities.GalaxyTimer;
 import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.NaniteGroup.State;
 
@@ -62,7 +62,7 @@ public class AdvancerTask extends TimerTask {
 	@Override
 	public void run() {
 
-		L.info("running @ galaxy time " + GalaxyTimer.get().getGalaxyDate() + "...");
+		L.info("running @ " + new Date() + "...");
 
 		Session session = sessionFactory.getCurrentSession();
 		Transaction tx = session.beginTransaction();
@@ -123,7 +123,7 @@ public class AdvancerTask extends TimerTask {
 			return false;
 		}
 
-		if (naniteGroup.getStateEndGT().before(GalaxyTimer.get().getGalaxyDate())) {
+		if (naniteGroup.getStateEndGT().before(new Date())) {
 			naniteGroup.setStateEndGT(null);
 			naniteGroup.setState(State.ENTRENCHED);
 			new MessageBPO().send(naniteGroup, naniteGroup.getController(), "Eingraben beendet.");

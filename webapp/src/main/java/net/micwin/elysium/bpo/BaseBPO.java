@@ -45,7 +45,6 @@ import net.micwin.elysium.dao.INanitesDao;
 import net.micwin.elysium.dao.ISysParamDao;
 import net.micwin.elysium.dao.ITalentsDao;
 import net.micwin.elysium.dao.IUserDao;
-import net.micwin.elysium.entities.GalaxyTimer;
 import net.micwin.elysium.entities.appliances.Appliance;
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
@@ -73,10 +72,6 @@ public class BaseBPO {
 
 	public ISysParamDao getSysParamDao() {
 		return getDaoManager().getSysParamDao();
-	}
-
-	public GalaxyTimer getGalaxyTimer() {
-		return GalaxyTimer.get();
 	}
 
 	public IGalaxyDao getGalaxyDao() {

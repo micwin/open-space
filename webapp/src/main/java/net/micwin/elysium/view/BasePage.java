@@ -43,7 +43,6 @@ import net.micwin.elysium.bpo.MessageBPO;
 import net.micwin.elysium.bpo.NaniteBPO;
 import net.micwin.elysium.bpo.ScannerBPO;
 import net.micwin.elysium.entities.ElysiumEntity;
-import net.micwin.elysium.entities.GalaxyTimer;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.User;
 import net.micwin.elysium.view.avatar.CreateAvatarPage;
@@ -239,10 +238,6 @@ public abstract class BasePage extends WebPage {
 			throw new RestartResponseException(EntityNotAccessiblePage.class);
 		}
 
-	}
-
-	protected GalaxyTimer getGalaxyTimer() {
-		return GalaxyTimer.get();
 	}
 
 	/**

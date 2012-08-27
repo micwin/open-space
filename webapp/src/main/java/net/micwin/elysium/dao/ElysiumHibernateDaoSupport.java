@@ -36,12 +36,15 @@ package net.micwin.elysium.dao;
  */
 
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 import net.micwin.elysium.entities.ElysiumEntity;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.galaxy.Environment;
 
+import org.hibernate.ObjectNotFoundException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -76,7 +79,15 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> {
 
 			@Override
 			public List<T> doWork(Session session, Transaction tx) {
-				return session.createQuery(hqlString).list();
+				try {
+					List<T> result = session.createQuery(hqlString).list();
+					return result;
+				} catch (ObjectNotFoundException onfe) {
+					if (L.isDebugEnabled()) {
+						L.debug("no hits for hsql-string " + hqlString);
+					}
+					return new LinkedList<T>();
+				}
 			}
 		}.execute();
 
@@ -91,7 +102,6 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> {
 				return session.createQuery(hqlString).list();
 			}
 		}.execute();
-
 	}
 
 	/**
@@ -210,10 +220,11 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> {
 	}
 
 	public Collection<T> findByEnvironment(Environment environment) {
-		List<T> result = lookupHql(" from "+getEntityClass().getSimpleName()+" where position.environment.id=" + environment.getId());
+		List<T> result = lookupHql(" from " + getEntityClass().getSimpleName() + " where position.environment.id="
+						+ environment.getId());
 		return result;
 	}
-	
+
 	public Collection<T> findByStringProperty(String property, String value) {
 		return lookupHql("from " + getEntityClass().getSimpleName() + " where " + property + "='" + value + "'");
 	};
@@ -235,13 +246,19 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> {
 		return sf;
 	}
 
-
-
 	public int countByController(Avatar controller) {
 		return ((Number) getSessionFactory()
 						.getCurrentSession()
 						.createQuery("select count(*) from " + getEntityClass().getSimpleName()
 										+ " where controller.id=" + controller.getId()).uniqueResult()).intValue();
+	}
+
+	public Collection<T> findBy(Avatar controller, Environment environment) {
+		Query query = getSessionFactory().getCurrentSession().createQuery(
+						" from " + getEntityClass().getSimpleName() + " where controller.id=" + controller.getId()
+										+ " and position.environment.id=" + environment.getId());
+		return query.list();
+
 	}
 
 }

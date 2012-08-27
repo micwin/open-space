@@ -36,6 +36,7 @@ package net.micwin.elysium.dao;
  */
 import java.util.List;
 
+import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.messaging.Message;
 import net.micwin.elysium.messaging.IMessageEndpoint;
 
@@ -61,14 +62,21 @@ public class HibernateMessageDao extends ElysiumHibernateDaoSupport<Message> imp
 
 		StringBuffer query = new StringBuffer();
 		query.append("from ").append(Message.class.getSimpleName());
-		query.append(" where senderID='").append(
-						endPoint.getEndPointId() + "' or receiverID = '" + endPoint.getEndPointId() + "'");
+		query.append(" where mailBox='").append(endPoint.getEndPointId() + "'");
 		return lookupHql(query.toString());
 	}
 
 	@Override
 	public void send(Message message) {
 		update(message);
+	}
+
+	@Override
+	public boolean hasNewMessages(Avatar avatar) {
+		String query = " from " + Message.class.getSimpleName() + " where viewedDate is null and mailBox='"
+						+ avatar.getEndPointId() + "'";
+
+		return lookupHql(query).size() > 0;
 	}
 
 }

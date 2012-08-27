@@ -112,18 +112,12 @@ public class AvatarBPO extends BaseBPO {
 			position = elysiumGate.getPosition();
 		}
 
-		GregorianCalendar cal = new GregorianCalendar();
-		cal.setTime(getGalaxyTimer().getGalaxyDate());
-		cal.roll(Calendar.YEAR, -25);
-
-		Date birthDate = cal.getTime();
-
 		Collection<NaniteGroup> nanites = new LinkedList<NaniteGroup>();
 		NaniteGroup initialNanitesGroup = getNanitesDao().create(race.getInitialNanites(), position);
 
 		nanites.add(initialNanitesGroup);
 
-		Avatar avatar = getAvatarDao().create(user, name, race, talentsList, position, birthDate, nanites);
+		Avatar avatar = getAvatarDao().create(user, name, race, talentsList, position, new Date(), nanites);
 		avatar.setUser(user);
 
 		initialNanitesGroup.setController(avatar);

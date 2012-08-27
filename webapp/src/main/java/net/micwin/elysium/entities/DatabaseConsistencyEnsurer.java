@@ -85,18 +85,31 @@ public class DatabaseConsistencyEnsurer {
 
 		session.beginTransaction();
 
-		loadGalaxyTimer();
-
 		loadDbVersion();
 		createInitialDbEntries();
 		migrateToV2(session);
 		insertNPC();
 		setGroupMode();
+		correctMessages();
 		clearOutGarbage();
 
 		session.getTransaction().commit();
 
 		L.info("closing session after data consistency check");
+	}
+
+	private void correctMessages() {
+
+		Integer count = new TxBracelet<Integer>(sessionFactory) {
+
+			@Override
+			public Integer doWork(Session session, Transaction tx) {
+				return session.createQuery("update Message set mailBox=receiverID where mailbox is null")
+								.executeUpdate();
+			}
+		}.execute();
+
+		L.info(count + " message mailboxes set to receiverId");
 	}
 
 	private void setGroupMode() {
@@ -424,37 +437,8 @@ public class DatabaseConsistencyEnsurer {
 		return DaoManager.I.getUserDao();
 	}
 
-	public void update(final GalaxyTimer galaxyTimer) {
-		Session session = sessionFactory.getCurrentSession();
-		SysParam galaxyTimeparam = getSysParamDao().findByKey("galaxyTime", null);
-		if (galaxyTimeparam == null) {
-			galaxyTimeparam = getSysParamDao().create("galaxyTime", "" + galaxyTimer.getGalaxyDate().getTime());
-
-		} else {
-			galaxyTimeparam.setValue("" + galaxyTimer.getGalaxyDate().getTime());
-
-		}
-		session.update(galaxyTimeparam);
-		session.flush();
-		return;
-
-	}
-
 	private ISysParamDao getSysParamDao() {
 		return DaoManager.I.getSysParamDao();
-	}
-
-	public GalaxyTimer loadGalaxyTimer() {
-
-		SysParam galaxyTimeParam = getSysParamDao().findByKey("galaxyTime", null);
-		if (galaxyTimeParam == null)
-			galaxyTimeParam = getSysParamDao().create("galaxyTime",
-							"" + (System.currentTimeMillis() + HUNDRET_YEARS_MILLIS));
-
-		GalaxyTimer galaxyTimer = new GalaxyTimer(Long.valueOf(galaxyTimeParam.getValue()));
-		GalaxyTimer.set(galaxyTimer);
-
-		return galaxyTimer;
 	}
 
 	public void setSessionFactory(SessionFactory sessionFactory) {

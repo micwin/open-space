@@ -35,6 +35,8 @@ package net.micwin.elysium.view.nav;
 
  */
 
+import net.micwin.elysium.bpo.MessageBPO;
+import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.view.BasePanel;
 import net.micwin.elysium.view.collective.NaniteGroupListPage;
 import net.micwin.elysium.view.construction.ConstructionPage;
@@ -42,6 +44,8 @@ import net.micwin.elysium.view.homepage.HomePage;
 import net.micwin.elysium.view.messages.MessagesListPage;
 import net.micwin.elysium.view.storyline.StoryLinePage;
 
+import org.apache.wicket.Component;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 
 public class NavPanel extends BasePanel {
@@ -58,8 +62,14 @@ public class NavPanel extends BasePanel {
 		add(createGroupsLink());
 		add(createReplicationLink());
 		add(createMessagesLink());
+		add(createMessageIndicator());
 	}
 
+	private Component createMessageIndicator() {
+		Label label = new Label("newMessages", "*");
+		label.setVisible(getAvatar() != null && DaoManager.I.getMessageDao().hasNewMessages(getAvatar()));
+		return label;
+	}
 
 	protected BookmarkablePageLink<StoryLinePage> createStoryLineLink() {
 		BookmarkablePageLink<StoryLinePage> link = new BookmarkablePageLink<StoryLinePage>("storyLineLink",

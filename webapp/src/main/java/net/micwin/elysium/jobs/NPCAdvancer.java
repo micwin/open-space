@@ -8,6 +8,8 @@ import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.NaniteGroup.State;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.User;
+import net.micwin.elysium.entities.galaxy.Environment;
+import net.micwin.elysium.entities.galaxy.Position;
 import net.micwin.elysium.entities.gates.Gate;
 
 import org.slf4j.Logger;
@@ -72,18 +74,9 @@ public class NPCAdvancer {
 
 	public Collection<NaniteGroup> getNanitesOnArena(Avatar avatar) {
 		Gate arenaGate = DaoManager.I.getGatesDao().findByGateAdress("arena");
-		Collection<NaniteGroup> onArena = new LinkedList<NaniteGroup>();
-		for (NaniteGroup naniteGroup : avatar.getNanites()) {
-			if (naniteGroup.getState() != State.IDLE) {
-				continue;
-			}
-
-			if (naniteGroup.getPosition().getEnvironment().equals(arenaGate.getPosition().getEnvironment())) {
-				onArena.add(naniteGroup);
-
-			}
-		}
-
+		
+		Collection<NaniteGroup> onArena =  DaoManager.I.getNanitesDao().findBy(avatar, arenaGate.getPosition().getEnvironment()) ; 
+		
 		L.debug("having " + onArena.size() + " groups on arena");
 		return onArena;
 	}

@@ -1,11 +1,15 @@
 package net.micwin.elysium.view.messages;
 
+import java.text.DateFormat;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 import net.micwin.elysium.dao.DaoManager;
+import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.messaging.Message;
 import net.micwin.elysium.view.BasePage;
 import net.micwin.elysium.view.ElysiumWicketModel;
@@ -55,23 +59,32 @@ public class MessagesListPage extends BasePage {
 			protected void populateItem(Item<Message> item) {
 				final IModel<Message> messageModel = item.getModel();
 				final Message message = (Message) messageModel.getObject();
-				item.add(new Label("time", Model.of(message.getDate())));
+				item.add(new Label("time", Model.of(DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT,
+								Locale.GERMANY).format(message.getDate()))));
 				item.add(new Label("sender", Model.of(message.getSenderID())));
 				item.add(new Label("receiver", Model.of(message.getReceiverID())));
 				item.add(new Label("message", Model.of(message.getText())));
 				item.add(new Label("read", Model.of(message.getViewedDate() == null ? "*" : "")));
-				item.add((getDeleteLink(message, isAdmin())));
+				item.add((getDeleteLink(message)));
+
+				if (message.getViewedDate() == null) {
+					message.setViewedDate(new Date());
+					DaoManager.I.getMessageDao().update(message);
+				}
+
 			}
 
-			private Component getDeleteLink(Message message, boolean admin) {
-				if (!admin)
+			private Component getDeleteLink(Message message) {
+
+				boolean canDelete = getMessageBPO().canDelete(getAvatar(), message);
+				if (!canDelete)
 					return createDummyLink("delete", false, false);
 				Link<Message> deleteLink = new Link<Message>("delete", ElysiumWicketModel.of(message)) {
 
 					@Override
 					public void onClick() {
 						DaoManager.I.getMessageDao().delete(getModelObject());
-						setResponsePage(MessagesListPage.class) ; 
+						setResponsePage(MessagesListPage.class);
 					}
 				};
 

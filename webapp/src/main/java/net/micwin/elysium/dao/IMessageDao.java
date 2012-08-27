@@ -37,6 +37,7 @@ package net.micwin.elysium.dao;
 
 import java.util.List;
 
+import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.messaging.Message;
 import net.micwin.elysium.messaging.IMessageEndpoint;
 
@@ -69,5 +70,13 @@ public interface IMessageDao extends IElysiumEntityDao<Message> {
 	 * @param message
 	 */
 	void delete(Message message);
+
+	/**
+	 * Returns true if specified avatar has new messages.
+	 * 
+	 * @param avatar
+	 * @return
+	 */
+	boolean hasNewMessages(Avatar avatar);
 
 }

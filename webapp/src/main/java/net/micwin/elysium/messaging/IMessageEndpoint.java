@@ -22,6 +22,11 @@ public interface IMessageEndpoint {
 		public String getEndPointId() {
 			return TYPE_SYSTEM + "BIOS";
 		}
+
+		@Override
+		public boolean hasMailBox() {
+			return false;
+		}
 	};;;
 
 	/**
@@ -30,5 +35,12 @@ public interface IMessageEndpoint {
 	 * @return
 	 */
 	String getEndPointId();
+
+	/**
+	 * Returns wether or not this endpoint can receive messages.
+	 * 
+	 * @return
+	 */
+	boolean hasMailBox();
 
 }

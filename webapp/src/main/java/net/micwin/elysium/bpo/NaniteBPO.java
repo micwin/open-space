@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import net.micwin.elysium.dao.DaoManager;
-import net.micwin.elysium.entities.GalaxyTimer;
 import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.NaniteGroup.State;
 import net.micwin.elysium.entities.appliances.Appliance;
@@ -519,7 +518,7 @@ public class NaniteBPO extends BaseBPO {
 			return;
 		}
 
-		long fortifyingEndDateMillis = GalaxyTimer.get().getGalaxyDate().getTime() + computeEntrenchingDuration(group);
+		long fortifyingEndDateMillis = System.currentTimeMillis() + computeEntrenchingDuration(group);
 
 		group.setState(State.ENTRENCHING);
 		Date endDate = new Date(fortifyingEndDateMillis);

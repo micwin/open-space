@@ -248,4 +248,9 @@ public class Avatar extends ElysiumEntity implements IMessageEndpoint {
 	public int getArenaWins() {
 		return arenaWins;
 	}
+
+	@Override
+	public boolean hasMailBox() {
+		return true;
+	}
 }

@@ -197,4 +197,9 @@ public final class User extends ElysiumEntity implements Serializable, IMessageE
 	public String getEndPointId() {
 		return IMessageEndpoint.TYPE_USER + login;
 	}
+
+	@Override
+	public boolean hasMailBox() {
+		return false;
+	}
 }

@@ -295,4 +295,9 @@ public class NaniteGroup extends ElysiumEntity implements IMessageEndpoint {
 		return structurePoints;
 	}
 
+	@Override
+	public boolean hasMailBox() {
+		return false;
+	}
+
 }
