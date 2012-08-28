@@ -40,7 +40,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.Organization;
@@ -48,6 +47,7 @@ import net.micwin.elysium.entities.characters.Race;
 import net.micwin.elysium.entities.characters.User;
 import net.micwin.elysium.entities.characters.User.Role;
 import net.micwin.elysium.entities.galaxy.Position;
+import net.micwin.elysium.entities.nanites.NaniteGroup;
 
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;

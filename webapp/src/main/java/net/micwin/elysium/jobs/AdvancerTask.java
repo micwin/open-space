@@ -42,8 +42,8 @@ import java.util.TimerTask;
 
 import net.micwin.elysium.bpo.MessageBPO;
 import net.micwin.elysium.dao.DaoManager;
-import net.micwin.elysium.entities.NaniteGroup;
-import net.micwin.elysium.entities.NaniteGroup.State;
+import net.micwin.elysium.entities.nanites.NaniteGroup;
+import net.micwin.elysium.entities.nanites.NaniteGroup.State;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

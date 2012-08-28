@@ -3,8 +3,8 @@ package net.micwin.elysium.view.documentation;
 import java.text.NumberFormat;
 
 import net.micwin.elysium.bpo.NaniteBPO;
-import net.micwin.elysium.entities.NaniteGroup;
-import net.micwin.elysium.entities.NaniteGroup.State;
+import net.micwin.elysium.entities.nanites.NaniteGroup;
+import net.micwin.elysium.entities.nanites.NaniteGroup.State;
 import net.micwin.elysium.view.BasePage;
 
 import org.apache.wicket.markup.html.basic.Label;

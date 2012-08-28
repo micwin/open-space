@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import net.micwin.elysium.entities.characters.Avatar;
+import net.micwin.elysium.entities.nanites.NaniteGroup;
 
 import org.junit.Test;
 

@@ -5,13 +5,13 @@ import java.util.Date;
 import java.util.List;
 
 import net.micwin.elysium.dao.DaoManager;
-import net.micwin.elysium.entities.NaniteGroup;
-import net.micwin.elysium.entities.NaniteGroup.State;
 import net.micwin.elysium.entities.appliances.Appliance;
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.User.Role;
 import net.micwin.elysium.entities.gates.Gate;
+import net.micwin.elysium.entities.nanites.NaniteGroup;
+import net.micwin.elysium.entities.nanites.NaniteGroup.State;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

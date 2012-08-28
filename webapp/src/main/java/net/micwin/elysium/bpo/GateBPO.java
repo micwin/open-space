@@ -2,9 +2,9 @@ package net.micwin.elysium.bpo;
 
 import java.util.Collection;
 
-import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.galaxy.Environment;
 import net.micwin.elysium.entities.gates.Gate;
+import net.micwin.elysium.entities.nanites.NaniteGroup;
 
 /**
  * The bpo to handle gates.

@@ -10,10 +10,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import net.micwin.elysium.bpo.GateBPO;
-import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.galaxy.Position;
 import net.micwin.elysium.entities.gates.Gate;
+import net.micwin.elysium.entities.nanites.NaniteGroup;
 import net.micwin.elysium.view.BasePage;
 import net.micwin.elysium.view.ElysiumWicketModel;
 import net.micwin.elysium.view.jumpGates.UsePlanetaryGatePage;

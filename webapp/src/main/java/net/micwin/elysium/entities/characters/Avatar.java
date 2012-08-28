@@ -47,9 +47,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import net.micwin.elysium.entities.ElysiumEntity;
-import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.galaxy.Position;
+import net.micwin.elysium.entities.nanites.NaniteGroup;
 import net.micwin.elysium.messaging.IMessageEndpoint;
 import net.micwin.elysium.view.storyline.StoryLineItem;
 

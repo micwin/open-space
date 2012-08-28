@@ -37,9 +37,9 @@ package net.micwin.elysium.dao;
 import java.util.Collection;
 
 import net.micwin.elysium.entities.ElysiumEntity;
-import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.galaxy.Environment;
+import net.micwin.elysium.entities.nanites.NaniteGroup;
 
 public interface IElysiumEntityDao<T extends ElysiumEntity> {
 

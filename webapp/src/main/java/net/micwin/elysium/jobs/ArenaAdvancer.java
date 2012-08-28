@@ -6,9 +6,9 @@ import java.util.List;
 import net.micwin.elysium.bpo.MessageBPO;
 import net.micwin.elysium.bpo.NaniteBPO;
 import net.micwin.elysium.dao.DaoManager;
-import net.micwin.elysium.entities.NaniteGroup;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.gates.Gate;
+import net.micwin.elysium.entities.nanites.NaniteGroup;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
