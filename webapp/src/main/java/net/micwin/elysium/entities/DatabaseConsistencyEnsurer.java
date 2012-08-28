@@ -3,7 +3,6 @@ package net.micwin.elysium.entities;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
 
 import net.micwin.elysium.bpo.AvatarBPO;
 import net.micwin.elysium.bpo.GalaxyBPO;
@@ -17,7 +16,6 @@ import net.micwin.elysium.dao.ISysParamDao;
 import net.micwin.elysium.dao.ITalentsDao;
 import net.micwin.elysium.dao.IUserDao;
 import net.micwin.elysium.dao.TxBracelet;
-import net.micwin.elysium.entities.NaniteGroup.GroupMode;
 import net.micwin.elysium.entities.appliances.Appliance;
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
@@ -89,7 +87,6 @@ public class DatabaseConsistencyEnsurer {
 		createInitialDbEntries();
 		migrateToV2(session);
 		insertNPC();
-		setGroupMode();
 		correctMessages();
 		clearOutGarbage();
 
@@ -110,27 +107,6 @@ public class DatabaseConsistencyEnsurer {
 		}.execute();
 
 		L.info(count + " message mailboxes set to receiverId");
-	}
-
-	private void setGroupMode() {
-
-		new TxBracelet(sessionFactory) {
-
-			@Override
-			public Object doWork(Session session, Transaction tx) {
-				List<NaniteGroup> list = session.createQuery(
-								"from " + NaniteGroup.class.getSimpleName() + " where groupMode is null").list();
-				for (NaniteGroup group : list) {
-					group.setGroupMode(GroupMode.CLOUD);
-					DaoManager.I.getNanitesDao().update(group);
-				}
-				session.flush();
-				L.info(list.size() + " nanite group modes set");
-
-				return null;
-			}
-		}.execute();
-
 	}
 
 	/**

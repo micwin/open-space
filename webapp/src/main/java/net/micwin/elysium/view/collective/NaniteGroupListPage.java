@@ -139,7 +139,7 @@ public class NaniteGroupListPage extends BasePage {
 				final NaniteGroup nanitesGroup = (NaniteGroup) naniteGroupModel.getObject();
 				item.add(new Label("groupId", Model.of(nanitesGroup.getId())));
 
-				item.add(new Label("groupMode", Model.of(nanitesGroup.getGroupMode())));
+				item.add(new Label("groupLevel", Model.of(nanitesGroup.getGroupLevel())));
 
 				Position position = nanitesGroup.getPosition();
 				Gate gate = getGateBPO().getGateAt(position.getEnvironment());
