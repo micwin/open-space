@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Locale;
 
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.User;
@@ -162,12 +163,21 @@ public class NaniteGroupListPage extends BasePage {
 								nanitesGroup.getNaniteCount()));
 				item.add(new Label("groupCount", countModel));
 				String stateString = nanitesGroup.getState().toString();
+
+				long maxStructurePoints = getNanitesBPO().computeStructurePoints(nanitesGroup);
+				if (nanitesGroup.getStructurePoints() < maxStructurePoints) {
+					String sp = NumberFormat.getPercentInstance(Locale.GERMANY).format(
+									1.0 * nanitesGroup.getStructurePoints() / maxStructurePoints);
+					stateString += " " + sp;
+				}
+
 				if (nanitesGroup.getStateEndGT() != null && nanitesGroup.getStateEndGT().after(new Date())) {
 					stateString = stateString
 									+ " (bis "
-									+ DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(
-													nanitesGroup.getStateEndGT()) + " )";
+									+ DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT).format(
+													nanitesGroup.getStateEndGT()) + ")";
 				}
+
 				item.add(new Label("groupState", new Model(stateString)));
 				item.add(new Label("battleCount", new Model(NumberFormat.getIntegerInstance().format(
 								nanitesGroup.getBattleCounter()))));

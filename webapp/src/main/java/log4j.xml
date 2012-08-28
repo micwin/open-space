@@ -18,6 +18,10 @@
 		<level value="DEBUG" />
 	</logger>
 
+	<logger name="net.micwin.elysium.bpo.NaniteBPO">
+		<level value="DEBUG" />
+	</logger>
+
 	<root>
 		<priority value="WARN" />
 		<appender-ref ref="CON" />

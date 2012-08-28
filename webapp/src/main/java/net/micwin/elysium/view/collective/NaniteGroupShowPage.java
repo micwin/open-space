@@ -8,12 +8,14 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 import net.micwin.elysium.bpo.GateBPO;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.galaxy.Position;
 import net.micwin.elysium.entities.gates.Gate;
 import net.micwin.elysium.entities.nanites.NaniteGroup;
+import net.micwin.elysium.entities.nanites.NaniteGroup.State;
 import net.micwin.elysium.view.BasePage;
 import net.micwin.elysium.view.ElysiumWicketModel;
 import net.micwin.elysium.view.jumpGates.UsePlanetaryGatePage;
@@ -50,7 +52,7 @@ public class NaniteGroupShowPage extends BasePage {
 		NaniteGroup group = getElysiumSession().getNamedEntity(NE_NANITE_GROUP);
 		final ElysiumWicketModel<NaniteGroup> groupModel = new ElysiumWicketModel<NaniteGroup>(group);
 		addToContentBody(new Label("groupId", "" + group.getId()));
-		
+
 		addToContentBody(new Label("groupLevel", Model.of(group.getGroupLevel())));
 
 		addToContentBody(new Label("groupPosition", "" + group.getPosition().getEnvironment()));
@@ -63,7 +65,15 @@ public class NaniteGroupShowPage extends BasePage {
 						+ new DecimalFormat("0.0####", DecimalFormatSymbols.getInstance()).format(getScannerBPO()
 										.computeSignatureStrength(group))));
 
-		addToContentBody(new Label("groupState", "" + group.getState()));
+		String state = group.getState().toString();
+
+		long maxStructurePoints = getNanitesBPO().computeStructurePoints(group);
+		if (group.getStructurePoints() < maxStructurePoints) {
+			String sp = NumberFormat.getPercentInstance(Locale.GERMANY).format(
+							1.0 * group.getStructurePoints() / maxStructurePoints);
+			state += " " + sp;
+		}
+		addToContentBody(new Label("groupState", "" + state));
 		addToContentBody(new Label("envState", getEnvStateString(group)));
 
 		addToContentBody(getDoubleCountLink(groupModel));
@@ -74,7 +84,26 @@ public class NaniteGroupShowPage extends BasePage {
 		addToContentBody(getOtherNanitesTable(group));
 		addToContentBody(getSplitLink(groupModel));
 		addToContentBody(composeTitleText(group));
+		addToContentBody(composeUpgradeLink(groupModel));
 
+	}
+
+	private Component composeUpgradeLink(ElysiumWicketModel<NaniteGroup> groupModel) {
+		Link<NaniteGroup> link = new Link<NaniteGroup>("upgrade", groupModel) {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -4526206293884432294L;
+
+			public void onClick() {
+				getNanitesBPO().upgrade(getModelObject());
+				setResponsePage(NaniteGroupShowPage.class);
+			};
+		};
+
+		link.setVisible(getNanitesBPO().canUpgrade(groupModel.getObject()));
+		return link;
 	}
 
 	private String getEnvStateString(NaniteGroup group) {
@@ -252,6 +281,12 @@ public class NaniteGroupShowPage extends BasePage {
 				String leveltext = canScanDetails ? NumberFormat.getIntegerInstance().format(
 								otherGroup.getController().getLevel()) : "???";
 				item.add(new Label("level", new Model(leveltext)));
+				
+				String groupLevel = canScanDetails ? NumberFormat.getIntegerInstance().format(
+								otherGroup.getGroupLevel()) : "???";
+				item.add(new Label("groupLevel", new Model(groupLevel)));
+				
+				
 
 				item.add(new Label("signature", new Model(NumberFormat.getNumberInstance().format(
 								getScannerBPO().computeSignatureStrength(otherGroup)))));
@@ -290,8 +325,8 @@ public class NaniteGroupShowPage extends BasePage {
 					@Override
 					public void onClick() {
 
-						NaniteGroup attacker = attackerModel.getEntity();
-						NaniteGroup defender = defenderModel.getEntity();
+						NaniteGroup attacker = attackerModel.getObject();
+						NaniteGroup defender = defenderModel.getObject();
 						if (getNanitesBPO().canAttack(attacker, defender)) {
 							getNanitesBPO().attack(attacker, defender);
 							if (attacker.getNaniteCount() > 0) {
@@ -306,7 +341,7 @@ public class NaniteGroupShowPage extends BasePage {
 					}
 				};
 
-				link.setVisible(getNanitesBPO().canAttack(attackerModel.getEntity(), defenderModel.getEntity()));
+				link.setVisible(getNanitesBPO().canAttack(attackerModel.getObject(), defenderModel.getObject()));
 				return link;
 			}
 		};

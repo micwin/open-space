@@ -67,7 +67,7 @@ public class NaniteBPO extends BaseBPO {
 
 	private static final double BASE_MAX_NANITE_COUNT = 256;
 
-	private static final int FORTIFICATION_MIN_LEVEL = 50;
+	private static long LEVEL_1_STRUCTURE_POINTS = 10000;
 
 	public void doubleCount(NaniteGroup nanitesGroup) {
 
@@ -407,7 +407,8 @@ public class NaniteBPO extends BaseBPO {
 		Utilization nanitesBattle = new AvatarBPO().getTalent(getAvatarDao().refresh(attacker.getController()),
 						Appliance.NANITE_BATTLE);
 
-		double factor = nanitesBattle == null ? 0.3 : Math.pow(1.1, nanitesBattle.getLevel() - 1);
+		double factor = nanitesBattle == null || attacker.getNaniteCount() < attacker.getMinNaniteCount() ? 0.3 : Math
+						.pow(1.1, nanitesBattle.getLevel() - 1);
 
 		factor *= offensive ? attacker.getState().getAttackDamageFactor() : attacker.getState()
 						.getCounterStrikeDamageFactor() * computeNumberBasedEfficiencyFactor(attacker.getNaniteCount());
@@ -426,8 +427,10 @@ public class NaniteBPO extends BaseBPO {
 			}
 		}
 
-		long totalAttackDamage = (long) (factor * attacker.getNaniteCount() * BASE_DAMAGE_PER_NANITE);
-		L.debug("nanite group " + attacker + " attacks with count " + attacker.getNaniteCount()
+		long attackingNanitesCount = attacker.getNaniteCount() - attacker.getMinNaniteCount();
+
+		long totalAttackDamage = (long) (factor * attackingNanitesCount * BASE_DAMAGE_PER_NANITE);
+		L.debug("nanite group " + attacker + " attacks with count " + attackingNanitesCount
 						+ " and nanites battle factor = " + factor + ", resulting in a total attack damage of "
 						+ totalAttackDamage);
 		return totalAttackDamage;
@@ -474,6 +477,10 @@ public class NaniteBPO extends BaseBPO {
 			return false;
 		}
 
+		// enough nanites to attack?
+		if (attacker.getNaniteCount() < attacker.getMinNaniteCount()) {
+			return false;
+		}
 		// both noobs?
 		if (attacker.getController().getLevel() <= MAX_NOOB_LEVEL
 						&& defender.getController().getLevel() <= MAX_NOOB_LEVEL) {
@@ -528,8 +535,9 @@ public class NaniteBPO extends BaseBPO {
 
 	private long computeEntrenchingDuration(NaniteGroup group) {
 
-		// for now, we need 5 Seconds for each level.
-		return group.getController().getLevel() * 5 * 1000;
+		// for now, we need 5 Seconds for each level, multiplied by group level
+		// plus one
+		return group.getController().getLevel() * 5 * 1000 * (group.getGroupLevel() + 1);
 	}
 
 	public boolean canSplit(NaniteGroup nanitesGroup) {
@@ -541,6 +549,10 @@ public class NaniteBPO extends BaseBPO {
 
 	public boolean canJumpGate(NaniteGroup naniteGroup) {
 		if (naniteGroup.getState() != State.IDLE) {
+			return false;
+		}
+
+		if (naniteGroup.getGroupLevel() > GateBPO.MAX_GROUP_LEVEL_FOR_GATE_TRAVEL) {
 			return false;
 		}
 
@@ -559,7 +571,7 @@ public class NaniteBPO extends BaseBPO {
 			return false;
 		}
 
-		if (group.getNaniteCount() > 0) {
+		if (group.getNaniteCount() >= group.getMinNaniteCount()) {
 			return true;
 		}
 
@@ -587,4 +599,48 @@ public class NaniteBPO extends BaseBPO {
 			}
 		}
 	};
+
+	public boolean canUpgrade(NaniteGroup naniteGroup) {
+
+		if (naniteGroup.getController().getUser().getRole() == Role.ADMIN) {
+			return true;
+		}
+
+		if (naniteGroup.getState() != State.IDLE) {
+			L.debug("cannot upgrade - not idle");
+
+			return false;
+		}
+
+		if (naniteGroup.getNaniteCount() < naniteGroup.getMinNaniteCount()) {
+			L.debug("cannot upgrade - count below min count of nanites");
+			return false;
+		}
+
+		if (naniteGroup.getGroupLevel() >= naniteGroup.getController().getLevel() / 10) {
+			L.debug("cannot upgrade - controller level too low");
+			return false;
+		}
+
+		if (getTalent(naniteGroup.getController(), Appliance.NANITE_MANAGEMENT).getLevel() <= naniteGroup
+						.getGroupLevel()) {
+			L.debug("cannot upgrade - nanite management too low");
+			return false;
+		}
+
+		return true;
+	}
+
+	public void upgrade(NaniteGroup group) {
+		if (!canUpgrade(group))
+			return;
+
+		group.setGroupLevel(group.getGroupLevel() + 1);
+		group.setState(State.UPGRADING);
+		getNanitesDao().update(group);
+	}
+
+	public long computeStructurePoints(NaniteGroup group) {
+		return (long) (LEVEL_1_STRUCTURE_POINTS * Math.pow(1.5, group.getGroupLevel()));
+	}
 }

@@ -14,6 +14,11 @@ import net.micwin.elysium.entities.nanites.NaniteGroup;
  */
 public class GateBPO extends BaseBPO {
 
+	/**
+	 * The maximum group level that can travel through sub space gates.
+	 */
+	public static final int MAX_GROUP_LEVEL_FOR_GATE_TRAVEL = 3;
+
 	public Gate getGateAt(Environment environment) {
 		Collection<Gate> gates = getGatesDao().findByEnvironment(environment);
 		if (gates.size() > 0)

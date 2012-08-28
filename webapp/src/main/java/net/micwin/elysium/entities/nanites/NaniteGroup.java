@@ -123,6 +123,8 @@ public class NaniteGroup extends ElysiumEntity implements IMessageEndpoint {
 
 	public static final long MAX_NANITES_COUNT = Integer.MAX_VALUE;
 
+	private static final double BASE_MIN_NANITE_COUNT = 1000;
+
 	public NaniteGroup() {
 	}
 
@@ -147,7 +149,7 @@ public class NaniteGroup extends ElysiumEntity implements IMessageEndpoint {
 	@Column(name = "structurePoints", columnDefinition = "bigint default 0")
 	private long structurePoints = 0;
 
-	@Column(name = "groupLevel", columnDefinition = "int default 0")	
+	@Column(name = "groupLevel", columnDefinition = "int default 0")
 	private int groupLevel;
 
 	public void setPosition(Position position) {
@@ -237,6 +239,12 @@ public class NaniteGroup extends ElysiumEntity implements IMessageEndpoint {
 
 	public void setGroupLevel(int newGroupLevel) {
 		this.groupLevel = newGroupLevel;
+	}
+
+	public long getMinNaniteCount() {
+		if (groupLevel == 0)
+			return 0;
+		return (long) (BASE_MIN_NANITE_COUNT * Math.pow(1.2, groupLevel));
 	}
 
 }

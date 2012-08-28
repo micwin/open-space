@@ -83,53 +83,8 @@ public class AdvancerTask extends TimerTask {
 	}
 
 	private void runNanitesAdvancer() {
-		L.info("running nanites advancer ...");
-
-		int changeCount = advanceEntrenching();
-
-		L.info(changeCount + " groups advanced");
+		new NanitesAdvancer().advance() ;
 
 	}
 
-	private int advanceEntrenching() {
-
-		Collection<NaniteGroup> result = DaoManager.I.getNanitesDao().findByState(State.ENTRENCHING);
-		int changeCount = 0;
-
-		for (Iterator<NaniteGroup> iterator = result.iterator(); iterator.hasNext();) {
-			NaniteGroup naniteGroup = iterator.next();
-
-			boolean changedSomething = advanceEntrenching(naniteGroup);
-
-			if (changedSomething) {
-				changeCount++;
-				DaoManager.I.getNanitesDao().update(naniteGroup);
-			}
-
-		}
-
-		return 0;
-	}
-
-	/**
-	 * Checks wether this group is entrenching and if, check dates.
-	 * 
-	 * @param naniteGroup
-	 * @return
-	 */
-	public boolean advanceEntrenching(NaniteGroup naniteGroup) {
-
-		if (naniteGroup.getState() != State.ENTRENCHING) {
-			return false;
-		}
-
-		if (naniteGroup.getStateEndGT().before(new Date())) {
-			naniteGroup.setStateEndGT(null);
-			naniteGroup.setState(State.ENTRENCHED);
-			new MessageBPO().send(naniteGroup, naniteGroup.getController(), "Eingraben beendet.");
-			return true;
-		}
-		L.debug("nanite group still has to wait until " + naniteGroup.getStateEndGT() + " ");
-		return false;
-	}
 }

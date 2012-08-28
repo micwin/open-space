@@ -23,7 +23,8 @@
 	</tr>
 	<tr>
 		<td wicket:id="groupId" />
-		<td wicket:id="groupLevel" />
+		<td style="text-align: center"><span wicket:id="groupLevel" /><a
+			wicket:id="upgrade">+</a></td>
 		<td><span wicket:id="groupPosition">[position]</span></td>
 		<td><span wicket:id="groupGate">[gate]</span>&nbsp;<a
 			wicket:id="jumpGate">--&gt;</a></td>
@@ -57,18 +58,19 @@ springen)</h3>
 
 	<tr>
 		<th>Kollektiv</th>
-		<th>Stufe</th>
+		<th>Gruppen-Stufe</th>
 		<th>Signatur</th>
 		<th>Anzahl</th>
 		<th>Kommandos</th>
 	</tr>
 	<tr wicket:id="otherNanitesTable">
-		<td wicket:id="owner" />
-		<td wicket:id="level" />
+		<td style="text-align: center"><span wicket:id="owner" /> / <span
+			wicket:id="level" /></td>
+		<td style="text-align: center" wicket:id="groupLevel" />
 		<td wicket:id="signature" />
 		<td wicket:id="count" />
 
-		<td><a wicket:id="attack"><img src="attack.png" alt="A" /></a>&nbsp;<a wicket:id="sendMessage"><img src="message.png" alt="N" /></a></td>
+		<td><a wicket:id="attack">A</a>&nbsp;<a wicket:id="sendMessage">N</a></td>
 	</tr>
 
 </table>
