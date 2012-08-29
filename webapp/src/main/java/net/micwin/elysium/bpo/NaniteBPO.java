@@ -264,6 +264,8 @@ public class NaniteBPO extends BaseBPO {
 			return;
 		}
 
+		attackCatapult(attacker, defender);
+
 		long attackerStrength = calculateAttackDamage(attacker, true, defender);
 		long defenderStrength = calculateAttackDamage(defender, false, attacker);
 
@@ -304,6 +306,47 @@ public class NaniteBPO extends BaseBPO {
 			attacker.getController().raiseFragCount();
 			raiseUsage(attackingAvatar, Appliance.NANITE_CRITICAL_HIT, false);
 		}
+
+	}
+
+	private void attackCatapult(NaniteGroup attacker, NaniteGroup defender) {
+
+		NaniteGroup first, second;
+
+		if (attacker.getBattleCounter() >= defender.getBattleCounter()) {
+			first = attacker;
+			second = defender;
+		} else {
+			first = defender;
+			second = attacker;
+		}
+
+		int firstCanonsToFire = first.getCatapults();
+		int secondCanonsToFire = second.getCatapults();
+
+		boolean anotherRound = true;
+		while (anotherRound) {
+
+			if (firstCanonsToFire > 0) {
+				firstCanonsToFire--;
+				shootArtillery(first, second);
+			}
+			if (secondCanonsToFire > 0) {
+				secondCanonsToFire--;
+				shootArtillery(second, first);
+			}
+
+			anotherRound = (first.getNaniteCount() > 0 && firstCanonsToFire > 0)
+							|| (second.getNaniteCount() > 0 && secondCanonsToFire > 0);
+		}
+	}
+
+	private void shootArtillery(NaniteGroup first, NaniteGroup second) {
+
+		if (first.getCatapults() < 1)
+			return;
+		// each catapulted nanite does 2 preventable damage
+		doDamage(second, first.getNaniteCount() * 2);
 
 	}
 
@@ -628,6 +671,11 @@ public class NaniteBPO extends BaseBPO {
 			return false;
 		}
 
+		if (((int) Math.log(naniteGroup.getBattleCounter()) + 1) <= naniteGroup.getGroupLevel()) {
+			L.debug("cannot upgrade - battle counter too low");
+			return false;
+		}
+
 		return true;
 	}
 
@@ -641,6 +689,18 @@ public class NaniteBPO extends BaseBPO {
 	}
 
 	public long computeStructurePoints(NaniteGroup group) {
-		return (long) (LEVEL_1_STRUCTURE_POINTS * Math.pow(1.5, group.getGroupLevel()));
+		long levelbased = (long) (LEVEL_1_STRUCTURE_POINTS * Math.pow(1.5, group.getGroupLevel()));
+		return levelbased;
+	}
+
+	public int computeFreeSlots(NaniteGroup group) {
+		if (group.getGroupLevel() == 0)
+			return 0;
+		int totalSlots = (int) Math.pow(2, group.getGroupLevel() - 1);
+		return totalSlots - group.getCatapults();
+	}
+
+	public boolean canRaiseComponents(NaniteGroup group) {
+		return new NaniteBPO().computeFreeSlots(group) > 0;
 	}
 }

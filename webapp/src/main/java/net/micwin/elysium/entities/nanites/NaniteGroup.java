@@ -118,15 +118,11 @@ public class NaniteGroup extends ElysiumEntity implements IMessageEndpoint {
 
 			return canSplit;
 		}
-
 	}
 
 	public static final long MAX_NANITES_COUNT = Integer.MAX_VALUE;
 
 	private static final double BASE_MIN_NANITE_COUNT = 1000;
-
-	public NaniteGroup() {
-	}
 
 	@Embedded
 	private Position position;
@@ -151,6 +147,12 @@ public class NaniteGroup extends ElysiumEntity implements IMessageEndpoint {
 
 	@Column(name = "groupLevel", columnDefinition = "int default 0")
 	private int groupLevel;
+
+	@Column(name = "catapults", columnDefinition = "int default 0")
+	private int catapults;
+
+	public NaniteGroup() {
+	}
 
 	public void setPosition(Position position) {
 		this.position = position;
@@ -245,6 +247,14 @@ public class NaniteGroup extends ElysiumEntity implements IMessageEndpoint {
 		if (groupLevel == 0)
 			return 0;
 		return (long) (BASE_MIN_NANITE_COUNT * Math.pow(1.2, groupLevel));
+	}
+
+	public void setCatapults(int catapults) {
+		this.catapults = catapults;
+	}
+
+	public int getCatapults() {
+		return catapults;
 	}
 
 }

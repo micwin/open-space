@@ -85,7 +85,17 @@ public class NaniteGroupShowPage extends BasePage {
 		addToContentBody(getSplitLink(groupModel));
 		addToContentBody(composeTitleText(group));
 		addToContentBody(composeUpgradeLink(groupModel));
+		addToContentBody(composeComponentsPanel(groupModel));
 
+	}
+
+	private Component composeComponentsPanel(ElysiumWicketModel<NaniteGroup> groupModel) {
+		if (groupModel.getObject().getGroupLevel() == 0) {
+			return createDummyLink("components", false, false);
+		}
+		ComponentsPanel panel = new ComponentsPanel("components" , groupModel);
+
+		return panel;
 	}
 
 	private Component composeUpgradeLink(ElysiumWicketModel<NaniteGroup> groupModel) {
@@ -281,12 +291,10 @@ public class NaniteGroupShowPage extends BasePage {
 				String leveltext = canScanDetails ? NumberFormat.getIntegerInstance().format(
 								otherGroup.getController().getLevel()) : "???";
 				item.add(new Label("level", new Model(leveltext)));
-				
+
 				String groupLevel = canScanDetails ? NumberFormat.getIntegerInstance().format(
 								otherGroup.getGroupLevel()) : "???";
 				item.add(new Label("groupLevel", new Model(groupLevel)));
-				
-				
 
 				item.add(new Label("signature", new Model(NumberFormat.getNumberInstance().format(
 								getScannerBPO().computeSignatureStrength(otherGroup)))));
