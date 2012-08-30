@@ -41,4 +41,9 @@ public class SolarSystem extends Environment {
 	public Class getBaseClass() {
 		return SolarSystem.class;
 	}
+
+	@Override
+	public boolean needsPassivation() {
+		return false;
+	}
 }

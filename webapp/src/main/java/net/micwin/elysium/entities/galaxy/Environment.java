@@ -96,4 +96,12 @@ public abstract class Environment extends ElysiumEntity {
 		elysium = newIsElysium == null ? false : newIsElysium;
 	}
 
+	/**
+	 * Returns wether or not elements contained by this environment must get
+	 * passivated.
+	 * 
+	 * @return
+	 */
+	public abstract boolean needsPassivation();
+
 }

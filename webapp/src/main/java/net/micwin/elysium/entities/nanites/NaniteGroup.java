@@ -41,6 +41,8 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
+import org.hibernate.cfg.annotations.Nullability;
+
 import net.micwin.elysium.entities.SupportMode;
 import net.micwin.elysium.entities.galaxy.Environment;
 import net.micwin.elysium.entities.galaxy.Position;
@@ -67,6 +69,9 @@ public class NaniteGroup extends Environment implements IMessageEndpoint {
 
 	@Column
 	private NaniteState state = NaniteState.IDLE;
+
+	@Column
+	private NaniteState previousState = null;
 
 	@Column
 	private Date stateEndGT;
@@ -104,7 +109,12 @@ public class NaniteGroup extends Environment implements IMessageEndpoint {
 	}
 
 	public void setState(NaniteState state) {
+		previousState = this.state;
 		this.state = state;
+	}
+
+	public void returnToPreviousState() {
+		this.state = previousState;
 	}
 
 	@Override
@@ -193,4 +203,16 @@ public class NaniteGroup extends Environment implements IMessageEndpoint {
 		this.naniteSlots = naniteSlots;
 	}
 
+	public void setPreviousState(NaniteState previousState) {
+		this.previousState = previousState;
+	}
+
+	public NaniteState getPreviousState() {
+		return previousState;
+	}
+
+	@Override
+	public boolean needsPassivation() {
+		return true;
+	}
 }

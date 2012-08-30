@@ -17,6 +17,7 @@ import net.micwin.elysium.entities.galaxy.Environment;
 import net.micwin.elysium.entities.galaxy.Position;
 import net.micwin.elysium.entities.gates.Gate;
 import net.micwin.elysium.entities.nanites.NaniteGroup;
+import net.micwin.elysium.entities.nanites.NaniteState;
 import net.micwin.elysium.view.BasePage;
 import net.micwin.elysium.view.ElysiumWicketModel;
 import net.micwin.elysium.view.jumpGates.UsePlanetaryGatePage;
@@ -46,11 +47,18 @@ public class NaniteGroupShowPage extends BasePage {
 	@Override
 	protected void onInitialize() {
 		super.onInitialize();
+
 		ensureAvatarPresent(true);
 		ensureLoggedIn();
 		ensureStoryShown();
 
 		NaniteGroup group = getElysiumSession().getNamedEntity(NE_NANITE_GROUP);
+
+		if (group.getState() == NaniteState.PASSIVATED) {
+			getElysiumSession().setNamedEntity(NE_NANITE_GROUP, null);
+			setResponsePage(NaniteGroupListPage.class);
+		}
+
 		final ElysiumWicketModel<NaniteGroup> groupModel = new ElysiumWicketModel<NaniteGroup>(group);
 		addToContentBody(new Label("groupId", "" + group.getId()));
 

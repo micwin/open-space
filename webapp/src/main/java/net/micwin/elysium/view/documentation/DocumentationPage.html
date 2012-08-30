@@ -25,6 +25,7 @@ Gegner aus dem Hinterhalt zu erledigen. Oder du &uuml;bst das Auffinden
 derart versteckter Gegner...</p>
 <p>Du hast Zugriff auf unbegrenzte Resourcen - du hast die Wahl was
 du damit anstellst.</p>
+
 <h1>Registrierung</h1>
 <p>Die Anmeldung bei open space ist zweiphasig : du besitzt
 einerseits einen User - mit diesem sind Passwort und sp&auml;ter deine
@@ -58,13 +59,13 @@ neu anfangen.</p>
 	bisschen Gl&uuml;ck lebst du jetzt noch und hast gerade deine ersten
 	Kampferfahrungen gesammelt.</li>
 </ul>
-Gratulation! Du hast gerade eben die Grundz&uuml;ge des
+<p>Gratulation! Du hast gerade eben die Grundz&uuml;ge des
 Naniten-Managements kennengelernt - Gruppengr&ouml;&szlig;e
 erh&ouml;hen, Gruppen aufteilen, Gruppen bewegen, angreifen. Und du hast
 soeben deinen ersten Subraumsprung get&auml;tigt! Wie du siehst
 geschieht die Bewegung durch das Subraum-Gate unmittelbar, d.h. du
 betrittst auf deinem Heimatplaneten das Subraumtor und verl&auml;sst es
-unmittelbar beim Ziel. <br />
+unmittelbar beim Ziel.</p>
 <h1>Aspekte</h1>
 
 <h2>Elysium (Gate-Adresse <i>elysium</i>)</h2>
@@ -84,9 +85,9 @@ ge&ouml;ffnet, sobald sich nur noch eine einzelne Nanitengruppe auf dem
 Planeten befindet. Der &Uuml;berlebende bekommt einen Arena-Punkt, was
 ihm auf der Rangliste 10 Punkte einbringt.</p>
 <h2>Anf&auml;nger-Schutz</h2>
-Damit j&uuml;ngere Spieler eine Chance bekommen zu wachsen und nicht
-st&auml;ndig als leichte Beute von &auml;lteren gepl&auml;ttet werden,
-besitzt open-space ein zweistufiges Anf&auml;nger-Schutzsystem:
+<p>Damit j&uuml;ngere Spieler eine Chance bekommen zu wachsen und
+nicht st&auml;ndig als leichte Beute von &auml;lteren gepl&auml;ttet
+werden, besitzt open-space ein zweistufiges Anf&auml;nger-Schutzsystem:
 </p>
 
 <ul>
@@ -297,17 +298,21 @@ oben neben der Stufe.
 <p />
 Hierbei beginnen die Naniten, Strukturen zu schaffen, an denen sich die
 Naniten selbst und diverse Komponenten befestigen lassen und so ein
-kompaktes Ganzes bildet.
+kompaktes Ganzes bildet. Dabei entsteht das Problem, dass der so
+entstandene Nanitenkomplex ab Stufe 4 nicht mehr durch das Subraumtor
+passt und die Gruppe also somit auf dem Planeten festsitzt.
 <p />
 Die Anzahl der Komponenten-Befestigungen ergibt sich aus der
 Gruppenstufe.
 <p />
 Die maximale Gruppenstufe ergibt sich aus der Gesamtstufe des Spielers
 geteilt durch 10, des Nanitenamangements und der Kampferfahrung einer
-Gruppe (ln).
+Gruppe (ln). Eingebuddelte Gruppen k&ouml;nnen beliebig ausgebaut
+werden.
 <p />
 
 Es k&ouml;nnen folgende Komponenten eingebaut werden:
+
 <h2>Naniten-Katapult</h2>
 Der Naniten-Katapult ist eine langstrecken-Artillerie, die
 Nanitengruppen verschleudert. Die zu verschiessendern Nanitengruppen
@@ -325,79 +330,76 @@ nach jedem Schuss eine Schadensauswertung ausgef&uuml;hrt sodass es ein
 richtiger nachteil ist, als Zweiter zu schiessen.
 <p />
 <h2>Naniten-Slots</h2>
-Naniten-Slots sind Aufh&auml;ngungen, um andere Nanitengruppen zu
+<p>Naniten-Slots sind Aufh&auml;ngungen, um andere Nanitengruppen zu
 transportieren - pro Slot eine Gruppe. Dabei muss die untergebrachte
 Nanitengruppe eine kleinere Gruppenstufe besitzen als die aufnehmende.
 Wird die aufnehmende Gruppe zerst&ouml;rt, werden die darin enthaltenen
 Gruppen in die Umgebung entlassen. Es ist m&ouml;glich, Nanitengruppen
 an Bord zu nehmen, die wiederrum selbst Nanitengruppen transportieren,
-oder &uuml;ber Nanitenkatapulte verf&uuml;gen..
-<p />
+oder &uuml;ber Nanitenkatapulte verf&uuml;gen.</p>
+
 <h1>Einbuddeln (entrenching)</h1>
-Durch einbuddeln (Kommando "E" in der Listenansicht) kannst du eine
-Nanitengruppe mit dem Planeten "verweben". Damit wird sie zu einem Teil
-des Planeten. Sie ist dadurch wesentlich schlechter f&uuml;r die anderen
-zu sehen (die Signatur wird um den Faktor <span
+<p>Durch einbuddeln (Kommando "E" in der Listenansicht) kannst du
+eine Nanitengruppe mit dem Planeten "verweben". Damit wird sie zu einem
+Teil des Planeten. Sie ist dadurch wesentlich schlechter f&uuml;r die
+anderen zu sehen (die Signatur wird um den Faktor <span
 	wicket:id="entrenchedSignatureFactor" /> reduziert), hat eine viel
 bessere Verteidigung (Schadensreduktion um den Faktor <span
 	wicket:id="entrenchedDefenseFactor" />) und ausserordentlich gute
 Sensoren (Faktor <span wicket:id="entrenchedSensorsFactor" />).
 Dar&uuml;berhianus besch&auml;ftigt sich die Gruppe aktiv mit ihren
 Energieemmissionen, weshalb jeder gegnerische Scan, der sie nicht
-entdeckt, ihre Erfahrung in Emmisionskontrolle erh&ouml;ht.
-<p />
-Leider hat niemand daran gedacht, das einbuddeln umkehrbar zu machen;
-sobald eine Gruppe einmal mit einem Planeten verwoben ist, kann man sie
-da nicht mehr herausholen. Und ausserdem kann eine eingebuddelte Gruppe
-nicht angreifen und nur ausserordentlich schlecht zur&uuml;ckschlagen
-wenn selbst angegriffen (Gegenschlagschaden Faktor <span
+entdeckt, ihre Erfahrung in Emmisionskontrolle erh&ouml;ht.</p>
+
+<p>Leider hat niemand daran gedacht, das einbuddeln umkehrbar zu
+machen; sobald eine Gruppe einmal mit einem Planeten verwoben ist, kann
+man sie da nicht mehr herausholen. Und ausserdem kann eine eingebuddelte
+Gruppe nicht angreifen und nur ausserordentlich schlecht
+zur&uuml;ckschlagen wenn selbst angegriffen (Gegenschlagschaden Faktor <span
 	wicket:id="entrenchedCounterstrikeFactor" />). Daf&uuml;r kann sie
 sich problemlos vergr&ouml;ssern und splitten und die so entstandene,
 neue Gruppe ist dann wieder ganz normal bewegbar und angreifbar. Es ist
 z.B. eine beliebte Taktik, einzelne Naniten einzubuddeln und auf eine
 g&uuml;nstige Gelegenheit f&uuml;r einen &Uuml;berraschungsangriff zu
-warten.
-<p />
-Eine Gruppe einzubuddeln dauert etwas, n&auml;mlich genau 5 Sekunden pro
-Stufe. Mit deiner Stufe dauert das Enbuddeln 5 * <span wicket:id="level" />
-= <span wicket:id="entrenchingDuration" /> Sekunden, pro Gruppe. Sobald
-die Gruppe eingebuddelt ist bekommst du eine Nachricht. <br />
+warten.</p>
+
+<p>Eine Gruppe einzubuddeln dauert etwas, n&auml;mlich genau 5
+Sekunden pro Stufe. Mit deiner Stufe dauert das Enbuddeln 5 * <span
+	wicket:id="level" /> = <span wicket:id="entrenchingDuration" />
+Sekunden, pro Gruppe. Sobald die Gruppe eingebuddelt ist bekommst du
+eine Nachricht</p>
 
 <h1>Springen</h1>
-Unter "Springen" versteht man das betreten eines Subraumtores auf einem
-Planeten, und das Verlassen desselbigen auf einem anderen Planeten. Die
-Reise mit Subraumtoren ist verz&ouml;gerungsfrei, d.h. eine
-Nanitengruppe ist sofort da wo sie hinwill.<br />
+<p>Unter "Springen" versteht man das betreten eines Subraumtores auf
+einem Planeten, und das Verlassen desselbigen auf einem anderen
+Planeten. Die Reise mit Subraumtoren ist verz&ouml;gerungsfrei, d.h.
+eine Nanitengruppe ist sofort da wo sie hinwill.<br />
 Zum Springen klickt man entweder in der Gruppenansicht auf eines der
 Schnellziele oder auf "--&gt;". Letzteres findet sich auch auf der
-Listenansicht.
-<p />
-Bei Klick auf das Schnellziel wird der Sprung unmittelbar
+Listenansicht.</p>
+<p>Bei Klick auf das Schnellziel wird der Sprung unmittelbar
 ausgef&uuml;hrt; sollte das Ziel gerade nicht erreichbar sein, so wird
 der Sprung verweigert und eine Nachricht gesendet. Schnellsprungziele in
 <i>kursiver</i> Schrift weisen darauf hin, dass man sich zur Zeit auf
-exakt diesem Planeten befindet.
-<p />
-Bei Klick auf den Link "--&gt;" wird ein Dialog ge&ouml;ffnet und um
-eine anzuspringende Adresse gebeten;: dar&uuml;ber findet sich eine
+exakt diesem Planeten befindet.</p>
+<p>Bei Klick auf den Link "--&gt;" wird ein Dialog ge&ouml;ffnet und
+um eine anzuspringende Adresse gebeten;: dar&uuml;ber findet sich eine
 Liste von &ouml;ffentlichen Zielen, die ebenfalls betreten werden
-k&ouml;nnen.
+k&ouml;nnen.</p>
 
 <h1>Ziel des Spiels</h1>
-Das Ziel des Spiels ist es, erst mal ne Menge Spass zu haben,
+<p>Das Ziel des Spiels ist es, erst mal ne Menge Spass zu haben,
 gegnerische Nanitengruppen zu pl&auml;tten, Geheimnisse herauszufinden
-und in der Rangliste ganz oben zu stehen.
-<p />
-
-
-
+und in der Rangliste ganz oben zu stehen.</p>
 
 
 <h1>Die Rangliste</h1>
-Die Rangliste zeigt die Liste der Spieler in der Reihenfolge ihrer Stufe
-minus Anzahl der bereits erlittenen Tode, plus Frag-Count und plus
-Arena-Punkte an. Der Frag-Count ist der Z&auml;hler, wieviele
-gegnerische Gruppen ein Kollektiv schon erlegt hat. </span>
+<p>Die Rangliste zeigt die Liste der Spieler in der Reihenfolge
+ihrer Stufe minus Anzahl der bereits erlittenen Tode, plus Frag-Count
+und plus Arena-Punkte an. Der Frag-Count ist der Z&auml;hler, wieviele
+gegnerische Gruppen ein Kollektiv schon erlegt hat.</p>
+
+</span>
 
 
 </body>

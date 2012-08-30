@@ -3,8 +3,8 @@ package net.micwin.elysium.entities.nanites;
 public enum NaniteState {
 
 	IDLE(1.0, 1.0, 1.0, 1.0, true, 1.0, true, true), ENTRENCHING(0.0, 0.0, 1.1, 0.5, false, 0.9, true, false), ENTRENCHED(
-					0.1, 0.1, 0.2, 10, false, 0.2, true, true), UPGRADING(0.0, 0.0, 1.1, 0.5, false, 1.1, false,
-					false);
+					0.1, 0.1, 0.2, 10, false, 0.2, true, true), UPGRADING(0.0, 0.0, 1.1, 0.5, false, 1.1, false, false), PASSIVATED(
+					0.0, 0.0, 0.0, 0.0, false, 3, false, false);
 
 	final double attackDamageFactor;
 	final double counterStrikeDamageFactor;

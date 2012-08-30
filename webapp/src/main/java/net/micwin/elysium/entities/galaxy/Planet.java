@@ -70,4 +70,9 @@ public final class Planet extends Environment {
 
 	}
 
+	@Override
+	public boolean needsPassivation() {
+		return false;
+	}
+
 }

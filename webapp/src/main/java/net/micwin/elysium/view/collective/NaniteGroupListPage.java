@@ -49,6 +49,7 @@ import net.micwin.elysium.entities.galaxy.Environment;
 import net.micwin.elysium.entities.galaxy.Position;
 import net.micwin.elysium.entities.gates.Gate;
 import net.micwin.elysium.entities.nanites.NaniteGroup;
+import net.micwin.elysium.entities.nanites.NaniteState;
 import net.micwin.elysium.view.BasePage;
 import net.micwin.elysium.view.ElysiumWicketModel;
 import net.micwin.elysium.view.jumpGates.UsePlanetaryGatePage;
@@ -157,7 +158,9 @@ public class NaniteGroupListPage extends BasePage {
 						setResponsePage(NaniteGroupShowPage.class);
 					}
 				};
+
 				link.add(label);
+				link.setEnabled(nanitesGroup.getState() != NaniteState.PASSIVATED);
 				item.add(link);
 				Model<String> countModel = new Model<String>(NumberFormat.getIntegerInstance().format(
 								nanitesGroup.getNaniteCount()));
@@ -245,7 +248,7 @@ public class NaniteGroupListPage extends BasePage {
 					}
 				};
 
-				link.setVisible(naniteGroupModel.getObject().getController().getNanites().size() > 1);
+				link.setVisible(naniteGroupModel.getObject().getState() != NaniteState.PASSIVATED);
 				return link;
 			}
 

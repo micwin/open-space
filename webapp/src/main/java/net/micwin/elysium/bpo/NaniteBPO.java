@@ -625,20 +625,16 @@ public class NaniteBPO extends BaseBPO {
 	 * @return
 	 */
 	public boolean canEntrench(NaniteGroup group) {
+
 		if (group.getState() != NaniteState.IDLE) {
 			return false;
 		}
 
-		if (group.getNaniteCount() >= group.getMinNaniteCount()) {
-			return true;
+		if (group.getPosition().getEnvironment() instanceof NaniteGroup) {
+			return false;
 		}
 
-		Avatar avatar = group.getController();
-		if (avatar.getUser().getRole() == Role.ADMIN) {
-			return true;
-		}
-
-		return false;
+		return true;
 
 	}
 
@@ -664,13 +660,17 @@ public class NaniteBPO extends BaseBPO {
 			return true;
 		}
 
-		if (naniteGroup.getState() != NaniteState.IDLE) {
-			L.debug("cannot upgrade - not idle");
-
+		if (naniteGroup.getPosition().getEnvironment() instanceof NaniteGroup) {
 			return false;
 		}
 
-		if (naniteGroup.getPosition().getEnvironment() instanceof NaniteGroup) {
+		if (naniteGroup.getState() == NaniteState.ENTRENCHED) {
+			return true;
+		}
+
+		if (naniteGroup.getState() != NaniteState.IDLE) {
+			L.debug("cannot upgrade - not idle");
+
 			return false;
 		}
 
@@ -732,6 +732,10 @@ public class NaniteBPO extends BaseBPO {
 			return false;
 		}
 
+		if (!container.getController().equals(object.getController())) {
+			return false;
+		}
+
 		if (container.getState() != NaniteState.IDLE && container.getState() != NaniteState.ENTRENCHED) {
 			return false;
 		}
@@ -749,6 +753,7 @@ public class NaniteBPO extends BaseBPO {
 
 		Position position = new Position(environment, 0, 0);
 		subject.setPosition(position);
+		subject.setState(NaniteState.PASSIVATED);
 
 		getNanitesDao().update(subject);
 
@@ -768,6 +773,11 @@ public class NaniteBPO extends BaseBPO {
 		Position newPosition = group.getPosition().getEnvironment().getPosition();
 
 		group.setPosition(newPosition);
+
+		if (!newPosition.getEnvironment().needsPassivation()) {
+			group.setState(NaniteState.IDLE);
+		}
+		
 		getNanitesDao().update(group);
 
 	}

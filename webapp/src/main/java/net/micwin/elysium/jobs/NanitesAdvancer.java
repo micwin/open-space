@@ -46,13 +46,13 @@ public class NanitesAdvancer {
 							naniteGroup.getStructurePoints() + naniteGroup.getNaniteCount() / 10);
 			naniteGroup.setStructurePoints(newStructurePoints);
 			if (newStructurePoints == maxStructurePoints) {
-				naniteGroup.setState(NaniteState.IDLE);
+				naniteGroup.returnToPreviousState();
 				String msg = "Aufrüsten abgeschlossen. Wir haben jetzt Stufe " + naniteGroup.getGroupLevel() + ".";
 
 				if (naniteGroup.getNaniteCount() < naniteGroup.getMinNaniteCount()) {
 					msg += " Unsere minimale Stärke beträgt "
 									+ naniteGroup.getMinNaniteCount()
-									+ ". Wir sollten noch die Nanitenzahl erhöhen, da wir sonst nich tmit voller Schlagkraft zuschlagen können.";
+									+ ". Wir sollten noch die Nanitenzahl erhöhen, da wir sonst nicht mit voller Schlagkraft zuschlagen können.";
 				}
 				messageBpo.send(naniteGroup, naniteGroup.getController(), msg);
 			} else {

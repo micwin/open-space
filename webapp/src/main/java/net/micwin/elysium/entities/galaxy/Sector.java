@@ -69,4 +69,9 @@ public class Sector extends Environment {
 	public Class getBaseClass() {
 		return Sector.class;
 	}
+
+	@Override
+	public boolean needsPassivation() {
+		return false;
+	}
 }
