@@ -31,7 +31,9 @@ public class ComponentsPanel extends BasePanel {
 		int freeSlots = new NaniteBPO().computeFreeSlots(group);
 		add(new Label("freeSlots", "" + freeSlots));
 		add(new Label("catapults", "" + group.getCatapults()));
+		add(new Label("naniteSlots", "" + group.getNaniteSlots()));
 		add(composeRaiseCatapultsLink());
+		add(composeRaiseNaniteSlotLink());
 
 	}
 
@@ -50,10 +52,32 @@ public class ComponentsPanel extends BasePanel {
 
 				group.setCatapults(group.getCatapults() + 1);
 				DaoManager.I.getNanitesDao().update(group);
-				throw new RestartResponseException(getPage());
+				setResponsePage(getPage().getClass());
 			}
 		};
 		raiseCatapultsLink.setVisible(new NaniteBPO().canRaiseComponents(groupModel.getObject()));
 		return raiseCatapultsLink;
 	}
+
+	private Component composeRaiseNaniteSlotLink() {
+
+		Link raiseCatapultsLink = new Link("raiseNaniteSlots") {
+
+			@Override
+			public void onClick() {
+				NaniteBPO bpo = new NaniteBPO();
+				NaniteGroup group = groupModel.getObject();
+				if (!new NaniteBPO().canRaiseComponents(group)) {
+					return;
+				}
+
+				group.setNaniteSlots(group.getNaniteSlots() + 1);
+				DaoManager.I.getNanitesDao().update(group);
+				setResponsePage(getPage().getClass());
+			}
+		};
+		raiseCatapultsLink.setVisible(new NaniteBPO().canRaiseComponents(groupModel.getObject()));
+		return raiseCatapultsLink;
+	}
+
 }

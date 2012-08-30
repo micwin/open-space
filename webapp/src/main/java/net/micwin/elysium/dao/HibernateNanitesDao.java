@@ -6,7 +6,7 @@ import java.util.List;
 import net.micwin.elysium.entities.galaxy.Environment;
 import net.micwin.elysium.entities.galaxy.Position;
 import net.micwin.elysium.entities.nanites.NaniteGroup;
-import net.micwin.elysium.entities.nanites.NaniteGroup.State;
+import net.micwin.elysium.entities.nanites.NaniteState;
 
 import org.hibernate.SessionFactory;
 
@@ -59,7 +59,7 @@ public class HibernateNanitesDao extends ElysiumHibernateDaoSupport<NaniteGroup>
 		NaniteGroup group = new NaniteGroup();
 		group.setNaniteCount(nanitesCount);
 		group.setPosition(position);
-		group.setState(State.IDLE);
+		group.setState(NaniteState.IDLE);
 		update(group);
 		return group;
 	}
@@ -72,7 +72,7 @@ public class HibernateNanitesDao extends ElysiumHibernateDaoSupport<NaniteGroup>
 
 
 	@Override
-	public Collection<NaniteGroup> findByState(State state) {
+	public Collection<NaniteGroup> findByState(NaniteState state) {
 		List<NaniteGroup> queryResult = lookupHql(" from NaniteGroup where state=" + state.ordinal());
 		return queryResult;
 

@@ -33,8 +33,7 @@ package net.micwin.elysium.entities.nanites;
  Sie sollten eine Kopie der GNU Affero Public License zusammen mit diesem
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
- */import java.util.Collection;
-import java.util.Date;
+ */import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -42,8 +41,8 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
-import net.micwin.elysium.entities.ElysiumEntity;
 import net.micwin.elysium.entities.SupportMode;
+import net.micwin.elysium.entities.galaxy.Environment;
 import net.micwin.elysium.entities.galaxy.Position;
 import net.micwin.elysium.messaging.IMessageEndpoint;
 
@@ -54,78 +53,11 @@ import net.micwin.elysium.messaging.IMessageEndpoint;
  * 
  */
 @Entity
-public class NaniteGroup extends ElysiumEntity implements IMessageEndpoint {
-
-	public enum State {
-
-		IDLE(1.0, 1.0, 1.0, 1.0, true, 1.0, true, true), ENTRENCHING(0.0, 0.0, 1.1, 0.5, false, 0.9, true, false), ENTRENCHED(
-						0.1, 0.1, 0.2, 10, false, 0.2, true, true), UPGRADING(0.0, 0.0, 1.1, 0.5, false, 1.1, false,
-						false);
-
-		final double attackDamageFactor;
-		final double counterStrikeDamageFactor;
-		final double receivingDamageFactor;
-
-		final double signatureFactor;
-		final double sensorFactor;
-
-		final boolean mayAttack;
-		final boolean canRaiseNanitesCount;
-		private boolean canSplit;
-
-		private State(double pAttackDamageFactor, double pCounterStrikeFactor, double pSignatureFactor,
-						double pSensorFactor, boolean pMayAttack, double pReceivingDamageFactor,
-						boolean pCanRaisenanitesCount, boolean pCanSplit) {
-			this.attackDamageFactor = pAttackDamageFactor;
-			this.counterStrikeDamageFactor = pCounterStrikeFactor;
-			this.signatureFactor = pSignatureFactor;
-			this.sensorFactor = pSensorFactor;
-			this.mayAttack = pMayAttack;
-			this.receivingDamageFactor = pReceivingDamageFactor;
-			this.canRaiseNanitesCount = pCanRaisenanitesCount;
-			this.canSplit = pCanSplit;
-		}
-
-		public double getAttackDamageFactor() {
-			return attackDamageFactor;
-		}
-
-		public double getCounterStrikeDamageFactor() {
-			return counterStrikeDamageFactor;
-		}
-
-		public double getSignatureFactor() {
-			return signatureFactor;
-		}
-
-		public double getSensorFactor() {
-			return sensorFactor;
-		}
-
-		public boolean mayAttack() {
-			return mayAttack;
-		}
-
-		public double getReceivingDamageFactor() {
-			return receivingDamageFactor;
-		}
-
-		public boolean canRaiseNanitesCount() {
-			return canRaiseNanitesCount;
-		}
-
-		public boolean canSplit() {
-
-			return canSplit;
-		}
-	}
+public class NaniteGroup extends Environment implements IMessageEndpoint {
 
 	public static final long MAX_NANITES_COUNT = Integer.MAX_VALUE;
 
 	private static final double BASE_MIN_NANITE_COUNT = 1000;
-
-	@Embedded
-	private Position position;
 
 	@Column
 	private long naniteCount;
@@ -134,7 +66,7 @@ public class NaniteGroup extends ElysiumEntity implements IMessageEndpoint {
 	private SupportMode supportMode = SupportMode.NONE;
 
 	@Column
-	private State state = State.IDLE;
+	private NaniteState state = NaniteState.IDLE;
 
 	@Column
 	private Date stateEndGT;
@@ -151,15 +83,11 @@ public class NaniteGroup extends ElysiumEntity implements IMessageEndpoint {
 	@Column(name = "catapults", columnDefinition = "int default 0")
 	private int catapults;
 
+	@Column(name = "naniteSlots", columnDefinition = "int default 0")
+	private int naniteSlots;
+
 	public NaniteGroup() {
-	}
-
-	public void setPosition(Position position) {
-		this.position = position;
-	}
-
-	public Position getPosition() {
-		return position;
+		setElysium(true);
 	}
 
 	public void setNaniteCount(long count) {
@@ -171,11 +99,11 @@ public class NaniteGroup extends ElysiumEntity implements IMessageEndpoint {
 		return naniteCount;
 	}
 
-	public State getState() {
+	public NaniteState getState() {
 		return state;
 	}
 
-	public void setState(State state) {
+	public void setState(NaniteState state) {
 		this.state = state;
 	}
 
@@ -255,6 +183,14 @@ public class NaniteGroup extends ElysiumEntity implements IMessageEndpoint {
 
 	public int getCatapults() {
 		return catapults;
+	}
+
+	public int getNaniteSlots() {
+		return naniteSlots;
+	}
+
+	public void setNaniteSlots(int naniteSlots) {
+		this.naniteSlots = naniteSlots;
 	}
 
 }

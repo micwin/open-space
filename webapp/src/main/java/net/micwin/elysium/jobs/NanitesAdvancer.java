@@ -11,7 +11,7 @@ import net.micwin.elysium.bpo.MessageBPO;
 import net.micwin.elysium.bpo.NaniteBPO;
 import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.entities.nanites.NaniteGroup;
-import net.micwin.elysium.entities.nanites.NaniteGroup.State;
+import net.micwin.elysium.entities.nanites.NaniteState;
 
 public class NanitesAdvancer {
 
@@ -29,7 +29,7 @@ public class NanitesAdvancer {
 
 	private int advanceUpgrading() {
 
-		Collection<NaniteGroup> result = DaoManager.I.getNanitesDao().findByState(State.UPGRADING);
+		Collection<NaniteGroup> result = DaoManager.I.getNanitesDao().findByState(NaniteState.UPGRADING);
 
 		L.info(result.size() + " groups upgrading ...");
 
@@ -46,7 +46,7 @@ public class NanitesAdvancer {
 							naniteGroup.getStructurePoints() + naniteGroup.getNaniteCount() / 10);
 			naniteGroup.setStructurePoints(newStructurePoints);
 			if (newStructurePoints == maxStructurePoints) {
-				naniteGroup.setState(State.IDLE);
+				naniteGroup.setState(NaniteState.IDLE);
 				String msg = "Aufrüsten abgeschlossen. Wir haben jetzt Stufe " + naniteGroup.getGroupLevel() + ".";
 
 				if (naniteGroup.getNaniteCount() < naniteGroup.getMinNaniteCount()) {
@@ -69,7 +69,7 @@ public class NanitesAdvancer {
 	}
 
 	public int advanceEntrenching() {
-		Collection<NaniteGroup> result = DaoManager.I.getNanitesDao().findByState(State.ENTRENCHING);
+		Collection<NaniteGroup> result = DaoManager.I.getNanitesDao().findByState(NaniteState.ENTRENCHING);
 		int changeCount = 0;
 
 		for (Iterator<NaniteGroup> iterator = result.iterator(); iterator.hasNext();) {
@@ -94,13 +94,13 @@ public class NanitesAdvancer {
 	 */
 	public boolean advanceEntrenching(NaniteGroup naniteGroup) {
 
-		if (naniteGroup.getState() != State.ENTRENCHING) {
+		if (naniteGroup.getState() != NaniteState.ENTRENCHING) {
 			return false;
 		}
 
 		if (naniteGroup.getStateEndGT().before(new Date())) {
 			naniteGroup.setStateEndGT(null);
-			naniteGroup.setState(State.ENTRENCHED);
+			naniteGroup.setState(NaniteState.ENTRENCHED);
 			new MessageBPO().send(naniteGroup, naniteGroup.getController(), "Eingraben beendet.");
 			return true;
 		}

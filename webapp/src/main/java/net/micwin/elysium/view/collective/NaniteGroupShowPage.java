@@ -11,11 +11,12 @@ import java.util.List;
 import java.util.Locale;
 
 import net.micwin.elysium.bpo.GateBPO;
+import net.micwin.elysium.bpo.NaniteBPO;
 import net.micwin.elysium.entities.characters.Avatar;
+import net.micwin.elysium.entities.galaxy.Environment;
 import net.micwin.elysium.entities.galaxy.Position;
 import net.micwin.elysium.entities.gates.Gate;
 import net.micwin.elysium.entities.nanites.NaniteGroup;
-import net.micwin.elysium.entities.nanites.NaniteGroup.State;
 import net.micwin.elysium.view.BasePage;
 import net.micwin.elysium.view.ElysiumWicketModel;
 import net.micwin.elysium.view.jumpGates.UsePlanetaryGatePage;
@@ -57,7 +58,8 @@ public class NaniteGroupShowPage extends BasePage {
 
 		addToContentBody(new Label("groupPosition", "" + group.getPosition().getEnvironment()));
 
-		String gateCode = getGateBPO().getGateAt(group.getPosition().getEnvironment()).getGateAdress();
+		Gate gate = getGateBPO().getGateAt(group.getPosition().getEnvironment());
+		String gateCode = gate == null ? "---" : gate.getGateAdress();
 
 		addToContentBody(new Label("groupGate", "" + gateCode));
 		addToContentBody(new Label("groupCount", NumberFormat.getIntegerInstance().format(group.getNaniteCount())));
@@ -93,7 +95,7 @@ public class NaniteGroupShowPage extends BasePage {
 		if (groupModel.getObject().getGroupLevel() == 0) {
 			return createDummyLink("components", false, false);
 		}
-		ComponentsPanel panel = new ComponentsPanel("components" , groupModel);
+		ComponentsPanel panel = new ComponentsPanel("components", groupModel);
 
 		return panel;
 	}
@@ -200,13 +202,29 @@ public class NaniteGroupShowPage extends BasePage {
 
 		result.add(getJumpElysiumLink(groupModel));
 
+		result.add(getExitLink(groupModel));
+
 		return result;
+	}
+
+	private Component getExitLink(ElysiumWicketModel<NaniteGroup> groupModel) {
+		Link exitLink = new Link<NaniteGroup>("exit", groupModel) {
+
+			@Override
+			public void onClick() {
+				getNanitesBPO().exit(getModelObject());
+				setResponsePage(NaniteGroupShowPage.class);
+			}
+		};
+
+		exitLink.setVisible(getNanitesBPO().canExit(groupModel.getObject()));
+		return exitLink;
 	}
 
 	protected Link<String> getJumpHomeLink(final ElysiumWicketModel<NaniteGroup> groupModel, final String homeGateAdress) {
 
-		String currentGateAdress = getGateBPO().getGateAt(groupModel.getEntity().getPosition().getEnvironment())
-						.getGateAdress();
+		Gate gate = getGateBPO().getGateAt(groupModel.getObject().getPosition().getEnvironment());
+		String currentGateAdress = gate == null ? "---" : gate.getGateAdress();
 
 		Link<String> link = new Link<String>("jumpHome") {
 
@@ -217,8 +235,8 @@ public class NaniteGroupShowPage extends BasePage {
 			}
 		};
 
-		link.setEnabled(!homeGateAdress.equals(currentGateAdress));
-		link.setVisible(getNanitesBPO().canJumpGate(groupModel.getObject()));
+		link.setEnabled(gate != null && !homeGateAdress.equals(currentGateAdress));
+		link.setVisible(gate != null && getNanitesBPO().canJumpGate(groupModel.getObject()));
 
 		return link;
 	}
@@ -234,10 +252,11 @@ public class NaniteGroupShowPage extends BasePage {
 			}
 		};
 
-		String currentGateAdress = getGateBPO().getGateAt(groupModel.getEntity()).getGateAdress();
+		Gate gate = getGateBPO().getGateAt(groupModel.getObject());
+		String currentGateAdress = gate == null ? "---" : gate.getGateAdress();
 
-		link.setEnabled(!"arena".equals(currentGateAdress));
-		link.setVisible(getNanitesBPO().canJumpGate(groupModel.getObject()));
+		link.setEnabled(gate != null && !"arena".equals(currentGateAdress));
+		link.setVisible(gate != null && getNanitesBPO().canJumpGate(groupModel.getObject()));
 
 		return link;
 	}
@@ -247,14 +266,15 @@ public class NaniteGroupShowPage extends BasePage {
 
 			@Override
 			public void onClick() {
-				getNanitesBPO().gateTravel(groupModel.getEntity(), "elysium");
+				getNanitesBPO().gateTravel(groupModel.getObject(), "elysium");
 				setResponsePage(NaniteGroupShowPage.class);
 			}
 		};
 
-		String currentGateAdress = getGateBPO().getGateAt(groupModel.getEntity()).getGateAdress();
-		link.setEnabled(!"elysium".equals(currentGateAdress));
-		link.setVisible(getNanitesBPO().canJumpGate(groupModel.getObject()));
+		Gate gate = getGateBPO().getGateAt(groupModel.getObject());
+		String currentGateAdress = gate == null ? "---" : gate.getGateAdress();
+		link.setEnabled(gate != null && !"elysium".equals(currentGateAdress));
+		link.setVisible(gate != null && getNanitesBPO().canJumpGate(groupModel.getObject()));
 
 		return link;
 	}
@@ -307,7 +327,24 @@ public class NaniteGroupShowPage extends BasePage {
 				item.add(getAttackCommandLink(scanningGroupModel, naniteGroupModel));
 
 				item.add(getSendMessageCommandLink(naniteGroupModel));
+				item.add(getEnterCommandLink(scanningGroupModel, naniteGroupModel));
 
+			}
+
+			private Component getEnterCommandLink(final ElysiumWicketModel<NaniteGroup> scanningGroupModel,
+							final ElysiumWicketModel<NaniteGroup> container) {
+				Link enterLink = new Link("enter") {
+					@Override
+					public void onClick() {
+						new NaniteBPO().enter(scanningGroupModel.getObject(), container.getObject());
+						setResponsePage(NaniteGroupShowPage.class);
+
+					}
+				};
+
+				enterLink.setVisible(new NaniteBPO().canEnter(scanningGroupModel.getObject(), container.getObject()));
+
+				return enterLink;
 			}
 
 			private Component getSendMessageCommandLink(final ElysiumWicketModel<NaniteGroup> naniteGroupModel) {

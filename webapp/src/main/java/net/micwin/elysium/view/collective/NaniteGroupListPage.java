@@ -144,7 +144,7 @@ public class NaniteGroupListPage extends BasePage {
 
 				Position position = nanitesGroup.getPosition();
 				Gate gate = getGateBPO().getGateAt(position.getEnvironment());
-				String gateCode = gate.getGateAdress();
+				String gateCode = gate == null ? "---" : gate.getGateAdress();
 
 				item.add(new Label("gateAdress", gateCode));
 
@@ -188,6 +188,8 @@ public class NaniteGroupListPage extends BasePage {
 				item.add(getSplitLink(naniteGroupModel));
 				item.add(getKillLink(naniteGroupModel));
 				item.add(getEntrenchLink(naniteGroupModel));
+				item.add(getExitLink(naniteGroupModel));
+
 			}
 
 			private Component getEntrenchLink(final IModel<NaniteGroup> naniteGroupModel) {
@@ -293,4 +295,19 @@ public class NaniteGroupListPage extends BasePage {
 	public static boolean userCanShow(User user) {
 		return user != null;
 	}
+
+	private Component getExitLink(IModel<NaniteGroup> model) {
+		Link exitLink = new Link<NaniteGroup>("exit", model) {
+
+			@Override
+			public void onClick() {
+				getNanitesBPO().exit(getModelObject());
+				setResponsePage(NaniteGroupListPage.class);
+			}
+		};
+
+		exitLink.setVisible(getNanitesBPO().canExit(model.getObject()));
+		return exitLink;
+	}
+
 }

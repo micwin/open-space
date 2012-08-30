@@ -10,7 +10,7 @@ import net.micwin.elysium.entities.galaxy.Planet;
 import net.micwin.elysium.entities.galaxy.SolarSystem;
 import net.micwin.elysium.entities.gates.Gate;
 import net.micwin.elysium.entities.nanites.NaniteGroup;
-import net.micwin.elysium.entities.nanites.NaniteGroup.State;
+import net.micwin.elysium.entities.nanites.NaniteState;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -100,7 +100,7 @@ public class ScannerBPO extends BaseBPO {
 				result.add(targetGroup);
 			} else {
 				hiddenCount++;
-				if (targetGroup.getState() == State.ENTRENCHED) {
+				if (targetGroup.getState() == NaniteState.ENTRENCHED) {
 					raiseUsage(targetGroup.getController(), Appliance.EMISSION_CONTROL, true);
 				}
 			}

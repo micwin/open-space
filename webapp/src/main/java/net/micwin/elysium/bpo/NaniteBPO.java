@@ -5,14 +5,18 @@ import java.util.Date;
 import java.util.List;
 
 import net.micwin.elysium.dao.DaoManager;
+import net.micwin.elysium.entities.ElysiumEntity;
 import net.micwin.elysium.entities.appliances.Appliance;
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.User.Role;
+import net.micwin.elysium.entities.galaxy.Environment;
+import net.micwin.elysium.entities.galaxy.Position;
 import net.micwin.elysium.entities.gates.Gate;
 import net.micwin.elysium.entities.nanites.NaniteGroup;
-import net.micwin.elysium.entities.nanites.NaniteGroup.State;
+import net.micwin.elysium.entities.nanites.NaniteState;
 
+import org.omg.CORBA.portable.IDLEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -417,6 +421,16 @@ public class NaniteBPO extends BaseBPO {
 			L.debug("controller nanites before removal" + controller.getNanites());
 		}
 
+		List<NaniteGroup> entities = getNanitesDao().findByEnvironment(naniteGroup);
+
+		for (NaniteGroup content : entities) {
+			content.setPosition(naniteGroup.getPosition());
+			getMessageBPO().send(content, content.getController(),
+							"Unser Transporter wurde zerstört. Wir befinden uns nun auf " + content.getPosition());
+		}
+
+		getNanitesDao().update(entities);
+
 		// since this is removeOrphaned=true, this also removes the naniteGroup
 		// from the database
 		controller.getNanites().remove(naniteGroup);
@@ -570,7 +584,7 @@ public class NaniteBPO extends BaseBPO {
 
 		long fortifyingEndDateMillis = System.currentTimeMillis() + computeEntrenchingDuration(group);
 
-		group.setState(State.ENTRENCHING);
+		group.setState(NaniteState.ENTRENCHING);
 		Date endDate = new Date(fortifyingEndDateMillis);
 		group.setStateEndGT(endDate);
 		getNanitesDao().update(group);
@@ -586,12 +600,13 @@ public class NaniteBPO extends BaseBPO {
 	public boolean canSplit(NaniteGroup nanitesGroup) {
 
 		return nanitesGroup.getNaniteCount() > 1 && nanitesGroup.getState().canSplit()
+						&& !(nanitesGroup.getPosition().getEnvironment() instanceof NaniteGroup)
 						&& canRaiseGroupCount(nanitesGroup.getController());
 
 	}
 
 	public boolean canJumpGate(NaniteGroup naniteGroup) {
-		if (naniteGroup.getState() != State.IDLE) {
+		if (naniteGroup.getState() != NaniteState.IDLE) {
 			return false;
 		}
 
@@ -610,7 +625,7 @@ public class NaniteBPO extends BaseBPO {
 	 * @return
 	 */
 	public boolean canEntrench(NaniteGroup group) {
-		if (group.getState() != State.IDLE) {
+		if (group.getState() != NaniteState.IDLE) {
 			return false;
 		}
 
@@ -632,7 +647,7 @@ public class NaniteBPO extends BaseBPO {
 			switch (naniteGroup.getState()) {
 			case ENTRENCHING:
 			case ENTRENCHED:
-				naniteGroup.setState(State.IDLE);
+				naniteGroup.setState(NaniteState.IDLE);
 				naniteGroup.setStateEndGT(null);
 				DaoManager.I.getNanitesDao().update(naniteGroup);
 				new MessageBPO().send(naniteGroup, naniteGroup.getController(),
@@ -649,9 +664,13 @@ public class NaniteBPO extends BaseBPO {
 			return true;
 		}
 
-		if (naniteGroup.getState() != State.IDLE) {
+		if (naniteGroup.getState() != NaniteState.IDLE) {
 			L.debug("cannot upgrade - not idle");
 
+			return false;
+		}
+
+		if (naniteGroup.getPosition().getEnvironment() instanceof NaniteGroup) {
 			return false;
 		}
 
@@ -684,7 +703,7 @@ public class NaniteBPO extends BaseBPO {
 			return;
 
 		group.setGroupLevel(group.getGroupLevel() + 1);
-		group.setState(State.UPGRADING);
+		group.setState(NaniteState.UPGRADING);
 		getNanitesDao().update(group);
 	}
 
@@ -697,10 +716,59 @@ public class NaniteBPO extends BaseBPO {
 		if (group.getGroupLevel() == 0)
 			return 0;
 		int totalSlots = (int) Math.pow(2, group.getGroupLevel() - 1);
-		return totalSlots - group.getCatapults();
+		return totalSlots - group.getCatapults() - group.getNaniteSlots();
 	}
 
 	public boolean canRaiseComponents(NaniteGroup group) {
 		return new NaniteBPO().computeFreeSlots(group) > 0;
+	}
+
+	public boolean canEnter(NaniteGroup object, NaniteGroup container) {
+		if (object.getState() != NaniteState.IDLE) {
+			return false;
+		}
+
+		if (object.getGroupLevel() >= container.getGroupLevel()) {
+			return false;
+		}
+
+		if (container.getState() != NaniteState.IDLE && container.getState() != NaniteState.ENTRENCHED) {
+			return false;
+		}
+
+		int count = getNanitesDao().findByEnvironment(container).size();
+		return count < container.getNaniteSlots();
+
+	}
+
+	public void enter(NaniteGroup subject, NaniteGroup environment) {
+
+		if (!canEnter(subject, environment)) {
+			return;
+		}
+
+		Position position = new Position(environment, 0, 0);
+		subject.setPosition(position);
+
+		getNanitesDao().update(subject);
+
+	}
+
+	public boolean canExit(NaniteGroup object) {
+		if (object.getPosition().getEnvironment() instanceof NaniteGroup)
+			return true;
+		return false;
+	}
+
+	public void exit(NaniteGroup group) {
+		if (!canExit(group)) {
+			return;
+		}
+
+		Position newPosition = group.getPosition().getEnvironment().getPosition();
+
+		group.setPosition(newPosition);
+		getNanitesDao().update(group);
+
 	}
 }

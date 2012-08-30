@@ -4,7 +4,7 @@ import java.text.NumberFormat;
 
 import net.micwin.elysium.bpo.NaniteBPO;
 import net.micwin.elysium.entities.nanites.NaniteGroup;
-import net.micwin.elysium.entities.nanites.NaniteGroup.State;
+import net.micwin.elysium.entities.nanites.NaniteState;
 import net.micwin.elysium.view.BasePage;
 
 import org.apache.wicket.markup.html.basic.Label;
@@ -19,13 +19,13 @@ public class DocumentationPage extends BasePage {
 	protected void onInitialize() {
 		super.onInitialize();
 		addToContentBody(new Label("entrenchedSignatureFactor", NumberFormat.getNumberInstance().format(
-						State.ENTRENCHED.getSignatureFactor())));
+						NaniteState.ENTRENCHED.getSignatureFactor())));
 		addToContentBody(new Label("entrenchedDefenseFactor", NumberFormat.getNumberInstance().format(
-						State.ENTRENCHED.getReceivingDamageFactor())));
+						NaniteState.ENTRENCHED.getReceivingDamageFactor())));
 		addToContentBody(new Label("entrenchedSensorsFactor", NumberFormat.getNumberInstance().format(
-						State.ENTRENCHED.getSensorFactor())));
+						NaniteState.ENTRENCHED.getSensorFactor())));
 		addToContentBody(new Label("entrenchedCounterstrikeFactor", NumberFormat.getNumberInstance().format(
-						State.ENTRENCHED.getCounterStrikeDamageFactor())));
+						NaniteState.ENTRENCHED.getCounterStrikeDamageFactor())));
 		int level = getAvatar() != null ? getAvatar().getLevel() : 5;
 		addToContentBody(new Label("level", NumberFormat.getIntegerInstance().format(level)));
 

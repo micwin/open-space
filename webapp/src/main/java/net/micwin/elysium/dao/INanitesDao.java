@@ -42,7 +42,7 @@ import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.galaxy.Environment;
 import net.micwin.elysium.entities.galaxy.Position;
 import net.micwin.elysium.entities.nanites.NaniteGroup;
-import net.micwin.elysium.entities.nanites.NaniteGroup.State;
+import net.micwin.elysium.entities.nanites.NaniteState;
 
 public interface INanitesDao extends IElysiumEntityDao<NaniteGroup> {
 
@@ -97,7 +97,7 @@ public interface INanitesDao extends IElysiumEntityDao<NaniteGroup> {
 	 * @param state
 	 * @return
 	 */
-	Collection<NaniteGroup> findByState(State state);
+	Collection<NaniteGroup> findByState(NaniteState state);
 
 	
 }

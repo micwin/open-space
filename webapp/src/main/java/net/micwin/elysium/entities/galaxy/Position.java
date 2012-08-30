@@ -43,6 +43,8 @@ import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 
+import net.micwin.elysium.entities.nanites.NaniteGroup;
+
 import org.hibernate.annotations.Any;
 import org.hibernate.annotations.AnyMetaDef;
 import org.hibernate.annotations.MetaValue;
@@ -64,7 +66,8 @@ public class Position {
 	@AnyMetaDef(idType = "long", metaType = "string", metaValues = {
 					@MetaValue(value = "S", targetEntity = Sector.class),
 					@MetaValue(value = "P", targetEntity = Planet.class),
-					@MetaValue(value = "Y", targetEntity = SolarSystem.class)
+					@MetaValue(value = "Y", targetEntity = SolarSystem.class),
+					@MetaValue(value = "N", targetEntity = NaniteGroup.class)
 
 	})
 	@JoinColumn(name = "env_id")

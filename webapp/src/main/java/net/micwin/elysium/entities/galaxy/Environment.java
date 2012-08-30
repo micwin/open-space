@@ -34,6 +34,7 @@ package net.micwin.elysium.entities.galaxy;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.MappedSuperclass;
 
@@ -49,12 +50,15 @@ public abstract class Environment extends ElysiumEntity {
 
 	@Embedded
 	private Position position;
-	
+
+	@Column(columnDefinition = "int default 0")
 	private int width;
 
+	@Column(columnDefinition = "int default 0")
 	private int height;
 
-	private boolean elysium;
+	@Column(nullable = false, columnDefinition = "boolean default false")
+	private boolean elysium = false;
 
 	public void setWidth(int width) {
 		this.width = width;
@@ -86,6 +90,10 @@ public abstract class Environment extends ElysiumEntity {
 
 	public void setElysium(boolean newIsElysium) {
 		elysium = newIsElysium;
-
 	}
+
+	public void setElysium(Boolean newIsElysium) {
+		elysium = newIsElysium == null ? false : newIsElysium;
+	}
+
 }
