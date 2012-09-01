@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<!-- This file is part of open-space. open-space is free software: you can 
+	redistribute it and/or modify it under the terms of the GNU Affero Public 
+	License as published by the Free Software Foundation, either version 3 of 
+	the License, or (at your option) any later version. open-space is distributed 
+	in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even 
+	the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+	See the GNU Affero Public License for more details. You should have received 
+	a copy of the GNU Affero Public License along with open-space. If not, see 
+	http://www.gnu.org/licenses. Diese Datei ist Teil von open-space. -->
+<!-- open-space ist Freie Software: Sie können es unter den Bedingungen der 
+	GNU Affero Public License, wie von der Free Software Foundation, Version 
+	3 der Lizenz oder (nach Ihrer Option) jeder späteren veröffentlichten Version, 
+	weiterverbreiten und/oder modifizieren. open-space wird in der Hoffnung, 
+	dass es nützlich sein wird, aber OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; 
+	sogar ohne die implizite Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR 
+	EINEN BESTIMMTEN ZWECK. Siehe die GNU Affero Public License für weitere Details. 
+	Sie sollten eine Kopie der GNU Affero Public License zusammen mit diesem 
+	Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>open-space</groupId>
+	<artifactId>parent-pom</artifactId>
+	<packaging>pom</packaging>
+	<version>0.5-SNAPSHOT</version>
+	<name>open space parent pom</name>
+
+	<url>http://www.micwin.net</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<repositories>
+
+		<repository>
+			<id>maven2-repository.java.net</id>
+			<name>Java.net Repository for Maven</name>
+			<url>http://download.java.net/maven/2/</url>
+			<layout>default</layout>
+		</repository>
+
+	</repositories>
+	<dependencies>
+
+		<!-- unit testing -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+		</dependency>
+
+		<!-- Logging -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.6.2</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.14</version>
+		</dependency>
+
+		<!-- some commons -->
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>3.2</version>
+		</dependency>
+
+
+	</dependencies>
+
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.xml</include>
+					<include>**/*.html</include>
+					<include>**/*.properties</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+
+		<plugins>
+			<plugin>
+				<inherited>true</inherited>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+					<optimize>true</optimize>
+					<debug>true</debug>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<configuration>
+					<downloadSources>true</downloadSources>
+				</configuration>
+			</plugin>
+
+			<!-- plugin to create a sources jar. -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.1.2</version>
+				<configuration>
+					<finalName>${project.artifactId}-${project.version}-${profile}</finalName>
+					<includePom>true</includePom>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
+
+</project>
