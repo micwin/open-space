@@ -71,7 +71,7 @@ public class NaniteGroup extends Environment implements IMessageEndpoint {
 	private NaniteState state = NaniteState.IDLE;
 
 	@Column
-	private NaniteState previousState = null;
+	private NaniteState previousState = NaniteState.IDLE;
 
 	@Column
 	private Date stateEndGT;
@@ -114,7 +114,7 @@ public class NaniteGroup extends Environment implements IMessageEndpoint {
 	}
 
 	public void returnToPreviousState() {
-		this.state = previousState;
+			this.state = previousState;
 	}
 
 	@Override

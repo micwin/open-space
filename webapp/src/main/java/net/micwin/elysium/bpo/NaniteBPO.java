@@ -425,6 +425,10 @@ public class NaniteBPO extends BaseBPO {
 
 		for (NaniteGroup content : entities) {
 			content.setPosition(naniteGroup.getPosition());
+			if (!naniteGroup.getPosition().getEnvironment().needsPassivation())
+			{
+				content.returnToPreviousState() ; 
+			}
 			getMessageBPO().send(content, content.getController(),
 							"Unser Transporter wurde zerstört. Wir befinden uns nun auf " + content.getPosition());
 		}
