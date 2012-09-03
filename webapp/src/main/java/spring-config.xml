@@ -10,28 +10,15 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-	 <context:annotation-config /> 
+
+	<context:annotation-config />
 	<!-- <context:component-scan base-package="net.micwin.elysium" /> -->
-
-
 
 	<!-- =================================================== -->
 	<!-- =========== configuring persistence layer ======= -->
 	<!-- =================================================== -->
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-		<property name="driverClassName">
-			<value>${database.driver}</value>
-		</property>
-		<property name="url">
-			<value>${database.url}</value>
-		</property>
-		<property name="username">
-			<value>${database.user}</value>
-		</property>
-		<property name="password">
-			<value>${database.pass}</value>
-		</property>
-	</bean>
+
+	<import resource="datasource-bean.xml" />
 
 
 	<bean id="sessionFactory"
@@ -75,7 +62,7 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 	</bean>
 
 	<tx:annotation-driven transaction-manager="txManager" />
-	
+
 	<!-- =================================================== -->
 	<!-- ===================== configuring dao layer ======= -->
 	<!-- =================================================== -->
@@ -115,10 +102,12 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 	<bean id="messageDao" class="net.micwin.elysium.dao.HibernateMessageDao">
 		<constructor-arg ref="sessionFactory" />
 	</bean>
-	
-	<bean id="daoManager" class="net.micwin.elysium.dao.DaoManager" autowire="byName" />
 
-	<bean id="dbConsistencyEnsurer" class="net.micwin.elysium.entities.DatabaseConsistencyEnsurer" autowire="byName"/>
+	<bean id="daoManager" class="net.micwin.elysium.dao.DaoManager"
+		autowire="byName" />
+
+	<bean id="dbConsistencyEnsurer" class="net.micwin.elysium.entities.DatabaseConsistencyEnsurer"
+		autowire="byName" />
 
 
 	<!-- =================================================== -->
