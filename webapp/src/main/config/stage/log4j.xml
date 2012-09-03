@@ -9,6 +9,14 @@
 		</layout>
 	</appender>
 
+	<appender name="FILE" class="org.apache.log4j.FileAppender">
+		<param name="File" value="${logfile}" />
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%t %-5p %c{2} - %m%n" />
+		</layout>
+	</appender>
+
 
 	<logger name="net.micwin.elysium">
 		<level value="INFO" />
@@ -17,5 +25,6 @@
 	<root>
 		<priority value="WARN" />
 		<appender-ref ref="CON" />
+		<appender-ref ref="FILE" />
 	</root>
 </log4j:configuration>
