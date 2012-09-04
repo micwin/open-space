@@ -155,7 +155,8 @@ public class ScannerBPO extends BaseBPO {
 			L.debug("computing signature strength for target " + naniteGroup);
 		}
 		double signatureStrength = BASE_NANITE_SIGNATURE_SIZE * naniteGroup.getNaniteCount()
-						* naniteGroup.getState().getSignatureFactor() * (naniteGroup.getGroupLevel() + 1);
+						* naniteGroup.getState().getSignatureFactor() * (naniteGroup.getGroupLevel() + 1) + 10
+						* naniteGroup.getSatellites();
 
 		Utilization ec = getTalent(naniteGroup.getController(), Appliance.EMISSION_CONTROL);
 
@@ -176,8 +177,8 @@ public class ScannerBPO extends BaseBPO {
 	 * @return
 	 */
 	public long computeShortRangeSensorStrength(NaniteGroup group) {
-		return (long) (getTalent(group.getController(), Appliance.SHORT_RANGE_SCANS).getLevel() * group.getState()
-						.getSensorFactor());
+		return (long) (getTalent(group.getController(), Appliance.SHORT_RANGE_SCANS).getLevel()
+						* group.getState().getSensorFactor() * (1 + 0.05 * group.getSatellites()));
 	}
 
 	/**

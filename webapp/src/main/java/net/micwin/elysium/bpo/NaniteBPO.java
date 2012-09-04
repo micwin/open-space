@@ -333,11 +333,11 @@ public class NaniteBPO extends BaseBPO {
 
 			if (firstCanonsToFire > 0) {
 				firstCanonsToFire--;
-				shootArtillery(first, second);
+				shootArtilleryOnce(first, second);
 			}
 			if (secondCanonsToFire > 0) {
 				secondCanonsToFire--;
-				shootArtillery(second, first);
+				shootArtilleryOnce(second, first);
 			}
 
 			anotherRound = (first.getNaniteCount() > 0 && firstCanonsToFire > 0)
@@ -345,13 +345,27 @@ public class NaniteBPO extends BaseBPO {
 		}
 	}
 
-	private void shootArtillery(NaniteGroup first, NaniteGroup second) {
+	private void shootArtilleryOnce(NaniteGroup first, NaniteGroup second) {
 
 		if (first.getCatapults() < 1)
 			return;
 		// each catapulted nanite does 2 preventable damage
-		doDamage(second, first.getNaniteCount() * 2);
+		if (!isIntercepted(first, second)) {
+			doDamage(second, first.getNaniteCount() * 2);
+		}
 
+	}
+
+	private boolean isIntercepted(NaniteGroup attacker, NaniteGroup defender) {
+
+		Utilization srs = new AvatarBPO().getTalent(defender.getController(), Appliance.SHORT_RANGE_SCANS);
+
+		int chancePerSatellite = srs != null ? 1 + srs.getLevel() : 1;
+		
+		double chance = defender.getSatellites() * chancePerSatellite;
+
+		boolean intercepted = Math.random() * 100 < chance;
+		return intercepted;
 	}
 
 	private long doDamage(NaniteGroup naniteGroup, long damage) {
@@ -425,9 +439,8 @@ public class NaniteBPO extends BaseBPO {
 
 		for (NaniteGroup content : entities) {
 			content.setPosition(naniteGroup.getPosition());
-			if (!naniteGroup.getPosition().getEnvironment().needsPassivation())
-			{
-				content.returnToPreviousState() ; 
+			if (!naniteGroup.getPosition().getEnvironment().needsPassivation()) {
+				content.returnToPreviousState();
 			}
 			getMessageBPO().send(content, content.getController(),
 							"Unser Transporter wurde zerstört. Wir befinden uns nun auf " + content.getPosition());
@@ -668,18 +681,13 @@ public class NaniteBPO extends BaseBPO {
 			return false;
 		}
 
-		if (naniteGroup.getState() == NaniteState.ENTRENCHED) {
-			return true;
-		}
-
-		if (naniteGroup.getState() != NaniteState.IDLE) {
-			L.debug("cannot upgrade - not idle");
-
+		if (naniteGroup.getNaniteCount() < naniteGroup.getMinNaniteCount()) {
+			L.debug("cannot upgrade - count below min count of nanites");
 			return false;
 		}
 
-		if (naniteGroup.getNaniteCount() < naniteGroup.getMinNaniteCount()) {
-			L.debug("cannot upgrade - count below min count of nanites");
+		if (naniteGroup.getState() != NaniteState.IDLE && naniteGroup.getState() != NaniteState.ENTRENCHED) {
+			L.debug("cannot upgrade - neiuther entrenched nor idle");
 			return false;
 		}
 
@@ -694,7 +702,8 @@ public class NaniteBPO extends BaseBPO {
 			return false;
 		}
 
-		if (((int) Math.log(naniteGroup.getBattleCounter()) + 1) <= naniteGroup.getGroupLevel()) {
+		if (naniteGroup.getState() != NaniteState.ENTRENCHED
+						&& ((int) Math.log(naniteGroup.getBattleCounter()) + 1) <= naniteGroup.getGroupLevel()) {
 			L.debug("cannot upgrade - battle counter too low");
 			return false;
 		}
@@ -719,8 +728,8 @@ public class NaniteBPO extends BaseBPO {
 	public int computeFreeSlots(NaniteGroup group) {
 		if (group.getGroupLevel() == 0)
 			return 0;
-		int totalSlots = (int) Math.pow(2, group.getGroupLevel() - 1);
-		return totalSlots - group.getCatapults() - group.getNaniteSlots();
+		int totalSlots = (int) Math.pow(2, group.getGroupLevel());
+		return totalSlots - group.getCatapults() - group.getNaniteSlots() - group.getSatellites();
 	}
 
 	public boolean canRaiseComponents(NaniteGroup group) {
@@ -781,7 +790,7 @@ public class NaniteBPO extends BaseBPO {
 		if (!newPosition.getEnvironment().needsPassivation()) {
 			group.setState(NaniteState.IDLE);
 		}
-		
+
 		getNanitesDao().update(group);
 
 	}

@@ -88,6 +88,10 @@ public class NaniteGroup extends Environment implements IMessageEndpoint {
 	@Column(name = "catapults", columnDefinition = "int default 0")
 	private int catapults;
 
+	@Column(name = "satellites", columnDefinition = "int default 0")
+	private int satellites;
+
+	
 	@Column(name = "naniteSlots", columnDefinition = "int default 0")
 	private int naniteSlots;
 
@@ -214,5 +218,13 @@ public class NaniteGroup extends Environment implements IMessageEndpoint {
 	@Override
 	public boolean needsPassivation() {
 		return true;
+	}
+
+	public void setSatellites(int satellites) {
+		this.satellites = satellites;
+	}
+
+	public int getSatellites() {
+		return satellites;
 	}
 }
