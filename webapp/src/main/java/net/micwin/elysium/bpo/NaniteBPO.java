@@ -809,7 +809,7 @@ public class NaniteBPO extends BaseBPO {
 			return;
 		}
 
-		group.setSatellites(group.getSatellites() + 1);
+		group.setFlaks(group.getFlaks() + 1);
 		DaoManager.I.getNanitesDao().update(group);
 
 	}
