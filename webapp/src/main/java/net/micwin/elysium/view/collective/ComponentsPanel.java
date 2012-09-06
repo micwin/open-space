@@ -33,10 +33,12 @@ public class ComponentsPanel extends BasePanel {
 		add(new Label("catapults", "" + group.getCatapults()));
 		add(new Label("naniteSlots", "" + group.getNaniteSlots()));
 		add(new Label("satellites", "" + group.getSatellites()));
+		add(new Label("flaks", "" + group.getFlaks()));
 
 		add(composeRaiseCatapultsLink());
 		add(composeRaiseNaniteSlotLink());
 		add(composeRaiseSatellitesLink());
+		add(composeRaiseFlaksLink());
 
 	}
 
@@ -103,6 +105,21 @@ public class ComponentsPanel extends BasePanel {
 		};
 		raiseSatellitesLink.setVisible(new NaniteBPO().canRaiseComponents(groupModel.getObject()));
 		return raiseSatellitesLink;
+	}
+
+	private Component composeRaiseFlaksLink() {
+
+		@SuppressWarnings({ "rawtypes", "serial" })
+		Link raiseFlaksLink = new Link("raiseFlaks") {
+
+			@Override
+			public void onClick() {
+				new NaniteBPO().raiseFlaks(groupModel.getObject());
+				setResponsePage(getPage().getClass());
+			}
+		};
+		raiseFlaksLink.setVisible(new NaniteBPO().canRaiseComponents(groupModel.getObject()));
+		return raiseFlaksLink;
 	}
 
 }

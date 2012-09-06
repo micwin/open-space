@@ -340,32 +340,40 @@ public class NaniteBPO extends BaseBPO {
 				shootArtilleryOnce(second, first);
 			}
 
-			anotherRound = (first.getNaniteCount() > 0 && firstCanonsToFire > 0)
-							|| (second.getNaniteCount() > 0 && secondCanonsToFire > 0);
+			anotherRound = (firstCanonsToFire > 0 || secondCanonsToFire > 0) && canAttack(first, second);
 		}
 	}
 
-	private void shootArtilleryOnce(NaniteGroup first, NaniteGroup second) {
+	private void shootArtilleryOnce(NaniteGroup shooter, NaniteGroup target) {
 
-		if (first.getCatapults() < 1)
+		if (shooter.getCatapults() < 1)
 			return;
-		// each catapulted nanite does 2 preventable damage
-		if (!isIntercepted(first, second)) {
-			doDamage(second, first.getNaniteCount() * 2);
+
+		long projectiles = Math.max(
+						(long) (getTalent(shooter.getController(), Appliance.NANITE_MANAGEMENT).getLevel() * 100),
+						shooter.getNaniteCount() / 1000);
+
+		long deactivatedProjectiles = 0;
+
+		if (target.getState() != NaniteState.PASSIVATED) {
+			Utilization trgEC = getTalent(target.getController(), Appliance.EMISSION_CONTROL);
+			Utilization trgNM = getTalent(target.getController(), Appliance.NANITE_MANAGEMENT);
+			deactivatedProjectiles += (target.getSatellites() * 1000 * (trgNM == null ? 0.5 : trgNM.getLevel()) + target
+							.getFlaks() * 10000 * (trgEC == null ? 0.5 : trgEC.getLevel()));
 		}
+		projectiles -= deactivatedProjectiles;
+		if (projectiles < 1) {
+			return;
+		}
+
+		long damageCount = projectiles * (long) computeExplosionDamagePerNanite(shooter);
+		doDamage(target, damageCount);
 
 	}
 
-	private boolean isIntercepted(NaniteGroup attacker, NaniteGroup defender) {
-
-		Utilization srs = new AvatarBPO().getTalent(defender.getController(), Appliance.SHORT_RANGE_SCANS);
-
-		int chancePerSatellite = srs != null ? 1 + srs.getLevel() : 1;
-		
-		double chance = defender.getSatellites() * chancePerSatellite;
-
-		boolean intercepted = Math.random() * 100 < chance;
-		return intercepted;
+	public long computeExplosionDamagePerNanite(NaniteGroup naniteGroup) {
+		Utilization ec = getTalent(naniteGroup.getController(), Appliance.EMISSION_CONTROL);
+		return (long) (2 * (ec == null ? 0.5 : ec.getLevel()));
 	}
 
 	private long doDamage(NaniteGroup naniteGroup, long damage) {
@@ -728,8 +736,8 @@ public class NaniteBPO extends BaseBPO {
 	public int computeFreeSlots(NaniteGroup group) {
 		if (group.getGroupLevel() == 0)
 			return 0;
-		int totalSlots = (int) Math.pow(2, group.getGroupLevel());
-		return totalSlots - group.getCatapults() - group.getNaniteSlots() - group.getSatellites();
+		int totalSlots = group.getGroupLevel() * 2;
+		return totalSlots - group.getCatapults() - group.getNaniteSlots() - group.getSatellites() - group.getFlaks();
 	}
 
 	public boolean canRaiseComponents(NaniteGroup group) {
@@ -792,6 +800,17 @@ public class NaniteBPO extends BaseBPO {
 		}
 
 		getNanitesDao().update(group);
+
+	}
+
+	public void raiseFlaks(NaniteGroup group) {
+
+		if (!new NaniteBPO().canRaiseComponents(group)) {
+			return;
+		}
+
+		group.setSatellites(group.getSatellites() + 1);
+		DaoManager.I.getNanitesDao().update(group);
 
 	}
 }

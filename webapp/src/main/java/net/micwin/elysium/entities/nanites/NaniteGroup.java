@@ -91,7 +91,9 @@ public class NaniteGroup extends Environment implements IMessageEndpoint {
 	@Column(name = "satellites", columnDefinition = "int default 0")
 	private int satellites;
 
-	
+	@Column(name = "flaks", columnDefinition = "int default 0")
+	private int flaks;
+
 	@Column(name = "naniteSlots", columnDefinition = "int default 0")
 	private int naniteSlots;
 
@@ -118,7 +120,7 @@ public class NaniteGroup extends Environment implements IMessageEndpoint {
 	}
 
 	public void returnToPreviousState() {
-			this.state = previousState;
+		this.state = previousState;
 	}
 
 	@Override
@@ -226,5 +228,13 @@ public class NaniteGroup extends Environment implements IMessageEndpoint {
 
 	public int getSatellites() {
 		return satellites;
+	}
+
+	public void setFlaks(int flaks) {
+		this.flaks = flaks;
+	}
+
+	public int getFlaks() {
+		return flaks;
 	}
 }

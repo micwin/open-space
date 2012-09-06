@@ -19,8 +19,9 @@
 			Nahkampf kommt, je eine Naniten-Gruppe verschiesst, die kurz vor dem
 			Aufprall eine Kernexplosion ihrer Atome initiieren und immensen
 			Schaden anrichten. Jeder Katapult schiesst genau einmal - die Menge
-			der verschossenen Naniten richtet sich dabei nach der Nanitenzahl
-			dieser Gruppe. Die Abschussreihenfolge wird durch den
+			der verschossenen Naniten bel&auml;uft sich auf mindestens die STufe
+			des Unterprogramms Naniten-Management und maximal 1/1000 der Anzahl
+			Naniten in der Nanitengruppe. Die Abschussreihenfolge wird durch den
 			Kampfz&auml;hler der Kombattanten bestimmt - je mehr Kampferfahrung,
 			desto eher die Chance, als erster zu schiessen.</td>
 		</tr>
@@ -40,12 +41,21 @@
 				wicket:id="raiseSatellites">+</a></td>
 			<td>Nano-Satelliten sind einzelne, spezialisierte Naniten, die
 			die Gruppe umkreisen und die Sensorst&auml;rke um 5% / Satellit
-			erh&ouml;hen. Jeder Satellit besitzt eine von der Stufe des
-			Unterprogramms <i>Kurzstrecken-Scanner</i> abh&auml;ngigen Chance,
-			gegnerisches Artilleriefeuer durch nanitenkatapulte zu neutralisieren (1% / Satellit / Stufe /
-			Artillerie-Schuss). Aufgrund des weitl&auml;ufigen Bewegungsradius'
-			des Satelliten erh&ouml;ht jeder Satellit die Signatur der Gruppe um
-			10 Signaturpunkte.</td>
+			erh&ouml;hen. Jeder Satellit deaktiviert zus&auml;tzlich einfliegende
+			Naniten-Geschosse. Die Anzahl errechnet sich als 1000 * Stufe
+			Naniten-Management pro Satellit und pro Geschoss. Nachteilig wirkt,
+			dass jeder Satellit die Signaturgr&ouml;sse um 10 Punkte erh&ouml;ht.</td>
+		</tr>
+		<tr>
+			<td width="25%">Flak-Gesch&uuml;tze</td>
+			<td width="10%"><span wicket:id="flaks" /> <a
+				wicket:id="raiseFlaks">+</a></td>
+			<td>Flak sind die kleine Variante der Naniten-Katapulte und
+			dienen ausschliesslich der Kurzstrecken-Abwehr von langsam fliegenden
+			Geschossen wie z.B. der Geschosse von Naniten-Katapulten. Die Anzzahl
+			der pro Flak neutralisierten Naniten errechnet sich als 10'000 * der
+			Stufe Emmissions-Kontrolle. Jedes Flak schiesst pro eingehendem
+			Geschoss einmal.</td>
 		</tr>
 	</table>
 

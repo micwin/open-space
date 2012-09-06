@@ -67,10 +67,10 @@ unmittelbar beim Ziel.</p>
 <h1>Aspekte</h1>
 
 <h2>Elysium (Gate-Adresse <i>elysium</i>)</h2>
-<p>Der Planet der Sicherheit. Hier hin werden alle Gruppen verfrachtet, die
-irgendwie durch die H&ouml;lle gegangern sind. Da man danach irgendwie
-ein bisschen seine Ruhe will, kann man auf dem Planeten nicht
-k&auml;mpfen.</p>
+<p>Der Planet der Sicherheit. Hier hin werden alle Gruppen
+verfrachtet, die irgendwie durch die H&ouml;lle gegangern sind. Da man
+danach irgendwie ein bisschen seine Ruhe will, kann man auf dem Planeten
+nicht k&auml;mpfen.</p>
 
 <h2>Die Arena (Gate-Adresse <i>arena</i>)</h2>
 
@@ -199,6 +199,7 @@ Naniten multipliziert, und auch mit deinen sonstigen Modifikationen.
 Abgesehen von diesen sonstigen Modifikationen wird eine Gruppe mit mehr
 Naniten als eine zweite immer auch mehr Schaden verursachen wie diese
 zweite Gruppe.</p>
+
 <h2>Naniten-Angriff</h2>
 <p>Das Unterprogramm "Naniten-Angriff" erm&ouml;glicht es dir,
 andere Nanitengruppen aktiv anzugreifen. Es verst&auml;rkt deine
@@ -310,15 +311,15 @@ einer Gruppe (ln). Eingebuddelte Gruppen k&ouml;nnen beliebig ausgebaut
 werden.</p>
 <p>Es k&ouml;nnen folgende Komponenten eingebaut werden:</p>
 <h2>Naniten-Katapult</h2>
-Der Naniten-Katapult ist eine langstrecken-Artillerie, die
+Der Naniten-Katapult ist eine Langstrecken-Artillerie, die
 Nanitengruppen verschleudert. Die zu verschiessendern Nanitengruppen
-besitzen die Nanitenzahl der verschiessenden Gruppe, werden unmittelbar
+bestehen minimal aus einer ANzahl gleich der Stufe des
+naniten-managements, maximal 1/1000 der Nanitegruppe, werden unmittelbar
 vor dem Schuss erzeugt und werden unmittelbar vor dem Kampf auf den
-Gegner abgefeuert - jeder katapult genau einmal. Jedes abgefeuerte Nanit
+Gegner abgefeuert - jeder Katapult genau einmal. Jedes abgefeuerte Nanit
 aktiviert kurz vor dem Aufprall die Selbstzerst&ouml;rung und
 hinterl&auml;sst 2 Schadenspunkte. Dieser Schaden kann mittels
-Schadenskontrolle verhindert werden.
-</p>
+Schadenskontrolle verhindert werden.</p>
 <p>Wer zuerst schiesst bestimmt die Kampferfahrung - derjenige mit
 der meisten kampferfahrung schiest zuerst, dann der zweite; dann wieder
 der erste solange bis alle katapulte einmal geschossen haben. Dabei wird
@@ -333,18 +334,22 @@ Wird die aufnehmende Gruppe zerst&ouml;rt, werden die darin enthaltenen
 Gruppen in die Umgebung entlassen. Es ist m&ouml;glich, Nanitengruppen
 an Bord zu nehmen, die wiederrum selbst Nanitengruppen transportieren,
 oder &uuml;ber Nanitenkatapulte verf&uuml;gen.</p>
+
 <h2>Nano-Satelliten</h2>
-<p>Nano-Satelliten sind Spezial-Naniten, die eine Nanitengruppe
-umkreisen und deren Sensorst&auml;rke um 5% / Satellit verbessern.
-Zus&auml;tzlich besteht pro Satellit eine Chance, bei Beschuss durch
-einen Naniten- Katapult das Geschoss vor Auftreffen zu neutralisieren
-(1% / Satellit / SRS-Stufe / Beschuss). Den Vorteilen gegen&uuml;ber
-steht eine stark erh&ouml;hte Signatur sowie die Notwendigkeit eines
-f&uuml;r jeden Satelliten notwendigen Steuercomputers, der einen
-Komponentenslot ben&ouml;tigt. Sollte ein Satellit zerst&ouml;rt werden,
-so wird dieser umgehend ersetzt. Aufgrund des dedizierten
-Steuercomputers z&auml;hlen Nano-Satelliten zwar einerseits nicht zum
-Naniten-Maximum, nehmen aber andererseits auch nicht an Angriffen teil.</p>
+<p>Nano-Satelliten sind einzelne, spezialisierte Naniten, die die
+Gruppe umkreisen und die Sensorst&auml;rke um 5% / Satellit
+erh&ouml;hen. Jeder Satellit deaktiviert zus&auml;tzlich einfliegende
+Naniten-Geschosse. Die Anzahl errechnet sich als 1000 * Stufe
+Naniten-Management pro Satellit und pro Geschoss. Nachteilig wirkt, dass
+jeder Satellit die Signaturgr&ouml;sse um 10 Punkte erh&ouml;ht</p>
+
+<h2>Flak-Gesch&uuml;tze</h2>
+<p>Flak sind die kleine Variante der Naniten-Katapulte und dienen
+ausschliesslich der Kurzstrecken-Abwehr von langsam fliegenden
+Geschossen wie z.B. der Geschosse von Naniten-Katapulten. Die Anzahl der
+pro Flak neutralisierten Naniten errechnet sich als 10'000 * der Stufe
+Emmissions-Kontrolle. Jedes Flak schiesst pro eingehendem Geschoss
+einmal.</p>
 <h1>Einbuddeln (entrenching)</h1>
 <p>Durch einbuddeln (Kommando "E" in der Listenansicht) kannst du
 eine Nanitengruppe mit dem Planeten "verweben". Damit wird sie zu einem
