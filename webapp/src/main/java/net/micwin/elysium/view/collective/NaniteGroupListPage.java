@@ -150,18 +150,8 @@ public class NaniteGroupListPage extends BasePage {
 			protected void populateItem(Item<NaniteGroup> item) {
 				final IModel naniteGroupModel = item.getModel();
 				final NaniteGroup nanitesGroup = (NaniteGroup) naniteGroupModel.getObject();
-				item.add(new Label("groupId", Model.of(nanitesGroup.getId())));
 
-				item.add(new Label("groupLevel", Model.of(nanitesGroup.getGroupLevel())));
-
-				Position position = nanitesGroup.getPosition();
-				Gate gate = getGateBPO().getGateAt(position.getEnvironment());
-				String gateCode = gate == null ? "---" : gate.getGateAdress();
-
-				item.add(new Label("gateAdress", gateCode));
-
-				Label label = new Label("label", position.getEnvironment().toString());
-				Link<NaniteGroup> link = new Link<NaniteGroup>("groupPosition") {
+				Link<NaniteGroup> groupIdLink = new Link<NaniteGroup>("groupId") {
 
 					@Override
 					public void onClick() {
@@ -170,9 +160,20 @@ public class NaniteGroupListPage extends BasePage {
 					}
 				};
 
-				link.add(label);
-				link.setEnabled(nanitesGroup.getState() != NaniteState.PASSIVATED);
-				item.add(link);
+				groupIdLink.add(new Label("groupId", Model.of(nanitesGroup.getId())));
+				groupIdLink.setEnabled(nanitesGroup.getState() != NaniteState.PASSIVATED);
+
+				item.add(groupIdLink);
+				item.add(new Label("groupLevel", Model.of(nanitesGroup.getGroupLevel())));
+
+				Position position = nanitesGroup.getPosition();
+				Gate gate = getGateBPO().getGateAt(position.getEnvironment());
+				String gateCode = gate == null ? "---" : gate.getGateAdress();
+
+				item.add(new Label("gateAdress", gateCode));
+
+				Label label = new Label("groupPosition", position.getEnvironment().toString());
+				item.add(label);
 				Model<String> countModel = new Model<String>(NumberFormat.getIntegerInstance().format(
 								nanitesGroup.getNaniteCount()));
 				item.add(new Label("groupCount", countModel));
