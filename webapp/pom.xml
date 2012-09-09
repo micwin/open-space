@@ -178,9 +178,6 @@
 			target dir -->
 		<profile>
 			<id>dev</id>
-			<activation>
-				<activeByDefault />
-			</activation>
 			<build>
 				<filters>
 					<filter>src/main/filters/dev.properties</filter>
@@ -217,11 +214,8 @@
 						<filtering>true</filtering>
 					</resource>
 				</resources>
-
 			</build>
-
 		</profile>
-
 	</profiles>
 
 	<build>

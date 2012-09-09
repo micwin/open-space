@@ -41,6 +41,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 
 import net.micwin.elysium.entities.characters.Avatar;
@@ -92,6 +94,11 @@ public class NaniteGroupListPage extends BasePage {
 			setResponsePage(NaniteGroupShowPage.class);
 		}
 
+		addToContentBody(createSortPropertyLink("sortById", "ID", "id", true));
+		addToContentBody(createSortPropertyLink("sortByLevel", "Stufe", "groupLevel", true));
+		addToContentBody(createSortPropertyLink("sortByCount", "Anzahl", "naniteCount", true));
+		addToContentBody(createSortPropertyLink("sortByState", "Status", "state", true));
+		addToContentBody(createSortPropertyLink("sortByBattleCounter", "Kämpfe", "battleCounter", true));
 		addToContentBody(getGroupsTable());
 	}
 
@@ -108,7 +115,11 @@ public class NaniteGroupListPage extends BasePage {
 		} else {
 			models.clear();
 		}
-		Collection<NaniteGroup> nanites = getAvatar().getNanites();
+
+		List<NaniteGroup> nanites = new LinkedList<NaniteGroup>(getAvatar().getNanites());
+
+		sort(nanites);
+
 		for (NaniteGroup naniteGroup : nanites) {
 			models.add(ElysiumWicketModel.of(naniteGroup));
 		}
@@ -312,5 +323,4 @@ public class NaniteGroupListPage extends BasePage {
 		exitLink.setVisible(getNanitesBPO().canExit(model.getObject()));
 		return exitLink;
 	}
-
 }

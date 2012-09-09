@@ -36,6 +36,8 @@ package net.micwin.elysium.view;
  */
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import net.micwin.elysium.bpo.AvatarBPO;
 import net.micwin.elysium.bpo.GateBPO;
@@ -60,10 +62,16 @@ import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.model.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.support.PropertyComparator;
 
 public abstract class BasePage extends WebPage {
+
+	private static final String ATTR_SORT_ASCENDING = "sort.ascending";
+
+	private static final String ATTR_SORT_PROPERTY = "sort.property";
 
 	public static final String[] NUMBERS_IN_ENGLISH = { "Zero", "One", "Two", "Three", "Four", "Five" };
 
@@ -306,4 +314,47 @@ public abstract class BasePage extends WebPage {
 		return getLocalizer().getString(messageKey, this);
 	}
 
+	protected Link createSortPropertyLink(String id, String caption, final String property, final boolean ascending) {
+
+		Link link = new Link(id) {
+
+			@Override
+			public void onClick() {
+
+				String oldSortProperty = (String) getElysiumSession().getAttribute(ATTR_SORT_PROPERTY);
+				if (property.equals(oldSortProperty)) {
+					getElysiumSession().setAttribute(ATTR_SORT_ASCENDING, !getSortAscending());
+				} else {
+					getElysiumSession().setAttribute(ATTR_SORT_PROPERTY, property);
+					getElysiumSession().setAttribute(ATTR_SORT_ASCENDING, ascending);
+
+				}
+				setResponsePage(getPage().getClass());
+
+			}
+		};
+		link.setBody(Model.of(caption));
+
+		return link;
+	}
+
+	protected String getSortProperty() {
+		return (String) getElysiumSession().getAttribute(ATTR_SORT_PROPERTY);
+	}
+
+	protected boolean getSortAscending() {
+		Boolean attribute = (Boolean) getElysiumSession().getAttribute(ATTR_SORT_ASCENDING);
+		return attribute == null ? true : attribute;
+	}
+
+	public void sort(List<? extends ElysiumEntity> nanites) {
+		String sortProperty = getSortProperty();
+		boolean sortPropertyAsc = getSortAscending();
+
+		if (sortProperty != null) {
+
+			PropertyComparator pc = new PropertyComparator(sortProperty, true, sortPropertyAsc);
+			Collections.sort(nanites, pc);
+		}
+	}
 }
