@@ -94,6 +94,11 @@ public class NaniteGroupListPage extends BasePage {
 			setResponsePage(NaniteGroupShowPage.class);
 		}
 
+		if (getSortProperty() == null) {
+			getElysiumSession().setAttribute(ATTR_SORT_ASCENDING, Boolean.FALSE);
+			getElysiumSession().setAttribute(ATTR_SORT_PROPERTY, "groupLevel");
+		}
+
 		addToContentBody(createSortPropertyLink("sortById", "ID", "id", true));
 		addToContentBody(createSortPropertyLink("sortByLevel", "Stufe", "groupLevel", true));
 		addToContentBody(createSortPropertyLink("sortByCount", "Anzahl", "naniteCount", true));

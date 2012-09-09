@@ -69,9 +69,9 @@ import org.springframework.beans.support.PropertyComparator;
 
 public abstract class BasePage extends WebPage {
 
-	private static final String ATTR_SORT_ASCENDING = "sort.ascending";
+	public static final String ATTR_SORT_ASCENDING = "sort.ascending";
 
-	private static final String ATTR_SORT_PROPERTY = "sort.property";
+	public static final String ATTR_SORT_PROPERTY = "sort.property";
 
 	public static final String[] NUMBERS_IN_ENGLISH = { "Zero", "One", "Two", "Three", "Four", "Five" };
 
