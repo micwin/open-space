@@ -97,6 +97,9 @@ public class NaniteGroup extends Environment implements IMessageEndpoint {
 	@Column(name = "naniteSlots", columnDefinition = "int default 0")
 	private int naniteSlots;
 
+	@Column(name = "ambushSquats", columnDefinition = "int default 0")
+	private int ambushSquads;
+
 	public NaniteGroup() {
 		setElysium(true);
 	}
@@ -115,7 +118,9 @@ public class NaniteGroup extends Environment implements IMessageEndpoint {
 	}
 
 	public void setState(NaniteState state) {
-		previousState = this.state;
+		if (this.state != previousState) {
+			previousState = this.state;
+		}
 		this.state = state;
 	}
 
@@ -236,5 +241,13 @@ public class NaniteGroup extends Environment implements IMessageEndpoint {
 
 	public int getFlaks() {
 		return flaks;
+	}
+
+	public void setAmbushSquads(int ambushSquads) {
+		this.ambushSquads = ambushSquads;
+	}
+
+	public int getAmbushSquads() {
+		return ambushSquads;
 	}
 }

@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
  */
 public class NPCAdvancer {
 
-	private static final int NPC_GROUPS_ON_ARENA = 15;
+	private static final int NPC_GROUPS_ON_ARENA = 50;
 	public static final String NAME_AI_0 = "blackw00d-AI";
 
 	private static final Logger L = LoggerFactory.getLogger(NPCAdvancer.class);
@@ -64,6 +64,9 @@ public class NPCAdvancer {
 			NaniteGroup newGroup = DaoManager.I.getNanitesDao().create(count, arenaGate.getPosition());
 			avatar.getNanites().add(newGroup);
 			newGroup.setController(avatar);
+			newGroup.setCatapults(3);
+			newGroup.setAmbushSquads(3);
+			newGroup.setBattleCounter(10000);
 			DaoManager.I.getNanitesDao().update(newGroup);
 		}
 		L.info(toCreate + " nanitegroups created for npc " + avatar.getName() + " on arena");
@@ -73,9 +76,10 @@ public class NPCAdvancer {
 
 	public Collection<NaniteGroup> getNanitesOnArena(Avatar avatar) {
 		Gate arenaGate = DaoManager.I.getGatesDao().findByGateAdress("arena");
-		
-		Collection<NaniteGroup> onArena =  DaoManager.I.getNanitesDao().findBy(avatar, arenaGate.getPosition().getEnvironment()) ; 
-		
+
+		Collection<NaniteGroup> onArena = DaoManager.I.getNanitesDao().findBy(avatar,
+						arenaGate.getPosition().getEnvironment());
+
 		L.debug("having " + onArena.size() + " groups on arena");
 		return onArena;
 	}

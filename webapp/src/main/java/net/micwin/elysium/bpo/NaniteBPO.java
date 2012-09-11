@@ -191,7 +191,7 @@ public class NaniteBPO extends BaseBPO {
 		getAvatarDao().refresh(controller);
 		long count = 0;
 		for (NaniteGroup group : controller.getNanites()) {
-			count += group.getNaniteCount();
+			count += group.getNaniteCount() + group.getAmbushSquads() + group.getSatellites();
 		}
 
 		return count;
@@ -271,7 +271,26 @@ public class NaniteBPO extends BaseBPO {
 			return;
 		}
 
-		attackCatapult(attacker, defender);
+		boolean stopAttack = attackCatapult(attacker, defender) || attackAmbush(attacker, defender);
+
+		if (stopAttack) {
+			if (defender.getNaniteCount() < 1) {
+				long activeAmbushSquads = computeActiveAmbush(attacker, defender);
+				if (activeAmbushSquads > 0) {
+					defender.setNaniteCount(activeAmbushSquads);
+					getNanitesDao().update(defender);
+					new MessageBPO().send(defender, defender.getController(),
+									"unsere A.M.B.U.S.H-Schwadron konnte einer Zerstörung entgegenwirken und hat "
+													+ activeAmbushSquads + " Einheiten reaktiviert.");
+				} else {
+					kill(defender);
+				}
+			}
+			if (attacker.getNaniteCount() < 1)
+				kill(attacker);
+
+			return;
+		}
 
 		long attackerStrength = calculateAttackDamage(attacker, true, defender);
 		long defenderStrength = calculateAttackDamage(defender, false, attacker);
@@ -295,7 +314,6 @@ public class NaniteBPO extends BaseBPO {
 
 		raiseUsage(attackingAvatar, Appliance.NANITE_BATTLE, false);
 		raiseUsage(defendingAvatar, Appliance.NANITE_DAMAGE_CONTROL, false);
-
 		if (attacker.getNaniteCount() < 1) {
 
 			L.debug("killing attacker group");
@@ -313,10 +331,57 @@ public class NaniteBPO extends BaseBPO {
 			attacker.getController().raiseFragCount();
 			raiseUsage(attackingAvatar, Appliance.NANITE_CRITICAL_HIT, false);
 		}
+	}
+
+	/**
+	 * processes an ambushed attack.
+	 * 
+	 * @param attacker
+	 * @param defender
+	 *            @ return false if the attack continues, true if the attack has
+	 *            been stopped.
+	 */
+	private boolean attackAmbush(NaniteGroup attacker, NaniteGroup defender) {
+
+		int activeAmbush = computeActiveAmbush(attacker, defender);
+
+		if (activeAmbush < 1) {
+			return false;
+		}
+
+		Utilization naMa = getTalent(defender.getController(), Appliance.NANITE_MANAGEMENT);
+		Utilization ecs = getTalent(defender.getController(), Appliance.EMISSION_CONTROL);
+		Utilization nat = getTalent(defender.getController(), Appliance.NANITE_BATTLE);
+
+		double natFactor = nat != null && nat.getLevel() > 0 ? nat.getLevel() : 1;
+		double ecFactor = ecs != null && ecs.getLevel() > 0 ? ecs.getLevel() : 1;
+
+		double killednanitesPerSquad = (long) (naMa.getLevel() * ecFactor * natFactor);
+
+		long totalKill = (long) (killednanitesPerSquad * activeAmbush);
+		if (totalKill < 1) {
+
+			return false;
+		}
+
+		if (totalKill > attacker.getNaniteCount()) {
+			totalKill = attacker.getNaniteCount();
+			new MessageBPO().send(defender, defender.getController(),
+							"Unsere A.M.B.U.S.H.-Einheiten konnten eine angreifende Gruppe komplett zerstören!");
+			new MessageBPO().send(attacker, attacker.getController(), "Wir wurden von A.M.B.U.S.H.-Einheiten zerstört!");
+		}
+
+		attacker.setNaniteCount(attacker.getNaniteCount() - totalKill);
+
+		return attacker.getNaniteCount() < attacker.getMinNaniteCount();
 
 	}
 
-	private void attackCatapult(NaniteGroup attacker, NaniteGroup defender) {
+	public int computeActiveAmbush(NaniteGroup attacker, NaniteGroup defender) {
+		return defender.getAmbushSquads() - attacker.getSatellites();
+	}
+
+	private boolean attackCatapult(NaniteGroup attacker, NaniteGroup defender) {
 
 		NaniteGroup first, second;
 
@@ -345,6 +410,9 @@ public class NaniteBPO extends BaseBPO {
 
 			anotherRound = (firstCanonsToFire > 0 || secondCanonsToFire > 0) && canAttack(first, second);
 		}
+
+		return attacker.getNaniteCount() < 1 || defender.getNaniteCount() < 1;
+
 	}
 
 	private void shootArtilleryOnce(NaniteGroup shooter, NaniteGroup target) {
@@ -440,6 +508,7 @@ public class NaniteBPO extends BaseBPO {
 	}
 
 	public void kill(NaniteGroup naniteGroup) {
+
 		Avatar controller = naniteGroup.getController();
 		if (L.isDebugEnabled()) {
 			L.debug("killing nanite group " + naniteGroup);
@@ -724,7 +793,7 @@ public class NaniteBPO extends BaseBPO {
 		}
 
 		long nextLevelBattles = computeRequiredBattleCounteForNextGroupLevel(naniteGroup);
-		if (nextLevelBattles < naniteGroup.getBattleCounter()) {
+		if (nextLevelBattles > naniteGroup.getBattleCounter()) {
 			L.debug("cannot upgrade - battle counter too low");
 			return false;
 		}
@@ -755,7 +824,8 @@ public class NaniteBPO extends BaseBPO {
 		if (group.getGroupLevel() == 0)
 			return 0;
 		int totalSlots = group.getGroupLevel() * 2;
-		return totalSlots - group.getCatapults() - group.getNaniteSlots() - group.getSatellites() - group.getFlaks();
+		return totalSlots - group.getCatapults() - group.getNaniteSlots() - group.getSatellites() - group.getFlaks()
+						- group.getAmbushSquads();
 	}
 
 	public boolean canRaiseComponents(NaniteGroup group) {
@@ -830,5 +900,15 @@ public class NaniteBPO extends BaseBPO {
 		group.setFlaks(group.getFlaks() + 1);
 		DaoManager.I.getNanitesDao().update(group);
 
+	}
+
+	public void raiseAmbushSquads(NaniteGroup group) {
+
+		if (!new NaniteBPO().canRaiseComponents(group)) {
+			return;
+		}
+
+		group.setAmbushSquads(group.getAmbushSquads() + 1);
+		DaoManager.I.getNanitesDao().update(group);
 	}
 }
