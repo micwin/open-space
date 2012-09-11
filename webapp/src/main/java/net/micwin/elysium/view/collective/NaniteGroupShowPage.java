@@ -187,14 +187,15 @@ public class NaniteGroupShowPage extends BasePage {
 
 			@Override
 			public void onClick() {
-				getNanitesBPO().split(groupModel.getEntity());
+				getNanitesBPO().split(groupModel.getObject(), true, false);
 				setResponsePage(NaniteGroupShowPage.class);
 			}
 		};
 
-		link.setVisible(getNanitesBPO().canSplit(groupModel.getObject()));
+		link.setVisible(getNanitesBPO().canSplit(groupModel.getObject(), true, false));
 		return link;
 	}
+
 
 	private Collection<Component> composeQuickJumpItems(NaniteGroup group) {
 

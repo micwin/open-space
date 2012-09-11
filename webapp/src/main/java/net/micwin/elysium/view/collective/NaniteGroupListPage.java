@@ -209,6 +209,7 @@ public class NaniteGroupListPage extends BasePage {
 				item.add(getKillLink(naniteGroupModel));
 				item.add(getEntrenchLink(naniteGroupModel));
 				item.add(getExitLink(naniteGroupModel));
+				item.add(getCloneLink(naniteGroupModel));
 
 			}
 
@@ -231,6 +232,25 @@ public class NaniteGroupListPage extends BasePage {
 				return entrenchLink;
 			}
 
+			protected Link getCloneLink(final IModel<NaniteGroup> groupModel) {
+				Link link = new Link("clone") {
+
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = -213962075156991317L;
+
+					@Override
+					public void onClick() {
+						getNanitesBPO().split(groupModel.getObject(), false, true);
+						setResponsePage(NaniteGroupListPage.class);
+					}
+				};
+
+				link.setVisible(getNanitesBPO().canSplit(groupModel.getObject(), false, true));
+				return link;
+			}
+
 			protected Link getSplitLink(final IModel<NaniteGroup> naniteGroupModel) {
 				Link link = new Link("split") {
 
@@ -241,12 +261,12 @@ public class NaniteGroupListPage extends BasePage {
 
 					@Override
 					public void onClick() {
-						getNanitesBPO().split(naniteGroupModel.getObject());
+						getNanitesBPO().split(naniteGroupModel.getObject(), true, false);
 						setResponsePage(NaniteGroupListPage.class);
 					}
 				};
 
-				link.setVisible(getNanitesBPO().canSplit(naniteGroupModel.getObject()));
+				link.setVisible(getNanitesBPO().canSplit(naniteGroupModel.getObject(), true, false));
 				return link;
 			}
 

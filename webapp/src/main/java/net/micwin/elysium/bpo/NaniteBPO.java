@@ -5,19 +5,16 @@ import java.util.Date;
 import java.util.List;
 
 import net.micwin.elysium.dao.DaoManager;
-import net.micwin.elysium.entities.ElysiumEntity;
 import net.micwin.elysium.entities.appliances.Appliance;
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.User.Role;
 import net.micwin.elysium.entities.characters.User.State;
-import net.micwin.elysium.entities.galaxy.Environment;
 import net.micwin.elysium.entities.galaxy.Position;
 import net.micwin.elysium.entities.gates.Gate;
 import net.micwin.elysium.entities.nanites.NaniteGroup;
 import net.micwin.elysium.entities.nanites.NaniteState;
 
-import org.omg.CORBA.portable.IDLEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -131,27 +128,38 @@ public class NaniteBPO extends BaseBPO {
 	 * 
 	 * @param naniteGroup
 	 */
-	public void split(NaniteGroup naniteGroup) {
+	public NaniteGroup split(NaniteGroup naniteGroup, boolean splitCount, boolean copyStructures) {
 
 		getNanitesDao().refresh(naniteGroup);
 
 		if (!canRaiseGroupCount(naniteGroup.getController())) {
 			L.debug("cannot split - cannot raise group count");
-			return;
+			return null;
 		}
 
-		if (naniteGroup.getNaniteCount() < 2) {
+		if (splitCount && naniteGroup.getNaniteCount() < 2) {
 			L.debug("cannot split - size of source group < 2");
-			return;
+			return null;
 		}
 
-		long halfNaniteCount = naniteGroup.getNaniteCount() / 2;
-		if (halfNaniteCount < 1) {
-			return;
-		}
-		naniteGroup.setNaniteCount(naniteGroup.getNaniteCount() - halfNaniteCount);
+		long oldNaniteCount = naniteGroup.getNaniteCount();
+		long newNaniteCount = splitCount ? naniteGroup.getNaniteCount() / 2 : oldNaniteCount;
 
-		NaniteGroup newGroup = getNanitesDao().create(halfNaniteCount, naniteGroup.getPosition());
+		if (!splitCount) {
+
+			long remainingMaxCount = computeMaxTotalCount(naniteGroup.getController())
+							- countNanites(naniteGroup.getController());
+
+			if (remainingMaxCount < 1) {
+				return null;
+			}
+			newNaniteCount = Math.min(remainingMaxCount, newNaniteCount);
+
+		} else {
+			naniteGroup.setNaniteCount(naniteGroup.getNaniteCount() / 2);
+		}
+
+		NaniteGroup newGroup = getNanitesDao().create(newNaniteCount, naniteGroup.getPosition());
 
 		if (L.isDebugEnabled()) {
 			L.debug("created new nanite group " + newGroup);
@@ -162,12 +170,27 @@ public class NaniteBPO extends BaseBPO {
 
 		newGroup.getController().getNanites().add(newGroup);
 		newGroup.setBattleCounter(naniteGroup.getBattleCounter());
+		if (copyStructures) {
+			newGroup.setGroupLevel(naniteGroup.getGroupLevel());
+			newGroup.setState(NaniteState.UPGRADING);
+			newGroup.setElysium(naniteGroup.isElysium());
+			newGroup.setAmbushSquads(naniteGroup.getAmbushSquads());
+			newGroup.setCatapults(naniteGroup.getCatapults());
+			newGroup.setFlaks(naniteGroup.getFlaks());
+			newGroup.setNaniteSlots(naniteGroup.getNaniteSlots());
+			newGroup.setSatellites(naniteGroup.getSatellites());
+			newGroup.setSupportMode(naniteGroup.getSupportMode());
+			newGroup.setWidth(naniteGroup.getWidth());
+			newGroup.setHeight(naniteGroup.getHeight());
+		}
 
 		raiseUsage(naniteGroup.getController(), Appliance.NANITE_MANAGEMENT, false);
 
 		getNanitesDao().update(naniteGroup);
 		getNanitesDao().update(newGroup);
 		getAvatarDao().update(naniteGroup.getController());
+
+		return newGroup;
 	}
 
 	public boolean canRaiseGroupCount(Avatar avatar) {
@@ -700,9 +723,9 @@ public class NaniteBPO extends BaseBPO {
 		return group.getController().getLevel() * 5 * 1000 * (group.getGroupLevel() + 1);
 	}
 
-	public boolean canSplit(NaniteGroup nanitesGroup) {
+	public boolean canSplit(NaniteGroup nanitesGroup, boolean splitCount, boolean copyStructure) {
 
-		return nanitesGroup.getNaniteCount() > 1 && nanitesGroup.getState().canSplit()
+		return (!splitCount || nanitesGroup.getNaniteCount() > 1) && nanitesGroup.getState().canSplit()
 						&& !(nanitesGroup.getPosition().getEnvironment() instanceof NaniteGroup)
 						&& canRaiseGroupCount(nanitesGroup.getController());
 
