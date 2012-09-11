@@ -710,13 +710,22 @@ public class NaniteBPO extends BaseBPO {
 			return false;
 		}
 
-		if (naniteGroup.getState() != NaniteState.ENTRENCHED
-						&& ((int) Math.log(naniteGroup.getBattleCounter()) + 1) <= naniteGroup.getGroupLevel()) {
+		if (naniteGroup.getState() == NaniteState.ENTRENCHED) {
+			return true;
+		}
+
+		long nextLevelBattles = computeRequiredBattleCounteForNextGroupLevel(naniteGroup);
+		if (nextLevelBattles < naniteGroup.getBattleCounter()) {
 			L.debug("cannot upgrade - battle counter too low");
 			return false;
 		}
 
 		return true;
+	}
+
+	public long computeRequiredBattleCounteForNextGroupLevel(NaniteGroup naniteGroup) {
+		long nextLevelBattles = (long) (25 * Math.pow(1.5, naniteGroup.getGroupLevel()));
+		return nextLevelBattles;
 	}
 
 	public void upgrade(NaniteGroup group) {
