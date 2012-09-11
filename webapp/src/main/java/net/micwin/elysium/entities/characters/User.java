@@ -72,6 +72,7 @@ public final class User extends ElysiumEntity implements Serializable, IMessageE
 		 */
 		ACTOR;
 
+		
 		@Override
 		public String toString() {
 			return name();

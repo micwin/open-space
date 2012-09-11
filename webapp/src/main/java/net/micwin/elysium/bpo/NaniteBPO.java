@@ -10,6 +10,7 @@ import net.micwin.elysium.entities.appliances.Appliance;
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
 import net.micwin.elysium.entities.characters.User.Role;
+import net.micwin.elysium.entities.characters.User.State;
 import net.micwin.elysium.entities.galaxy.Environment;
 import net.micwin.elysium.entities.galaxy.Position;
 import net.micwin.elysium.entities.gates.Gate;
@@ -563,6 +564,12 @@ public class NaniteBPO extends BaseBPO {
 		if (attacker.getNaniteCount() < attacker.getMinNaniteCount()) {
 			return false;
 		}
+
+		// NPC always attackable
+		if (defender.getController().getUser().getState() == State.NPC) {
+			return true;
+		}
+
 		// both noobs?
 		if (attacker.getController().getLevel() <= MAX_NOOB_LEVEL
 						&& defender.getController().getLevel() <= MAX_NOOB_LEVEL) {

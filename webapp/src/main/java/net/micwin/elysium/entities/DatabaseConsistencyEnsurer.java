@@ -113,6 +113,8 @@ public class DatabaseConsistencyEnsurer {
 	 * Insert an npc into the game.
 	 */
 	private void insertNPC() {
+		
+		// step 1 : look wehter is must get created
 		Collection<Avatar> result = DaoManager.I.getAvatarDao().findByStringProperty("name", NPCAdvancer.NAME_AI_0);
 		Avatar npcAvatar = result.isEmpty() ? null : result.iterator().next();
 
@@ -126,7 +128,6 @@ public class DatabaseConsistencyEnsurer {
 			npcUser.setState(State.NPC);
 			DaoManager.I.getUserDao().update(npcUser);
 		}
-
 	}
 
 	private void clearOutGarbage() {
