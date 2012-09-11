@@ -161,6 +161,8 @@ public class NaniteBPO extends BaseBPO {
 		newGroup.setController(naniteGroup.getController());
 
 		newGroup.getController().getNanites().add(newGroup);
+		newGroup.setBattleCounter(naniteGroup.getBattleCounter());
+
 		raiseUsage(naniteGroup.getController(), Appliance.NANITE_MANAGEMENT, false);
 
 		getNanitesDao().update(naniteGroup);
