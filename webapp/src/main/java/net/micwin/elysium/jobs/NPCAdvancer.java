@@ -63,9 +63,9 @@ public class NPCAdvancer {
 
 			NaniteGroup newGroup = DaoManager.I.getNanitesDao().create(count, arenaGate.getPosition());
 			avatar.getNanites().add(newGroup);
+			newGroup.setGroupLevel(5);
 			newGroup.setController(avatar);
-			newGroup.setCatapults(3);
-			newGroup.setAmbushSquads(3);
+			newGroup.setFlaks(10);
 			newGroup.setBattleCounter(10000);
 			DaoManager.I.getNanitesDao().update(newGroup);
 		}
