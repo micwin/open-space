@@ -5,73 +5,39 @@
 <body>
 <wicket:panel>
 
-	<h1>Komponenten</h1>
+	<h3>Komponenten</h3>
 	<table border="1" width="75%">
 		<tr>
 			<td>Freie Slots :</td>
 			<td><span wicket:id="freeSlots" /></td>
 		</tr>
 		<tr>
-			<td width="25%">Naniten-Katapulte</td>
+			<td width="40%"><span
+				title="Langstreckenwaffen, die, bevor es zum Nahkampf kommt, je eine Naniten-Gruppe verschiesst, die kurz vor dem Aufprall eine Kernexplosion ihrer Atome initiieren und immensen Schaden anrichten. Jeder Katapult schiesst genau einmal - die Menge der verschossenen Naniten bel&auml;uft sich auf mindestens die Stufe des Unterprogramms Naniten-Management und maximal 1/1000 der Anzahl Naniten in der Nanitengruppe. Die Abschussreihenfolge wird durch den Kampfz&auml;hler der Kombattanten bestimmt - je mehr Kampferfahrung, desto eher die Chance, als erster zu schiessen.">Naniten-Katapulte</span></td>
 			<td width="10%"><span wicket:id="catapults" /> <a
 				wicket:id="raiseCatapults">+</a></td>
-			<td>Naniten-Katapulte sind Langstreckenwaffen, die, bevor es zum
-			Nahkampf kommt, je eine Naniten-Gruppe verschiesst, die kurz vor dem
-			Aufprall eine Kernexplosion ihrer Atome initiieren und immensen
-			Schaden anrichten. Jeder Katapult schiesst genau einmal - die Menge
-			der verschossenen Naniten bel&auml;uft sich auf mindestens die STufe
-			des Unterprogramms Naniten-Management und maximal 1/1000 der Anzahl
-			Naniten in der Nanitengruppe. Die Abschussreihenfolge wird durch den
-			Kampfz&auml;hler der Kombattanten bestimmt - je mehr Kampferfahrung,
-			desto eher die Chance, als erster zu schiessen.</td>
-		</tr>
-		<tr>
-			<td width="25%">Naniten-Slots</td>
+			<td width="40%"><span
+				title="Aufh&auml;ngungen innerhalb der Nanitenstruktur, die der Aufnahme anderer Nanitengruppen dienen. Pro Slot kann eine Nanitengruppe beliebiger Gr&ouml;sse aufgenommen werden - jedoch nur Gruppen geringerer Gruppenstufe als die aufnehmende Gruppe.">Naniten-Slots</span></td>
 			<td width="10%"><span wicket:id="naniteSlots" /> <a
 				wicket:id="raiseNaniteSlots">+</a></td>
-			<td>Naniten-Slots sind Aufh&auml;ngungen innerhalb der
-			Nanitenstruktur, die der Aufnahme anderer Nanitengruppen dienen. Pro
-			Slot kann eine Nanitengruppe beliebiger Gr&ouml;sse aufgenommen
-			werden - jedoch nur Gruppen geringerer Gruppenstufe als die
-			aufnehmende Gruppe.</td>
 		</tr>
 		<tr>
-			<td width="25%">Nano-Satelliten</td>
+			<td width="40%"><span
+				title="Einzelne, spezialisierte Naniten, die die Gruppe umkreisen und die Sensorst&auml;rke um 5% / Satellit erh&ouml;hen. Jeder Satellit deaktiviert zus&auml;tzlich einfliegende Naniten-Geschosse. Die Anzahl errechnet sich als 1000 * Stufe Naniten-Management pro Satellit und pro Geschoss. Nachteilig wirkt, dass jeder Satellit die Signaturgr&ouml;sse um 10 Punkte erh&ouml;ht. Jeder Nano-Satellit enttarnt / passiviert zus&auml;tzlich je eine A.M.B.U.S.H-Schwadron (s.u.)">Nano-Satelliten</span></td>
 			<td width="10%"><span wicket:id="satellites" /> <a
 				wicket:id="raiseSatellites">+</a></td>
-			<td>Nano-Satelliten sind einzelne, spezialisierte Naniten, die
-			die Gruppe umkreisen und die Sensorst&auml;rke um 5% / Satellit
-			erh&ouml;hen. Jeder Satellit deaktiviert zus&auml;tzlich einfliegende
-			Naniten-Geschosse. Die Anzahl errechnet sich als 1000 * Stufe
-			Naniten-Management pro Satellit und pro Geschoss. Nachteilig wirkt,
-			dass jeder Satellit die Signaturgr&ouml;sse um 10 Punkte erh&ouml;ht.
-			Jeder Nano-Satellit enttarnt / passiviert zus&auml;tzlich je eine
-			A.M.B.U.S.H-Schwadron (s.u.)</td>
-		</tr>
-		<tr>
-			<td width="25%">Flak-Gesch&uuml;tze</td>
+			<td width="40%"><span
+				title="Flak sind die kleine Variante der Naniten-Katapulte und dienen ausschliesslich der Kurzstrecken-Abwehr von langsam fliegenden Geschossen wie z.B. der Geschosse von Naniten-Katapulten. Die Anzzahl der pro Flak neutralisierten Naniten errechnet sich als 10'000 * der Stufe Emmissions-Kontrolle. Jedes Flak schiesst pro eingehendem Geschoss einmal.">Flak-Gesch&uuml;tze</span></td>
 			<td width="10%"><span wicket:id="flaks" /> <a
 				wicket:id="raiseFlaks">+</a></td>
-			<td>Flak sind die kleine Variante der Naniten-Katapulte und
-			dienen ausschliesslich der Kurzstrecken-Abwehr von langsam fliegenden
-			Geschossen wie z.B. der Geschosse von Naniten-Katapulten. Die Anzzahl
-			der pro Flak neutralisierten Naniten errechnet sich als 10'000 * der
-			Stufe Emmissions-Kontrolle. Jedes Flak schiesst pro eingehendem
-			Geschoss einmal.</td>
 		</tr>
 		<tr>
-			<td width="25%">A.M.B.U.S.H-Kommandos</td>
+			<td width="40%"><span
+				title="A.M.B.U.S.H-Kommandos werden im Boden vergraben und passiviert. Erst wenn die eigene Gruppe angegriffen wird, fallen sie dem Angreifer in den R&uuml;cken und neutralisieren eine grosse Anzahl der Angreifer (pro Kommando Naniten-Management * Naniten-Angriff * Energie-Emmissionen * 10'000). Ausserdem bewahrt jedes Kommando ein Nanit vor der Zerst&ouml;rung, sodass eine Gruppe mit aktiven A.M.B.U.S.H-Kommando nicht komplett zerst&ouml;rt werden kann - jedenfalls solange mindestens eines nicht durch einen Nano-Satellit deaktiviert wurde.">A.M.B.U.S.H-Kommandos</span></td>
 			<td width="10%"><span wicket:id="ambushSquads" /> <a
 				wicket:id="raiseAmbushSquads">+</a></td>
-			<td>A.M.B.U.S.H-Kommandos werden im Boden vergraben und
-			passiviert. Erst wenn die eigene Gruppe angegriffen wird, fallen sie
-			dem Angreifer in den R&uuml;cken und neutralisieren eine grosse
-			Anzahl der Angreifer (pro Kommando Naniten-Management *
-			Naniten-Angriff * Energie-Emmissionen * 10'000). Ausserdem bewahrt
-			jedes Kommando ein Nanit vor der Zerst&ouml;rung, sodass eine Gruppe
-			mit aktiven A.M.B.U.S.H-Kommando nicht komplett zerst&ouml;rt werden
-			kann - jedenfalls solange mindestens eines nicht durch einen
-			Nano-Satellit deaktiviert wurde.</td>
+			<td />
+			<td />
 		</tr>
 	</table>
 
