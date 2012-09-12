@@ -196,7 +196,6 @@ public class NaniteGroupShowPage extends BasePage {
 		return link;
 	}
 
-
 	private Collection<Component> composeQuickJumpItems(NaniteGroup group) {
 
 		Collection<Component> result = new LinkedList<Component>();
@@ -312,8 +311,19 @@ public class NaniteGroupShowPage extends BasePage {
 				Position position = otherGroup.getPosition();
 				Gate gate = getGateBPO().getGateAt(position.getEnvironment());
 				String gateCode = gate.getGateAdress();
+				Link ownerLink = new Link("ownerLink") {
 
-				item.add(new Label("owner", new Model(otherGroup.getController().getName())));
+					@Override
+					public void onClick() {
+						getElysiumSession().setNamedEntity(NE_NANITE_GROUP, naniteGroupModel.getObject());
+						setResponsePage(NaniteGroupShowPage.class);
+					}
+				};
+
+				ownerLink.add(new Label("owner", new Model(otherGroup.getController().getName())));
+
+				ownerLink.setEnabled(otherGroup.getController().equals(getAvatar()));
+				item.add(ownerLink);
 
 				NaniteGroup scanningGroup = scanningGroupModel.getObject();
 				boolean canScanDetails = getScannerBPO().canScanDetails(scanningGroup, otherGroup);
