@@ -1,0 +1,55 @@
+<html
+	xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd">
+
+<head>
+<title>${title}</title>
+</head>
+
+<body>
+
+
+<span wicket:id="layout">
+
+<h1>Nanitengruppe &Uuml;berarbeiten</h1>
+
+W&auml;hle eine Vorlage durck klick auf # aus. Die Nanitengruppe <span
+	wicket:id="groupName" /> wird dann so angepasst, dass sie dieselben
+Komponenten besitzt.
+
+<p />
+
+<table border="1" width="75%">
+	<tr>
+		<th>x</th>
+		<th width="10%">ID</th>
+		<th>Name</th>
+		<th>Stufe</th>
+		<th>Freie KSlots</th>
+		<th>NSlots</th>
+		<th>Katap</th>
+		<th>Flak</th>
+		<th>Satel</th>
+		<th>Ambu</th>
+	</tr>
+	<tr wicket:id="templateTable">
+		<td><a wicket:id="select">#</a></td>
+		<td wicket:id="groupId" />
+		<td wicket:id="groupName" />
+		<td wicket:id="groupLevel" />
+		<td wicket:id="cslotsFree" />
+		<td wicket:id="nslots" />
+		<td wicket:id="catapults" />
+		<td wicket:id="flak" />
+		<td wicket:id="satellites" />
+		<td wicket:id="ambush" />
+	</tr>
+</table>
+<p />
+<a href="cancel" wicket:id="cancel">Abbrechen</a>
+<p />
+
+
+</span>
+
+</body>
+</html>
