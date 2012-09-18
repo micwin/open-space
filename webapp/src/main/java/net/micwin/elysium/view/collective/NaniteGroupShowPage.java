@@ -96,7 +96,27 @@ public class NaniteGroupShowPage extends BasePage {
 		addToContentBody(composeTitleText(group));
 		addToContentBody(composeUpgradeLink(groupModel));
 		addToContentBody(composeComponentsPanel(groupModel));
+		addToContentBody(composeReformLink(groupModel));
 
+	}
+
+	protected Link composeReformLink(final IModel<NaniteGroup> naniteGroupModel) {
+		Link link = new Link("reform") {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -213962075156991317L;
+
+			@Override
+			public void onClick() {
+				getElysiumSession().setNamedEntity("naniteGroup", naniteGroupModel.getObject());
+				setResponsePage(NaniteGroupReformPage.class);
+			}
+		};
+
+		link.setVisible(getNanitesBPO().canReform(naniteGroupModel.getObject()));
+		return link;
 	}
 
 	private Component composeComponentsPanel(ElysiumWicketModel<NaniteGroup> groupModel) {

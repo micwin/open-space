@@ -2,9 +2,11 @@ package net.micwin.elysium.bpo;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import net.micwin.elysium.dao.DaoManager;
+import net.micwin.elysium.entities.ElysiumEntity;
 import net.micwin.elysium.entities.appliances.Appliance;
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
@@ -825,8 +827,12 @@ public class NaniteBPO extends BaseBPO {
 	}
 
 	public long computeRequiredBattleCounteForNextGroupLevel(NaniteGroup naniteGroup) {
-		long nextLevelBattles = (long) (25 * Math.pow(1.5, naniteGroup.getGroupLevel()));
+		long nextLevelBattles = computeBattleCounterForGroupLevel(naniteGroup.getGroupLevel() + 1);
 		return nextLevelBattles;
+	}
+
+	public long computeBattleCounterForGroupLevel(int groupLevel) {
+		return (long) (25 * Math.pow(1.5, groupLevel - 1));
 	}
 
 	public void upgrade(NaniteGroup group) {
@@ -933,5 +939,87 @@ public class NaniteBPO extends BaseBPO {
 
 		group.setAmbushSquads(group.getAmbushSquads() + 1);
 		DaoManager.I.getNanitesDao().update(group);
+	}
+
+	/**
+	 * Chrecks wether a naniteGroup basically can take another form.
+	 * 
+	 * @param naniteGroup
+	 * @return
+	 */
+	public boolean canReform(NaniteGroup naniteGroup) {
+		if (!naniteGroup.getState().canReform()) {
+			return false;
+		}
+		if (naniteGroup.getNaniteCount() < naniteGroup.getMinNaniteCount()) {
+			return false;
+		}
+		return true;
+	}
+
+	public boolean canReformTo(NaniteGroup subject, NaniteGroup template) {
+
+		if (subject.equals(template)) {
+			// same group
+			return false;
+		}
+
+		if (!canReform(subject)) {
+			return false;
+		}
+
+		if (!subject.getController().equals(template.getController())) {
+			// different controller
+			return false;
+		}
+
+		if (subject.getBattleCounter() < computeBattleCounterForGroupLevel(template.getGroupLevel())) {
+			return false;
+		}
+
+		if (subject.getNaniteSlots() > template.getNaniteSlots()
+						&& getNanitesDao().findByEnvironment(subject).size() > template.getNaniteSlots()) {
+
+			// template has fewer naniteSlots AND SUBJECT CONTAINS MORE GROUPS
+			// THAN TEMPLATE COULD CARRY
+			return false;
+		}
+
+		return true;
+
+	}
+
+	public void reform(NaniteGroup subject, NaniteGroup template) {
+		if (!canReformTo(subject, template)) {
+			return;
+		}
+
+		subject.setState(NaniteState.UPGRADING);
+		subject.setStructurePoints(0);
+		subject.setCatapults(template.getCatapults());
+		subject.setElysium(template.isElysium());
+		subject.setFlaks(template.getFlaks());
+		subject.setGroupLevel(template.getGroupLevel());
+		subject.setHeight(template.getHeight());
+		subject.setWidth(template.getWidth());
+		subject.setPreviousState(template.getPreviousState());
+		subject.setAmbushSquads(template.getAmbushSquads());
+		subject.setNaniteSlots(template.getNaniteSlots());
+		subject.setSupportMode(template.getSupportMode());
+		getNanitesDao().update(subject);
+		raiseUsage(subject.getController(), Appliance.NANITE_MANAGEMENT, true);
+	}
+
+	public List<NaniteGroup> findFittingTemplates(NaniteGroup naniteGroup) {
+		List<NaniteGroup> result = new LinkedList<NaniteGroup>();
+		List<NaniteGroup> byController = (List<NaniteGroup>) getNanitesDao().findByController(
+						naniteGroup.getController());
+		for (NaniteGroup candidate : byController) {
+			if (canReformTo(naniteGroup, candidate)) {
+				result.add(candidate);
+			}
+		}
+
+		return result;
 	}
 }

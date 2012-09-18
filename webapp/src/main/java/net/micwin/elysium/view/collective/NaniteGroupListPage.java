@@ -210,7 +210,6 @@ public class NaniteGroupListPage extends BasePage {
 				item.add(getEntrenchLink(naniteGroupModel));
 				item.add(getExitLink(naniteGroupModel));
 				item.add(getCloneLink(naniteGroupModel));
-
 			}
 
 			private Component getEntrenchLink(final IModel<NaniteGroup> naniteGroupModel) {

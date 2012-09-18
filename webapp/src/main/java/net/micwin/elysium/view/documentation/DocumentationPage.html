@@ -335,6 +335,15 @@ Gruppen in die Umgebung entlassen. Es ist m&ouml;glich, Nanitengruppen
 an Bord zu nehmen, die wiederrum selbst Nanitengruppen transportieren,
 oder &uuml;ber Nanitenkatapulte verf&uuml;gen.</p>
 
+<h2>A.M.B.U.S.H.-Kommandos</h2>
+<p>A.M.B.U.S.H-Kommandos werden im Boden vergraben und passiviert.
+Erst wenn die eigene Gruppe angegriffen wird, fallen sie dem Angreifer
+in den R&uuml;cken und neutralisieren eine grosse Anzahl der Angreifer
+(pro Kommando Naniten-Management * Naniten-Angriff * Energie-Emmissionen
+* 10'000). Ausserdem bewahrt jedes Kommando ein Nanit vor der
+Zerst&ouml;rung, sodass eine Gruppe mit aktiven A.M.B.U.S.H-Kommando
+nicht komplett zerst&ouml;rt werden kann - jedenfalls solange mindestens
+eines nicht durch einen Nano-Satellit deaktiviert wurde.</p>
 <h2>Nano-Satelliten</h2>
 <p>Nano-Satelliten sind einzelne, spezialisierte Naniten, die die
 Gruppe umkreisen und die Sensorst&auml;rke um 5% / Satellit
@@ -342,6 +351,9 @@ erh&ouml;hen. Jeder Satellit deaktiviert zus&auml;tzlich einfliegende
 Naniten-Geschosse. Die Anzahl errechnet sich als 1000 * Stufe
 Naniten-Management pro Satellit und pro Geschoss. Nachteilig wirkt, dass
 jeder Satellit die Signaturgr&ouml;sse um 10 Punkte erh&ouml;ht</p>
+<p>Satelliten sind die einzige M&ouml;glichkeit, um gegnerische
+A.M.B.U.S.H.-Kommandos zu neutralisieren - jeder Nanit neutralisiert
+genau ein Kommando.</p>
 
 <h2>Flak-Gesch&uuml;tze</h2>
 <p>Flak sind die kleine Variante der Naniten-Katapulte und dienen
@@ -350,7 +362,9 @@ Geschossen wie z.B. der Geschosse von Naniten-Katapulten. Die Anzahl der
 pro Flak neutralisierten Naniten errechnet sich als 10'000 * der Stufe
 Emmissions-Kontrolle. Jedes Flak schiesst pro eingehendem Geschoss
 einmal.</p>
-<h1>Einbuddeln (entrenching)</h1>
+
+<h1>Sonstige Konzepte</h1>
+<h2>Einbuddeln (entrenching)</h2>
 <p>Durch einbuddeln (Kommando "E" in der Listenansicht) kannst du
 eine Nanitengruppe mit dem Planeten "verweben". Damit wird sie zu einem
 Teil des Planeten. Sie ist dadurch wesentlich schlechter f&uuml;r die
@@ -381,7 +395,7 @@ Sekunden pro Stufe. Mit deiner Stufe dauert das Einbuddeln 5 * <span
 Sekunden, pro Gruppe. Sobald die Gruppe eingebuddelt ist bekommst du
 eine Nachricht</p>
 
-<h1>Springen</h1>
+<h2>Springen</h2>
 <p>Unter "Springen" versteht man das betreten eines Subraumtores auf
 einem Planeten, und das Verlassen desselbigen auf einem anderen
 Planeten. Die Reise mit Subraumtoren ist verz&ouml;gerungsfrei, d.h.
@@ -398,6 +412,54 @@ exakt diesem Planeten befindet.</p>
 um eine anzuspringende Adresse gebeten;: dar&uuml;ber findet sich eine
 Liste von &ouml;ffentlichen Zielen, die ebenfalls betreten werden
 k&ouml;nnen.</p>
+
+<h2>Klonen</h2>
+<p>beim Klonen wird eine Gruppe komplett kopiert. Die Gruppe teilt
+sich dabei in zwei identische Teile und erh&ouml;ht dann die
+Naniten-Zahl auf die urspr&uuml;ngliche Menge. Danach wird das Layout
+der zweiten Gruppe angepasst (siehe Umbau). Gruppen, die sich in den
+Nanitsnslots der geklonten Gruppe befinden, werden nicht mitgeklont
+sondern verbleiben in der originalen Gruppe.</p>
+<p>Durch Klonen ist es m&ouml;glich, relativ schnell viele Kopien
+ein und derselben Gruppe herzustellen. Das ist insbesondere w&auml;hrend
+eines hitzigen Gefechts praktisch, da so der Gegner evl. verwirrt werden
+kann. Ausserdem steht auf diesem Wege im Falle der Zerst&ouml;rung
+sofort eine gleich starke Gruppe zur Verf&uuml;gung, die mit frischen
+Kr&auml;ften den Kampf zu Ende ausfechten kann.</p>
+
+<h2>Umbauen</h2>
+<p>Sollte einmal eine Gruppe nicht mehr den Notwendigkeiten
+entsprechen, so kann ihr Design (also Gruppenstufe und Komponenten) nach
+dem Vorbild einer anderen Nanitengruppe umgebaut werden.</p>
+<p>Hierzu klickt man in der Gruppenansicht auf das "U" neben der
+Gruppenstufe. Danach folgt die Auswahl einer Vorlage, also einer Gruppe,
+nach deren Vorbild die aktuelle Gruppe angepasst werden soll. Diese
+Gruppe muss einigen Anspr&uuml;chen gen&uuml;gen; so muss sie sich z.B.
+im Zustand IDLE oder UPGRADING befinden, muss Platz f&uuml;r alle
+G&auml;ste der umzubauenden Gruppe bieten (Naniten-Slots &gt;= Anzahl
+der G%auml;ste in der umzubauenden Gruppe). Ausserdem muss die
+Gruppenstufe der Vorlage in einer H&ouml;he sein, die die umzubauende
+Gruppe annehmen kann. Es ist so also weder m&ouml;glich den
+Kampfz&auml;hler zu umgehen, noch eingebuddelte Einheiten nachzubauen,
+die aufgrund dessen einen h&ouml;here Gruppenstufe besitzen k&ouml;nnen
+als ihr Kampfz&auml;hler erlaubt. Die Auswahl welche Gruppen denn nun
+den Anspr&uuml;chen gen&uuml;gen, &uuml;bernimmt aber das Programm,
+sodass ausschliesslich g&uuml;ltige Vorlage-Gruppen anzezeigt werden.</p>
+<p>Beim Umbau findet lediglich eine Anpassung der Struktur statt;
+dazu wird die Gruppe in den Umbau-Modus versetzt (Status UPGRADING) und
+f&uuml;hrt nun alle Upgrades der Vorlagengruppe inclusive dem Einbau
+aller Komponenten ohne Pause hintereinander durch. Dies dauert für
+gewöhnlich einige Minuten. W&auml;hrrenddessen kann sich die Gruppe aber
+wie bei jedem anderen Umbau bzw. Upgrade verteidigen (auch mit denselben
+Mali). Die neuen Komponenten stehen dabei sofort zur Verf&uuml;gung.</p>
+<p>Der Umbau kann insbesondere in der Arena stattfinden,
+w&auml;hrend das Tor abgeschlossen ist. Das ist deshalb m&ouml;glich, da
+f&uuml;r den Umbau kein Materie-Transfer notwendig ist - die Naniten
+finden wie immer die ben&ouml;tigten Resourcen im &Uuml;berfluss vor
+Ort. Da sich in jedem einzelnen Nanit eine komplette Kopie des
+kollektiven Bewusstseins befindet, also auch dessen Erinnerungen und
+somit die Baupl&auml;ne jeder Gruppe, ist hierf&uuml;r nicht einmal ein
+Datenaustausch notwendig.</p>
 
 <h1>Ziel des Spiels</h1>
 <p>Das Ziel des Spiels ist es, erst mal ne Menge Spass zu haben,

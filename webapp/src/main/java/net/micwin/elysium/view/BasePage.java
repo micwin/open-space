@@ -60,6 +60,7 @@ import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
@@ -357,4 +358,10 @@ public abstract class BasePage extends WebPage {
 			Collections.sort(nanites, pc);
 		}
 	}
+
+	protected Label createLabel(String id, Object content) {
+		Label label = new Label(id, Model.of("" + content));
+		return label;
+	}
+
 }

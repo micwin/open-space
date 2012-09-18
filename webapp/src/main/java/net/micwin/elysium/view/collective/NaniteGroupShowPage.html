@@ -24,15 +24,16 @@
 	<tr>
 		<td wicket:id="groupId" />
 		<td style="text-align: center"><span wicket:id="groupLevel" /><a
-			wicket:id="upgrade">+</a></td>
+			wicket:id="upgrade">+</a>&nbsp;<a wicket:id="reform" title="Umbauen">U</a></td>
 		<td><span wicket:id="groupPosition">[position]</span>&nbsp;<a
-			wicket:id="exit">V</a></td>
+			wicket:id="exit" title="Verlassen">V</a></td>
 		<td><span wicket:id="groupGate">[gate]</span>&nbsp;<a
-			wicket:id="jumpGate">--&gt;</a></td>
+			wicket:id="jumpGate" title="Springen">--&gt;</a></td>
 		<td><span wicket:id="groupState">[state]</span></td>
 		<td><span wicket:id="signatureStrength">[cloakStrength]</span></td>
 		<td><span wicket:id="groupCount">[groupCount]</span> &nbsp;<a
-			wicket:id="doubleCount">*2</a>&nbsp;<a wicket:id="split">&lt;-&gt;</a></td>
+			wicket:id="doubleCount" title="Verdoppeln">*2</a>&nbsp;<a
+			wicket:id="split" title="Teilen">&lt;-&gt;</a></td>
 
 	</tr>
 </table>
@@ -70,7 +71,8 @@ springen)</h3>
 		<th>Kommandos</th>
 	</tr>
 	<tr wicket:id="otherNanitesTable">
-		<td style="text-align: center"><a href="skjdhkh" wicket:id="ownerLink"><span wicket:id="owner" /></a> / <span
+		<td style="text-align: center"><a href="skjdhkh"
+			wicket:id="ownerLink"><span wicket:id="owner" /></a> / <span
 			wicket:id="level" /></td>
 		<td style="text-align: center" wicket:id="groupLevel" />
 		<td wicket:id="signature" />
