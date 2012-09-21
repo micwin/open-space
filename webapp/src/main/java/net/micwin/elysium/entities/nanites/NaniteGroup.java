@@ -114,6 +114,8 @@ public class NaniteGroup extends Environment implements IMessageEndpoint {
 	}
 
 	public NaniteState getState() {
+		if (state == null)
+			state = NaniteState.IDLE;
 		return state;
 	}
 
@@ -125,7 +127,11 @@ public class NaniteGroup extends Environment implements IMessageEndpoint {
 	}
 
 	public void returnToPreviousState() {
-		this.state = previousState;
+		if (previousState != null) {
+			this.state = previousState;
+		} else {
+			this.state = NaniteState.IDLE;
+		}
 	}
 
 	@Override

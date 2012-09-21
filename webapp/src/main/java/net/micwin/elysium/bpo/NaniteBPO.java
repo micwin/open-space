@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import net.micwin.elysium.dao.DaoManager;
-import net.micwin.elysium.entities.ElysiumEntity;
 import net.micwin.elysium.entities.appliances.Appliance;
 import net.micwin.elysium.entities.appliances.Utilization;
 import net.micwin.elysium.entities.characters.Avatar;
@@ -172,18 +171,11 @@ public class NaniteBPO extends BaseBPO {
 
 		newGroup.getController().getNanites().add(newGroup);
 		newGroup.setBattleCounter(naniteGroup.getBattleCounter());
+
 		if (copyStructures) {
-			newGroup.setGroupLevel(naniteGroup.getGroupLevel());
+
 			newGroup.setState(NaniteState.UPGRADING);
-			newGroup.setElysium(naniteGroup.isElysium());
-			newGroup.setAmbushSquads(naniteGroup.getAmbushSquads());
-			newGroup.setCatapults(naniteGroup.getCatapults());
-			newGroup.setFlaks(naniteGroup.getFlaks());
-			newGroup.setNaniteSlots(naniteGroup.getNaniteSlots());
-			newGroup.setSatellites(naniteGroup.getSatellites());
-			newGroup.setSupportMode(naniteGroup.getSupportMode());
-			newGroup.setWidth(naniteGroup.getWidth());
-			newGroup.setHeight(naniteGroup.getHeight());
+			copyStructureTo(naniteGroup, newGroup);
 		}
 
 		raiseUsage(naniteGroup.getController(), Appliance.NANITE_MANAGEMENT, false);
@@ -994,20 +986,25 @@ public class NaniteBPO extends BaseBPO {
 			return;
 		}
 
+		copyStructureTo(template, subject);
+
 		subject.setState(NaniteState.UPGRADING);
 		subject.setStructurePoints(0);
-		subject.setCatapults(template.getCatapults());
-		subject.setElysium(template.isElysium());
-		subject.setFlaks(template.getFlaks());
-		subject.setGroupLevel(template.getGroupLevel());
-		subject.setHeight(template.getHeight());
-		subject.setWidth(template.getWidth());
-		subject.setPreviousState(template.getPreviousState());
-		subject.setAmbushSquads(template.getAmbushSquads());
-		subject.setNaniteSlots(template.getNaniteSlots());
-		subject.setSupportMode(template.getSupportMode());
+
 		getNanitesDao().update(subject);
 		raiseUsage(subject.getController(), Appliance.NANITE_MANAGEMENT, true);
+	}
+
+	public void copyStructureTo(NaniteGroup template, NaniteGroup target) {
+		target.setCatapults(template.getCatapults());
+		target.setElysium(template.isElysium());
+		target.setFlaks(template.getFlaks());
+		target.setGroupLevel(template.getGroupLevel());
+		target.setHeight(template.getHeight());
+		target.setWidth(template.getWidth());
+		target.setAmbushSquads(template.getAmbushSquads());
+		target.setNaniteSlots(template.getNaniteSlots());
+
 	}
 
 	public List<NaniteGroup> findFittingTemplates(NaniteGroup naniteGroup) {
