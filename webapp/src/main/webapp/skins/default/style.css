@@ -2,9 +2,7 @@
 
 body { font: 11px/20px Georgia, "Times New Roman", Times, serif; }
 
-div { position:relative } 
-
-.nav { position:static; }
+#left { position:fixed; top:100px; left:45px; width:100px; }
 
 #borderTable { width:95%; height:100%; }
 
