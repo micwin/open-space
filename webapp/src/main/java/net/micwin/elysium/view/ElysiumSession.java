@@ -142,7 +142,7 @@ public class ElysiumSession extends WebSession {
 	 */
 	public <T extends ElysiumEntity> T getNamedEntity(String name) {
 		ElysiumWicketModel<T> entityModel = ctx.get(name);
-		return entityModel != null ? entityModel.getEntity() : null;
+		return entityModel != null ? entityModel.getObject() : null;
 	}
 
 	@Override

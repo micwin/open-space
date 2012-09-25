@@ -187,12 +187,12 @@ public class NaniteGroupShowPage extends BasePage {
 
 			@Override
 			public void onClick() {
-				getNanitesBPO().doubleCount(groupModel.getEntity());
+				getNanitesBPO().doubleCount(groupModel.getObject());
 				setResponsePage(NaniteGroupShowPage.class);
 			}
 		};
 
-		link.setVisible(getNanitesBPO().canRaiseNanitesCount(groupModel.getEntity()));
+		link.setVisible(getNanitesBPO().canRaiseNanitesCount(groupModel.getObject()));
 
 		return link;
 	}
@@ -258,7 +258,7 @@ public class NaniteGroupShowPage extends BasePage {
 
 			@Override
 			public void onClick() {
-				getNanitesBPO().gateTravel(groupModel.getEntity(), homeGateAdress);
+				getNanitesBPO().gateTravel(groupModel.getObject(), homeGateAdress);
 				setResponsePage(NaniteGroupShowPage.class);
 			}
 		};
@@ -274,7 +274,7 @@ public class NaniteGroupShowPage extends BasePage {
 
 			@Override
 			public void onClick() {
-				getNanitesBPO().gateTravel(groupModel.getEntity(), "arena");
+				getNanitesBPO().gateTravel(groupModel.getObject(), "arena");
 				setResponsePage(NaniteGroupShowPage.class);
 
 			}

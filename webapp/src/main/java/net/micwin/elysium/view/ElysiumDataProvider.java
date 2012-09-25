@@ -63,12 +63,12 @@ public class ElysiumDataProvider<E extends ElysiumEntity> implements IDataProvid
 	}
 
 	@Override
-	public Iterator<? extends E> iterator(int first, int count) {
-		return loadEntityStrategy.load().subList(first, first + count).iterator();
+	public Iterator<? extends E> iterator(long first, long count) {
+		return loadEntityStrategy.load().subList((int) first, (int) (first + count)).iterator();
 	}
 
 	@Override
-	public int size() {
+	public long size() {
 		return loadEntityStrategy.load().size();
 	}
 

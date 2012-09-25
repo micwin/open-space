@@ -42,26 +42,6 @@ public class ElysiumWicketModel<E extends ElysiumEntity> extends LoadableDetacha
 	}
 
 	/**
-	 * Returns the model object as an elysium entity.
-	 * 
-	 * @return
-	 * @deprecated
-	 */
-	public E getEntity() {
-		return (E) getObject();
-	}
-
-	@Override
-	public E getObject() {
-		return load();
-	}
-
-	@Override
-	public void setObject(E object) {
-		super.setObject(null);
-	}
-
-	/**
 	 * Converts a list of elysium entities into a list of IModels wrapping these
 	 * 
 	 * @param <T>

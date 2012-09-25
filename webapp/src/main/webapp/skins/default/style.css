@@ -2,6 +2,10 @@
 
 body { font: 11px/20px Georgia, "Times New Roman", Times, serif; }
 
+div { position:relative } 
+
+.nav { position:static; }
+
 #borderTable { width:95%; height:100%; }
 
 .pageLayoutTable { height:100%; width:100%; }

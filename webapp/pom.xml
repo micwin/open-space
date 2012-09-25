@@ -39,7 +39,8 @@
 	</parent>
 
 	<properties>
-		<wicket.version>1.5.7</wicket.version>
+		<!-- <wicket.version>1.5.7</wicket.version> -->
+		<wicket.version>6.0.0</wicket.version>
 		<spring.version>3.1.2.RELEASE</spring.version>
 		<hibernate.version>3.6.7.Final</hibernate.version>
 	</properties>
