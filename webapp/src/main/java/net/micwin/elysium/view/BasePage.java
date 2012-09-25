@@ -57,6 +57,7 @@ import net.micwin.elysium.view.welcome.WelcomePage;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.MetaDataEntry;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.markup.head.CssHeaderItem;
@@ -66,6 +67,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.request.resource.SharedResourceReference;
 import org.slf4j.Logger;
@@ -100,8 +102,15 @@ public abstract class BasePage extends WebPage {
 	}
 
 	@Override
+	protected void setHeaders(WebResponse response) {
+		super.setHeaders(response);
+		response.addHeader("refresh", "30");
+	}
+
+	@Override
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
+
 		String skin = null;
 
 		if (getUser() != null) {
