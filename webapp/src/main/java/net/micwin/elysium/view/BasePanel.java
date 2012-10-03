@@ -63,4 +63,15 @@ public abstract class BasePanel extends Panel {
 	protected Avatar getAvatar() {
 		return DaoManager.I.getAvatarDao().findByUser(getUser());
 	}
+	
+
+	/**
+	 * Returns a specific text key from the resource files (properties).
+	 * 
+	 * @param messageKey
+	 * @return
+	 */
+	protected String getLocalizedMessage(String messageKey) {
+		return getLocalizer().getString(messageKey, this);
+	}
 }
