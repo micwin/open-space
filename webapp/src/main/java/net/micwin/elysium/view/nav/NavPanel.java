@@ -40,6 +40,7 @@ import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.view.BasePanel;
 import net.micwin.elysium.view.collective.NaniteGroupListPage;
 import net.micwin.elysium.view.construction.ConstructionPage;
+import net.micwin.elysium.view.fleet.FleetPage;
 import net.micwin.elysium.view.homepage.HomePage;
 import net.micwin.elysium.view.messages.MessagesListPage;
 import net.micwin.elysium.view.storyline.StoryLinePage;
@@ -63,6 +64,7 @@ public class NavPanel extends BasePanel {
 		add(createReplicationLink());
 		add(createMessagesLink());
 		add(createMessageIndicator());
+		add (createFleetLink()) ; 
 	}
 
 	private Component createMessageIndicator() {
@@ -99,6 +101,11 @@ public class NavPanel extends BasePanel {
 	protected BookmarkablePageLink<HomePage> createHomePageLink() {
 		BookmarkablePageLink<HomePage> link = new BookmarkablePageLink<HomePage>("homepageLink", HomePage.class);
 		link.setVisible(HomePage.userCanShow(getUser()));
+		return link;
+	}
+	
+	protected BookmarkablePageLink<FleetPage> createFleetLink() {
+		BookmarkablePageLink<FleetPage> link = new BookmarkablePageLink<FleetPage>("fleetLink", FleetPage.class);
 		return link;
 	}
 

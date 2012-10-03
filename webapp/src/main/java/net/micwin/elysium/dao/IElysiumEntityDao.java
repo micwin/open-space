@@ -131,4 +131,12 @@ public interface IElysiumEntityDao<T extends ElysiumEntity> {
 	 */
 	Collection<T> findBy(Avatar controller, Environment environment);
 
+	/**
+	 * Checks wether or not the specified entity has vanished.
+	 * 
+	 * @param entity
+	 * @return
+	 */
+	boolean hasVanished(T entity);
+
 }

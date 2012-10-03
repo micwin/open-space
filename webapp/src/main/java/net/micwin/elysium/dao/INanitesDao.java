@@ -99,5 +99,4 @@ public interface INanitesDao extends IElysiumEntityDao<NaniteGroup> {
 	 */
 	Collection<NaniteGroup> findByState(NaniteState state);
 
-	
 }

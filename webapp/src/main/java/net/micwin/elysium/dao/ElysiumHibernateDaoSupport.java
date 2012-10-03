@@ -261,4 +261,11 @@ public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> {
 
 	}
 
+	public boolean hasVanished(T entity) {
+		try {
+			return loadById(entity.getId()) == null;
+		} catch (ObjectNotFoundException e) {
+			return true;
+		}
+	}
 }

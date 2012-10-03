@@ -24,6 +24,8 @@ import net.micwin.elysium.view.jumpGates.UsePlanetaryGatePage;
 import net.micwin.elysium.view.messages.MessageCreatePage;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
@@ -404,10 +406,11 @@ public class NaniteGroupShowPage extends BasePage {
 
 			private Component getAttackCommandLink(final ElysiumWicketModel<NaniteGroup> attackerModel,
 							final ElysiumWicketModel<NaniteGroup> defenderModel) {
-				Link link = new Link("attack") {
+				AjaxLink link = new AjaxLink("attack") {
+
 
 					@Override
-					public void onClick() {
+					public void onClick(AjaxRequestTarget target) {
 
 						NaniteGroup attacker = attackerModel.getObject();
 						NaniteGroup defender = defenderModel.getObject();
@@ -423,6 +426,7 @@ public class NaniteGroupShowPage extends BasePage {
 							error("cannot attack");
 						}
 					}
+
 				};
 
 				link.setVisible(getNanitesBPO().canAttack(attackerModel.getObject(), defenderModel.getObject()));

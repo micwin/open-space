@@ -623,6 +623,10 @@ public class NaniteBPO extends BaseBPO {
 	 */
 	public boolean canAttack(NaniteGroup attacker, NaniteGroup defender) {
 
+		if (getNanitesDao().hasVanished(attacker) || getNanitesDao().hasVanished(defender)) {
+			return false;
+		}
+
 		if (!attacker.getState().mayAttack()) {
 			return false;
 		}
