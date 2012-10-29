@@ -31,3 +31,13 @@ body { font: 11px/20px Georgia, "Times New Roman", Times, serif; }
 .valueBox { text-align: left; width: 13%; }
 
 #bluePrintTable { width: 50%; align: center;}
+
+a {
+	color: black;
+	background: white;
+}
+
+a:hover {
+	color:white;
+	background:black;
+}
