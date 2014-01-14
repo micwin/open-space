@@ -12,7 +12,7 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
 
 	<context:annotation-config />
-	<!-- <context:component-scan base-package="net.micwin.elysium" /> -->
+	<!-- <context:component-scan base-package="net.micwin.openspace" /> -->
 
 	<!-- =================================================== -->
 	<!-- =========== configuring persistence layer ======= -->
@@ -47,7 +47,7 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 				<prop key="hibernate.hibernate.cache.use_query_cache">true</prop>
 			</props>
 		</property>
-		<property name="packagesToScan" value="net.micwin.elysium.entities" />
+		<property name="packagesToScan" value="net.micwin.openspace.entities" />
 	</bean>
 
 	<!-- =================================================== -->
@@ -67,46 +67,46 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 	<!-- ===================== configuring dao layer ======= -->
 	<!-- =================================================== -->
 
-	<bean id="userDao" class="net.micwin.elysium.dao.HibernateUserDao">
+	<bean id="userDao" class="net.micwin.openspace.dao.HibernateUserDao">
 		<constructor-arg ref="sessionFactory" />
 	</bean>
 
-	<bean id="avatarDao" class="net.micwin.elysium.dao.HibernateAvatarDao">
+	<bean id="avatarDao" class="net.micwin.openspace.dao.HibernateAvatarDao">
 		<constructor-arg ref="sessionFactory" />
 	</bean>
-	<bean id="sysParamDao" class="net.micwin.elysium.dao.HibernateSysParamDao">
+	<bean id="sysParamDao" class="net.micwin.openspace.dao.HibernateSysParamDao">
 		<constructor-arg ref="sessionFactory" />
 	</bean>
-	<bean id="nanitesDao" class="net.micwin.elysium.dao.HibernateNanitesDao">
+	<bean id="nanitesDao" class="net.micwin.openspace.dao.HibernateNanitesDao">
 		<constructor-arg ref="sessionFactory" />
 	</bean>
-	<bean id="galaxyDao" class="net.micwin.elysium.dao.HibernateGalaxyDao">
+	<bean id="galaxyDao" class="net.micwin.openspace.dao.HibernateGalaxyDao">
 		<constructor-arg ref="sessionFactory" />
 	</bean>
-	<bean id="bluePrintDao" class="net.micwin.elysium.dao.HibernateBluePrintDao">
+	<bean id="bluePrintDao" class="net.micwin.openspace.dao.HibernateBluePrintDao">
 		<constructor-arg ref="sessionFactory" />
 	</bean>
-	<bean id="buildPlanDao" class="net.micwin.elysium.dao.HibernateBuildPlanDao">
+	<bean id="buildPlanDao" class="net.micwin.openspace.dao.HibernateBuildPlanDao">
 		<constructor-arg ref="sessionFactory" />
 	</bean>
-	<bean id="talentsDao" class="net.micwin.elysium.dao.HibernateTalentsDao">
+	<bean id="talentsDao" class="net.micwin.openspace.dao.HibernateTalentsDao">
 		<constructor-arg ref="sessionFactory" />
 	</bean>
-	<bean id="gatesDao" class="net.micwin.elysium.dao.HibernateGatesDao">
+	<bean id="gatesDao" class="net.micwin.openspace.dao.HibernateGatesDao">
 		<constructor-arg ref="sessionFactory" />
 	</bean>
-	<bean id="organizationDao" class="net.micwin.elysium.dao.HibernateOrganizationDao">
-		<constructor-arg ref="sessionFactory" />
-	</bean>
-
-	<bean id="messageDao" class="net.micwin.elysium.dao.HibernateMessageDao">
+	<bean id="organizationDao" class="net.micwin.openspace.dao.HibernateOrganizationDao">
 		<constructor-arg ref="sessionFactory" />
 	</bean>
 
-	<bean id="daoManager" class="net.micwin.elysium.dao.DaoManager"
+	<bean id="messageDao" class="net.micwin.openspace.dao.HibernateMessageDao">
+		<constructor-arg ref="sessionFactory" />
+	</bean>
+
+	<bean id="daoManager" class="net.micwin.openspace.dao.DaoManager"
 		autowire="byName" />
 
-	<bean id="dbConsistencyEnsurer" class="net.micwin.elysium.entities.DatabaseConsistencyEnsurer"
+	<bean id="dbConsistencyEnsurer" class="net.micwin.openspace.entities.DatabaseConsistencyEnsurer"
 		autowire="byName" />
 
 
@@ -121,7 +121,7 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 	<!-- <property name="singleSession" value="true" /> -->
 	<!-- </bean> -->
 
-	<bean id="elysiumFilter" class="net.micwin.elysium.jee.ElysiumFilter">
+	<bean id="elysiumFilter" class="net.micwin.openspace.jee.ElysiumFilter">
 		<property name="sf" ref="sessionFactory" />
 		<property name="sessionTxEnabled" value="true" />
 		<property name="dbConsistencyEnsurer" ref="dbConsistencyEnsurer" />
@@ -135,7 +135,7 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 	<!-- ================ configuring advancer ============= -->
 	<!-- =================================================== -->
 
-	<bean id="advancer" class="net.micwin.elysium.jobs.AdvancerTask" />
+	<bean id="advancer" class="net.micwin.openspace.jobs.AdvancerTask" />
 
 	<bean id="advancerTask" class="org.springframework.scheduling.timer.ScheduledTimerTask">
 		<property name="delay" value="60000" />

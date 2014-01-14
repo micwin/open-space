@@ -18,7 +18,7 @@
 	</appender>
 
 
-	<logger name="net.micwin.elysium">
+	<logger name="net.micwin.openspace">
 		<level value="INFO" />
 	</logger>
 
