@@ -30,7 +30,6 @@
 
 
 	<parent>
-		<relativePath>../pom.xml</relativePath>
 		<groupId>open-space</groupId>
 		<artifactId>parent-pom</artifactId>
 		<version>0.5-SNAPSHOT</version>
