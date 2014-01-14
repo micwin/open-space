@@ -21,8 +21,13 @@ public class ArenaAdvancer {
 		L.info("advancing arena ...");
 
 		Gate arenaGate = DaoManager.I.getGatesDao().findByGateAdress("arena");
-		List<NaniteGroup> naniteGroupsNearGate = DaoManager.I.getNanitesDao().findByEnvironment(
-						arenaGate.getPosition().getEnvironment());
+
+		if (arenaGate == null) {
+			L.warn("not yet advancing arena - gate not yet present.");
+			return;
+		}
+		List<NaniteGroup> naniteGroupsNearGate = DaoManager.I.getNanitesDao()
+				.findByEnvironment(arenaGate.getPosition().getEnvironment());
 		HashSet<String> parties = new HashSet<String>();
 		for (NaniteGroup naniteGroup : naniteGroupsNearGate) {
 			if (!parties.contains(naniteGroup.getController().getName())) {
@@ -60,20 +65,27 @@ public class ArenaAdvancer {
 		NaniteGroup victim = naniteGroupsNearGate.get(randomIndex);
 
 		// lose max 20% of Nanites, but a minmum of 100
-		int nanitesToRemove = (int) Math.max(100, victim.getNaniteCount() * Math.random() * 0.2);
+		int nanitesToRemove = (int) Math.max(100, victim.getNaniteCount()
+				* Math.random() * 0.2);
 
 		if (nanitesToRemove >= victim.getNaniteCount()) {
 			// uh,... move to elysium instead
-			Gate elysiumGate = DaoManager.I.getGatesDao().findByGateAdress("elysium");
+			Gate elysiumGate = DaoManager.I.getGatesDao().findByGateAdress(
+					"elysium");
 			victim.setPosition(elysiumGate.getPosition());
-			new MessageBPO().send(victim, victim.getController(),
+			new MessageBPO()
+					.send(victim,
+							victim.getController(),
 							"eine unbeschreibliche Macht hat uns gepackt und aus dem geschlossenen Arena-Planeten ins Elysium verschoben.");
 			L.info(victim + " transferred from closed arena to elysium");
 		} else {
 			victim.setNaniteCount(victim.getNaniteCount() - nanitesToRemove);
-			new MessageBPO().send(victim, victim.getController(), "eine unbeschreibliche Macht hat uns "
-							+ nanitesToRemove + " Naniten genommen. Wir haben jetzt noch " + victim.getNaniteCount());
-			L.info("removed " + nanitesToRemove + " nanites from group " + victim);
+			new MessageBPO().send(victim, victim.getController(),
+					"eine unbeschreibliche Macht hat uns " + nanitesToRemove
+							+ " Naniten genommen. Wir haben jetzt noch "
+							+ victim.getNaniteCount());
+			L.info("removed " + nanitesToRemove + " nanites from group "
+					+ victim);
 
 		}
 		DaoManager.I.getNanitesDao().update(victim);
@@ -85,13 +97,15 @@ public class ArenaAdvancer {
 		DaoManager.I.getGatesDao().update(arenaGate);
 	}
 
-	public void endGamesWithVictory(Gate arenaGate, List<NaniteGroup> naniteGroupsNearGate) {
+	public void endGamesWithVictory(Gate arenaGate,
+			List<NaniteGroup> naniteGroupsNearGate) {
 		// victory condition, so all groups on arena belong to the same
 		// winner
 		L.info("determining victory");
 		Avatar winner = naniteGroupsNearGate.get(0).getController();
 		winner.raiseArenaWins();
-		Gate elysiumGate = DaoManager.I.getGatesDao().findByGateAdress("elysium");
+		Gate elysiumGate = DaoManager.I.getGatesDao().findByGateAdress(
+				"elysium");
 		for (NaniteGroup group : naniteGroupsNearGate) {
 			winner.setPosition(elysiumGate.getPosition());
 			DaoManager.I.getNanitesDao().update(group);
@@ -100,18 +114,20 @@ public class ArenaAdvancer {
 
 		DaoManager.I.getAvatarDao().update(winner);
 		if (winner.getController() != null) {
-			new MessageBPO().send(
-							winner,
+			new MessageBPO()
+					.send(winner,
 							winner.getController(),
 							"Wir haben ein Arena-Turnier gewonnen! Der Sieg wurde uns zugeschrieben und die Gruppe zum Elysium transportiert. Herzlichen Glückwunsch, wir sind die Größten!");
 		}
 		arenaGate.setGatePass(null);
 		DaoManager.I.getGatesDao().update(arenaGate);
 		L.info("arena battle ended. Winner is "
-						+ (winner.getController() != null ? winner.getController().getName() : "null"));
+				+ (winner.getController() != null ? winner.getController()
+						.getName() : "null"));
 	}
 
-	public void startGames(Gate arenaGate, List<NaniteGroup> naniteGroupsNearGate, HashSet<String> parties) {
+	public void startGames(Gate arenaGate,
+			List<NaniteGroup> naniteGroupsNearGate, HashSet<String> parties) {
 		if (Math.random() * 10 <= 1 && parties.size() >= 5) {
 			L.debug("locking arena ...");
 			arenaGate.setGatePass("" + Math.random());

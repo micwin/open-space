@@ -598,7 +598,7 @@ public class NaniteBPO extends BaseBPO {
 			}
 		}
 
-		long attackingNanitesCount = attacker.getNaniteCount() - attacker.getMinNaniteCount();
+		long attackingNanitesCount = Math.max(attacker.getNaniteCount() - attacker.getMinNaniteCount(), 0);
 
 		long totalAttackDamage = (long) (factor * attackingNanitesCount * BASE_DAMAGE_PER_NANITE);
 		L.debug("nanite group " + attacker + " attacks with count " + attackingNanitesCount

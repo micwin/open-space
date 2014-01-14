@@ -43,6 +43,7 @@ import java.util.TimerTask;
 import net.micwin.elysium.bpo.MessageBPO;
 import net.micwin.elysium.dao.DaoManager;
 import net.micwin.elysium.entities.nanites.NaniteGroup;
+import net.micwin.elysium.tools.RuntimeExceptionShell;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -68,11 +69,17 @@ public class AdvancerTask extends TimerTask {
 
 		try {
 			runNanitesAdvancer();
-			new ArenaAdvancer().advance();
-			new PublicGatesAdvancer().advance();
-			new NPCAdvancer().advance();
+
+			runArenaAdvancer();
+
+			runPublicGatesAdvancer();
+
+			runNPCAdvancer();
 
 			tx.commit();
+		} catch (RuntimeException e) {
+			L.error("swallowed runtime exception - bad bad bad. Some advancers may not have run.",
+					e);
 		} finally {
 			if (tx.isActive())
 				tx.rollback();
@@ -81,8 +88,45 @@ public class AdvancerTask extends TimerTask {
 		L.info("done");
 	}
 
+	private void runNPCAdvancer() {
+		new RuntimeExceptionShell() {
+
+			@Override
+			protected void doIt() {
+				new NPCAdvancer().advance();
+			}
+		}.run();
+	}
+
+	private void runPublicGatesAdvancer() {
+		new RuntimeExceptionShell() {
+
+			@Override
+			protected void doIt() {
+				new PublicGatesAdvancer().advance();
+			}
+		}.run();
+	}
+
+	private void runArenaAdvancer() {
+		new RuntimeExceptionShell() {
+
+			@Override
+			protected void doIt() {
+				new ArenaAdvancer().advance();
+
+			}
+		}.run();
+	}
+
 	private void runNanitesAdvancer() {
-		new NanitesAdvancer().advance() ;
+		new RuntimeExceptionShell() {
+
+			@Override
+			protected void doIt() {
+				new NanitesAdvancer().advance();
+			}
+		}.run();
 
 	}
 

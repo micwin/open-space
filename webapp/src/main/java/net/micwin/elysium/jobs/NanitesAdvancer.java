@@ -98,7 +98,7 @@ public class NanitesAdvancer {
 			return false;
 		}
 
-		if (naniteGroup.getStateEndGT().before(new Date())) {
+		if (naniteGroup.getStateEndGT() == null || naniteGroup.getStateEndGT().before(new Date())) {
 			naniteGroup.setStateEndGT(null);
 			naniteGroup.setState(NaniteState.ENTRENCHED);
 			new MessageBPO().send(naniteGroup, naniteGroup.getController(), "Eingraben beendet.");
