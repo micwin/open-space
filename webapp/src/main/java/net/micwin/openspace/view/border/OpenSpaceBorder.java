@@ -36,7 +36,7 @@ package net.micwin.openspace.view.border;
  */
 
 import net.micwin.openspace.entities.characters.User;
-import net.micwin.openspace.view.ElysiumSession;
+import net.micwin.openspace.view.OpenSpaceSession;
 import net.micwin.openspace.view.documentation.DocumentationPage;
 import net.micwin.openspace.view.login.AuthPanel;
 import net.micwin.openspace.view.nav.NavPanel;
@@ -52,16 +52,16 @@ import org.apache.wicket.model.ResourceModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ElysiumBorder extends Border {
+public class OpenSpaceBorder extends Border {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1650615903715041577L;
 
-	private static final Logger L = LoggerFactory.getLogger(ElysiumBorder.class);
+	private static final Logger L = LoggerFactory.getLogger(OpenSpaceBorder.class);
 
-	public ElysiumBorder(boolean addFeedbackPanel) {
+	public OpenSpaceBorder(boolean addFeedbackPanel) {
 		super("layout");
 
 		// add(new BoxBorder("bodyBorder"));
@@ -95,7 +95,7 @@ public class ElysiumBorder extends Border {
 	}
 
 	private User getUser() {
-		return ((ElysiumSession) Session.get()).getUser();
+		return ((OpenSpaceSession) Session.get()).getUser();
 	}
 
 	private Component getAuthPanel() {
@@ -104,7 +104,7 @@ public class ElysiumBorder extends Border {
 
 	private Component getNavPanel() {
 		NavPanel navPanel = new NavPanel("navPanel");
-		navPanel.setEnabled(((ElysiumSession) Session.get()).getUser() != null);
+		navPanel.setEnabled(((OpenSpaceSession) Session.get()).getUser() != null);
 		return navPanel;
 	}
 }

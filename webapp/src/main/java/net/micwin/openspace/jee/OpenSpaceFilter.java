@@ -17,9 +17,9 @@ import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ElysiumFilter implements Filter {
+public class OpenSpaceFilter implements Filter {
 
-	private static final Logger L = LoggerFactory.getLogger(ElysiumFilter.class);
+	private static final Logger L = LoggerFactory.getLogger(OpenSpaceFilter.class);
 
 	private SessionFactory sf;
 

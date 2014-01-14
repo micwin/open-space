@@ -45,7 +45,7 @@ import javax.persistence.Entity;
  * 
  */
 @Entity
-public class SysParam extends ElysiumEntity {
+public class SysParam extends OpenSpaceEntity {
 
 	@Column(unique = true)
 	String key;

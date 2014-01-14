@@ -46,7 +46,7 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import net.micwin.openspace.entities.ElysiumEntity;
+import net.micwin.openspace.entities.OpenSpaceEntity;
 import net.micwin.openspace.entities.appliances.Utilization;
 import net.micwin.openspace.entities.galaxy.Position;
 import net.micwin.openspace.entities.nanites.NaniteGroup;
@@ -63,7 +63,7 @@ import org.slf4j.LoggerFactory;
  * 
  */
 @Entity
-public class Avatar extends ElysiumEntity implements IMessageEndpoint {
+public class Avatar extends OpenSpaceEntity implements IMessageEndpoint {
 
 	private static final Logger L = LoggerFactory.getLogger(Avatar.class);
 

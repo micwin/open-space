@@ -37,10 +37,10 @@ package net.micwin.openspace.entities.characters;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
-import net.micwin.openspace.entities.ElysiumEntity;
+import net.micwin.openspace.entities.OpenSpaceEntity;
 
 @Entity
-public final class Organization extends ElysiumEntity {
+public final class Organization extends OpenSpaceEntity {
 
 	/**
 	 * Creates a new Organization. Dont forget to set Controller before

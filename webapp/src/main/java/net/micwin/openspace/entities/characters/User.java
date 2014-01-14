@@ -43,7 +43,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
-import net.micwin.openspace.entities.ElysiumEntity;
+import net.micwin.openspace.entities.OpenSpaceEntity;
 import net.micwin.openspace.messaging.IMessageEndpoint;
 
 /**
@@ -54,7 +54,7 @@ import net.micwin.openspace.messaging.IMessageEndpoint;
  */
 
 @Entity
-public final class User extends ElysiumEntity implements Serializable, IMessageEndpoint {
+public final class User extends OpenSpaceEntity implements Serializable, IMessageEndpoint {
 
 	public static enum Role {
 		/**

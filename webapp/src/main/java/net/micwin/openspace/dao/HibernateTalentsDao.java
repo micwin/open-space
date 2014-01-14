@@ -9,7 +9,7 @@ import net.micwin.openspace.entities.characters.Race;
 
 import org.hibernate.SessionFactory;
 
-public class HibernateTalentsDao extends ElysiumHibernateDaoSupport<Utilization> implements ITalentsDao {
+public class HibernateTalentsDao extends OpenSpaceHibernateDaoSupport<Utilization> implements ITalentsDao {
 
 	public HibernateTalentsDao(SessionFactory sf) {
 		super(sf);

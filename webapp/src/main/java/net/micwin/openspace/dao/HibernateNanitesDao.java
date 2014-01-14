@@ -44,7 +44,7 @@ import org.hibernate.SessionFactory;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
-public class HibernateNanitesDao extends ElysiumHibernateDaoSupport<NaniteGroup> implements INanitesDao {
+public class HibernateNanitesDao extends OpenSpaceHibernateDaoSupport<NaniteGroup> implements INanitesDao {
 
 	protected HibernateNanitesDao(SessionFactory sf) {
 		super(sf);	}

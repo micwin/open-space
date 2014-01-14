@@ -19,7 +19,7 @@ import net.micwin.openspace.entities.gates.Gate;
 import net.micwin.openspace.entities.nanites.NaniteGroup;
 import net.micwin.openspace.entities.nanites.NaniteState;
 import net.micwin.openspace.view.BasePage;
-import net.micwin.openspace.view.ElysiumWicketModel;
+import net.micwin.openspace.view.OpenSpaceWicketModel;
 import net.micwin.openspace.view.jumpGates.UsePlanetaryGatePage;
 import net.micwin.openspace.view.messages.MessageCreatePage;
 
@@ -61,7 +61,7 @@ public class NaniteGroupShowPage extends BasePage {
 			setResponsePage(NaniteGroupListPage.class);
 		}
 
-		final ElysiumWicketModel<NaniteGroup> groupModel = new ElysiumWicketModel<NaniteGroup>(group);
+		final OpenSpaceWicketModel<NaniteGroup> groupModel = new OpenSpaceWicketModel<NaniteGroup>(group);
 		addToContentBody(new Label("groupId", "" + group.getId()));
 
 		addToContentBody(new Label("groupLevel", Model.of(group.getGroupLevel())));
@@ -121,7 +121,7 @@ public class NaniteGroupShowPage extends BasePage {
 		return link;
 	}
 
-	private Component composeComponentsPanel(ElysiumWicketModel<NaniteGroup> groupModel) {
+	private Component composeComponentsPanel(OpenSpaceWicketModel<NaniteGroup> groupModel) {
 		if (groupModel.getObject().getGroupLevel() == 0) {
 			return createDummyLink("components", false, false);
 		}
@@ -130,7 +130,7 @@ public class NaniteGroupShowPage extends BasePage {
 		return panel;
 	}
 
-	private Component composeUpgradeLink(ElysiumWicketModel<NaniteGroup> groupModel) {
+	private Component composeUpgradeLink(OpenSpaceWicketModel<NaniteGroup> groupModel) {
 		Link<NaniteGroup> link = new Link<NaniteGroup>("upgrade", groupModel) {
 
 			/**
@@ -162,7 +162,7 @@ public class NaniteGroupShowPage extends BasePage {
 		return messages.size() < 1 ? "" : messages.toString();
 	}
 
-	public Link<Gate> composeJumpLink(final ElysiumWicketModel<NaniteGroup> groupModel) {
+	public Link<Gate> composeJumpLink(final OpenSpaceWicketModel<NaniteGroup> groupModel) {
 		Link<Gate> link = new Link<Gate>("jumpGate") {
 			public void onClick() {
 				getElysiumSession().setNamedEntity(NE_NANITE_GROUP, groupModel.getObject());
@@ -179,7 +179,7 @@ public class NaniteGroupShowPage extends BasePage {
 		return new Label("titleText", new ResourceModel(key));
 	}
 
-	protected Link getDoubleCountLink(final ElysiumWicketModel<NaniteGroup> groupModel) {
+	protected Link getDoubleCountLink(final OpenSpaceWicketModel<NaniteGroup> groupModel) {
 		Link link = new Link("doubleCount") {
 
 			/**
@@ -199,7 +199,7 @@ public class NaniteGroupShowPage extends BasePage {
 		return link;
 	}
 
-	protected Link getSplitLink(final ElysiumWicketModel<NaniteGroup> groupModel) {
+	protected Link getSplitLink(final OpenSpaceWicketModel<NaniteGroup> groupModel) {
 		Link link = new Link("split") {
 
 			/**
@@ -222,7 +222,7 @@ public class NaniteGroupShowPage extends BasePage {
 
 		Collection<Component> result = new LinkedList<Component>();
 
-		final ElysiumWicketModel<NaniteGroup> groupModel = new ElysiumWicketModel<NaniteGroup>(group);
+		final OpenSpaceWicketModel<NaniteGroup> groupModel = new OpenSpaceWicketModel<NaniteGroup>(group);
 
 		final String homeGateAdress = getAvatar().getHomeGateAdress();
 
@@ -237,7 +237,7 @@ public class NaniteGroupShowPage extends BasePage {
 		return result;
 	}
 
-	private Component getExitLink(ElysiumWicketModel<NaniteGroup> groupModel) {
+	private Component getExitLink(OpenSpaceWicketModel<NaniteGroup> groupModel) {
 		Link exitLink = new Link<NaniteGroup>("exit", groupModel) {
 
 			@Override
@@ -251,7 +251,7 @@ public class NaniteGroupShowPage extends BasePage {
 		return exitLink;
 	}
 
-	protected Link<String> getJumpHomeLink(final ElysiumWicketModel<NaniteGroup> groupModel, final String homeGateAdress) {
+	protected Link<String> getJumpHomeLink(final OpenSpaceWicketModel<NaniteGroup> groupModel, final String homeGateAdress) {
 
 		Gate gate = getGateBPO().getGateAt(groupModel.getObject().getPosition().getEnvironment());
 		String currentGateAdress = gate == null ? "---" : gate.getGateAdress();
@@ -271,7 +271,7 @@ public class NaniteGroupShowPage extends BasePage {
 		return link;
 	}
 
-	protected Link<String> getJumpArenaLink(final ElysiumWicketModel<NaniteGroup> groupModel) {
+	protected Link<String> getJumpArenaLink(final OpenSpaceWicketModel<NaniteGroup> groupModel) {
 		Link<String> link = new Link<String>("jumpArena") {
 
 			@Override
@@ -291,7 +291,7 @@ public class NaniteGroupShowPage extends BasePage {
 		return link;
 	}
 
-	protected Link<String> getJumpElysiumLink(final ElysiumWicketModel<NaniteGroup> groupModel) {
+	protected Link<String> getJumpElysiumLink(final OpenSpaceWicketModel<NaniteGroup> groupModel) {
 		Link<String> link = new Link<String>("jumpElysium") {
 
 			@Override
@@ -312,11 +312,11 @@ public class NaniteGroupShowPage extends BasePage {
 	private Component getOtherNanitesTable(NaniteGroup scanningGroup) {
 
 		Iterator<NaniteGroup> nanites = getScannerBPO().scanForOtherNaniteGroups(scanningGroup).iterator();
-		final ElysiumWicketModel<NaniteGroup> scanningGroupModel = new ElysiumWicketModel<NaniteGroup>(scanningGroup);
+		final OpenSpaceWicketModel<NaniteGroup> scanningGroupModel = new OpenSpaceWicketModel<NaniteGroup>(scanningGroup);
 
 		final List<IModel> models = new ArrayList<IModel>();
 		while (nanites.hasNext()) {
-			models.add(new ElysiumWicketModel<NaniteGroup>(nanites.next()));
+			models.add(new OpenSpaceWicketModel<NaniteGroup>(nanites.next()));
 		}
 
 		Component otherNanitesTable = new RefreshingView<NaniteGroup>("otherNanitesTable") {
@@ -326,7 +326,7 @@ public class NaniteGroupShowPage extends BasePage {
 			}
 
 			protected void populateItem(Item item) {
-				final ElysiumWicketModel<NaniteGroup> naniteGroupModel = (ElysiumWicketModel<NaniteGroup>) item
+				final OpenSpaceWicketModel<NaniteGroup> naniteGroupModel = (OpenSpaceWicketModel<NaniteGroup>) item
 								.getModel();
 				NaniteGroup otherGroup = (NaniteGroup) naniteGroupModel.getObject();
 
@@ -372,8 +372,8 @@ public class NaniteGroupShowPage extends BasePage {
 
 			}
 
-			private Component getEnterCommandLink(final ElysiumWicketModel<NaniteGroup> scanningGroupModel,
-							final ElysiumWicketModel<NaniteGroup> container) {
+			private Component getEnterCommandLink(final OpenSpaceWicketModel<NaniteGroup> scanningGroupModel,
+							final OpenSpaceWicketModel<NaniteGroup> container) {
 				Link enterLink = new Link("enter") {
 					@Override
 					public void onClick() {
@@ -388,7 +388,7 @@ public class NaniteGroupShowPage extends BasePage {
 				return enterLink;
 			}
 
-			private Component getSendMessageCommandLink(final ElysiumWicketModel<NaniteGroup> naniteGroupModel) {
+			private Component getSendMessageCommandLink(final OpenSpaceWicketModel<NaniteGroup> naniteGroupModel) {
 				Link link = new Link("sendMessage") {
 
 					@Override
@@ -404,8 +404,8 @@ public class NaniteGroupShowPage extends BasePage {
 				return link;
 			}
 
-			private Component getAttackCommandLink(final ElysiumWicketModel<NaniteGroup> attackerModel,
-							final ElysiumWicketModel<NaniteGroup> defenderModel) {
+			private Component getAttackCommandLink(final OpenSpaceWicketModel<NaniteGroup> attackerModel,
+							final OpenSpaceWicketModel<NaniteGroup> defenderModel) {
 				AjaxLink link = new AjaxLink("attack") {
 
 

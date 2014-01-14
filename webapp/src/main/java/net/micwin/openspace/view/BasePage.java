@@ -44,12 +44,12 @@ import net.micwin.openspace.bpo.GateBPO;
 import net.micwin.openspace.bpo.MessageBPO;
 import net.micwin.openspace.bpo.NaniteBPO;
 import net.micwin.openspace.bpo.ScannerBPO;
-import net.micwin.openspace.entities.ElysiumEntity;
+import net.micwin.openspace.entities.OpenSpaceEntity;
 import net.micwin.openspace.entities.characters.Avatar;
 import net.micwin.openspace.entities.characters.User;
 import net.micwin.openspace.view.avatar.CreateAvatarPage;
 import net.micwin.openspace.view.avatar.ResurrectAvatarPage;
-import net.micwin.openspace.view.border.ElysiumBorder;
+import net.micwin.openspace.view.border.OpenSpaceBorder;
 import net.micwin.openspace.view.errors.EntityNotAccessiblePage;
 import net.micwin.openspace.view.homepage.HomePage;
 import net.micwin.openspace.view.storyline.StoryLinePage;
@@ -97,7 +97,7 @@ public abstract class BasePage extends WebPage {
 	protected void onInitialize() {
 		super.onInitialize();
 
-		this.border = new ElysiumBorder(addFeedbackPanel);
+		this.border = new OpenSpaceBorder(addFeedbackPanel);
 		addChild(border);
 	}
 
@@ -180,8 +180,8 @@ public abstract class BasePage extends WebPage {
 		super.add(c);
 	}
 
-	protected ElysiumSession getElysiumSession() {
-		return (ElysiumSession) Session.get();
+	protected OpenSpaceSession getElysiumSession() {
+		return (OpenSpaceSession) Session.get();
 	}
 
 	protected User getUser() {
@@ -250,7 +250,7 @@ public abstract class BasePage extends WebPage {
 	 *            the name (which normally is something human readable, not an
 	 *            id)..
 	 */
-	protected <T extends ElysiumEntity> void ensureSessionEntityPresent(Class<T> cls, String name) {
+	protected <T extends OpenSpaceEntity> void ensureSessionEntityPresent(Class<T> cls, String name) {
 
 		T entity = getElysiumSession().getNamedEntity(name);
 
@@ -360,7 +360,7 @@ public abstract class BasePage extends WebPage {
 		return attribute == null ? true : attribute;
 	}
 
-	public void sort(List<? extends ElysiumEntity> nanites) {
+	public void sort(List<? extends OpenSpaceEntity> nanites) {
 		String sortProperty = getSortProperty();
 		boolean sortPropertyAsc = getSortAscending();
 

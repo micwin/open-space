@@ -39,7 +39,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.micwin.openspace.entities.ElysiumEntity;
+import net.micwin.openspace.entities.OpenSpaceEntity;
 import net.micwin.openspace.entities.characters.User;
 import net.micwin.openspace.entities.characters.User.Role;
 
@@ -48,9 +48,9 @@ import org.apache.wicket.request.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ElysiumSession extends WebSession {
+public class OpenSpaceSession extends WebSession {
 
-	private static final Logger L = LoggerFactory.getLogger(ElysiumSession.class);
+	private static final Logger L = LoggerFactory.getLogger(OpenSpaceSession.class);
 
 	private static final long serialVersionUID = 3923640078723752554L;
 
@@ -59,11 +59,11 @@ public class ElysiumSession extends WebSession {
 	private User user;
 
 	// a named session context to put in elysium entities wrapped by models.
-	private Map<String, ElysiumWicketModel> ctx = new HashMap<String, ElysiumWicketModel>();
+	private Map<String, OpenSpaceWicketModel> ctx = new HashMap<String, OpenSpaceWicketModel>();
 
 	private boolean storyShown = false;
 
-	public ElysiumSession(Request request) {
+	public OpenSpaceSession(Request request) {
 		super(request);
 	}
 
@@ -123,13 +123,13 @@ public class ElysiumSession extends WebSession {
 	 * @param entity
 	 *            the entity to wrap in a model and put to session context.
 	 */
-	public <T extends ElysiumEntity> void setNamedEntity(String name, T entity) {
+	public <T extends OpenSpaceEntity> void setNamedEntity(String name, T entity) {
 		if (entity == null)
 
 		{
 			ctx.remove(name);
 		} else {
-			ElysiumWicketModel<T> entityModel = new ElysiumWicketModel<T>(entity);
+			OpenSpaceWicketModel<T> entityModel = new OpenSpaceWicketModel<T>(entity);
 			ctx.put(name, entityModel);
 		}
 	}
@@ -140,8 +140,8 @@ public class ElysiumSession extends WebSession {
 	 * @param name
 	 * @return
 	 */
-	public <T extends ElysiumEntity> T getNamedEntity(String name) {
-		ElysiumWicketModel<T> entityModel = ctx.get(name);
+	public <T extends OpenSpaceEntity> T getNamedEntity(String name) {
+		OpenSpaceWicketModel<T> entityModel = ctx.get(name);
 		return entityModel != null ? entityModel.getObject() : null;
 	}
 
@@ -151,7 +151,7 @@ public class ElysiumSession extends WebSession {
 
 		// detach models, but keep them for next request.
 
-		for (ElysiumWicketModel model : ctx.values()) {
+		for (OpenSpaceWicketModel model : ctx.values()) {
 			if (model.isAttached())
 				model.detach();
 		}

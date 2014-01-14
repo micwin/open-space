@@ -39,7 +39,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
-import net.micwin.openspace.entities.ElysiumEntity;
+import net.micwin.openspace.entities.OpenSpaceEntity;
 
 /**
  * A utilization is a knowledge of an appliance on a specific level.
@@ -48,7 +48,7 @@ import net.micwin.openspace.entities.ElysiumEntity;
  * 
  */
 @Entity
-public final class Utilization extends ElysiumEntity {
+public final class Utilization extends OpenSpaceEntity {
 
 	public static class Factory {
 

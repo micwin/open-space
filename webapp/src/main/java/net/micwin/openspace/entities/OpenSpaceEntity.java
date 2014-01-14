@@ -44,7 +44,7 @@ import javax.persistence.MappedSuperclass;
 import net.micwin.openspace.entities.characters.Avatar;
 
 @MappedSuperclass
-public abstract class ElysiumEntity {
+public abstract class OpenSpaceEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -62,7 +62,7 @@ public abstract class ElysiumEntity {
 	 *            the base class of this entity. Use explicit types, dont use
 	 *            getClass() since this may return any enhanced class code.
 	 */
-	protected ElysiumEntity() {
+	protected OpenSpaceEntity() {
 	}
 
 	public void setId(Long id) {
@@ -104,7 +104,7 @@ public abstract class ElysiumEntity {
 
 		try {
 
-			ElysiumEntity other = (ElysiumEntity) obj;
+			OpenSpaceEntity other = (OpenSpaceEntity) obj;
 			return (other.id == id) && other.getBaseClass().equals(getBaseClass());
 		} catch (ClassCastException cce) {
 

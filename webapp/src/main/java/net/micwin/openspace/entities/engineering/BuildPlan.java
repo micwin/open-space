@@ -41,10 +41,10 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import net.micwin.openspace.entities.ElysiumEntity;
+import net.micwin.openspace.entities.OpenSpaceEntity;
 
 @Entity
-public class BuildPlan extends ElysiumEntity {
+public class BuildPlan extends OpenSpaceEntity {
 
 	@OneToOne
 	private BluePrint blueprint;

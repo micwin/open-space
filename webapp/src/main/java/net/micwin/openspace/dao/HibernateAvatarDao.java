@@ -53,7 +53,7 @@ import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class HibernateAvatarDao extends ElysiumHibernateDaoSupport<Avatar> implements IAvatarDao {
+public class HibernateAvatarDao extends OpenSpaceHibernateDaoSupport<Avatar> implements IAvatarDao {
 
 	private static final Logger L = LoggerFactory.getLogger(HibernateAvatarDao.class);
 

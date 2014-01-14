@@ -36,7 +36,7 @@ package net.micwin.openspace.dao;
  */
 import java.util.HashMap;
 
-import net.micwin.openspace.entities.ElysiumEntity;
+import net.micwin.openspace.entities.OpenSpaceEntity;
 import net.micwin.openspace.entities.SysParam;
 import net.micwin.openspace.entities.appliances.Utilization;
 import net.micwin.openspace.entities.characters.Avatar;
@@ -76,7 +76,7 @@ public class DaoManager {
 
 	}
 
-	private void checkDaoNotPresent(Class<? extends ElysiumEntity> class1) {
+	private void checkDaoNotPresent(Class<? extends OpenSpaceEntity> class1) {
 		if (daoInstances.containsKey(class1)) {
 			throw new IllegalStateException("dao for entity '" + class1 + "' already present");
 		}
@@ -136,7 +136,7 @@ public class DaoManager {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T extends ElysiumEntity> IElysiumEntityDao<T> getDao(Class<T> entityClass) {
+	public <T extends OpenSpaceEntity> IElysiumEntityDao<T> getDao(Class<T> entityClass) {
 		return daoInstances.get(entityClass);
 	}
 

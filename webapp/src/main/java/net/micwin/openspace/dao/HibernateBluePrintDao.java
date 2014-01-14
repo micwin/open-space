@@ -44,7 +44,7 @@ import net.micwin.openspace.entities.engineering.BluePrint;
 
 import org.hibernate.SessionFactory;
 
-public class HibernateBluePrintDao extends ElysiumHibernateDaoSupport<BluePrint> implements IBluePrintDao {
+public class HibernateBluePrintDao extends OpenSpaceHibernateDaoSupport<BluePrint> implements IBluePrintDao {
 
 	protected HibernateBluePrintDao(SessionFactory sf) {
 		super(sf);

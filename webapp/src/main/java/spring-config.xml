@@ -121,7 +121,7 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 	<!-- <property name="singleSession" value="true" /> -->
 	<!-- </bean> -->
 
-	<bean id="elysiumFilter" class="net.micwin.openspace.jee.ElysiumFilter">
+	<bean id="elysiumFilter" class="net.micwin.openspace.jee.OpenSpaceFilter">
 		<property name="sf" ref="sessionFactory" />
 		<property name="sessionTxEnabled" value="true" />
 		<property name="dbConsistencyEnsurer" ref="dbConsistencyEnsurer" />

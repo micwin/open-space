@@ -11,7 +11,7 @@ import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class HibernateGatesDao extends ElysiumHibernateDaoSupport<Gate> implements IGatesDao {
+public class HibernateGatesDao extends OpenSpaceHibernateDaoSupport<Gate> implements IGatesDao {
 
 	protected HibernateGatesDao(SessionFactory sf) {
 		super(sf);

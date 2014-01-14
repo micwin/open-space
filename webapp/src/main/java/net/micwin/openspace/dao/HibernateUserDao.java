@@ -45,7 +45,7 @@ import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class HibernateUserDao extends ElysiumHibernateDaoSupport<User> implements IUserDao {
+public class HibernateUserDao extends OpenSpaceHibernateDaoSupport<User> implements IUserDao {
 
 	private static final Logger L = LoggerFactory.getLogger(HibernateUserDao.class);
 

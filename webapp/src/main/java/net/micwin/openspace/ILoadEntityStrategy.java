@@ -38,7 +38,7 @@ package net.micwin.openspace;
 import java.io.Serializable;
 import java.util.List;
 
-import net.micwin.openspace.entities.ElysiumEntity;
+import net.micwin.openspace.entities.OpenSpaceEntity;
 
 /**
  * Strategy to load a bunch of entities. For use in conjunction with anonymous
@@ -47,7 +47,7 @@ import net.micwin.openspace.entities.ElysiumEntity;
  * @author MicWin
  * 
  */
-public interface ILoadEntityStrategy<T extends ElysiumEntity> extends Serializable {
+public interface ILoadEntityStrategy<T extends OpenSpaceEntity> extends Serializable {
 
 	/**
 	 * Loadsthe entities qualified by this interface.

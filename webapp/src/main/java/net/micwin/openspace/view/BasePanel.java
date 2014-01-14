@@ -56,8 +56,8 @@ public abstract class BasePanel extends Panel {
 		return getEylsiumSession().getUser();
 	}
 
-	protected ElysiumSession getEylsiumSession() {
-		return (ElysiumSession) Session.get();
+	protected OpenSpaceSession getEylsiumSession() {
+		return (OpenSpaceSession) Session.get();
 	}
 
 	protected Avatar getAvatar() {

@@ -45,7 +45,7 @@ import net.micwin.openspace.bpo.BaseBPO;
 import net.micwin.openspace.entities.appliances.Utilization;
 import net.micwin.openspace.entities.characters.User;
 import net.micwin.openspace.view.BasePage;
-import net.micwin.openspace.view.ElysiumWicketModel;
+import net.micwin.openspace.view.OpenSpaceWicketModel;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
@@ -97,7 +97,7 @@ public class HomePage extends BasePage {
 		final List<IModel> models = new ArrayList<IModel>();
 
 		for (Utilization talent : talents) {
-			models.add(new ElysiumWicketModel<Utilization>(talent));
+			models.add(new OpenSpaceWicketModel<Utilization>(talent));
 		}
 
 		Component talentsComponent = new RefreshingView<Utilization>("talents") {

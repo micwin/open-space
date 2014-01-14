@@ -53,7 +53,7 @@ import net.micwin.openspace.entities.gates.Gate;
 import net.micwin.openspace.entities.nanites.NaniteGroup;
 import net.micwin.openspace.entities.nanites.NaniteState;
 import net.micwin.openspace.view.BasePage;
-import net.micwin.openspace.view.ElysiumWicketModel;
+import net.micwin.openspace.view.OpenSpaceWicketModel;
 import net.micwin.openspace.view.jumpGates.UsePlanetaryGatePage;
 
 import org.apache.wicket.Component;
@@ -126,7 +126,7 @@ public class NaniteGroupListPage extends BasePage {
 		sort(nanites);
 
 		for (NaniteGroup naniteGroup : nanites) {
-			models.add(ElysiumWicketModel.of(naniteGroup));
+			models.add(OpenSpaceWicketModel.of(naniteGroup));
 		}
 
 		L.debug("having " + models.size() + " entries");

@@ -2,7 +2,7 @@ package net.micwin.openspace.view.fleet;
 
 import net.micwin.openspace.entities.fleet.Fleet;
 import net.micwin.openspace.view.BasePage;
-import net.micwin.openspace.view.ElysiumWicketModel;
+import net.micwin.openspace.view.OpenSpaceWicketModel;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
@@ -19,7 +19,7 @@ public class FleetPage extends BasePage {
 	 * 
 	 */
 	private static final long serialVersionUID = -7373524745305177270L;
-	private ElysiumWicketModel<Fleet> fleetModel;
+	private OpenSpaceWicketModel<Fleet> fleetModel;
 
 	public FleetPage() {
 		this(null);
@@ -27,7 +27,7 @@ public class FleetPage extends BasePage {
 
 	public FleetPage(Fleet fleet) {
 		super(false);
-		this.fleetModel = fleet != null ? ElysiumWicketModel.of(fleet) : null;
+		this.fleetModel = fleet != null ? OpenSpaceWicketModel.of(fleet) : null;
 	}
 
 	@Override

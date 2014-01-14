@@ -1,8 +1,8 @@
 package net.micwin.openspace.entities.fleet;
 
-import net.micwin.openspace.entities.ElysiumEntity;
+import net.micwin.openspace.entities.OpenSpaceEntity;
 
-public class Fleet extends ElysiumEntity {
+public class Fleet extends OpenSpaceEntity {
 
 	@Override
 	public Class getBaseClass() {

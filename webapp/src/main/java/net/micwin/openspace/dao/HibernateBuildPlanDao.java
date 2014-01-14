@@ -42,7 +42,7 @@ import net.micwin.openspace.entities.engineering.BuildPlan;
 
 import org.hibernate.SessionFactory;
 
-public class HibernateBuildPlanDao extends ElysiumHibernateDaoSupport<BuildPlan> implements IBuildPlanDao {
+public class HibernateBuildPlanDao extends OpenSpaceHibernateDaoSupport<BuildPlan> implements IBuildPlanDao {
 
 	protected HibernateBuildPlanDao(SessionFactory sf) {
 		super(sf);

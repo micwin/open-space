@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import net.micwin.openspace.dao.DaoManager;
-import net.micwin.openspace.entities.ElysiumEntity;
+import net.micwin.openspace.entities.OpenSpaceEntity;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -16,11 +16,11 @@ import org.apache.wicket.model.LoadableDetachableModel;
  * 
  * @param <E>
  */
-public class ElysiumWicketModel<E extends ElysiumEntity> extends LoadableDetachableModel<E> {
+public class OpenSpaceWicketModel<E extends OpenSpaceEntity> extends LoadableDetachableModel<E> {
 
-	public static <E extends ElysiumEntity> ElysiumWicketModel<E> of(E entity) {
+	public static <E extends OpenSpaceEntity> OpenSpaceWicketModel<E> of(E entity) {
 
-		return new ElysiumWicketModel<E>(entity);
+		return new OpenSpaceWicketModel<E>(entity);
 
 	}
 
@@ -31,7 +31,7 @@ public class ElysiumWicketModel<E extends ElysiumEntity> extends LoadableDetacha
 	private Class<E> baseClass;
 	private Long id;
 
-	public ElysiumWicketModel(E entity) {
+	public OpenSpaceWicketModel(E entity) {
 		baseClass = entity.getBaseClass();
 		id = entity.getId();
 	}
@@ -48,11 +48,11 @@ public class ElysiumWicketModel<E extends ElysiumEntity> extends LoadableDetacha
 	 * @param entities
 	 * @return
 	 */
-	public static <T extends ElysiumEntity> List<IModel<T>> asModelList(List<T> entities) {
+	public static <T extends OpenSpaceEntity> List<IModel<T>> asModelList(List<T> entities) {
 		List<IModel<T>> list = new LinkedList<IModel<T>>();
 
 		for (T entity : entities) {
-			list.add(new ElysiumWicketModel<T>(entity));
+			list.add(new OpenSpaceWicketModel<T>(entity));
 		}
 		return list;
 	}

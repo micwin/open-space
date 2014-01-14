@@ -36,12 +36,12 @@ package net.micwin.openspace.dao;
  */
 import java.util.Collection;
 
-import net.micwin.openspace.entities.ElysiumEntity;
+import net.micwin.openspace.entities.OpenSpaceEntity;
 import net.micwin.openspace.entities.characters.Avatar;
 import net.micwin.openspace.entities.galaxy.Environment;
 import net.micwin.openspace.entities.nanites.NaniteGroup;
 
-public interface IElysiumEntityDao<T extends ElysiumEntity> {
+public interface IElysiumEntityDao<T extends OpenSpaceEntity> {
 
 	/**
 	 * Loads an entity by its id.

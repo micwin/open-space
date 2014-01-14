@@ -37,7 +37,7 @@ package net.micwin.openspace.view.register;
 import net.micwin.openspace.bpo.UserBPO;
 import net.micwin.openspace.entities.characters.User;
 import net.micwin.openspace.view.BasePanel;
-import net.micwin.openspace.view.ElysiumSession;
+import net.micwin.openspace.view.OpenSpaceSession;
 import net.micwin.openspace.view.homepage.HomePage;
 
 import org.apache.wicket.Component;
@@ -118,7 +118,7 @@ public class RegisterPanel extends BasePanel {
 					error(error);
 				} else {
 					User user = userBPO.login(login, pass);
-					((ElysiumSession) Session.get()).setUser(user);
+					((OpenSpaceSession) Session.get()).setUser(user);
 					RequestCycle.get().setResponsePage(HomePage.class);
 				}
 				return;

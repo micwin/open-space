@@ -12,7 +12,7 @@ import net.micwin.openspace.dao.DaoManager;
 import net.micwin.openspace.entities.characters.Avatar;
 import net.micwin.openspace.entities.messaging.Message;
 import net.micwin.openspace.view.BasePage;
-import net.micwin.openspace.view.ElysiumWicketModel;
+import net.micwin.openspace.view.OpenSpaceWicketModel;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
@@ -49,7 +49,7 @@ public class MessagesListPage extends BasePage {
 			}
 		});
 
-		final List<IModel<Message>> models = ElysiumWicketModel.asModelList(messages);
+		final List<IModel<Message>> models = OpenSpaceWicketModel.asModelList(messages);
 
 		Component talentsComponent = new RefreshingView<Message>("messages") {
 			protected Iterator<IModel<Message>> getItemModels() {
@@ -79,7 +79,7 @@ public class MessagesListPage extends BasePage {
 				boolean canDelete = getMessageBPO().canDelete(getAvatar(), message);
 				if (!canDelete)
 					return createDummyLink("delete", false, false);
-				Link<Message> deleteLink = new Link<Message>("delete", ElysiumWicketModel.of(message)) {
+				Link<Message> deleteLink = new Link<Message>("delete", OpenSpaceWicketModel.of(message)) {
 
 					@Override
 					public void onClick() {

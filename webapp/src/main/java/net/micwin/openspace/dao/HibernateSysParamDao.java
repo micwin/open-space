@@ -43,7 +43,7 @@ import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class HibernateSysParamDao extends ElysiumHibernateDaoSupport<SysParam> implements ISysParamDao {
+public class HibernateSysParamDao extends OpenSpaceHibernateDaoSupport<SysParam> implements ISysParamDao {
 
 	protected HibernateSysParamDao(SessionFactory sf) {
 		super(sf);

@@ -44,7 +44,7 @@ import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class HibernateMessageDao extends ElysiumHibernateDaoSupport<Message> implements IMessageDao {
+public class HibernateMessageDao extends OpenSpaceHibernateDaoSupport<Message> implements IMessageDao {
 
 	protected HibernateMessageDao(SessionFactory sf) {
 		super(sf);

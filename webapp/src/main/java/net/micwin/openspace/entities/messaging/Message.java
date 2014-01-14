@@ -4,10 +4,10 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 
-import net.micwin.openspace.entities.ElysiumEntity;
+import net.micwin.openspace.entities.OpenSpaceEntity;
 
 @Entity
-public class Message extends ElysiumEntity {
+public class Message extends OpenSpaceEntity {
 
 	private Date viewedDate = null;
 

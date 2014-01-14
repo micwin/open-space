@@ -4,7 +4,7 @@ import net.micwin.openspace.entities.characters.Organization;
 
 import org.hibernate.SessionFactory;
 
-public class HibernateOrganizationDao extends ElysiumHibernateDaoSupport<Organization> implements IOrganizationDao {
+public class HibernateOrganizationDao extends OpenSpaceHibernateDaoSupport<Organization> implements IOrganizationDao {
 
 	protected HibernateOrganizationDao(SessionFactory sf) {
 		super(sf);

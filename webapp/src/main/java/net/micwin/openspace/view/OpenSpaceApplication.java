@@ -48,13 +48,13 @@ import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ElysiumApplication extends WebApplication {
+public class OpenSpaceApplication extends WebApplication {
 
-	private static final Logger L = LoggerFactory.getLogger(ElysiumApplication.class);
+	private static final Logger L = LoggerFactory.getLogger(OpenSpaceApplication.class);
 	
 	private Date startupTime = new Date();
 	
-	public ElysiumApplication() {
+	public OpenSpaceApplication() {
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class ElysiumApplication extends WebApplication {
 		getComponentInstantiationListeners().add(new SpringComponentInjector(this)) ;
 		
 		
-		L.info("ElysiumApplication initialized");
+		L.info("OpenSpaceApplication initialized");
 
 	}
 
@@ -75,7 +75,7 @@ public class ElysiumApplication extends WebApplication {
 	@Override
 	public Session newSession(Request request, Response response) {
 
-		return new ElysiumSession(request);
+		return new OpenSpaceSession(request);
 	}
 
 	@Override

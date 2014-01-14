@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 import net.micwin.openspace.entities.nanites.NaniteGroup;
 import net.micwin.openspace.view.BasePage;
-import net.micwin.openspace.view.ElysiumWicketModel;
+import net.micwin.openspace.view.OpenSpaceWicketModel;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
@@ -48,7 +48,7 @@ public class NaniteGroupReformPage extends BasePage {
 
 			@Override
 			protected Iterator<IModel<NaniteGroup>> getItemModels() {
-				return ElysiumWicketModel.asModelList(
+				return OpenSpaceWicketModel.asModelList(
 								getNanitesBPO().findFittingTemplates(
 												(NaniteGroup) getElysiumSession().getNamedEntity("naniteGroup")))
 								.iterator();
@@ -74,7 +74,7 @@ public class NaniteGroupReformPage extends BasePage {
 	}
 
 	protected Component composeSelectLink(NaniteGroup template) {
-		return new Link<NaniteGroup>("select", ElysiumWicketModel.of(template)) {
+		return new Link<NaniteGroup>("select", OpenSpaceWicketModel.of(template)) {
 
 			/**
 			 * 

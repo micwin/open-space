@@ -15,8 +15,8 @@ import net.micwin.openspace.entities.characters.Avatar;
 import net.micwin.openspace.entities.characters.User.Role;
 import net.micwin.openspace.entities.characters.User.State;
 import net.micwin.openspace.view.BasePage;
-import net.micwin.openspace.view.ElysiumApplication;
-import net.micwin.openspace.view.ElysiumWicketModel;
+import net.micwin.openspace.view.OpenSpaceApplication;
+import net.micwin.openspace.view.OpenSpaceWicketModel;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
@@ -43,7 +43,7 @@ public class StatisticsPage extends BasePage {
 	}
 
 	private Component createStartupTimeLabel() {
-		ElysiumApplication app = (ElysiumApplication) getElysiumSession().getApplication();
+		OpenSpaceApplication app = (OpenSpaceApplication) getElysiumSession().getApplication();
 		return new Label("startupTime", Model.of(app.getStartupTime().toString()));
 	}
 
@@ -77,7 +77,7 @@ public class StatisticsPage extends BasePage {
 		final List<IModel<Avatar>> modelList = new LinkedList<IModel<Avatar>>();
 
 		for (Avatar avatar : avatars) {
-			modelList.add(new ElysiumWicketModel<Avatar>(avatar));
+			modelList.add(new OpenSpaceWicketModel<Avatar>(avatar));
 		}
 
 		RefreshingView<Avatar> rankingTable = new RefreshingView<Avatar>("rankingTable") {
@@ -125,7 +125,7 @@ public class StatisticsPage extends BasePage {
 			return createDummyLink(id, false, false);
 		}
 
-		final ElysiumWicketModel<Avatar> model = ElysiumWicketModel.of(avatar);
+		final OpenSpaceWicketModel<Avatar> model = OpenSpaceWicketModel.of(avatar);
 		Link leverageLink = new Link(id) {
 
 			@Override
@@ -144,7 +144,7 @@ public class StatisticsPage extends BasePage {
 			return createDummyLink("resurrectLink", false, false);
 		}
 
-		final ElysiumWicketModel<Avatar> model = ElysiumWicketModel.of(avatar);
+		final OpenSpaceWicketModel<Avatar> model = OpenSpaceWicketModel.of(avatar);
 
 		Link resurrectLink = new Link("resurrectLink") {
 
@@ -166,7 +166,7 @@ public class StatisticsPage extends BasePage {
 			return createDummyLink("resetLink", false, false);
 		}
 
-		final ElysiumWicketModel<Avatar> model = ElysiumWicketModel.of(avatar);
+		final OpenSpaceWicketModel<Avatar> model = OpenSpaceWicketModel.of(avatar);
 
 		Link resurrectLink = new Link("resetLink") {
 
@@ -188,7 +188,7 @@ public class StatisticsPage extends BasePage {
 			return createDummyLink("passivateLink", false, false);
 		}
 
-		final ElysiumWicketModel<Avatar> model = ElysiumWicketModel.of(avatar);
+		final OpenSpaceWicketModel<Avatar> model = OpenSpaceWicketModel.of(avatar);
 
 		Link togglePassivate = new Link("passivateLink") {
 

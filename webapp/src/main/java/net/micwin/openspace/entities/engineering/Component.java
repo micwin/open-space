@@ -37,10 +37,10 @@ package net.micwin.openspace.entities.engineering;
 
 import javax.persistence.Entity;
 
-import net.micwin.openspace.entities.ElysiumEntity;
+import net.micwin.openspace.entities.OpenSpaceEntity;
 
 @Entity
-public class Component extends ElysiumEntity {
+public class Component extends OpenSpaceEntity {
 
 	protected Component() {
 	}

@@ -38,13 +38,13 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.MappedSuperclass;
 
-import net.micwin.openspace.entities.ElysiumEntity;
+import net.micwin.openspace.entities.OpenSpaceEntity;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @MappedSuperclass
-public abstract class Environment extends ElysiumEntity {
+public abstract class Environment extends OpenSpaceEntity {
 
 	private static final Logger L = LoggerFactory.getLogger(Environment.class);
 

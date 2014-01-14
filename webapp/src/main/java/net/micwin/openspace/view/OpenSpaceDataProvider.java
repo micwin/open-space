@@ -38,13 +38,13 @@ import java.util.Iterator;
 
 import net.micwin.openspace.ILoadEntityStrategy;
 import net.micwin.openspace.dao.DaoManager;
-import net.micwin.openspace.entities.ElysiumEntity;
+import net.micwin.openspace.entities.OpenSpaceEntity;
 
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 
-public class ElysiumDataProvider<E extends ElysiumEntity> implements IDataProvider<E> {
+public class OpenSpaceDataProvider<E extends OpenSpaceEntity> implements IDataProvider<E> {
 
 	/**
 	 * 
@@ -53,7 +53,7 @@ public class ElysiumDataProvider<E extends ElysiumEntity> implements IDataProvid
 
 	private final ILoadEntityStrategy<E> loadEntityStrategy;
 
-	public ElysiumDataProvider(ILoadEntityStrategy<E> loadEntityStrategy) {
+	public OpenSpaceDataProvider(ILoadEntityStrategy<E> loadEntityStrategy) {
 		this.loadEntityStrategy = loadEntityStrategy;
 	}
 

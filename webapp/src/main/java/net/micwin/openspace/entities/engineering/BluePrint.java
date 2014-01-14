@@ -44,7 +44,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import net.micwin.openspace.entities.ElysiumEntity;
+import net.micwin.openspace.entities.OpenSpaceEntity;
 import net.micwin.openspace.entities.appliances.Utilization;
 import net.micwin.openspace.entities.characters.Avatar;
 
@@ -58,7 +58,7 @@ import org.slf4j.LoggerFactory;
  * 
  */
 @Entity
-public final class BluePrint extends ElysiumEntity {
+public final class BluePrint extends OpenSpaceEntity {
 
 	private static final Logger L = LoggerFactory.getLogger(BluePrint.class);
 

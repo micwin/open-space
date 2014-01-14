@@ -35,7 +35,7 @@ package net.micwin.openspace.entities.galaxy;
 
  */
 
-import net.micwin.openspace.entities.ElysiumEntity;
+import net.micwin.openspace.entities.OpenSpaceEntity;
 
 /**
  * Dummy entity. Dont use that.
@@ -43,7 +43,7 @@ import net.micwin.openspace.entities.ElysiumEntity;
  * @author MicWin
  * 
  */
-public class Galaxy extends ElysiumEntity {
+public class Galaxy extends OpenSpaceEntity {
 
 	protected Galaxy() {
 	}

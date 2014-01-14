@@ -3,11 +3,11 @@ package net.micwin.openspace.entities.gates;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 
-import net.micwin.openspace.entities.ElysiumEntity;
+import net.micwin.openspace.entities.OpenSpaceEntity;
 import net.micwin.openspace.entities.galaxy.Position;
 
 @Entity
-public class Gate extends ElysiumEntity {
+public class Gate extends OpenSpaceEntity {
 
 	@Embedded
 	private Position position;

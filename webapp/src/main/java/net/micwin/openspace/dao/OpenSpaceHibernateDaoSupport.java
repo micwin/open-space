@@ -39,7 +39,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.micwin.openspace.entities.ElysiumEntity;
+import net.micwin.openspace.entities.OpenSpaceEntity;
 import net.micwin.openspace.entities.characters.Avatar;
 import net.micwin.openspace.entities.galaxy.Environment;
 
@@ -51,12 +51,12 @@ import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class ElysiumHibernateDaoSupport<T extends ElysiumEntity> {
+public abstract class OpenSpaceHibernateDaoSupport<T extends OpenSpaceEntity> {
 
-	private static final Logger L = LoggerFactory.getLogger(ElysiumHibernateDaoSupport.class);
+	private static final Logger L = LoggerFactory.getLogger(OpenSpaceHibernateDaoSupport.class);
 	private final SessionFactory sf;
 
-	protected ElysiumHibernateDaoSupport(SessionFactory sf) {
+	protected OpenSpaceHibernateDaoSupport(SessionFactory sf) {
 		this.sf = sf;
 	}
 
