@@ -106,4 +106,7 @@
 		</plugins>
 	</build>
 
+	<modules>
+		<module>webapp</module>
+	</modules>
 </project>

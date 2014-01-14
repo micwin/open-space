@@ -32,7 +32,7 @@
 
 
 	<parent>
-		<relativePath>../parent/pom.xml</relativePath>
+		<relativePath>../pom.xml</relativePath>
 		<groupId>open-space</groupId>
 		<artifactId>parent-pom</artifactId>
 		<version>0.5-SNAPSHOT</version>
