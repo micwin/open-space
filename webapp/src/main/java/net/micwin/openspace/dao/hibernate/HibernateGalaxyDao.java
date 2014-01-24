@@ -1,4 +1,4 @@
-package net.micwin.openspace.dao;
+package net.micwin.openspace.dao.hibernate;
 
 /*
  (c) 2012 micwin.net
@@ -37,6 +37,8 @@ package net.micwin.openspace.dao;
 import java.util.Collection;
 import java.util.List;
 
+import net.micwin.openspace.dao.IGalaxyDao;
+import net.micwin.openspace.dao.OpenSpaceHibernateDaoSupport;
 import net.micwin.openspace.entities.characters.Avatar;
 import net.micwin.openspace.entities.galaxy.Galaxy;
 import net.micwin.openspace.entities.galaxy.Planet;

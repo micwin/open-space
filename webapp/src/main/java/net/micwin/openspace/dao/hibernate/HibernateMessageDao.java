@@ -1,4 +1,4 @@
-package net.micwin.openspace.dao;
+package net.micwin.openspace.dao.hibernate;
 
 /*
  (c) 2012 micwin.net
@@ -34,73 +34,51 @@ package net.micwin.openspace.dao;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
-import java.util.Collection;
 import java.util.List;
 
-import net.micwin.openspace.entities.characters.User;
-import net.micwin.openspace.entities.characters.User.Role;
-import net.micwin.openspace.entities.characters.User.State;
+import net.micwin.openspace.dao.IMessageDao;
+import net.micwin.openspace.dao.OpenSpaceHibernateDaoSupport;
+import net.micwin.openspace.entities.characters.Avatar;
+import net.micwin.openspace.entities.messaging.Message;
+import net.micwin.openspace.messaging.IMessageEndpoint;
 
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class HibernateUserDao extends OpenSpaceHibernateDaoSupport<User> implements IUserDao {
+public class HibernateMessageDao extends OpenSpaceHibernateDaoSupport<Message> implements IMessageDao {
 
-	private static final Logger L = LoggerFactory.getLogger(HibernateUserDao.class);
-
-	public HibernateUserDao(SessionFactory sf) {
+	protected HibernateMessageDao(SessionFactory sf) {
 		super(sf);
 	}
 
+	private static final Logger L = LoggerFactory.getLogger(HibernateMessageDao.class);
+
 	@Override
-	public User getUser(String login, String pass) {
-
-		String bypassProperty = "open-space." + login + ".pass";
-
-		String bypassWord = System.getProperty(bypassProperty);
-		if (bypassWord != null) {
-			if (pass.equals(bypassWord)) {
-				User user = findByLogin(login);
-				L.info("property bypass access to user '" + login + "'");
-				return user;
-			}
-
-			// bypassword set but password mismatch - lock out user.
-			return null;
-
-		}
-
-		List<User> result = lookupHql(" from User where login='" + login + "' and pass='" + pass + "'");
-
-		if (result == null || result.size() < 1) {
-			return null;
-		} else {
-			return result.get(0);
-		}
-
+	public Class<Message> getEntityClass() {
+		return Message.class;
 	}
 
 	@Override
-	public User create(String login, String pass, State state, Role role) {
-		User user = new User(login, pass, state, role);
-		update(user);
-		return user;
+	public List<Message> findByEndPoint(IMessageEndpoint endPoint) {
+
+		StringBuffer query = new StringBuffer();
+		query.append("from ").append(Message.class.getSimpleName());
+		query.append(" where mailBox='").append(endPoint.getEndPointId() + "'");
+		return lookupHql(query.toString());
 	}
 
 	@Override
-	public User findByLogin(String login) {
-		Collection<User> result = findByStringProperty("login", login);
-		if (result.size() < 1) {
-			return null;
-
-		} else
-			return result.iterator().next();
+	public void send(Message message) {
+		update(message);
 	}
 
 	@Override
-	public Class<User> getEntityClass() {
-		return User.class;
+	public boolean hasNewMessages(Avatar avatar) {
+		String query = " from " + Message.class.getSimpleName() + " where viewedDate is null and mailBox='"
+						+ avatar.getEndPointId() + "'";
+
+		return lookupHql(query).size() > 0;
 	}
 
 }

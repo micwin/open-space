@@ -1,4 +1,16 @@
-package net.micwin.openspace.dao;
+package net.micwin.openspace.dao.hibernate;
+
+import java.util.Collection;
+import java.util.List;
+
+import net.micwin.openspace.dao.INanitesDao;
+import net.micwin.openspace.dao.OpenSpaceHibernateDaoSupport;
+import net.micwin.openspace.entities.galaxy.Environment;
+import net.micwin.openspace.entities.galaxy.Position;
+import net.micwin.openspace.entities.nanites.NaniteGroup;
+import net.micwin.openspace.entities.nanites.NaniteState;
+
+import org.hibernate.SessionFactory;
 
 /*
  (c) 2012 micwin.net
@@ -34,41 +46,38 @@ package net.micwin.openspace.dao;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
+public class HibernateNanitesDao extends OpenSpaceHibernateDaoSupport<NaniteGroup> implements INanitesDao {
 
-import java.util.Arrays;
-import java.util.List;
+	protected HibernateNanitesDao(SessionFactory sf) {
+		super(sf);	}
 
-import net.micwin.openspace.entities.appliances.Utilization;
-import net.micwin.openspace.entities.characters.Avatar;
-import net.micwin.openspace.entities.engineering.BluePrint;
-
-import org.hibernate.SessionFactory;
-
-public class HibernateBluePrintDao extends OpenSpaceHibernateDaoSupport<BluePrint> implements IBluePrintDao {
-
-	protected HibernateBluePrintDao(SessionFactory sf) {
-		super(sf);
+	@Override
+	public Class<NaniteGroup> getEntityClass() {
+		return NaniteGroup.class;
 	}
 
 	@Override
-	public BluePrint create(Avatar owner, String nameKey, Utilization... utilizations) {
-		BluePrint bluePrint = new BluePrint();
-		bluePrint.setName(nameKey);
-		bluePrint.setOwner(owner);
-		bluePrint.setUtilizations(Arrays.asList(utilizations));
-		super.insert(bluePrint);
-		return bluePrint;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<BluePrint> findByController(Avatar avatar) {
-		return lookupHql(" from BluePrint where owner.id=" + avatar.getId());
+	public NaniteGroup create(long nanitesCount, Position position) {
+		NaniteGroup group = new NaniteGroup();
+		group.setNaniteCount(nanitesCount);
+		group.setPosition(position);
+		group.setState(NaniteState.IDLE);
+		update(group);
+		return group;
 	}
 
 	@Override
-	public Class<BluePrint> getEntityClass() {
-		return BluePrint.class;
+	public List<NaniteGroup> findByEnvironment(Environment environment) {
+		List<NaniteGroup> result = lookupHql(" from NaniteGroup where position.environment.id=" + environment.getId());
+		return result;
+	}
+
+
+	@Override
+	public Collection<NaniteGroup> findByState(NaniteState state) {
+		List<NaniteGroup> queryResult = lookupHql(" from NaniteGroup where state=" + state.ordinal());
+		return queryResult;
+
 	}
 
 }

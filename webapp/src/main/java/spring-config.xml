@@ -67,39 +67,39 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 	<!-- ===================== configuring dao layer ======= -->
 	<!-- =================================================== -->
 
-	<bean id="userDao" class="net.micwin.openspace.dao.HibernateUserDao">
+	<bean id="userDao" class="net.micwin.openspace.dao.hibernate.HibernateUserDao">
 		<constructor-arg ref="sessionFactory" />
 	</bean>
 
-	<bean id="avatarDao" class="net.micwin.openspace.dao.HibernateAvatarDao">
+	<bean id="avatarDao" class="net.micwin.openspace.dao.hibernate.HibernateAvatarDao">
 		<constructor-arg ref="sessionFactory" />
 	</bean>
-	<bean id="sysParamDao" class="net.micwin.openspace.dao.HibernateSysParamDao">
+	<bean id="sysParamDao" class="net.micwin.openspace.dao.hibernate.HibernateSysParamDao">
 		<constructor-arg ref="sessionFactory" />
 	</bean>
-	<bean id="nanitesDao" class="net.micwin.openspace.dao.HibernateNanitesDao">
+	<bean id="nanitesDao" class="net.micwin.openspace.dao.hibernate.HibernateNanitesDao">
 		<constructor-arg ref="sessionFactory" />
 	</bean>
-	<bean id="galaxyDao" class="net.micwin.openspace.dao.HibernateGalaxyDao">
+	<bean id="galaxyDao" class="net.micwin.openspace.dao.hibernate.HibernateGalaxyDao">
 		<constructor-arg ref="sessionFactory" />
 	</bean>
-	<bean id="bluePrintDao" class="net.micwin.openspace.dao.HibernateBluePrintDao">
+	<bean id="bluePrintDao" class="net.micwin.openspace.dao.hibernate.HibernateBluePrintDao">
 		<constructor-arg ref="sessionFactory" />
 	</bean>
-	<bean id="buildPlanDao" class="net.micwin.openspace.dao.HibernateBuildPlanDao">
+	<bean id="buildPlanDao" class="net.micwin.openspace.dao.hibernate.HibernateBuildPlanDao">
 		<constructor-arg ref="sessionFactory" />
 	</bean>
-	<bean id="talentsDao" class="net.micwin.openspace.dao.HibernateTalentsDao">
+	<bean id="talentsDao" class="net.micwin.openspace.dao.hibernate.HibernateTalentsDao">
 		<constructor-arg ref="sessionFactory" />
 	</bean>
-	<bean id="gatesDao" class="net.micwin.openspace.dao.HibernateGatesDao">
+	<bean id="gatesDao" class="net.micwin.openspace.dao.hibernate.HibernateGatesDao">
 		<constructor-arg ref="sessionFactory" />
 	</bean>
-	<bean id="organizationDao" class="net.micwin.openspace.dao.HibernateOrganizationDao">
+	<bean id="organizationDao" class="net.micwin.openspace.dao.hibernate.HibernateOrganizationDao">
 		<constructor-arg ref="sessionFactory" />
 	</bean>
 
-	<bean id="messageDao" class="net.micwin.openspace.dao.HibernateMessageDao">
+	<bean id="messageDao" class="net.micwin.openspace.dao.hibernate.HibernateMessageDao">
 		<constructor-arg ref="sessionFactory" />
 	</bean>
 

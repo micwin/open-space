@@ -1,4 +1,4 @@
-package net.micwin.openspace.dao;
+package net.micwin.openspace.dao.hibernate;
 
 /*
  (c) 2012 micwin.net
@@ -40,6 +40,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import net.micwin.openspace.dao.DaoManager;
+import net.micwin.openspace.dao.IAvatarDao;
+import net.micwin.openspace.dao.OpenSpaceHibernateDaoSupport;
 import net.micwin.openspace.entities.appliances.Utilization;
 import net.micwin.openspace.entities.characters.Avatar;
 import net.micwin.openspace.entities.characters.Organization;

@@ -1,5 +1,7 @@
-package net.micwin.openspace.dao;
+package net.micwin.openspace.dao.hibernate;
 
+import net.micwin.openspace.dao.IOrganizationDao;
+import net.micwin.openspace.dao.OpenSpaceHibernateDaoSupport;
 import net.micwin.openspace.entities.characters.Organization;
 
 import org.hibernate.SessionFactory;

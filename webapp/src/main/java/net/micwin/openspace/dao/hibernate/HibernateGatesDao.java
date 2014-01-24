@@ -1,9 +1,11 @@
-package net.micwin.openspace.dao;
+package net.micwin.openspace.dao.hibernate;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
+import net.micwin.openspace.dao.IGatesDao;
+import net.micwin.openspace.dao.OpenSpaceHibernateDaoSupport;
 import net.micwin.openspace.entities.galaxy.Position;
 import net.micwin.openspace.entities.gates.Gate;
 

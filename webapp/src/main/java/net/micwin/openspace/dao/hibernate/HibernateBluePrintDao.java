@@ -1,4 +1,4 @@
-package net.micwin.openspace.dao;
+package net.micwin.openspace.dao.hibernate;
 
 /*
  (c) 2012 micwin.net
@@ -35,28 +35,42 @@ package net.micwin.openspace.dao;
 
  */
 
+import java.util.Arrays;
 import java.util.List;
 
+import net.micwin.openspace.dao.IBluePrintDao;
+import net.micwin.openspace.dao.OpenSpaceHibernateDaoSupport;
+import net.micwin.openspace.entities.appliances.Utilization;
 import net.micwin.openspace.entities.characters.Avatar;
-import net.micwin.openspace.entities.engineering.BuildPlan;
+import net.micwin.openspace.entities.engineering.BluePrint;
 
 import org.hibernate.SessionFactory;
 
-public class HibernateBuildPlanDao extends OpenSpaceHibernateDaoSupport<BuildPlan> implements IBuildPlanDao {
+public class HibernateBluePrintDao extends OpenSpaceHibernateDaoSupport<BluePrint> implements IBluePrintDao {
 
-	protected HibernateBuildPlanDao(SessionFactory sf) {
+	protected HibernateBluePrintDao(SessionFactory sf) {
 		super(sf);
 	}
 
 	@Override
-	public Class<BuildPlan> getEntityClass() {
-		return BuildPlan.class;
+	public BluePrint create(Avatar owner, String nameKey, Utilization... utilizations) {
+		BluePrint bluePrint = new BluePrint();
+		bluePrint.setName(nameKey);
+		bluePrint.setOwner(owner);
+		bluePrint.setUtilizations(Arrays.asList(utilizations));
+		super.insert(bluePrint);
+		return bluePrint;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<BluePrint> findByController(Avatar avatar) {
+		return lookupHql(" from BluePrint where owner.id=" + avatar.getId());
 	}
 
 	@Override
-	public List<BuildPlan> findByAvatar(Avatar avatar) {
-
-		return lookupHql("from BuildPlan where controller.id=" + avatar.getId());
+	public Class<BluePrint> getEntityClass() {
+		return BluePrint.class;
 	}
 
 }

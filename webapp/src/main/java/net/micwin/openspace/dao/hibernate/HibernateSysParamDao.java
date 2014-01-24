@@ -1,4 +1,4 @@
-package net.micwin.openspace.dao;
+package net.micwin.openspace.dao.hibernate;
 
 /*
  (c) 2012 micwin.net
@@ -34,49 +34,52 @@ package net.micwin.openspace.dao;
  Programm erhalten haben. Wenn nicht, siehe http://www.gnu.org/licenses. 
 
  */
-import java.util.List;
 
-import net.micwin.openspace.entities.characters.Avatar;
-import net.micwin.openspace.entities.messaging.Message;
-import net.micwin.openspace.messaging.IMessageEndpoint;
+import java.util.Collection;
+
+import net.micwin.openspace.dao.ISysParamDao;
+import net.micwin.openspace.dao.OpenSpaceHibernateDaoSupport;
+import net.micwin.openspace.entities.SysParam;
 
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class HibernateMessageDao extends OpenSpaceHibernateDaoSupport<Message> implements IMessageDao {
+public class HibernateSysParamDao extends OpenSpaceHibernateDaoSupport<SysParam> implements ISysParamDao {
 
-	protected HibernateMessageDao(SessionFactory sf) {
+	protected HibernateSysParamDao(SessionFactory sf) {
 		super(sf);
 	}
 
-	private static final Logger L = LoggerFactory.getLogger(HibernateMessageDao.class);
+	private static final Logger L = LoggerFactory.getLogger(HibernateSysParamDao.class);
 
 	@Override
-	public Class<Message> getEntityClass() {
-		return Message.class;
+	public SysParam findByKey(String key, String defaultValue) {
+
+		Collection<SysParam> result = findByStringProperty("key", key);
+		return result.size() > 0 ? result.iterator().next() : null;
+
 	}
 
 	@Override
-	public List<Message> findByEndPoint(IMessageEndpoint endPoint) {
+	public SysParam create(String key, String value) {
 
-		StringBuffer query = new StringBuffer();
-		query.append("from ").append(Message.class.getSimpleName());
-		query.append(" where mailBox='").append(endPoint.getEndPointId() + "'");
-		return lookupHql(query.toString());
+		SysParam sysParam = findByKey(key, null);
+		if (sysParam == null) {
+			sysParam = new SysParam();
+			sysParam.setKey(key);
+		}
+
+		sysParam.setValue(value);
+		update(sysParam);
+		if (L.isDebugEnabled())
+			L.debug("created sysparam key='" + sysParam.getKey() + "' value='" + sysParam.getValue() + "'");
+		return sysParam;
 	}
 
 	@Override
-	public void send(Message message) {
-		update(message);
-	}
-
-	@Override
-	public boolean hasNewMessages(Avatar avatar) {
-		String query = " from " + Message.class.getSimpleName() + " where viewedDate is null and mailBox='"
-						+ avatar.getEndPointId() + "'";
-
-		return lookupHql(query).size() > 0;
+	public Class<SysParam> getEntityClass() {
+		return SysParam.class;
 	}
 
 }

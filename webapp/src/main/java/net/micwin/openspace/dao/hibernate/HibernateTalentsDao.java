@@ -1,9 +1,11 @@
-package net.micwin.openspace.dao;
+package net.micwin.openspace.dao.hibernate;
 
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import net.micwin.openspace.dao.ITalentsDao;
+import net.micwin.openspace.dao.OpenSpaceHibernateDaoSupport;
 import net.micwin.openspace.entities.appliances.Utilization;
 import net.micwin.openspace.entities.characters.Race;
 
