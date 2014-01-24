@@ -4,7 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A class that catches uncaught runtime exceptions and drops them to the log.
+ * A class that catches uncaught runtime exceptions, drops them to the log, and
+ * then swallows. Usefulwhen there is a "dont care"-Condition like a finally
+ * block that must guarantee that everything runs smoothly afterwards. Do not
+ * use on a regularily basis! Keep in mind that, when no catched exception has
+ * been defined, this shell also swallows NullPointerExceptions,
+ * IllegalArgumentExceptions and everything else which really should get
+ * corrected.
  * 
  * @author MicWin
  * 
@@ -40,8 +46,11 @@ public abstract class RuntimeExceptionShell implements Runnable {
 	 */
 	protected abstract void doIt();
 
+	/**
+	 * The try ... catch shell around the call of doIt.
+	 */
 	@Override
-	public void run() {
+	public final void run() {
 		try {
 			doIt();
 		} catch (RuntimeException rte) {
