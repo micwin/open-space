@@ -36,7 +36,7 @@
 		<hibernate.version>3.6.7.Final</hibernate.version>
 		<source.version>1.7</source.version>
 		<target.version>${source.version}</target.version>
-		<wicket.version>6.0.0</wicket.version>
+		<wicket.version>6.13.0</wicket.version>
 	</properties>
 
 
