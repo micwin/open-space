@@ -35,11 +35,11 @@ package net.micwin.openspace.view.welcome;
 
  */
 
-import net.micwin.openspace.view.BasePage;
+import net.micwin.openspace.view.BasePageView;
 import net.micwin.openspace.view.homepage.HomePage;
 import net.micwin.openspace.view.register.RegisterPanel;
 
-public class WelcomePage extends BasePage {
+public class WelcomePage extends BasePageView {
 
 	public WelcomePage() {
 		super(true);

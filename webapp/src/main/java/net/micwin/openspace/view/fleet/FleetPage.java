@@ -1,7 +1,7 @@
 package net.micwin.openspace.view.fleet;
 
 import net.micwin.openspace.entities.fleet.Fleet;
-import net.micwin.openspace.view.BasePage;
+import net.micwin.openspace.view.BasePageView;
 import net.micwin.openspace.view.OpenSpaceWicketModel;
 
 import org.apache.wicket.Component;
@@ -13,7 +13,7 @@ import org.apache.wicket.markup.html.basic.Label;
  * @author MicWin
  * 
  */
-public class FleetPage extends BasePage {
+public class FleetPage extends BasePageView {
 
 	/**
 	 * 

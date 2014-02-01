@@ -44,7 +44,7 @@ import java.util.List;
 import net.micwin.openspace.bpo.BaseBPO;
 import net.micwin.openspace.entities.appliances.Utilization;
 import net.micwin.openspace.entities.characters.User;
-import net.micwin.openspace.view.BasePage;
+import net.micwin.openspace.view.BasePageView;
 import net.micwin.openspace.view.OpenSpaceWicketModel;
 
 import org.apache.wicket.Component;
@@ -61,7 +61,7 @@ import org.slf4j.LoggerFactory;
  * @author MicWin
  * 
  */
-public class HomePage extends BasePage {
+public class HomePage extends BasePageView {
 
 	private static final Logger L = LoggerFactory.getLogger(HomePage.class);
 

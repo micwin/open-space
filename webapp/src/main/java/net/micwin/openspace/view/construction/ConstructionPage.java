@@ -44,13 +44,13 @@ import net.micwin.openspace.dao.DaoManager;
 import net.micwin.openspace.entities.characters.User;
 import net.micwin.openspace.entities.engineering.BluePrint;
 import net.micwin.openspace.entities.engineering.BuildPlan;
-import net.micwin.openspace.view.BasePage;
+import net.micwin.openspace.view.BasePageView;
 
 import org.apache.commons.collections.ComparatorUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
 
-public class ConstructionPage extends BasePage {
+public class ConstructionPage extends BasePageView {
 
 	public ConstructionPage() {
 		super(true);

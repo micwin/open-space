@@ -39,7 +39,7 @@ import net.micwin.openspace.dao.DaoManager;
 import net.micwin.openspace.entities.SysParam;
 import net.micwin.openspace.entities.characters.User;
 import net.micwin.openspace.entities.nanites.NaniteGroup;
-import net.micwin.openspace.view.BasePage;
+import net.micwin.openspace.view.BasePageView;
 import net.micwin.openspace.view.collective.NaniteGroupListPage;
 
 import org.apache.wicket.Component;
@@ -48,7 +48,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
 
-public class UsePlanetaryGatePage extends BasePage {
+public class UsePlanetaryGatePage extends BasePageView {
 
 
 	@SuppressWarnings("rawtypes")

@@ -18,7 +18,7 @@ import net.micwin.openspace.entities.galaxy.Position;
 import net.micwin.openspace.entities.gates.Gate;
 import net.micwin.openspace.entities.nanites.NaniteGroup;
 import net.micwin.openspace.entities.nanites.NaniteState;
-import net.micwin.openspace.view.BasePage;
+import net.micwin.openspace.view.BasePageView;
 import net.micwin.openspace.view.OpenSpaceWicketModel;
 import net.micwin.openspace.view.jumpGates.UsePlanetaryGatePage;
 import net.micwin.openspace.view.messages.MessageCreatePage;
@@ -34,7 +34,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 
-public class NaniteGroupShowPage extends BasePage {
+public class NaniteGroupShowPage extends BasePageView {
 
 	static final String NE_NANITE_GROUP = "naniteGroup";
 	/**

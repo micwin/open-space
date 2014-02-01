@@ -51,13 +51,11 @@ import net.micwin.openspace.view.avatar.CreateAvatarPage;
 import net.micwin.openspace.view.avatar.ResurrectAvatarPage;
 import net.micwin.openspace.view.border.OpenSpaceBorder;
 import net.micwin.openspace.view.errors.EntityNotAccessiblePage;
-import net.micwin.openspace.view.homepage.HomePage;
 import net.micwin.openspace.view.storyline.StoryLinePage;
 import net.micwin.openspace.view.welcome.WelcomePage;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.MetaDataEntry;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.markup.head.CssHeaderItem;
@@ -68,13 +66,13 @@ import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.http.WebResponse;
-import org.apache.wicket.request.resource.CssResourceReference;
-import org.apache.wicket.request.resource.SharedResourceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.support.PropertyComparator;
 
-public abstract class BasePage extends WebPage {
+public abstract class BasePageView extends WebPage  {
+
+	private static final long serialVersionUID = -7926278551024433212L;
 
 	public static final String ATTR_SORT_ASCENDING = "sort.ascending";
 
@@ -82,13 +80,13 @@ public abstract class BasePage extends WebPage {
 
 	public static final String[] NUMBERS_IN_ENGLISH = { "Zero", "One", "Two", "Three", "Four", "Five" };
 
-	private static final Logger L = LoggerFactory.getLogger(BasePage.class);
+	private static final Logger L = LoggerFactory.getLogger(BasePageView.class);
 
 	private Border border;
 
 	private final boolean addFeedbackPanel;
 
-	public BasePage(boolean addFeedbackPanel) {
+	public BasePageView(boolean addFeedbackPanel) {
 		super();
 		this.addFeedbackPanel = addFeedbackPanel;
 	}

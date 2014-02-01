@@ -36,12 +36,12 @@ package net.micwin.openspace.view.storyline;
  */
 
 import net.micwin.openspace.bpo.StoryLineBPO;
-import net.micwin.openspace.view.BasePage;
+import net.micwin.openspace.view.BasePageView;
 
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.markup.html.basic.Label;
 
-public abstract class StoryLineItemPage extends BasePage {
+public abstract class StoryLineItemPage extends BasePageView {
 
 	private static enum State {
 

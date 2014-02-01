@@ -37,7 +37,7 @@ package net.micwin.openspace.view.login;
 
 import net.micwin.openspace.bpo.UserBPO;
 import net.micwin.openspace.entities.characters.User;
-import net.micwin.openspace.view.BasePage;
+import net.micwin.openspace.view.BasePageView;
 import net.micwin.openspace.view.welcome.WelcomePage;
 
 import org.apache.wicket.RestartResponseException;
@@ -50,7 +50,7 @@ import org.slf4j.LoggerFactory;
  * @author MicWin
  * 
  */
-public class LogoutPage extends BasePage {
+public class LogoutPage extends BasePageView {
 
 	private static final Logger L = LoggerFactory.getLogger(LogoutPage.class);
 

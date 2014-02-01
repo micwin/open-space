@@ -5,11 +5,11 @@ import java.text.NumberFormat;
 import net.micwin.openspace.bpo.NaniteBPO;
 import net.micwin.openspace.entities.nanites.NaniteGroup;
 import net.micwin.openspace.entities.nanites.NaniteState;
-import net.micwin.openspace.view.BasePage;
+import net.micwin.openspace.view.BasePageView;
 
 import org.apache.wicket.markup.html.basic.Label;
 
-public class DocumentationPage extends BasePage {
+public class DocumentationPage extends BasePageView {
 
 	public DocumentationPage() {
 		super(false);

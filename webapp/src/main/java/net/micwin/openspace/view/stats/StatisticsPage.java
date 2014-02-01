@@ -14,7 +14,7 @@ import net.micwin.openspace.dao.DaoManager;
 import net.micwin.openspace.entities.characters.Avatar;
 import net.micwin.openspace.entities.characters.User.Role;
 import net.micwin.openspace.entities.characters.User.State;
-import net.micwin.openspace.view.BasePage;
+import net.micwin.openspace.view.BasePageView;
 import net.micwin.openspace.view.OpenSpaceApplication;
 import net.micwin.openspace.view.OpenSpaceWicketModel;
 
@@ -26,7 +26,7 @@ import org.apache.wicket.markup.repeater.RefreshingView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-public class StatisticsPage extends BasePage {
+public class StatisticsPage extends BasePageView {
 
 	public StatisticsPage() {
 		super(false);

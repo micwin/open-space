@@ -37,11 +37,11 @@ package net.micwin.openspace.view.storyline;
 
 import net.micwin.openspace.entities.characters.Avatar;
 import net.micwin.openspace.entities.characters.User;
-import net.micwin.openspace.view.BasePage;
+import net.micwin.openspace.view.BasePageView;
 
 import org.apache.wicket.RestartResponseException;
 
-public class StoryLinePage extends BasePage {
+public class StoryLinePage extends BasePageView {
 
 	public StoryLinePage() {
 		super(false);

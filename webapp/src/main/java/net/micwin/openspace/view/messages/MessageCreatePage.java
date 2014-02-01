@@ -2,7 +2,7 @@ package net.micwin.openspace.view.messages;
 
 import net.micwin.openspace.entities.characters.Avatar;
 import net.micwin.openspace.messaging.IMessageEndpoint;
-import net.micwin.openspace.view.BasePage;
+import net.micwin.openspace.view.BasePageView;
 import net.micwin.openspace.view.collective.NaniteGroupListPage;
 
 import org.apache.wicket.Component;
@@ -11,7 +11,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.Model;
 
-public class MessageCreatePage extends BasePage {
+public class MessageCreatePage extends BasePageView {
 
 	private TextArea<String> textArea;
 

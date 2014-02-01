@@ -52,7 +52,7 @@ import net.micwin.openspace.entities.galaxy.Position;
 import net.micwin.openspace.entities.gates.Gate;
 import net.micwin.openspace.entities.nanites.NaniteGroup;
 import net.micwin.openspace.entities.nanites.NaniteState;
-import net.micwin.openspace.view.BasePage;
+import net.micwin.openspace.view.BasePageView;
 import net.micwin.openspace.view.OpenSpaceWicketModel;
 import net.micwin.openspace.view.jumpGates.UsePlanetaryGatePage;
 
@@ -66,7 +66,7 @@ import org.apache.wicket.model.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class NaniteGroupListPage extends BasePage {
+public class NaniteGroupListPage extends BasePageView {
 
 	private static final Logger L = LoggerFactory.getLogger(NaniteGroupListPage.class);
 

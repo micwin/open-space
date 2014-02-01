@@ -37,7 +37,7 @@ package net.micwin.openspace.view.avatar;
 
 import net.micwin.openspace.bpo.AvatarBPO;
 import net.micwin.openspace.entities.characters.Race;
-import net.micwin.openspace.view.BasePage;
+import net.micwin.openspace.view.BasePageView;
 import net.micwin.openspace.view.homepage.HomePage;
 
 import org.apache.wicket.markup.html.form.Form;
@@ -48,7 +48,7 @@ import org.apache.wicket.model.util.ListModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CreateAvatarPage extends BasePage {
+public class CreateAvatarPage extends BasePageView {
 
 	private static final Logger L = LoggerFactory.getLogger(CreateAvatarPage.class);
 

@@ -11,7 +11,7 @@ import java.util.Locale;
 import net.micwin.openspace.dao.DaoManager;
 import net.micwin.openspace.entities.characters.Avatar;
 import net.micwin.openspace.entities.messaging.Message;
-import net.micwin.openspace.view.BasePage;
+import net.micwin.openspace.view.BasePageView;
 import net.micwin.openspace.view.OpenSpaceWicketModel;
 
 import org.apache.wicket.Component;
@@ -24,7 +24,7 @@ import org.apache.wicket.model.Model;
 
 import edu.emory.mathcs.backport.java.util.Collections;
 
-public class MessagesListPage extends BasePage {
+public class MessagesListPage extends BasePageView {
 
 	public MessagesListPage() {
 		super(false);

@@ -3,7 +3,7 @@ package net.micwin.openspace.view.collective;
 import java.util.Iterator;
 
 import net.micwin.openspace.entities.nanites.NaniteGroup;
-import net.micwin.openspace.view.BasePage;
+import net.micwin.openspace.view.BasePageView;
 import net.micwin.openspace.view.OpenSpaceWicketModel;
 
 import org.apache.wicket.Component;
@@ -15,7 +15,7 @@ import org.apache.wicket.markup.repeater.RefreshingView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-public class NaniteGroupReformPage extends BasePage {
+public class NaniteGroupReformPage extends BasePageView {
 
 	/**
 	 * 

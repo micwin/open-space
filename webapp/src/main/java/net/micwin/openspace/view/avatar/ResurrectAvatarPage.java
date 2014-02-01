@@ -38,7 +38,7 @@ package net.micwin.openspace.view.avatar;
 import java.text.NumberFormat;
 
 import net.micwin.openspace.entities.characters.Race;
-import net.micwin.openspace.view.BasePage;
+import net.micwin.openspace.view.BasePageView;
 import net.micwin.openspace.view.homepage.HomePage;
 
 import org.apache.wicket.Component;
@@ -50,7 +50,7 @@ import org.apache.wicket.model.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ResurrectAvatarPage extends BasePage {
+public class ResurrectAvatarPage extends BasePageView {
 
 	private static final Logger L = LoggerFactory.getLogger(ResurrectAvatarPage.class);
 
